@@ -7,11 +7,110 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9D449C8C1B54D9F9005C7CC0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449C8B1B54D9F9005C7CC0 /* AppDelegate.swift */; };
-		9D449C8E1B54D9F9005C7CC0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449C8D1B54D9F9005C7CC0 /* ViewController.swift */; };
-		9D449C911B54D9F9005C7CC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D449C8F1B54D9F9005C7CC0 /* Main.storyboard */; };
-		9D449C931B54D9F9005C7CC0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D449C921B54D9F9005C7CC0 /* Images.xcassets */; };
-		9D449C961B54D9F9005C7CC0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D449C941B54D9F9005C7CC0 /* LaunchScreen.xib */; };
+		7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
+		9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */; };
+		9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE71B54DDC3009CB9FA /* Main.storyboard */; };
+		9D177B7B1B54DDC3009CB9FA /* CircleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEA1B54DDC3009CB9FA /* CircleImage.swift */; };
+		9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEB1B54DDC3009CB9FA /* CircleView.swift */; };
+		9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEC1B54DDC3009CB9FA /* DoubleCircleImage.swift */; };
+		9D177B7E1B54DDC3009CB9FA /* LoadingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AED1B54DDC3009CB9FA /* LoadingCircleView.swift */; };
+		9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEE1B54DDC3009CB9FA /* StarView.swift */; };
+		9D177B801B54DDC3009CB9FA /* UploadingEyesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEF1B54DDC3009CB9FA /* UploadingEyesView.swift */; };
+		9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */; };
+		9D177B821B54DDC3009CB9FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AF11B54DDC3009CB9FA /* Images.xcassets */; };
+		9D177B831B54DDC3009CB9FA /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF21B54DDC3009CB9FA /* JSON.swift */; };
+		9D177B851B54DDC3009CB9FA /* ChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */; };
+		9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */; };
+		9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF81B54DDC3009CB9FA /* ChatTableViewCell.swift */; };
+		9D177B881B54DDC3009CB9FA /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AF91B54DDC3009CB9FA /* ChatTableViewCell.xib */; };
+		9D177B891B54DDC3009CB9FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AFA1B54DDC3009CB9FA /* ChatTableViewController.swift */; };
+		9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AFB1B54DDC3009CB9FA /* ChatTableViewDataSource.swift */; };
+		9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AFC1B54DDC3009CB9FA /* MainTabBarViewController.swift */; };
+		9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AFE1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift */; };
+		9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AFF1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib */; };
+		9D177B8E1B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B001B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift */; };
+		9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B011B54DDC3009CB9FA /* PeruseExchangeViewController.swift */; };
+		9D177B901B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B021B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift */; };
+		9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B031B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib */; };
+		9D177B921B54DDC3009CB9FA /* PeruseItemDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B041B54DDC3009CB9FA /* PeruseItemDataSource.swift */; };
+		9D177B931B54DDC3009CB9FA /* PeruseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B051B54DDC3009CB9FA /* PeruseViewController.swift */; };
+		9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B071B54DDC3009CB9FA /* ProfileContainerViewController.swift */; };
+		9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B081B54DDC3009CB9FA /* ProfileExchangesDataSource.swift */; };
+		9D177B961B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B091B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift */; };
+		9D177B971B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B0A1B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib */; };
+		9D177B981B54DDC3009CB9FA /* ProfileExchangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B0B1B54DDC3009CB9FA /* ProfileExchangesViewController.swift */; };
+		9D177B991B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B0C1B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift */; };
+		9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B0D1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift */; };
+		9D177B9B1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B0E1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift */; };
+		9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B0F1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift */; };
+		9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B101B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift */; };
+		9D177B9E1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B111B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib */; };
+		9D177B9F1B54DDC3009CB9FA /* ProfileReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B121B54DDC3009CB9FA /* ProfileReviewsViewController.swift */; };
+		9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B131B54DDC3009CB9FA /* ProfileUploadsDataSource.swift */; };
+		9D177BA11B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */; };
+		9D177BA21B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */; };
+		9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */; };
+		9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B171B54DDC3009CB9FA /* ProfileViewController.swift */; };
+		9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B181B54DDC3009CB9FA /* WriteReviewViewController.swift */; };
+		9D177BA61B54DDC3009CB9FA /* RequestsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1A1B54DDC3009CB9FA /* RequestsCollectionViewCell.swift */; };
+		9D177BA71B54DDC3009CB9FA /* RequestsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B1B1B54DDC3009CB9FA /* RequestsCollectionViewCell.xib */; };
+		9D177BA81B54DDC3009CB9FA /* RequestsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1C1B54DDC3009CB9FA /* RequestsDataSource.swift */; };
+		9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1D1B54DDC3009CB9FA /* RequestsTableViewController.swift */; };
+		9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */; };
+		9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */; };
+		9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B211B54DDC3009CB9FA /* UploadViewController.swift */; };
+		9D177BAD1B54DDC3009CB9FA /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B231B54DDC3009CB9FA /* Chat.swift */; };
+		9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */; };
+		9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B251B54DDC3009CB9FA /* Exchange.swift */; };
+		9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */; };
+		9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */; };
+		9D177BB21B54DDC3009CB9FA /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B281B54DDC3009CB9FA /* Item.swift */; };
+		9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B291B54DDC3009CB9FA /* Model.swift */; };
+		9D177BB41B54DDC3009CB9FA /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2A1B54DDC3009CB9FA /* Person.swift */; };
+		9D177BB51B54DDC3009CB9FA /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2B1B54DDC3009CB9FA /* Review.swift */; };
+		9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */; };
+		9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */; };
+		9D177BB81B54DDC3009CB9FA /* Onboard_Exchange.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */; };
+		9D177BB91B54DDC3009CB9FA /* Onboard_Peruse.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B301B54DDC3009CB9FA /* Onboard_Peruse.m4v */; };
+		9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B311B54DDC3009CB9FA /* OnboardPageItemViewController.swift */; };
+		9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B321B54DDC3009CB9FA /* OnboardViewController.swift */; };
+		9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B341B54DDC3009CB9FA /* FacebookDataSource.swift */; };
+		9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B351B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift */; };
+		9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B361B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift */; };
+		9D177BBF1B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B371B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift */; };
+		9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B3C1B54DDC3009CB9FA /* UIImage+CameraFilters.m */; };
+		9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B3F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m */; };
+		9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B411B54DDC3009CB9FA /* TGCameraNavigationController.m */; };
+		9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B431B54DDC3009CB9FA /* TGCameraViewController.m */; };
+		9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B451B54DDC3009CB9FA /* TGPhotoViewController.m */; };
+		9D177BC51B54DDC3009CB9FA /* TGAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B481B54DDC3009CB9FA /* TGAlbum.m */; };
+		9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B4A1B54DDC3009CB9FA /* TGAssetsLibrary.m */; };
+		9D177BC71B54DDC3009CB9FA /* TGCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B4C1B54DDC3009CB9FA /* TGCamera.m */; };
+		9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B4E1B54DDC3009CB9FA /* TGCameraColor.m */; };
+		9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B501B54DDC3009CB9FA /* TGCameraFlash.m */; };
+		9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B521B54DDC3009CB9FA /* TGCameraFocus.m */; };
+		9D177BCB1B54DDC3009CB9FA /* TGCameraGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B551B54DDC3009CB9FA /* TGCameraGrid.m */; };
+		9D177BCC1B54DDC3009CB9FA /* TGCameraShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B571B54DDC3009CB9FA /* TGCameraShot.m */; };
+		9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B591B54DDC3009CB9FA /* TGCameraToggle.m */; };
+		9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B5C1B54DDC3009CB9FA /* TGAssetImageFile.m */; };
+		9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B5F1B54DDC3009CB9FA /* TGCameraFilterView.m */; };
+		9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B611B54DDC3009CB9FA /* TGCameraFocusView.m */; };
+		9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B631B54DDC3009CB9FA /* TGCameraGridView.m */; };
+		9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B651B54DDC3009CB9FA /* TGCameraSlideDownView.m */; };
+		9D177BD31B54DDC4009CB9FA /* TGCameraSlideUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B671B54DDC3009CB9FA /* TGCameraSlideUpView.m */; };
+		9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B691B54DDC3009CB9FA /* TGCameraSlideView.m */; };
+		9D177BD51B54DDC4009CB9FA /* TGTintedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B6B1B54DDC3009CB9FA /* TGTintedButton.m */; };
+		9D177BD61B54DDC4009CB9FA /* TGTintedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B6D1B54DDC3009CB9FA /* TGTintedLabel.m */; };
+		9D177BD71B54DDC4009CB9FA /* TGCameraAuthorizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B6F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.xib */; };
+		9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B711B54DDC3009CB9FA /* TGCameraViewController.xib */; };
+		9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B731B54DDC3009CB9FA /* TGPhotoViewController.xib */; };
+		9D177BDA1B54DDC4009CB9FA /* TGCameraViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B761B54DDC3009CB9FA /* TGCameraViewController.bundle */; };
+		9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */; };
+		9D177BDF1B54DE92009CB9FA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */; };
+		9D177BE01B54DE92009CB9FA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */; };
+		9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */; };
+		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */; };
 		9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
@@ -27,18 +126,144 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
+		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
+		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
+		9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9D177AE61B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		9D177AE81B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		9D177AEA1B54DDC3009CB9FA /* CircleImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImage.swift; sourceTree = "<group>"; };
+		9D177AEB1B54DDC3009CB9FA /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		9D177AEC1B54DDC3009CB9FA /* DoubleCircleImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleCircleImage.swift; sourceTree = "<group>"; };
+		9D177AED1B54DDC3009CB9FA /* LoadingCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCircleView.swift; sourceTree = "<group>"; };
+		9D177AEE1B54DDC3009CB9FA /* StarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
+		9D177AEF1B54DDC3009CB9FA /* UploadingEyesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadingEyesView.swift; sourceTree = "<group>"; };
+		9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAlertFactory.swift; sourceTree = "<group>"; };
+		9D177AF11B54DDC3009CB9FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D177AF21B54DDC3009CB9FA /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewController.swift; sourceTree = "<group>"; };
+		9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		9D177AF81B54DDC3009CB9FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		9D177AF91B54DDC3009CB9FA /* ChatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
+		9D177AFA1B54DDC3009CB9FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
+		9D177AFB1B54DDC3009CB9FA /* ChatTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewDataSource.swift; sourceTree = "<group>"; };
+		9D177AFC1B54DDC3009CB9FA /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		9D177AFE1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseExchangeItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		9D177AFF1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeruseExchangeItemCollectionViewCell.xib; sourceTree = "<group>"; };
+		9D177B001B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseExchangeItemDataSource.swift; sourceTree = "<group>"; };
+		9D177B011B54DDC3009CB9FA /* PeruseExchangeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseExchangeViewController.swift; sourceTree = "<group>"; };
+		9D177B021B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		9D177B031B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeruseItemCollectionViewCell.xib; sourceTree = "<group>"; };
+		9D177B041B54DDC3009CB9FA /* PeruseItemDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseItemDataSource.swift; sourceTree = "<group>"; };
+		9D177B051B54DDC3009CB9FA /* PeruseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeruseViewController.swift; sourceTree = "<group>"; };
+		9D177B071B54DDC3009CB9FA /* ProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileContainerViewController.swift; sourceTree = "<group>"; };
+		9D177B081B54DDC3009CB9FA /* ProfileExchangesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileExchangesDataSource.swift; sourceTree = "<group>"; };
+		9D177B091B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileExchangesTableViewCell.swift; sourceTree = "<group>"; };
+		9D177B0A1B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileExchangesTableViewCell.xib; sourceTree = "<group>"; };
+		9D177B0B1B54DDC3009CB9FA /* ProfileExchangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileExchangesViewController.swift; sourceTree = "<group>"; };
+		9D177B0C1B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFavoritesCollectionViewController.swift; sourceTree = "<group>"; };
+		9D177B0D1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFavoritesDataSource.swift; sourceTree = "<group>"; };
+		9D177B0E1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFavoritesViewController.swift; sourceTree = "<group>"; };
+		9D177B0F1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileReviewsDataSource.swift; sourceTree = "<group>"; };
+		9D177B101B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileReviewsTableViewCell.swift; sourceTree = "<group>"; };
+		9D177B111B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileReviewsTableViewCell.xib; sourceTree = "<group>"; };
+		9D177B121B54DDC3009CB9FA /* ProfileReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileReviewsViewController.swift; sourceTree = "<group>"; };
+		9D177B131B54DDC3009CB9FA /* ProfileUploadsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUploadsDataSource.swift; sourceTree = "<group>"; };
+		9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUploadsTableViewCell.swift; sourceTree = "<group>"; };
+		9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileUploadsTableViewCell.xib; sourceTree = "<group>"; };
+		9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUploadsViewController.swift; sourceTree = "<group>"; };
+		9D177B171B54DDC3009CB9FA /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9D177B181B54DDC3009CB9FA /* WriteReviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteReviewViewController.swift; sourceTree = "<group>"; };
+		9D177B1A1B54DDC3009CB9FA /* RequestsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsCollectionViewCell.swift; sourceTree = "<group>"; };
+		9D177B1B1B54DDC3009CB9FA /* RequestsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestsCollectionViewCell.xib; sourceTree = "<group>"; };
+		9D177B1C1B54DDC3009CB9FA /* RequestsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsDataSource.swift; sourceTree = "<group>"; };
+		9D177B1D1B54DDC3009CB9FA /* RequestsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
+		9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsViewController.swift; sourceTree = "<group>"; };
+		9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9D177B211B54DDC3009CB9FA /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
+		9D177B231B54DDC3009CB9FA /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperations.swift; sourceTree = "<group>"; };
+		9D177B251B54DDC3009CB9FA /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exchange.swift; sourceTree = "<group>"; };
+		9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookOperations.swift; sourceTree = "<group>"; };
+		9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManagementOperations.swift; sourceTree = "<group>"; };
+		9D177B281B54DDC3009CB9FA /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		9D177B291B54DDC3009CB9FA /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		9D177B2A1B54DDC3009CB9FA /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		9D177B2B1B54DDC3009CB9FA /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
+		9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Onboard_Exchange.m4v; sourceTree = "<group>"; };
+		9D177B301B54DDC3009CB9FA /* Onboard_Peruse.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Onboard_Peruse.m4v; sourceTree = "<group>"; };
+		9D177B311B54DDC3009CB9FA /* OnboardPageItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardPageItemViewController.swift; sourceTree = "<group>"; };
+		9D177B321B54DDC3009CB9FA /* OnboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		9D177B341B54DDC3009CB9FA /* FacebookDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataSource.swift; sourceTree = "<group>"; };
+		9D177B351B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupRangeInfoViewController.swift; sourceTree = "<group>"; };
+		9D177B361B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupRangeViewController.swift; sourceTree = "<group>"; };
+		9D177B371B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupSelectPhotoViewController.swift; sourceTree = "<group>"; };
+		9D177B3B1B54DDC3009CB9FA /* UIImage+CameraFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CameraFilters.h"; sourceTree = "<group>"; };
+		9D177B3C1B54DDC3009CB9FA /* UIImage+CameraFilters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CameraFilters.m"; sourceTree = "<group>"; };
+		9D177B3E1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraAuthorizationViewController.h; sourceTree = "<group>"; };
+		9D177B3F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraAuthorizationViewController.m; sourceTree = "<group>"; };
+		9D177B401B54DDC3009CB9FA /* TGCameraNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraNavigationController.h; sourceTree = "<group>"; };
+		9D177B411B54DDC3009CB9FA /* TGCameraNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraNavigationController.m; sourceTree = "<group>"; };
+		9D177B421B54DDC3009CB9FA /* TGCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraViewController.h; sourceTree = "<group>"; };
+		9D177B431B54DDC3009CB9FA /* TGCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraViewController.m; sourceTree = "<group>"; };
+		9D177B441B54DDC3009CB9FA /* TGPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGPhotoViewController.h; sourceTree = "<group>"; };
+		9D177B451B54DDC3009CB9FA /* TGPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGPhotoViewController.m; sourceTree = "<group>"; };
+		9D177B471B54DDC3009CB9FA /* TGAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGAlbum.h; sourceTree = "<group>"; };
+		9D177B481B54DDC3009CB9FA /* TGAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGAlbum.m; sourceTree = "<group>"; };
+		9D177B491B54DDC3009CB9FA /* TGAssetsLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGAssetsLibrary.h; sourceTree = "<group>"; };
+		9D177B4A1B54DDC3009CB9FA /* TGAssetsLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGAssetsLibrary.m; sourceTree = "<group>"; };
+		9D177B4B1B54DDC3009CB9FA /* TGCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCamera.h; sourceTree = "<group>"; };
+		9D177B4C1B54DDC3009CB9FA /* TGCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCamera.m; sourceTree = "<group>"; };
+		9D177B4D1B54DDC3009CB9FA /* TGCameraColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraColor.h; sourceTree = "<group>"; };
+		9D177B4E1B54DDC3009CB9FA /* TGCameraColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraColor.m; sourceTree = "<group>"; };
+		9D177B4F1B54DDC3009CB9FA /* TGCameraFlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraFlash.h; sourceTree = "<group>"; };
+		9D177B501B54DDC3009CB9FA /* TGCameraFlash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraFlash.m; sourceTree = "<group>"; };
+		9D177B511B54DDC3009CB9FA /* TGCameraFocus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraFocus.h; sourceTree = "<group>"; };
+		9D177B521B54DDC3009CB9FA /* TGCameraFocus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraFocus.m; sourceTree = "<group>"; };
+		9D177B531B54DDC3009CB9FA /* TGCameraFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraFunctions.h; sourceTree = "<group>"; };
+		9D177B541B54DDC3009CB9FA /* TGCameraGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraGrid.h; sourceTree = "<group>"; };
+		9D177B551B54DDC3009CB9FA /* TGCameraGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraGrid.m; sourceTree = "<group>"; };
+		9D177B561B54DDC3009CB9FA /* TGCameraShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraShot.h; sourceTree = "<group>"; };
+		9D177B571B54DDC3009CB9FA /* TGCameraShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraShot.m; sourceTree = "<group>"; };
+		9D177B581B54DDC3009CB9FA /* TGCameraToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraToggle.h; sourceTree = "<group>"; };
+		9D177B591B54DDC3009CB9FA /* TGCameraToggle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraToggle.m; sourceTree = "<group>"; };
+		9D177B5B1B54DDC3009CB9FA /* TGAssetImageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGAssetImageFile.h; sourceTree = "<group>"; };
+		9D177B5C1B54DDC3009CB9FA /* TGAssetImageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGAssetImageFile.m; sourceTree = "<group>"; };
+		9D177B5E1B54DDC3009CB9FA /* TGCameraFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraFilterView.h; sourceTree = "<group>"; };
+		9D177B5F1B54DDC3009CB9FA /* TGCameraFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraFilterView.m; sourceTree = "<group>"; };
+		9D177B601B54DDC3009CB9FA /* TGCameraFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraFocusView.h; sourceTree = "<group>"; };
+		9D177B611B54DDC3009CB9FA /* TGCameraFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraFocusView.m; sourceTree = "<group>"; };
+		9D177B621B54DDC3009CB9FA /* TGCameraGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraGridView.h; sourceTree = "<group>"; };
+		9D177B631B54DDC3009CB9FA /* TGCameraGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraGridView.m; sourceTree = "<group>"; };
+		9D177B641B54DDC3009CB9FA /* TGCameraSlideDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraSlideDownView.h; sourceTree = "<group>"; };
+		9D177B651B54DDC3009CB9FA /* TGCameraSlideDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraSlideDownView.m; sourceTree = "<group>"; };
+		9D177B661B54DDC3009CB9FA /* TGCameraSlideUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraSlideUpView.h; sourceTree = "<group>"; };
+		9D177B671B54DDC3009CB9FA /* TGCameraSlideUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraSlideUpView.m; sourceTree = "<group>"; };
+		9D177B681B54DDC3009CB9FA /* TGCameraSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGCameraSlideView.h; sourceTree = "<group>"; };
+		9D177B691B54DDC3009CB9FA /* TGCameraSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGCameraSlideView.m; sourceTree = "<group>"; };
+		9D177B6A1B54DDC3009CB9FA /* TGTintedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGTintedButton.h; sourceTree = "<group>"; };
+		9D177B6B1B54DDC3009CB9FA /* TGTintedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGTintedButton.m; sourceTree = "<group>"; };
+		9D177B6C1B54DDC3009CB9FA /* TGTintedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGTintedLabel.h; sourceTree = "<group>"; };
+		9D177B6D1B54DDC3009CB9FA /* TGTintedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGTintedLabel.m; sourceTree = "<group>"; };
+		9D177B701B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TGCameraAuthorizationViewController.xib; sourceTree = "<group>"; };
+		9D177B721B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TGCameraViewController.xib; sourceTree = "<group>"; };
+		9D177B741B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TGPhotoViewController.xib; sourceTree = "<group>"; };
+		9D177B761B54DDC3009CB9FA /* TGCameraViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TGCameraViewController.bundle; sourceTree = "<group>"; };
+		9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TGCameraViewController.xcassets; sourceTree = "<group>"; };
+		9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D449C861B54D9F9005C7CC0 /* Peruze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peruze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D449C8A1B54D9F9005C7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D449C8B1B54D9F9005C7CC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9D449C8D1B54D9F9005C7CC0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9D449C901B54D9F9005C7CC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9D449C921B54D9F9005C7CC0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9D449C951B54D9F9005C7CC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9D449C9B1B54D9F9005C7CC0 /* PeruzeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeruzeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D449CA01B54D9F9005C7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeruzeTests.swift; sourceTree = "<group>"; };
 		9D449CAB1B54DA13005C7CC0 /* Peruze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Peruze.entitlements; sourceTree = "<group>"; };
 		9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Peruze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +272,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */,
+				9D177BDF1B54DE92009CB9FA /* FBSDKCoreKit.framework in Frameworks */,
+				9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */,
+				9D177BE01B54DE92009CB9FA /* FBSDKLoginKit.framework in Frameworks */,
+				7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,13 +289,306 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		036656CDC1CBE521CC686B36 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */,
+				1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		09319F61AB54682857F4A9F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */,
+				9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */,
+				9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */,
+				9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */,
+				DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9D177AE41B54DDC3009CB9FA /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */,
+				9D177AE71B54DDC3009CB9FA /* Main.storyboard */,
+			);
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		9D177AE91B54DDC3009CB9FA /* Custom Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9D177AEA1B54DDC3009CB9FA /* CircleImage.swift */,
+				9D177AEB1B54DDC3009CB9FA /* CircleView.swift */,
+				9D177AEC1B54DDC3009CB9FA /* DoubleCircleImage.swift */,
+				9D177AED1B54DDC3009CB9FA /* LoadingCircleView.swift */,
+				9D177AEE1B54DDC3009CB9FA /* StarView.swift */,
+				9D177AEF1B54DDC3009CB9FA /* UploadingEyesView.swift */,
+			);
+			path = "Custom Classes";
+			sourceTree = "<group>";
+		};
+		9D177AF41B54DDC3009CB9FA /* Main View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9D177AF51B54DDC3009CB9FA /* Chat */,
+				9D177AFC1B54DDC3009CB9FA /* MainTabBarViewController.swift */,
+				9D177AFD1B54DDC3009CB9FA /* Peruse */,
+				9D177B061B54DDC3009CB9FA /* Profile */,
+				9D177B191B54DDC3009CB9FA /* Requests */,
+				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
+				9D177B201B54DDC3009CB9FA /* Upload */,
+			);
+			path = "Main View Controllers";
+			sourceTree = "<group>";
+		};
+		9D177AF51B54DDC3009CB9FA /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */,
+				9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */,
+				9D177AF81B54DDC3009CB9FA /* ChatTableViewCell.swift */,
+				9D177AF91B54DDC3009CB9FA /* ChatTableViewCell.xib */,
+				9D177AFA1B54DDC3009CB9FA /* ChatTableViewController.swift */,
+				9D177AFB1B54DDC3009CB9FA /* ChatTableViewDataSource.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		9D177AFD1B54DDC3009CB9FA /* Peruse */ = {
+			isa = PBXGroup;
+			children = (
+				9D177AFE1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift */,
+				9D177AFF1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib */,
+				9D177B001B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift */,
+				9D177B011B54DDC3009CB9FA /* PeruseExchangeViewController.swift */,
+				9D177B021B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift */,
+				9D177B031B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib */,
+				9D177B041B54DDC3009CB9FA /* PeruseItemDataSource.swift */,
+				9D177B051B54DDC3009CB9FA /* PeruseViewController.swift */,
+			);
+			path = Peruse;
+			sourceTree = "<group>";
+		};
+		9D177B061B54DDC3009CB9FA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B071B54DDC3009CB9FA /* ProfileContainerViewController.swift */,
+				9D177B081B54DDC3009CB9FA /* ProfileExchangesDataSource.swift */,
+				9D177B091B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift */,
+				9D177B0A1B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib */,
+				9D177B0B1B54DDC3009CB9FA /* ProfileExchangesViewController.swift */,
+				9D177B0C1B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift */,
+				9D177B0D1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift */,
+				9D177B0E1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift */,
+				9D177B0F1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift */,
+				9D177B101B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift */,
+				9D177B111B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib */,
+				9D177B121B54DDC3009CB9FA /* ProfileReviewsViewController.swift */,
+				9D177B131B54DDC3009CB9FA /* ProfileUploadsDataSource.swift */,
+				9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */,
+				9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */,
+				9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */,
+				9D177B171B54DDC3009CB9FA /* ProfileViewController.swift */,
+				9D177B181B54DDC3009CB9FA /* WriteReviewViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		9D177B191B54DDC3009CB9FA /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B1A1B54DDC3009CB9FA /* RequestsCollectionViewCell.swift */,
+				9D177B1B1B54DDC3009CB9FA /* RequestsCollectionViewCell.xib */,
+				9D177B1C1B54DDC3009CB9FA /* RequestsDataSource.swift */,
+				9D177B1D1B54DDC3009CB9FA /* RequestsTableViewController.swift */,
+				9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		9D177B201B54DDC3009CB9FA /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B211B54DDC3009CB9FA /* UploadViewController.swift */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
+		9D177B221B54DDC3009CB9FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B231B54DDC3009CB9FA /* Chat.swift */,
+				9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */,
+				9D177B251B54DDC3009CB9FA /* Exchange.swift */,
+				9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */,
+				9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */,
+				9D177B281B54DDC3009CB9FA /* Item.swift */,
+				9D177B291B54DDC3009CB9FA /* Model.swift */,
+				9D177B2A1B54DDC3009CB9FA /* Person.swift */,
+				9D177B2B1B54DDC3009CB9FA /* Review.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9D177B2D1B54DDC3009CB9FA /* Onboard */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
+				9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */,
+				9D177B301B54DDC3009CB9FA /* Onboard_Peruse.m4v */,
+				9D177B311B54DDC3009CB9FA /* OnboardPageItemViewController.swift */,
+				9D177B321B54DDC3009CB9FA /* OnboardViewController.swift */,
+			);
+			path = Onboard;
+			sourceTree = "<group>";
+		};
+		9D177B331B54DDC3009CB9FA /* Profile Setup */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B341B54DDC3009CB9FA /* FacebookDataSource.swift */,
+				9D177B351B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift */,
+				9D177B361B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift */,
+				9D177B371B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift */,
+			);
+			path = "Profile Setup";
+			sourceTree = "<group>";
+		};
+		9D177B381B54DDC3009CB9FA /* TGCameraViewController */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B391B54DDC3009CB9FA /* Classes */,
+				9D177B751B54DDC3009CB9FA /* Resources */,
+				9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */,
+			);
+			path = TGCameraViewController;
+			sourceTree = "<group>";
+		};
+		9D177B391B54DDC3009CB9FA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B3A1B54DDC3009CB9FA /* Category */,
+				9D177B3D1B54DDC3009CB9FA /* Control */,
+				9D177B461B54DDC3009CB9FA /* Helper */,
+				9D177B5A1B54DDC3009CB9FA /* Model */,
+				9D177B5D1B54DDC3009CB9FA /* UI */,
+				9D177B6E1B54DDC3009CB9FA /* View */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		9D177B3A1B54DDC3009CB9FA /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B3B1B54DDC3009CB9FA /* UIImage+CameraFilters.h */,
+				9D177B3C1B54DDC3009CB9FA /* UIImage+CameraFilters.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		9D177B3D1B54DDC3009CB9FA /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B3E1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.h */,
+				9D177B3F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m */,
+				9D177B401B54DDC3009CB9FA /* TGCameraNavigationController.h */,
+				9D177B411B54DDC3009CB9FA /* TGCameraNavigationController.m */,
+				9D177B421B54DDC3009CB9FA /* TGCameraViewController.h */,
+				9D177B431B54DDC3009CB9FA /* TGCameraViewController.m */,
+				9D177B441B54DDC3009CB9FA /* TGPhotoViewController.h */,
+				9D177B451B54DDC3009CB9FA /* TGPhotoViewController.m */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
+		9D177B461B54DDC3009CB9FA /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B471B54DDC3009CB9FA /* TGAlbum.h */,
+				9D177B481B54DDC3009CB9FA /* TGAlbum.m */,
+				9D177B491B54DDC3009CB9FA /* TGAssetsLibrary.h */,
+				9D177B4A1B54DDC3009CB9FA /* TGAssetsLibrary.m */,
+				9D177B4B1B54DDC3009CB9FA /* TGCamera.h */,
+				9D177B4C1B54DDC3009CB9FA /* TGCamera.m */,
+				9D177B4D1B54DDC3009CB9FA /* TGCameraColor.h */,
+				9D177B4E1B54DDC3009CB9FA /* TGCameraColor.m */,
+				9D177B4F1B54DDC3009CB9FA /* TGCameraFlash.h */,
+				9D177B501B54DDC3009CB9FA /* TGCameraFlash.m */,
+				9D177B511B54DDC3009CB9FA /* TGCameraFocus.h */,
+				9D177B521B54DDC3009CB9FA /* TGCameraFocus.m */,
+				9D177B531B54DDC3009CB9FA /* TGCameraFunctions.h */,
+				9D177B541B54DDC3009CB9FA /* TGCameraGrid.h */,
+				9D177B551B54DDC3009CB9FA /* TGCameraGrid.m */,
+				9D177B561B54DDC3009CB9FA /* TGCameraShot.h */,
+				9D177B571B54DDC3009CB9FA /* TGCameraShot.m */,
+				9D177B581B54DDC3009CB9FA /* TGCameraToggle.h */,
+				9D177B591B54DDC3009CB9FA /* TGCameraToggle.m */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		9D177B5A1B54DDC3009CB9FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B5B1B54DDC3009CB9FA /* TGAssetImageFile.h */,
+				9D177B5C1B54DDC3009CB9FA /* TGAssetImageFile.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9D177B5D1B54DDC3009CB9FA /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B5E1B54DDC3009CB9FA /* TGCameraFilterView.h */,
+				9D177B5F1B54DDC3009CB9FA /* TGCameraFilterView.m */,
+				9D177B601B54DDC3009CB9FA /* TGCameraFocusView.h */,
+				9D177B611B54DDC3009CB9FA /* TGCameraFocusView.m */,
+				9D177B621B54DDC3009CB9FA /* TGCameraGridView.h */,
+				9D177B631B54DDC3009CB9FA /* TGCameraGridView.m */,
+				9D177B641B54DDC3009CB9FA /* TGCameraSlideDownView.h */,
+				9D177B651B54DDC3009CB9FA /* TGCameraSlideDownView.m */,
+				9D177B661B54DDC3009CB9FA /* TGCameraSlideUpView.h */,
+				9D177B671B54DDC3009CB9FA /* TGCameraSlideUpView.m */,
+				9D177B681B54DDC3009CB9FA /* TGCameraSlideView.h */,
+				9D177B691B54DDC3009CB9FA /* TGCameraSlideView.m */,
+				9D177B6A1B54DDC3009CB9FA /* TGTintedButton.h */,
+				9D177B6B1B54DDC3009CB9FA /* TGTintedButton.m */,
+				9D177B6C1B54DDC3009CB9FA /* TGTintedLabel.h */,
+				9D177B6D1B54DDC3009CB9FA /* TGTintedLabel.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		9D177B6E1B54DDC3009CB9FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B6F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.xib */,
+				9D177B711B54DDC3009CB9FA /* TGCameraViewController.xib */,
+				9D177B731B54DDC3009CB9FA /* TGPhotoViewController.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9D177B751B54DDC3009CB9FA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B761B54DDC3009CB9FA /* TGCameraViewController.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		9D449C7D1B54D9F9005C7CC0 = {
 			isa = PBXGroup;
 			children = (
-				9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */,
 				9D449C881B54D9F9005C7CC0 /* Peruze */,
 				9D449C9E1B54D9F9005C7CC0 /* PeruzeTests */,
 				9D449C871B54D9F9005C7CC0 /* Products */,
+				036656CDC1CBE521CC686B36 /* Pods */,
+				09319F61AB54682857F4A9F5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,12 +604,20 @@
 		9D449C881B54D9F9005C7CC0 /* Peruze */ = {
 			isa = PBXGroup;
 			children = (
+				9D177AE91B54DDC3009CB9FA /* Custom Classes */,
+				9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */,
+				9D177AF11B54DDC3009CB9FA /* Images.xcassets */,
+				9D177AF21B54DDC3009CB9FA /* JSON.swift */,
+				9D177AF41B54DDC3009CB9FA /* Main View Controllers */,
+				9D177B221B54DDC3009CB9FA /* Model */,
+				9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */,
+				9D177B2D1B54DDC3009CB9FA /* Onboard */,
+				9D177B331B54DDC3009CB9FA /* Profile Setup */,
+				9D177B381B54DDC3009CB9FA /* TGCameraViewController */,
+				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
+				9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */,
 				9D449CAB1B54DA13005C7CC0 /* Peruze.entitlements */,
-				9D449C8B1B54D9F9005C7CC0 /* AppDelegate.swift */,
-				9D449C8D1B54D9F9005C7CC0 /* ViewController.swift */,
-				9D449C8F1B54D9F9005C7CC0 /* Main.storyboard */,
-				9D449C921B54D9F9005C7CC0 /* Images.xcassets */,
-				9D449C941B54D9F9005C7CC0 /* LaunchScreen.xib */,
+				9D177AE41B54DDC3009CB9FA /* Base.lproj */,
 				9D449C891B54D9F9005C7CC0 /* Supporting Files */,
 			);
 			path = Peruze;
@@ -105,6 +635,7 @@
 			isa = PBXGroup;
 			children = (
 				9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */,
+				9D177BE41B54DF36009CB9FA /* JSONTests.swift */,
 				9D449C9F1B54D9F9005C7CC0 /* Supporting Files */,
 			);
 			path = PeruzeTests;
@@ -125,9 +656,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D449CA51B54D9F9005C7CC0 /* Build configuration list for PBXNativeTarget "Peruze" */;
 			buildPhases = (
+				DA645AAAEAE895B1A08DB1A0 /* Check Pods Manifest.lock */,
 				9D449C821B54D9F9005C7CC0 /* Sources */,
 				9D449C831B54D9F9005C7CC0 /* Frameworks */,
 				9D449C841B54D9F9005C7CC0 /* Resources */,
+				17DEF8DD14D95609C6F1FD1F /* Embed Pods Frameworks */,
+				A47F96391088B6E97B84CEAB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -162,6 +696,7 @@
 		9D449C7E1B54D9F9005C7CC0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Peruze, LLC";
 				TargetAttributes = {
@@ -204,9 +739,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D449C911B54D9F9005C7CC0 /* Main.storyboard in Resources */,
-				9D449C961B54D9F9005C7CC0 /* LaunchScreen.xib in Resources */,
-				9D449C931B54D9F9005C7CC0 /* Images.xcassets in Resources */,
+				9D177B821B54DDC3009CB9FA /* Images.xcassets in Resources */,
+				9D177B9E1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib in Resources */,
+				9D177B881B54DDC3009CB9FA /* ChatTableViewCell.xib in Resources */,
+				9D177BA21B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib in Resources */,
+				9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */,
+				9D177BB81B54DDC3009CB9FA /* Onboard_Exchange.m4v in Resources */,
+				9D177B971B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib in Resources */,
+				9D177BB91B54DDC3009CB9FA /* Onboard_Peruse.m4v in Resources */,
+				9D177BDA1B54DDC4009CB9FA /* TGCameraViewController.bundle in Resources */,
+				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
+				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
+				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
+				9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */,
+				9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */,
+				9D177BA71B54DDC3009CB9FA /* RequestsCollectionViewCell.xib in Resources */,
+				9D177BD71B54DDC4009CB9FA /* TGCameraAuthorizationViewController.xib in Resources */,
+				9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,13 +768,141 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		17DEF8DD14D95609C6F1FD1F /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Peruze/Pods-Peruze-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A47F96391088B6E97B84CEAB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Peruze/Pods-Peruze-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA645AAAEAE895B1A08DB1A0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9D449C821B54D9F9005C7CC0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D449C8E1B54D9F9005C7CC0 /* ViewController.swift in Sources */,
-				9D449C8C1B54D9F9005C7CC0 /* AppDelegate.swift in Sources */,
+				9D177BA11B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift in Sources */,
+				9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */,
+				9D177BBF1B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift in Sources */,
+				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
+				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
+				9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */,
+				9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */,
+				9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */,
+				9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */,
+				9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */,
+				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
+				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
+				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
+				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
+				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
+				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
+				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
+				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
+				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
+				9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */,
+				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,
+				9D177BD31B54DDC4009CB9FA /* TGCameraSlideUpView.m in Sources */,
+				9D177B831B54DDC3009CB9FA /* JSON.swift in Sources */,
+				9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */,
+				9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */,
+				9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */,
+				9D177B931B54DDC3009CB9FA /* PeruseViewController.swift in Sources */,
+				9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */,
+				9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */,
+				9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */,
+				9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */,
+				9D177BCB1B54DDC3009CB9FA /* TGCameraGrid.m in Sources */,
+				9D177BCC1B54DDC3009CB9FA /* TGCameraShot.m in Sources */,
+				9D177B801B54DDC3009CB9FA /* UploadingEyesView.swift in Sources */,
+				9D177BA61B54DDC3009CB9FA /* RequestsCollectionViewCell.swift in Sources */,
+				9D177BAD1B54DDC3009CB9FA /* Chat.swift in Sources */,
+				9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */,
+				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
+				9D177BB51B54DDC3009CB9FA /* Review.swift in Sources */,
+				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
+				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
+				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
+				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
+				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
+				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
+				9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */,
+				9D177B7E1B54DDC3009CB9FA /* LoadingCircleView.swift in Sources */,
+				9D177B981B54DDC3009CB9FA /* ProfileExchangesViewController.swift in Sources */,
+				9D177BD51B54DDC4009CB9FA /* TGTintedButton.m in Sources */,
+				9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */,
+				9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */,
+				9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */,
+				9D177B7B1B54DDC3009CB9FA /* CircleImage.swift in Sources */,
+				9D177BD61B54DDC4009CB9FA /* TGTintedLabel.m in Sources */,
+				9D177B961B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift in Sources */,
+				9D177B851B54DDC3009CB9FA /* ChatCollectionViewController.swift in Sources */,
+				9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */,
+				9D177B921B54DDC3009CB9FA /* PeruseItemDataSource.swift in Sources */,
+				9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */,
+				9D177B991B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift in Sources */,
+				9D177B901B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift in Sources */,
+				9D177B8E1B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift in Sources */,
+				9D177B9F1B54DDC3009CB9FA /* ProfileReviewsViewController.swift in Sources */,
+				9D177BB21B54DDC3009CB9FA /* Item.swift in Sources */,
+				9D177BC71B54DDC3009CB9FA /* TGCamera.m in Sources */,
+				9D177BA81B54DDC3009CB9FA /* RequestsDataSource.swift in Sources */,
+				9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */,
+				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
+				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
+				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
+				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,
+				9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */,
+				9D177B891B54DDC3009CB9FA /* ChatTableViewController.swift in Sources */,
+				9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */,
+				9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */,
+				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
+				9D177BB41B54DDC3009CB9FA /* Person.swift in Sources */,
+				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
+				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
+				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
+				9D177BC51B54DDC3009CB9FA /* TGAlbum.m in Sources */,
+				9D177B9B1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +911,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */,
+				9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,20 +926,44 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		9D449C8F1B54D9F9005C7CC0 /* Main.storyboard */ = {
+		9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				9D449C901B54D9F9005C7CC0 /* Base */,
+				9D177AE61B54DDC3009CB9FA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		9D177AE71B54DDC3009CB9FA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D177AE81B54DDC3009CB9FA /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		9D449C941B54D9F9005C7CC0 /* LaunchScreen.xib */ = {
+		9D177B6F1B54DDC3009CB9FA /* TGCameraAuthorizationViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				9D449C951B54D9F9005C7CC0 /* Base */,
+				9D177B701B54DDC3009CB9FA /* Base */,
 			);
-			name = LaunchScreen.xib;
+			name = TGCameraAuthorizationViewController.xib;
+			sourceTree = "<group>";
+		};
+		9D177B711B54DDC3009CB9FA /* TGCameraViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D177B721B54DDC3009CB9FA /* Base */,
+			);
+			name = TGCameraViewController.xib;
+			sourceTree = "<group>";
+		};
+		9D177B731B54DDC3009CB9FA /* TGPhotoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D177B741B54DDC3009CB9FA /* Base */,
+			);
+			name = TGPhotoViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -350,25 +1052,40 @@
 		};
 		9D449CA61B54D9F9005C7CC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/philliptrent/Developer/FacebookSDK,
+				);
 				INFOPLIST_FILE = Peruze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		9D449CA71B54D9F9005C7CC0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/philliptrent/Developer/FacebookSDK,
+				);
 				INFOPLIST_FILE = Peruze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -425,6 +1142,7 @@
 				9D449CA71B54D9F9005C7CC0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9D449CA81B54D9F9005C7CC0 /* Build configuration list for PBXNativeTarget "PeruzeTests" */ = {
 			isa = XCConfigurationList;
@@ -433,6 +1151,7 @@
 				9D449CAA1B54D9F9005C7CC0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
