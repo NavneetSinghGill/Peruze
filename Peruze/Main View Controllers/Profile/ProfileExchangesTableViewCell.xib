@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileExchange" rowHeight="100" id="KGk-i7-Jjw" customClass="ProfileExchangesTableViewCell" customModule="Peruse" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="403" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbE-el-qRJ" customClass="CircleImage" customModule="Peruse" customModuleProvider="target">
+                        <rect key="frame" x="8" y="8" width="83" height="83.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="vbE-el-qRJ" secondAttribute="height" multiplier="1:1" id="5fk-FY-SRp"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="751" text="Jafar's" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkE-WA-iY4">
+                        <rect key="frame" x="99" y="8" width="225.5" height="19.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" text="Homemade Cupcakes That Are Really Delicious" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LzV-tf-peT">
+                        <rect key="frame" x="99" y="27" width="225.5" height="40.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="212" verticalHuggingPriority="211" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncq-e4-A0d">
+                        <rect key="frame" x="366" y="8" width="28.5" height="13.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13.5" id="tJi-it-ocB"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kl3-Kg-Zk8" customClass="DoubleCircleImage" customModule="Peruse" customModuleProvider="target">
+                        <rect key="frame" x="324" y="21" width="71" height="71"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="71" id="3al-rS-sHw"/>
+                            <constraint firstAttribute="width" secondItem="Kl3-Kg-Zk8" secondAttribute="height" multiplier="1:1" id="5qi-Hr-ApO"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="3al-rS-sHw"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="740" text="for your Cupcakes" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73p-ig-hJW">
+                        <rect key="frame" x="99" y="67" width="225.5" height="13.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="73p-ig-hJW" firstAttribute="top" secondItem="LzV-tf-peT" secondAttribute="bottom" id="1Hc-Tg-1l5"/>
+                    <constraint firstItem="Kl3-Kg-Zk8" firstAttribute="leading" secondItem="LzV-tf-peT" secondAttribute="trailing" id="29R-s8-jdK"/>
+                    <constraint firstItem="LzV-tf-peT" firstAttribute="top" secondItem="fkE-WA-iY4" secondAttribute="bottom" id="7KI-cr-NeC"/>
+                    <constraint firstItem="vbE-el-qRJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="DGB-Dh-ar4"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="vbE-el-qRJ" secondAttribute="bottom" id="G2K-hh-cBn"/>
+                    <constraint firstItem="fkE-WA-iY4" firstAttribute="leading" secondItem="vbE-el-qRJ" secondAttribute="trailing" constant="8" symbolic="YES" id="IA1-d0-Utt"/>
+                    <constraint firstItem="LzV-tf-peT" firstAttribute="centerY" secondItem="vbE-el-qRJ" secondAttribute="centerY" constant="0.25" id="Npv-zF-dZN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ncq-e4-A0d" secondAttribute="trailing" id="SIU-Jl-GHW"/>
+                    <constraint firstItem="Kl3-Kg-Zk8" firstAttribute="leading" secondItem="fkE-WA-iY4" secondAttribute="trailing" id="Vhq-6q-nKp"/>
+                    <constraint firstItem="vbE-el-qRJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="aTz-HJ-WMR"/>
+                    <constraint firstItem="Kl3-Kg-Zk8" firstAttribute="top" secondItem="ncq-e4-A0d" secondAttribute="bottom" id="avw-I5-Obz"/>
+                    <constraint firstItem="73p-ig-hJW" firstAttribute="bottom" secondItem="vbE-el-qRJ" secondAttribute="bottom" constant="-0.5" id="db0-MI-tqp"/>
+                    <constraint firstItem="Kl3-Kg-Zk8" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="eTA-qO-xWH"/>
+                    <constraint firstItem="ncq-e4-A0d" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="fdN-iO-enF"/>
+                    <constraint firstItem="Kl3-Kg-Zk8" firstAttribute="leading" secondItem="73p-ig-hJW" secondAttribute="trailing" id="iz8-lI-fEv"/>
+                    <constraint firstItem="fkE-WA-iY4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="kVd-un-LVH"/>
+                    <constraint firstItem="LzV-tf-peT" firstAttribute="leading" secondItem="fkE-WA-iY4" secondAttribute="leading" id="nnW-wN-yEe"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Kl3-Kg-Zk8" secondAttribute="bottom" id="wMi-kX-1bu"/>
+                    <constraint firstItem="73p-ig-hJW" firstAttribute="leading" secondItem="LzV-tf-peT" secondAttribute="leading" id="x09-3d-V43"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="Npv-zF-dZN"/>
+                        <exclude reference="db0-MI-tqp"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="dateLabel" destination="ncq-e4-A0d" id="d1r-4Y-eJv"/>
+                <outlet property="itemLabel" destination="LzV-tf-peT" id="g4i-fg-R3f"/>
+                <outlet property="itemSubtitle" destination="73p-ig-hJW" id="NCt-LD-7ge"/>
+                <outlet property="itemsExchangedImage" destination="Kl3-Kg-Zk8" id="Piv-Ea-My3"/>
+                <outlet property="nameLabel" destination="fkE-WA-iY4" id="veP-Qn-nsE"/>
+                <outlet property="profileImageView" destination="vbE-el-qRJ" id="NPT-fD-oT3"/>
+            </connections>
+            <point key="canvasLocation" x="234.5" y="356"/>
+        </tableViewCell>
+    </objects>
+</document>
