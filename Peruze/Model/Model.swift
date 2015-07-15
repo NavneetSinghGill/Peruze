@@ -57,6 +57,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   class func sharedInstance() -> Model {
     return modelSingletonGlobal
   }
+  
   override init() {
     super.init()
     locationManager = CLLocationManager()
@@ -76,10 +77,12 @@ class Model: NSObject, CLLocationManagerDelegate {
       context: nil)
     
   }
+  
   override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
     println("Key path did change")
     fetchItemsWithinRangeAndPrivacy()
   }
+  
   private func userPrivacySetting() -> FriendsPrivacy {
     let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as! Int
     switch value {
@@ -107,9 +110,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     return Float(miles) * 1.60934
   }
   
-  func deleteUser(user: Person) {
-    
-  }
   //MARK: - Profile Setup
   
   func setFacebookProfileForLoggedInUser(profile: FBSDKProfile, andImage image: UIImage,  withCompletion completion: (NSError? -> Void)? = nil) {
@@ -170,6 +170,42 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   //MARK: - For Peruse Screen
   
+  private var usersWithinRangeCursor: CKQueryCursor?
+  private var cursorDistanceSettingInMi: Int?
+  func fetchItemsWithinRangeAndPrivacy() {
+    println(__FUNCTION__)
+    var itemQueryResults = [CKRecord]()
+    let itemsWithinRangeQuery = queryForItemsWithinRange()
+    let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
+    itemsOp.desiredKeys = nil //TODO: Change this
+    itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
+      println("item in range record = \(itemRecord)")
+      itemQueryResults.append(itemRecord)
+    }
+    itemsOp.queryCompletionBlock = { (cursor, error) -> Void in
+      self.usersWithinRangeCursor = cursor
+      if error != nil {
+        println(error.localizedDescription)
+        println(error.localizedFailureReason)
+        println(error.localizedRecoverySuggestion)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.Error.PeruzeUpdateError, object: error)
+        return
+      }
+      self.peruseItems.removeAll(keepCapacity: false)
+      for item in itemQueryResults {
+        let newItem = Item(record: item, database: self.publicDB)
+        self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
+          newItem.owner = owner
+          self.peruseItems.append(newItem)
+        })
+      }
+      //work with results
+    }
+    publicDB.addOperation(itemsOp)
+    
+  }
+  
+  
   private func queryForItemsWithinRange() -> CKQuery {
     println(__FUNCTION__)
     //check authorization status
@@ -192,62 +228,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     return usersWithinRangeQuery
   }
   
-  private var usersWithinRangeCursor: CKQueryCursor?
-  func fetchItemsWithinRangeAndPrivacy() {
-    println(__FUNCTION__)
-    var itemQueryResults = [CKRecord]()
-    let itemsWithinRangeQuery = queryForItemsWithinRange()
-    let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
-    itemsOp.desiredKeys = nil //TODO: Change this
-    itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
-      println("item in range record = \(itemRecord)")
-      itemQueryResults.append(itemRecord)
-    }
-    itemsOp.queryCompletionBlock = { (cursor, error) -> Void in
-      self.usersWithinRangeCursor = cursor
-      if error != nil {
-        println(error.localizedDescription)
-        println(error.localizedFailureReason)
-        println(error.localizedRecoverySuggestion)
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.Error.PeruzeUpdateError, object: error)
-        return
-      }
-      self.peruseItems.removeAll(keepCapacity: true)
-      for item in itemQueryResults {
-        let newItem = Item(record: item, database: self.publicDB)
-        self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
-          newItem.owner = owner
-          self.peruseItems.append(newItem)
-        })
-      }
-      //work with results
-    }
-    publicDB.addOperation(itemsOp)
-    
-    //    let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
-    //    let query = CKQuery(recordType: RecordTypes.Item, predicate: predicate)
-    //    println("Query = \(query)")
-    //    let queryOp = CKQueryOperation(query: query)
-    //    println("Query Op = \(queryOp)")
-    //    queryOp.recordFetchedBlock = { (record) -> Void in
-    //      println("Downloaded Record = \(record)")
-    //      let newItem = Item(record: record, database: self.publicDB)
-    //      self.fetchMinimumPersonForID(record.creatorUserRecordID, completion: { (owner, error) -> Void in
-    //        newItem.owner = owner
-    //        self.peruseItems.append(newItem)
-    //      })
-    //    }
-    //    queryOp.queryCompletionBlock = { (queryCursor, error) -> Void in
-    //      //TODO: Handle Error
-    //      if error != nil {
-    //        println(error.localizedDescription)
-    //      } else {
-    //        self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: nil)
-    //      }
-    //
-    //    }
-    //    publicDB.addOperation(queryOp)
-  }
   
   private func createSubscriptionForItems() {
     println("Create Subscription for Items")
