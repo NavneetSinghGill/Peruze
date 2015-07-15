@@ -18,6 +18,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   let dataSource = ProfileUploadsDataSource()
   @IBOutlet weak var tableView: UITableView! {
     didSet {
+      dataSource.tableView = tableView
       dataSource.editableCells = tabBarController?.parentViewController?.tabBarController != nil
       tableView.dataSource = dataSource
       tableView.delegate = self
@@ -29,11 +30,12 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    println("view did layout subviews")
-    dataSource.items = Model.sharedInstance().myProfile?.uploads ?? []
     tableView.reloadData()
+    checkForEmptyData(true)
   }
-  
+  func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    checkForEmptyData(true)
+  }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
   }
@@ -51,10 +53,15 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   //MARK: Editing
   private func checkForEmptyData(animated: Bool) {
-    if tableView.visibleCells().count == 0 {
+    if dataSource.items.count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
         self.tableView.alpha = 0.0
+      }
+    } else {
+      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+        self.titleLabel.alpha = 0.0
+        self.tableView.alpha = 1.0
       }
     }
   }

@@ -18,7 +18,6 @@
 		9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEE1B54DDC3009CB9FA /* StarView.swift */; };
 		9D177B801B54DDC3009CB9FA /* UploadingEyesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AEF1B54DDC3009CB9FA /* UploadingEyesView.swift */; };
 		9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */; };
-		9D177B821B54DDC3009CB9FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AF11B54DDC3009CB9FA /* Images.xcassets */; };
 		9D177B831B54DDC3009CB9FA /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF21B54DDC3009CB9FA /* JSON.swift */; };
 		9D177B851B54DDC3009CB9FA /* ChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */; };
 		9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */; };
@@ -111,6 +110,7 @@
 		9D177BE01B54DE92009CB9FA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */; };
 		9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
+		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */; };
 		9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
@@ -139,7 +139,6 @@
 		9D177AEE1B54DDC3009CB9FA /* StarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
 		9D177AEF1B54DDC3009CB9FA /* UploadingEyesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadingEyesView.swift; sourceTree = "<group>"; };
 		9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAlertFactory.swift; sourceTree = "<group>"; };
-		9D177AF11B54DDC3009CB9FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D177AF21B54DDC3009CB9FA /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewController.swift; sourceTree = "<group>"; };
 		9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -191,7 +190,7 @@
 		9D177B2A1B54DDC3009CB9FA /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		9D177B2B1B54DDC3009CB9FA /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
-		9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = Onboard/InitialViewController.swift; sourceTree = "<group>"; };
 		9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Onboard_Exchange.m4v; sourceTree = "<group>"; };
 		9D177B301B54DDC3009CB9FA /* Onboard_Peruse.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Onboard_Peruse.m4v; sourceTree = "<group>"; };
 		9D177B311B54DDC3009CB9FA /* OnboardPageItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardPageItemViewController.swift; sourceTree = "<group>"; };
@@ -256,6 +255,7 @@
 		9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
+		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D449C861B54D9F9005C7CC0 /* Peruze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peruze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D449C8A1B54D9F9005C7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D449C9B1B54D9F9005C7CC0 /* PeruzeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeruzeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,24 +377,13 @@
 		9D177B061B54DDC3009CB9FA /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				9D177B071B54DDC3009CB9FA /* ProfileContainerViewController.swift */,
-				9D177B081B54DDC3009CB9FA /* ProfileExchangesDataSource.swift */,
-				9D177B091B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift */,
-				9D177B0A1B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib */,
-				9D177B0B1B54DDC3009CB9FA /* ProfileExchangesViewController.swift */,
-				9D177B0C1B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift */,
-				9D177B0D1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift */,
-				9D177B0E1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift */,
-				9D177B0F1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift */,
-				9D177B101B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift */,
-				9D177B111B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib */,
-				9D177B121B54DDC3009CB9FA /* ProfileReviewsViewController.swift */,
-				9D177B131B54DDC3009CB9FA /* ProfileUploadsDataSource.swift */,
-				9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */,
-				9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */,
-				9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */,
 				9D177B171B54DDC3009CB9FA /* ProfileViewController.swift */,
+				9D177B071B54DDC3009CB9FA /* ProfileContainerViewController.swift */,
 				9D177B181B54DDC3009CB9FA /* WriteReviewViewController.swift */,
+				9D19173F1B56311200DA16D1 /* Exchanges */,
+				9D1917411B56312600DA16D1 /* Favorites */,
+				9D1917421B56312E00DA16D1 /* Reviews */,
+				9D1917431B56313700DA16D1 /* Uploads */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -438,7 +427,6 @@
 		9D177B2D1B54DDC3009CB9FA /* Onboard */ = {
 			isa = PBXGroup;
 			children = (
-				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */,
 				9D177B301B54DDC3009CB9FA /* Onboard_Peruse.m4v */,
 				9D177B311B54DDC3009CB9FA /* OnboardPageItemViewController.swift */,
@@ -581,6 +569,49 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		9D19173F1B56311200DA16D1 /* Exchanges */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B081B54DDC3009CB9FA /* ProfileExchangesDataSource.swift */,
+				9D177B091B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift */,
+				9D177B0A1B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib */,
+				9D177B0B1B54DDC3009CB9FA /* ProfileExchangesViewController.swift */,
+			);
+			name = Exchanges;
+			sourceTree = "<group>";
+		};
+		9D1917411B56312600DA16D1 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B0C1B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift */,
+				9D177B0D1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift */,
+				9D177B0E1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift */,
+			);
+			name = Favorites;
+			sourceTree = "<group>";
+		};
+		9D1917421B56312E00DA16D1 /* Reviews */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B0F1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift */,
+				9D177B101B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift */,
+				9D177B111B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib */,
+				9D177B121B54DDC3009CB9FA /* ProfileReviewsViewController.swift */,
+			);
+			name = Reviews;
+			sourceTree = "<group>";
+		};
+		9D1917431B56313700DA16D1 /* Uploads */ = {
+			isa = PBXGroup;
+			children = (
+				9D177B131B54DDC3009CB9FA /* ProfileUploadsDataSource.swift */,
+				9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */,
+				9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */,
+				9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */,
+			);
+			name = Uploads;
+			sourceTree = "<group>";
+		};
 		9D449C7D1B54D9F9005C7CC0 = {
 			isa = PBXGroup;
 			children = (
@@ -604,21 +635,22 @@
 		9D449C881B54D9F9005C7CC0 /* Peruze */ = {
 			isa = PBXGroup;
 			children = (
-				9D177AE91B54DDC3009CB9FA /* Custom Classes */,
-				9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */,
-				9D177AF11B54DDC3009CB9FA /* Images.xcassets */,
-				9D177AF21B54DDC3009CB9FA /* JSON.swift */,
+				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
+				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177AF41B54DDC3009CB9FA /* Main View Controllers */,
+				9D177AE91B54DDC3009CB9FA /* Custom Classes */,
 				9D177B221B54DDC3009CB9FA /* Model */,
-				9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */,
 				9D177B2D1B54DDC3009CB9FA /* Onboard */,
 				9D177B331B54DDC3009CB9FA /* Profile Setup */,
 				9D177B381B54DDC3009CB9FA /* TGCameraViewController */,
-				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
+				9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */,
+				9D177AF01B54DDC3009CB9FA /* ErrorAlertFactory.swift */,
+				9D177AF21B54DDC3009CB9FA /* JSON.swift */,
 				9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */,
 				9D449CAB1B54DA13005C7CC0 /* Peruze.entitlements */,
 				9D177AE41B54DDC3009CB9FA /* Base.lproj */,
 				9D449C891B54D9F9005C7CC0 /* Supporting Files */,
+				9D19173D1B5606B500DA16D1 /* Images.xcassets */,
 			);
 			path = Peruze;
 			sourceTree = "<group>";
@@ -739,7 +771,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D177B821B54DDC3009CB9FA /* Images.xcassets in Resources */,
 				9D177B9E1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib in Resources */,
 				9D177B881B54DDC3009CB9FA /* ChatTableViewCell.xib in Resources */,
 				9D177BA21B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib in Resources */,
@@ -748,6 +779,7 @@
 				9D177B971B54DDC3009CB9FA /* ProfileExchangesTableViewCell.xib in Resources */,
 				9D177BB91B54DDC3009CB9FA /* Onboard_Peruse.m4v in Resources */,
 				9D177BDA1B54DDC4009CB9FA /* TGCameraViewController.bundle in Resources */,
+				9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */,
 				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
 				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
@@ -1057,7 +1089,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Phillip Trent III (3SQB2J3GG7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,
@@ -1065,6 +1097,8 @@
 				INFOPLIST_FILE = Peruze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1077,7 +1111,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Phillip Trent III (3SQB2J3GG7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,
@@ -1085,6 +1119,8 @@
 				INFOPLIST_FILE = Peruze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 			};
 			name = Release;

@@ -13,8 +13,8 @@ import FBSDKCoreKit
 class OnboardViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, FBSDKLoginButtonDelegate {
     
     private struct Constants {
-        static let PeruseWithoutWordsImageName = "Peruse_Launch_Image"
-        static let PeruseWithWordsImageName = "Peruse_Start_Image"
+        static let PeruseWithoutWordsImageName = "Peruze_Launch_Image"
+        static let PeruseWithWordsImageName = "Peruze_Start_Image"
         
         static let PageVCIdentifier = "OnboardPageViewController"
         static let PageItemVCIdentifier = "OnboardPageItemViewController"
@@ -25,14 +25,14 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
         static let contentImages: [String?] = ["Onboard_Upload_Cloud", nil, nil];
         static let movies: [String?] = [nil, "Onboard_Peruse", "Onboard_Exchange"]
         
-        static let titles = ["Upload", "Peruse", "Exchange"]
+        static let titles = ["Upload", "Peruze", "Exchange"]
         static let captions = ["upload what you have",
             "see what your network is offering",
             "make your best offer—you’ve only got one shot!"]
         static let AppDidBecomeActiveNotificationName = "applicationDidBecomeActive"
         struct Alert {
             static let NoPhotosTitle = "Can't Access Photos"
-            static let NoPhotosMessage = "To keep everyone safe on Peruse, we need to know who you are, which means that we have to have a picture of you. Plus, who wouldn't want to see your shining face!"
+            static let NoPhotosMessage = "To keep everyone safe on Peruze, we need to know who you are, which means that we have to have a picture of you. Plus, who wouldn't want to see your shining face!"
         }
     }
     

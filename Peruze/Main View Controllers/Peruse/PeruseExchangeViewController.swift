@@ -143,7 +143,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     
     private func exchangeCompleted() {
         if !NetworkConnection.connectedToNetwork() {
-            let alert = ErrorAlertFactory.AlertForNetworkWithTryAgainBlock(tryAgain: { self.exchangeCompleted() })
+            let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock(tryAgain: { self.exchangeCompleted() })
             presentViewController(alert, animated: true, completion: nil)
             return
         }

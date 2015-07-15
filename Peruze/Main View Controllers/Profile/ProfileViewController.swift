@@ -34,16 +34,7 @@ class ProfileViewController: UIViewController {
   }
   
   //MARK: - Variables
-  var personForProfile: Person? {
-    didSet {
-      if personForProfile != nil {
-        profileImageView.image = personForProfile!.image
-        profileNameLabel.text = "\(personForProfile!.firstName) \(personForProfile!.lastName)"
-        //TODO: set #ofExchanges, #ofFavorites, and #ofUploads
-        //TODO: set #ofStars
-      }
-    }
-  }
+  var personForProfile: Person?
   @IBOutlet weak var profileImageView: CircleImage!
   @IBOutlet weak var profileNameLabel: UILabel!
   @IBOutlet weak var numberOfExchangesLabel: UILabel!
@@ -54,14 +45,42 @@ class ProfileViewController: UIViewController {
   @IBOutlet weak var favoritesButton: UIButton!
   @IBOutlet weak var exchangesButton: UIButton!
   @IBOutlet weak var starView: StarView!
+  @IBOutlet weak var containerView: UIView!
+  private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
   
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    //hide the container view and start loading data
+    containerView.alpha = 0.0
+    containerSpinner.startAnimating()
+    view.addSubview(containerSpinner)
+    
+    //check for a person, if there's no person, then it's my profile
     if personForProfile == nil {
       personForProfile = Model.sharedInstance().myProfile
     }
+    //setup the known information about the person
+    profileImageView.image = personForProfile!.image
+    profileNameLabel.text = "\(personForProfile!.firstName) \(personForProfile!.lastName)"
+    //TODO: set #ofStars
     
+    //get the updated information for the profile
+    Model.sharedInstance().completePerson(personForProfile!, completion: { (completeProfile, error) -> Void in
+      if error != nil {
+        let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
+        return
+      } else {
+        self.personForProfile = completeProfile
+        self.containerSpinner.stopAnimating()
+        UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
+          self.updateChildViewControllers()
+        })
+      }
+    })
+
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = .redColor()
@@ -74,11 +93,10 @@ class ProfileViewController: UIViewController {
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     starView.backgroundColor = .clearColor()
     starView.numberOfStars = 0
-    for viewController in childViewControllers {
-      if let vc = viewController as? ProfileContainerViewController {
-        vc.profileOwner = personForProfile
-      }
-    }
+  }
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    containerSpinner.frame = containerView.frame
   }
   
   //MARK: - Handling Tab Segues
@@ -130,5 +148,13 @@ class ProfileViewController: UIViewController {
   func done(sender: UIBarButtonItem) {
     self.dismissViewControllerAnimated(true, completion: nil)
   }
-  
+  //MARK: - Setting Info for Child View Controllers
+  private func updateChildViewControllers() {
+    println(self.childViewControllers)
+    for childVC in childViewControllers {
+      if let container = childVC as? ProfileContainerViewController {
+        container.profileOwner = personForProfile
+      }
+    }
+  }
 }

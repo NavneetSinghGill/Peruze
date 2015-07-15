@@ -155,8 +155,8 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = A911A0BCD3E3CF5D6421473AE34AE7BB;
-			remoteInfo = Reachability;
+			remoteGlobalIDString = 6DD98AA74700D2553AC0E36212A36643;
+			remoteInfo = PPTopMostController;
 		};
 		7F564DAB5B0005E3ECE17CEE441BAE9C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -806,25 +806,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F64F3C8BCEA0D6AA4929B0A387D6DA3F /* Headers */ = {
+		FBD05B8FF09B717A37A0A2C78BCACD03 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F08329C2650B33513BCAB0D2D39A80C /* Reachability-umbrella.h in Headers */,
-				B745C08AFF02DDAAE7D2089967448F80 /* Reachability.h in Headers */,
+				98295AE77F0A2B72CF057CA4183F6D16 /* PPTopMostController-umbrella.h in Headers */,
+				D5CDF64207DBEAAE5AB62470CD1F0DE3 /* PPTopMostControllerProtocol.h in Headers */,
+				A99F3465F4BD2866D4638E7EDC825C1C /* UINavigationController+PPTopMostController.h in Headers */,
+				BA2932D6BFE26DF722EA33229DB1ABB8 /* UITabBarController+PPTopMostController.h in Headers */,
+				F75AC922FADA3C3A6BAB04472338822B /* UIViewController+PPTopMostController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3A7DD539676DDECD8094C3F9CD305D41 /* Pods-Peruze */ = {
+		304937316B3A670627F20BDF9C7B251C /* JSQMessagesViewController */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E2BC1BD92582C7AA0E4B95286FEEE8D /* Build configuration list for PBXNativeTarget "Pods-Peruze" */;
+			buildConfigurationList = 733C42EB55F76784B2BF130CFB6C6054 /* Build configuration list for PBXNativeTarget "JSQMessagesViewController" */;
 			buildPhases = (
-				F2A26D2245D37B2DA2131D80B99499F8 /* Sources */,
-				543ACE5F4912CDB0221E0494DF6E7854 /* Frameworks */,
-				34FBDA07EBB22338A2C4FE69A9C4C98E /* Headers */,
+				9E9F714E7F7F3BF829C8EBCFEE2BAB49 /* Sources */,
+				4D0CD76DED5AE0A2F18BC619536D0DBF /* Frameworks */,
+				72EF551E1DD12C37BCDCAA2C35E3B667 /* Headers */,
+				DE2DF062F6750E052024FA855C53D121 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -835,9 +839,9 @@
 				75DEA59A65AE1B083055B0CFC6840EEF /* PBXTargetDependency */,
 				F042C4E74290D736FFD3D78267058A95 /* PBXTargetDependency */,
 			);
-			name = "Pods-Peruze";
-			productName = "Pods-Peruze";
-			productReference = 241F8514033115817A7A13CE2903321A /* Pods_Peruze.framework */;
+			name = JSQMessagesViewController;
+			productName = JSQMessagesViewController;
+			productReference = 4ECC40A35DACE0C908C3F8447B728FDA /* JSQMessagesViewController.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		576254C47C9165B3F7A7138FFFDBE7E7 /* AsyncOpKit */ = {
@@ -851,6 +855,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				163116685F519BE60912D5EE7613DA1F /* PBXTargetDependency */,
+				A7BAF9AE1818ADE0981C66385BA2B3F1 /* PBXTargetDependency */,
+				AEF69F78710ADFEABCF9905C3E5F5661 /* PBXTargetDependency */,
+				68BD34DC9601091D3C1E7B56E6154387 /* PBXTargetDependency */,
+				A61D6D1BB9BBE7FF5230CC8020A92577 /* PBXTargetDependency */,
 			);
 			name = AsyncOpKit;
 			productName = AsyncOpKit;
@@ -1110,6 +1119,33 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		01271C229BF7D31560DD07150F055815 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C6C5C90D01ED52DDFED9553D1CB01F /* PPTopMostController-Private.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/PPTopMostController/PPTopMostController-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PPTopMostController/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PPTopMostController/PPTopMostController.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = PPTopMostController;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		0D491647D9FBA81473125ECE87766FEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1149,9 +1185,9 @@
 			};
 			name = Debug;
 		};
-		17054E622980DCE47753E257B61B06D5 /* Debug */ = {
+		1209A5120308AC8CA60A7B670FEC35B7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F2F366F1FE113BE9BEAF34AF1859A1F2 /* Reachability-Private.xcconfig */;
+			baseConfigurationReference = 51119763E9526564AD99F7CFEBD2C7DE /* JSQSystemSoundPlayer-Private.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -1160,21 +1196,21 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Reachability/Reachability-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Reachability/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/JSQSystemSoundPlayer/JSQSystemSoundPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JSQSystemSoundPlayer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Reachability/Reachability.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = Reachability;
+				MODULEMAP_FILE = "Target Support Files/JSQSystemSoundPlayer/JSQSystemSoundPlayer.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = JSQSystemSoundPlayer;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		26D87A9C395B9C172C44A42DCEDEE03B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1275,14 +1311,16 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/AsyncOpKit/AsyncOpKit-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AsyncOpKit/Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-Peruze/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/AsyncOpKit/AsyncOpKit.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-Peruze/Pods-Peruze.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = AsyncOpKit;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_Peruze;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1320,7 +1358,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		606405EABDCFB094492E58CB3FD969F7 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1376,9 +1414,9 @@
 			};
 			name = Debug;
 		};
-		704D5E6D570872F2F119C0DB5BC39BB7 /* Release */ = {
+		975100F843D28B5816ADA6A606E5F4A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D928D4E3CDFA73C6EB0087F88BD061D /* Pods-Peruze.release.xcconfig */;
+			baseConfigurationReference = C2768562D46928FC2E9A2CEEC996FD17 /* AsyncOpKit-Private.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -1387,23 +1425,22 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Peruze/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/AsyncOpKit/AsyncOpKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AsyncOpKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Pods-Peruze/Pods-Peruze.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = Pods_Peruze;
+				MODULEMAP_FILE = "Target Support Files/AsyncOpKit/AsyncOpKit.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = AsyncOpKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 		76AB91FE6F54F594E7463D7DDDDB9549 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1457,7 +1494,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		971A270E381432D80239ACBFC4C553A6 /* Release */ = {
 			isa = XCBuildConfiguration;

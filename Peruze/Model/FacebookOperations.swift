@@ -22,6 +22,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
     static let NumberOfPicturesToRetrieve = 4
     static let GraphPath = "me/?fields=albums.fields(type,photos.limit(\(NumberOfPicturesToRetrieve)).fields(images))"
   }
+  
   ///resulting array of image URLs
   var imageURLs = [NSURL]()
   
@@ -29,13 +30,13 @@ class DownloadProfilePhotoURLs: AsyncOperation {
     if cancelled { finish(); return }
     //create the request from above graph path
     let request = FBSDKGraphRequest(graphPath:Constants.GraphPath, parameters: nil, HTTPMethod:"GET")
-      request.startWithCompletionHandler {[unowned self] (connection, result, error) -> Void in
-        //set error and return
-        self.error = error
-        if error != nil { self.finish(); return }
-        self.imageURLs = self.parseImageURLsFromResult(result)
-        self.finish()
-      }
+    request.startWithCompletionHandler {[unowned self] (connection, result, error) -> Void in
+      //set error and return
+      self.error = error
+      if error != nil { self.finish(); return }
+      self.imageURLs = self.parseImageURLsFromResult(result)
+      self.finish()
+    }
   }
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
@@ -128,6 +129,40 @@ class DownloadImagesForURLs: AsyncOperation {
     finish()
   }
 }
+
+///Fetches the currently logged in facebook user's profile
+class FetchFacebookUserProfile: AsyncOperation {
+  private struct Constants {
+    static let ProfilePath = "me/?fields=id,last_name,first_name"
+  }
+  var profile: FBSDKProfile?
+  
+  override func main() {
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    
+    dispatch_async(dispatch_get_main_queue()) {
+      request.startWithCompletionHandler {(connection, result, error) -> Void in
+        if error != nil { self.error = error; self.finish(); return }
+        
+        if let dictRepresentation = result as? [String: AnyObject] {
+          self.profile = FBSDKProfile(userID: result["id"] as! String,
+            firstName: result["first_name"] as! String,
+            middleName: nil,
+            lastName: result["last_name"] as! String,
+            name: nil,
+            linkURL: nil,
+            refreshDate: nil)
+        }
+        dispatch_async(dispatch_get_main_queue()) {
+          UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+          self.finish()
+        }
+      }
+    }
+  }
+}
+
 
 
 

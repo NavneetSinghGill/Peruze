@@ -56,7 +56,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Peruse" id="Jzg-R5-9CQ"/>
+                    <navigationItem key="navigationItem" title="Peruze" id="Jzg-R5-9CQ"/>
                     <connections>
                         <outlet property="collectionView" destination="N6Z-Lu-0jp" id="Xws-eD-53U"/>
                         <segue destination="uTd-EU-Phh" kind="presentation" identifier="toOfferToExchangeView" id="0Si-X2-Vdr"/>
@@ -463,18 +463,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nQ1-uY-I7N">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="PG5-gS-vAB">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PG5-gS-vAB" id="ztu-3F-bj2">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="LhQ-RE-lEa" kind="show" identifier="toRequestCollectionView" trigger="accessoryAction" id="Lqp-yx-Oew"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1739,6 +1727,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="containerView" destination="ZiF-cD-1mD" id="X89-HL-Dk4"/>
                         <outlet property="exchangesButton" destination="2ua-ao-2je" id="Uws-qg-oaS"/>
                         <outlet property="favoritesButton" destination="gcs-Wf-lcK" id="RxX-1y-5NQ"/>
                         <outlet property="numberOfExchangesLabel" destination="aL7-lQ-3XM" id="mrf-hJ-dHe"/>
@@ -1793,7 +1782,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Peruse_Launch_Image" translatesAutoresizingMaskIntoConstraints="NO" id="shu-Ja-G6m">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Peruze_Launch_Image" translatesAutoresizingMaskIntoConstraints="NO" id="shu-Ja-G6m">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
@@ -1832,11 +1821,11 @@
             </objects>
             <point key="canvasLocation" x="1293" y="-345"/>
         </scene>
-        <!--Peruse-->
+        <!--Peruze-->
         <scene sceneID="p0s-zE-W23">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6aH-2X-zzE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Peruse" image="Peruse_Tab_Bar_Icon" id="23V-kT-LlO"/>
+                    <tabBarItem key="tabBarItem" title="Peruze" image="Peruse_Tab_Bar_Icon" id="23V-kT-LlO"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JxI-NV-BWp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2236,7 +2225,7 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="745" verticalCompressionResistancePriority="745" image="Peruse_Small_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="44h-gj-VQY">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="745" verticalCompressionResistancePriority="745" image="Peruze_Small_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="44h-gj-VQY">
                                                     <rect key="frame" x="266" y="0.0" width="67" height="67"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="59" id="Kwu-XL-7hg"/>
@@ -2589,11 +2578,19 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Reviews" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e37-QH-Coh">
+                                <rect key="frame" x="256" y="118" width="88" height="19.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Z6o-Rt-nPh" secondAttribute="trailing" id="0Xi-cH-9tZ"/>
                             <constraint firstItem="Z6o-Rt-nPh" firstAttribute="leading" secondItem="d9y-30-1IR" secondAttribute="leading" id="EnV-KA-zWY"/>
+                            <constraint firstAttribute="centerX" secondItem="e37-QH-Coh" secondAttribute="centerX" id="F6c-PU-rH1"/>
+                            <constraint firstAttribute="centerY" secondItem="e37-QH-Coh" secondAttribute="centerY" id="VTI-nx-jGO"/>
                             <constraint firstAttribute="bottom" secondItem="Z6o-Rt-nPh" secondAttribute="bottom" id="xor-UL-jIy"/>
                             <constraint firstItem="Z6o-Rt-nPh" firstAttribute="top" secondItem="eSZ-aI-Dgz" secondAttribute="bottom" id="zrB-hU-cDM"/>
                         </constraints>
@@ -2601,6 +2598,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="Aem-dZ-lSx"/>
                     <connections>
                         <outlet property="tableView" destination="Z6o-Rt-nPh" id="Ial-NH-IvS"/>
+                        <outlet property="titleLabel" destination="e37-QH-Coh" id="u9D-QI-rwi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hh1-j3-0Xm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2816,18 +2814,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="255"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Completed Exchanges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy7-v0-whz">
+                                <rect key="frame" x="203" y="118" width="194" height="19.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerY" secondItem="gy7-v0-whz" secondAttribute="centerY" id="0GQ-Tm-Po7"/>
                             <constraint firstItem="7De-X8-esZ" firstAttribute="top" secondItem="AmK-mB-d2S" secondAttribute="bottom" id="7O2-qp-nEt"/>
                             <constraint firstAttribute="trailing" secondItem="7De-X8-esZ" secondAttribute="trailing" id="Vrg-a9-IYB"/>
                             <constraint firstAttribute="bottom" secondItem="7De-X8-esZ" secondAttribute="bottom" id="iZJ-ag-bcU"/>
                             <constraint firstItem="7De-X8-esZ" firstAttribute="leading" secondItem="jX0-c2-eS1" secondAttribute="leading" id="l2t-He-0yr"/>
+                            <constraint firstAttribute="centerX" secondItem="gy7-v0-whz" secondAttribute="centerX" id="wPH-pd-moF"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="Zrr-QE-wgP"/>
                     <connections>
                         <outlet property="tableView" destination="7De-X8-esZ" id="0U7-mM-wTb"/>
+                        <outlet property="titleLabel" destination="gy7-v0-whz" id="5hq-37-zod"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Ex-wI-z1T" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2892,7 +2899,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Peruse" id="uVS-Fj-gxE"/>
+                    <navigationItem key="navigationItem" title="Peruze" id="uVS-Fj-gxE"/>
                     <connections>
                         <outlet property="collectionView" destination="SE7-nd-7Bz" id="8B0-pb-BAF"/>
                         <segue destination="lTZ-tG-NW0" kind="presentation" identifier="toOfferToExchangeView" id="WxY-7P-sxM"/>
@@ -3343,9 +3350,9 @@
         <image name="Check_Mark" width="85" height="85"/>
         <image name="Empty_Star" width="33" height="33"/>
         <image name="Exchange_Arrows" width="341" height="256"/>
-        <image name="Peruse_Launch_Image" width="320" height="568"/>
-        <image name="Peruse_Small_Icon" width="66" height="66"/>
         <image name="Peruse_Tab_Bar_Icon" width="30" height="30"/>
+        <image name="Peruze_Launch_Image" width="320" height="568"/>
+        <image name="Peruze_Small_Icon" width="66" height="66"/>
         <image name="Profile" width="30" height="30"/>
         <image name="Profile_Exchange" width="33" height="33"/>
         <image name="Profile_Heart" width="33" height="33"/>

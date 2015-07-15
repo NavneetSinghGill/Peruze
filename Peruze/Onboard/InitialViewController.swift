@@ -9,6 +9,7 @@
 import UIKit
 import SystemConfiguration
 import FBSDKLoginKit
+import CloudKit
 
 class InitialViewController: UIViewController {
   
@@ -46,7 +47,7 @@ class InitialViewController: UIViewController {
   //MARK: - Segues
   func segueToCorrectVC() {
     if !NetworkConnection.connectedToNetwork() {
-      let alert = ErrorAlertFactory.AlertForNetworkWithTryAgainBlock() { [unowned self] Void in
+      let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock() { [unowned self] Void in
         self.segueToCorrectVC()
       }
       presentViewController(alert, animated: true, completion: nil)
@@ -58,26 +59,20 @@ class InitialViewController: UIViewController {
       spinner.stopAnimating()
       setupAndSegueToOnboardVC()
     } else {
-      Model.sharedInstance().fetchMyProfileWithCompletion() { error  -> Void in
+      Model.sharedInstance().fetchMyMinimumProfileWithCompletion() { result, error  -> Void in
         self.spinner.stopAnimating()
         if error != nil {
-          println(error!.localizedDescription)
-          let alert = ErrorAlertFactory.AlertFromError(error!) //TODO: self.alertForFetchProfileError()
-          self.childViewControllers.first!.presentViewController(alert, animated: true, completion: nil)
-          //self.presentViewController(alert, animated: true, completion: nil)
+          let alert = ErrorAlertFactory.alertForiCloudSignIn()
+          self.presentViewController(alert, animated: true, completion: nil)
           return
         }
         
-        let myProfile = Model.sharedInstance().myProfile
-        if myProfile == nil { self.setupAndSegueToSetupProfileVC(); return }
-        if myProfile!.firstName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
-        if myProfile!.lastName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
-      }
-      let userHasActiveProfile = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.ProfileHasActiveProfileKey) as? Bool ?? false
-      if userHasActiveProfile {
-        setupAndSegueToTabBarVC()
-      } else {
-        setupAndSegueToSetupProfileVC()
+        if result?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if result!.firstName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
+        if result?.lastName == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if result!.lastName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
+        //if there isn't anything wrong with my profile, segue to tab bar
+        self.setupAndSegueToTabBarVC()
       }
     }
   }
