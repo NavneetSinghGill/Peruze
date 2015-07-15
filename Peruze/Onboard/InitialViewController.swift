@@ -66,7 +66,6 @@ class InitialViewController: UIViewController {
           self.presentViewController(alert, animated: true, completion: nil)
           return
         }
-        
         if result?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }
         if result!.firstName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
         if result?.lastName == nil { self.setupAndSegueToSetupProfileVC(); return }
