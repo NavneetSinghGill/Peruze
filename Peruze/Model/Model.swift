@@ -24,7 +24,7 @@ struct NotificationCenterKeys {
   static let LocationDidStartUpdates = "LocationDidStartUpdates"
   static let LocationDidFinishUpdates = "LocationDidFinishUpdates"
   struct Error {
-    static let PeruseUpdateError = "PeruseUpdateError"
+    static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
   }
 }
@@ -51,8 +51,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   var requests = [Exchange]()
   var chats = [Chat]()
   var locationManager: CLLocationManager!
-  private var userFriends = [Int]()
   private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+  private var peopleWithinRange = [Person]()
   
   class func sharedInstance() -> Model {
     return modelSingletonGlobal
@@ -152,9 +152,47 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   //MARK: - For Peruse Screen
+  
+  private func queryForUsersWithinRange() -> CKQuery {
+    println(__FUNCTION__)
+    //check authorization status
+    let authorized = CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways
+    
+    //create predicates
+    let notMePredicate = NSPredicate(format: "recordID != %@", myProfile!.recordID)
+    let everywhereLocation = NSPredicate(value: true)
+    let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+      "Location",
+      locationManager.location,
+      userDistanceSettingInKm())
+    
+    //choose and concatenate predicates
+    let locationPredicate = userDistanceIsEverywhere() || !authorized ? everywhereLocation : specificLocation
+    let othersInRange = NSCompoundPredicate(type: .AndPredicateType, subpredicates: [locationPredicate, notMePredicate])
+    
+    //fetch users within range of self.location
+    let usersWithinRangeQuery = CKQuery(recordType: RecordTypes.User, predicate: othersInRange)
+    return usersWithinRangeQuery
+  }
+  private var usersWithinRangeCursor: CKQueryCursor?
   func fetchItemsWithinRangeAndPrivacy() {
-    createSubscriptionForItems()
-    println("fetch items within range and privacy")
+    println(__FUNCTION__)
+    var usersQueryResults = [CKRecord]()
+    let usersWithinRangeQuery = queryForUsersWithinRange()
+    let usersOp = CKQueryOperation(query: usersWithinRangeQuery)
+    usersOp.recordFetchedBlock = { (userRecord) -> Void in
+      
+    }
+    usersOp.queryCompletionBlock = { (cursor, error) -> Void in
+      self.usersWithinRangeCursor = cursor
+      if error != nil {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.Error.PeruzeUpdateError, object: error)
+        return
+      }
+      //work with results
+      
+    }
+    
     
     let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
     let query = CKQuery(recordType: RecordTypes.Item, predicate: NSPredicate(value: true))
@@ -207,7 +245,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     } else {
       publicDB.fetchRecordWithID(recordID, completionHandler: { (ownerRecord, error) -> Void in
         if error != nil {
-          self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruseUpdateError, forObject: error)
+          self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruzeUpdateError, forObject: error)
         } else {
           item.owner = Person(record: ownerRecord, database: self.publicDB)
           self.peruseItems.append(item)
