@@ -155,6 +155,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   //MARK: - For Peruse Screen
+  private var itemCursor: CKQueryCursor?
   func fetchItemsWithinRangeAndPrivacy() {
     createSubscriptionForItems()
     println("fetch items within range and privacy")
@@ -186,7 +187,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   private func createSubscriptionForItems() {
     println("Create Subscription for Items")
-    let predicate = NSPredicate(value: true)
+    let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
     let subscription = CKSubscription(recordType: RecordTypes.Item,
       predicate: predicate,
       subscriptionID: SubscritionTypes.PeruzeItemUpdates,
@@ -336,13 +337,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     NSOperationQueue().addOperation(fetch)
   }
   
-  func fetchFullProfileForRecordID(recordID: CKRecordID, completion: (Person, NSError) -> Void) {
-    let fetchOperation = CKFetchRecordsOperation(recordIDs:[recordID])
-    fetchOperation.perRecordCompletionBlock = { (record, _, error) -> Void in
-      Person(record: record, database: self.publicDB)
-    }
-  }
-  
   func fetchMinimumPersonForID(recordID: CKRecordID, completion: (Person?, NSError?) -> Void) {
     let fetchOperation = CKFetchRecordsOperation(recordIDs:[recordID])
     fetchOperation.desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
@@ -357,6 +351,22 @@ class Model: NSObject, CLLocationManagerDelegate {
       }
     }
     publicDB.addOperation(fetchOperation)
+  }
+  
+  func fetchMyMinimumProfileWithCompletion(completion: (Person?, NSError?) -> Void) {
+    println(__FUNCTION__)
+    if myProfile != nil {
+      completion(myProfile, nil)
+    } else {
+      let fetchMyRecordOp = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
+      fetchMyRecordOp.perRecordCompletionBlock = { (record, recordID, error) -> Void in
+        if error != nil { completion(nil, error); return }
+        let personResult = Person(record: record)
+        self.myProfile = personResult
+        completion(self.myProfile, nil)
+      }
+      publicDB.addOperation(fetchMyRecordOp)
+    }
   }
   
   func fetchMyProfileWithCompletion(completion: (Person?, NSError?) -> Void) {
@@ -434,8 +444,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     currentLocation = newLocation
     
     if distance > 20 {
-      //significant location update
-      //fetchItemsWithinRangeAndPrivacy()
       updateUserLocation(locations.last! as! CLLocation)
     }
   }

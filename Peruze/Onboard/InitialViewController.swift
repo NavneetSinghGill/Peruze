@@ -9,6 +9,7 @@
 import UIKit
 import SystemConfiguration
 import FBSDKLoginKit
+import CloudKit
 
 class InitialViewController: UIViewController {
   
@@ -58,11 +59,10 @@ class InitialViewController: UIViewController {
       spinner.stopAnimating()
       setupAndSegueToOnboardVC()
     } else {
-      Model.sharedInstance().fetchMyProfileWithCompletion() { result, error  -> Void in
+      Model.sharedInstance().fetchMyMinimumProfileWithCompletion() { result, error  -> Void in
         self.spinner.stopAnimating()
         if error != nil {
-          println(error!.localizedDescription)
-          let alert = ErrorAlertFactory.alertFromError(error!)
+          let alert = ErrorAlertFactory.alertForiCloudSignIn()
           self.presentViewController(alert, animated: true, completion: nil)
           return
         }
