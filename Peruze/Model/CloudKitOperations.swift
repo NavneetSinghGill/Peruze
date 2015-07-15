@@ -31,17 +31,17 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
   private let currentQ = NSOperationQueue.currentQueue() ?? NSOperationQueue.mainQueue()
   init(recordID: CKRecordID, desiredKeys: [String]? = nil) {
     self.recordID = recordID
-    self.desiredKeys = desiredKeys
+    //var modifiedKeys = (desiredKeys ?? []) + ["FavoriteItems"]
+    self.desiredKeys = nil
     super.init()
   }
   override func main() {
-    
     //check for iCloud Account Availability
     let availability = iCloudAvailability()
     
     //make reference object for recordID
     let recordReference = CKReference(recordID: recordID, action: CKReferenceAction.None)
-    
+
     //create query completion block
     let queryCompletionBlock = { (queryCursor: CKQueryCursor!, error: NSError!) -> Void in
       if error != nil {
@@ -53,7 +53,7 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
     }
     
     //get user record
-    let userRecordFetch = FetchUserRecordWithID(recordID: recordID)
+    let userRecordFetch = FetchUserRecordWithID(recordID: recordID, desiredKeys: desiredKeys)
     userRecordFetch.completionHandler = { (operation) -> Void in
       if operation.error != nil {
         self.error = operation.error

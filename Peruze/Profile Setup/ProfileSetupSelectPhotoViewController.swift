@@ -136,47 +136,91 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     dismissViewControllerAnimated(true){ /*completion*/ }
   }
   
+  private var nextBlurView: UIVisualEffectView!
   @IBAction func next(sender: UIButton) {
-    loadingCircle?.start()
-    let blur = UIBlurEffect(style: UIBlurEffectStyle.Light)
-    let blurView = UIVisualEffectView(effect: blur)
-    blurView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
-    blurView.alpha = 0.0
-    view.insertSubview(blurView, aboveSubview: center)
-    UIView.animateWithDuration(0.5) {
-      blurView.alpha = 1.0
-    }
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    self.view.userInteractionEnabled = false
+    //setup next loading views
+    nextLoadingSetup()
     
-    CKContainer.defaultContainer().accountStatusWithCompletionHandler { (accountStatus, error) -> Void in
-      self.handleError(error, handler: { blurView.removeFromSuperview(); return })
-      self.facebookData.getUserProfileWithCompletion() { (result, error) -> Void in
-        self.handleError(error, handler: { blurView.removeFromSuperview(); return })
-        //TODO: Fix this. there's too much nesting
-        Model.sharedInstance().setInfoForLoggedInUser(result?.firstName,
-          lastName: result?.lastName,
-          facebookID: result?.userID,
-          image: self.center.image!,
-          completion: { (error) -> Void in
-            dispatch_async(dispatch_get_main_queue()){
-              self.handleError(error, handler: { blurView.removeFromSuperview(); return })
-              self.view.userInteractionEnabled = true
-              self.loadingCircle?.stop()
-              UIView.animateWithDuration(0.5, animations: { blurView.alpha = 0.0 }, completion: { (_) -> Void in
-                blurView.removeFromSuperview()
-              })
-              UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-              if accountStatus == CKAccountStatus.NoAccount {
-                let alert = ErrorAlertFactory.AlertForiCloudSignIn()
-                self.presentViewController(alert, animated: true, completion: nil)
-              } else {
-                self.performSegueWithIdentifier(Constants.SegueIdentifier, sender: self)
-              }
-            }
-        })
+    //setup operation queue
+    let operationQueue = NSOperationQueue()
+    operationQueue.qualityOfService = NSQualityOfService.UserInitiated
+    
+    //check for iCloud availability
+    let iCloudFinishedSuccessfully = NSBlockOperation(block: {})
+    let iCloudAvailabilityOperation = iCloudAvailability()
+    iCloudAvailabilityOperation.completionHandler = { (finishedOp) -> Void in
+      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
+      if let availabilityOperation = finishedOp as? iCloudAvailability {
+        if availabilityOperation.accountStatus == CKAccountStatus.NoAccount {
+          let alert = ErrorAlertFactory.alertForiCloudSignIn()
+          NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.presentViewController(alert, animated: true, completion: nil)
+          }
+          operationQueue.cancelAllOperations()
+          return
+        } else {
+          operationQueue.addOperation(iCloudFinishedSuccessfully)
+        }
       }
     }
+    
+    //upload facebook profile info
+    let getProfileFinishedSuccessfully = NSBlockOperation(block: {})
+    let getFacebookProfileOp = FetchFacebookUserProfile()
+    getFacebookProfileOp.completionHandler = { (finishedOp) -> Void in
+      //handle error
+      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
+      //save profile
+      if let profileOp = finishedOp as? FetchFacebookUserProfile {
+        Model.sharedInstance().setFacebookProfileForLoggedInUser(profileOp.profile!, andImage: self.center.image!) {
+          (error) -> Void in
+          self.nextLoadingTearDown()
+          operationQueue.addOperation(getProfileFinishedSuccessfully)
+        }
+      }
+    }
+    
+    //operation that performs the segue to the next VC
+    let performSegueOp = NSBlockOperation(block: {
+      self.nextLoadingTearDown()
+      self.performSegueWithIdentifier(Constants.SegueIdentifier, sender: self)
+    })
+    
+    //add dependencies
+    performSegueOp.addDependency(iCloudFinishedSuccessfully)
+    performSegueOp.addDependency(getProfileFinishedSuccessfully)
+    getFacebookProfileOp.addDependency(iCloudAvailabilityOperation)
+    
+    //add operations to respective queues
+    operationQueue.addOperation(iCloudAvailabilityOperation)
+    operationQueue.addOperation(getFacebookProfileOp)
+    NSOperationQueue.mainQueue().addOperation(performSegueOp)
+  }
+  
+  
+  private func nextLoadingSetup() {
+    //setup the loading blur effect
+    loadingCircle?.start()
+    let blur = UIBlurEffect(style: UIBlurEffectStyle.Light)
+    nextBlurView = UIVisualEffectView(effect: blur)
+    nextBlurView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+    nextBlurView.alpha = 0.0
+    view.insertSubview(nextBlurView, aboveSubview: center)
+    UIView.animateWithDuration(0.5) {
+      self.nextBlurView.alpha = 1.0
+    }
+    //start the network indicator and disable user interaction
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    self.view.userInteractionEnabled = false
+  }
+  
+  private func nextLoadingTearDown() {
+      self.view.userInteractionEnabled = true
+      self.loadingCircle?.stop()
+      UIView.animateWithDuration(0.5, animations: { self.nextBlurView.alpha = 0.0 }, completion: { (_) -> Void in
+        self.nextBlurView.removeFromSuperview()
+      })
+      UIApplication.sharedApplication().networkActivityIndicatorVisible = false
   }
   
   //MARK: - Errors
@@ -184,7 +228,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     dispatch_async(dispatch_get_main_queue()){
       if error != nil {
         println(error!.localizedDescription)
-        let alert = ErrorAlertFactory.AlertFromError(error!)
+        let alert = ErrorAlertFactory.alertFromError(error!)
         self.presentViewController(alert, animated: true, completion: nil)
         self.view.userInteractionEnabled = true
         self.loadingCircle?.stop()

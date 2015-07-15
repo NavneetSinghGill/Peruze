@@ -120,7 +120,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     //MARK: - Drawing and UI
     private func updateUI() {
         if let item = item {
-            mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0)
+            mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
             mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
             ownerNameLabel.text = item.owner.formattedName
             ownerProfileImage.image = item.owner.image

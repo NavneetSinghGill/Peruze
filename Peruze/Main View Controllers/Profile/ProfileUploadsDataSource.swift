@@ -14,7 +14,12 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource {
         static let NibName = "ProfileUploadsTableViewCell"
     }
     //TODO: Get items
-    var items = Model.sharedInstance().myProfile?.uploads ?? []
+  var tableView: UITableView!
+  var items = [Item]() {
+    didSet {
+      tableView.reloadData()
+    }
+  }
     var editableCells = true
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())

@@ -12,9 +12,15 @@ class MainTabBarViewController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     tabBar.tintColor = UIColor.redColor()
-    Model.sharedInstance().fetchMyProfileWithCompletion() { error -> Void in
+    if Model.sharedInstance().myProfile != nil {
       if Model.sharedInstance().locationManager.location != nil {
+        
         Model.sharedInstance().updateUserLocation(Model.sharedInstance().locationManager.location)
+      }
+      Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
+    } else {
+      Model.sharedInstance().fetchMyProfileWithCompletion() { error -> Void in
+        
       }
     }
   }

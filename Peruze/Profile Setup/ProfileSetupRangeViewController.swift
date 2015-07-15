@@ -184,7 +184,12 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
       locationManager.requestAlwaysAuthorization()
     } else if CLLocationManager.authorizationStatus() != .AuthorizedAlways {
-      showMustChangeLocationSettingAlert()
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert(actionCompletion: {
+        self.userWarnedAboutLimitedFunction = true
+        self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
+        self.updateCircleView(self.distanceSlider.value)
+      })
+      presentViewController(alert, animated: true, completion: nil)
     }
   }
   
@@ -195,26 +200,44 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   var userWarnedAboutLimitedFunction = false
   
   @IBAction func done(sender: UIButton) {
+    println("done")
     //check location authorizations
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+      println("authorization status not determined")
       locationManager.requestAlwaysAuthorization()
       return
     }
     if CLLocationManager.authorizationStatus() != .AuthorizedAlways && !userWarnedAboutLimitedFunction {
-      showOptionalChangeLocationSettingAlert()
+      println("User hasn't been warned")
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert(actionCompletion: {
+        self.userWarnedAboutLimitedFunction = true
+        self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
+        self.updateCircleView(self.distanceSlider.value)
+      })
+      presentViewController(alert, animated: true, completion: nil)
       return
     }
     
     //check facebook access
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && !FBSDKAccessToken.currentAccessToken().declinedPermissions.contains("user_friends") {
+      println("checking facebook access for granted permission")
       let manager = FBSDKLoginManager()
       manager.logInWithReadPermissions(["user_friends"], handler: { (loginResult, error) -> Void in
-        if !loginResult.grantedPermissions.contains("user_friends") {
-          self.optionalChangeFacebookFriendsAccessSetting()
-          self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+          println("login result retrieved with error \(error)")
+          if error != nil {
+            let alert = ErrorAlertFactory.alertFromError(error, dismissCompletion: nil)
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+          }
+          if !loginResult.grantedPermissions.contains("user_friends") {
+            let alert = ErrorAlertFactory.friendSettingNoAccessAlert()
+            self.presentViewController(alert, animated: true, completion: nil)
+            self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
+            return
+          }
+        })
       })
-      return
     }
     
     //check slider and authorization alignment
@@ -224,7 +247,8 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
       assertionFailure("authorization status and friends slider do not correspond")
     }
-    
+    println("passed all things and ready to set/dismiss!")
+
     //set all values and dismiss
     NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
     NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
@@ -233,65 +257,5 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     
   }
   
-  //MARK: - Alerts
-  private func showMustChangeLocationSettingAlert() {
-    let message = "We don't know where you are! If you don't allow location services, then only others who have their range set to Everywhere will be able to see you."
-    let alert = changeLocationAlert(message)
-    presentViewController(alert, animated: true, completion: nil)
-  }
-  private func showOptionalChangeLocationSettingAlert() {
-    let message = "If you leave don't allow location services, your location will be anonymous, and only others who also have their range set to 'Everyone' will be able to see your profile."
-    let alert = changeLocationAlert(message)
-    presentViewController(alert, animated: true, completion: nil)
-    userWarnedAboutLimitedFunction = true
-  }
-  private func changeLocationAlert(message: String) -> UIAlertController {
-    let title = "Can't Access Location"
-    let cancelTitle = "Dismiss"
-    let settingsTitle = "Settings"
-    let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-    let cancelAction = UIAlertAction(title: cancelTitle, style: UIAlertActionStyle.Cancel) { (action) -> Void in
-      self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
-      self.updateCircleView(self.distanceSlider.value)
-      
-    }
-    let settingsAction = UIAlertAction(title: settingsTitle, style: UIAlertActionStyle.Default) { (action) -> Void in
-      UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-      self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
-      self.updateCircleView(self.distanceSlider.value)
-    }
-    alert.addAction(cancelAction)
-    alert.addAction(settingsAction)
-    return alert
-  }
-  private func mustChangeFacebookFriendsAccessSetting() {
-    let message = "Because of your security settings, we can't see who your friends are on Facebook! You can change that in Settings later, but for now, you'll see everyone's posts."
-    let alert = facebookFriendsAlert(message)
-    presentViewController(alert, animated: true, completion: nil)
-  }
-  private func optionalChangeFacebookFriendsAccessSetting() {
-    let message = "If you will allow us to access your friends, we can show mutual friends between you and other Peruzers. "
-    let alert = facebookFriendsAlert(message)
-    presentViewController(alert, animated: true, completion: nil)
-  }
-  private func facebookFriendsAlert(message: String) -> UIAlertController {
-    let title = "Can't Access Friends"
-    let cancelTitle = "Dismiss"
-    let settingsTitle = "Allow Access"
-    let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-    let cancelAction = UIAlertAction(title: cancelTitle, style: UIAlertActionStyle.Cancel) { (action) -> Void in
-      self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
-    }
-    let settingsAction = UIAlertAction(title: settingsTitle, style: UIAlertActionStyle.Default) { (action) -> Void in
-      self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
-      let manager = FBSDKLoginManager()
-      manager.logInWithReadPermissions(["user_friends"], handler: { (loginResult, error) -> Void in
-        if !loginResult.grantedPermissions.contains("user_friends") {
-          self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
-        }
-      })
-    }
-    alert.addAction(cancelAction)
-    return alert
-  }
+  
 }

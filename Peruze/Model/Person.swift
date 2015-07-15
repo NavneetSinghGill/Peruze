@@ -45,7 +45,7 @@ class Person: NSObject {
       super.init()
   }
   
-  init(record: CKRecord, database: CKDatabase) {
+  init(record: CKRecord, database: CKDatabase? = nil) {
     assert(record.recordType == RecordTypes.User, "Trying to create a person from a non User record")
     if let imageAsset = record.objectForKey("Image") as? CKAsset {
       image = UIImage(data: NSData(contentsOfURL: imageAsset.fileURL)!)
