@@ -412,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				9D177B291B54DDC3009CB9FA /* Model.swift */,
+				9D177B231B54DDC3009CB9FA /* Chat.swift */,
 				9D177B251B54DDC3009CB9FA /* Exchange.swift */,
 				9D177B281B54DDC3009CB9FA /* Item.swift */,
 				9D177B231B54DDC3009CB9FA /* Chat.swift */,
@@ -420,6 +421,8 @@
 				9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */,
 				9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */,
 				9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */,
+				9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */,
+				9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

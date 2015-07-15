@@ -166,7 +166,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     let everywhereLocation = NSPredicate(value: true)
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
-      locationManager.location,
+      locationManager.location ?? CLLocation(),
       userDistanceSettingInKm())
     
     //choose and concatenate predicates

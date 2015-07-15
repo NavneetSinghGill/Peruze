@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2011F71208A51330B5184ACB"
+               BlueprintIdentifier = "D5BEF6CEE1FC9FC516744693"
                BuildableName = "PPTopMostController.framework"
                BlueprintName = "PPTopMostController"
                ReferencedContainer = "container:Pods.xcodeproj">
