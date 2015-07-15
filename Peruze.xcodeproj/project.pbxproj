@@ -412,9 +412,9 @@
 			isa = PBXGroup;
 			children = (
 				9D177B291B54DDC3009CB9FA /* Model.swift */,
-				9D177B231B54DDC3009CB9FA /* Chat.swift */,
 				9D177B251B54DDC3009CB9FA /* Exchange.swift */,
 				9D177B281B54DDC3009CB9FA /* Item.swift */,
+				9D177B231B54DDC3009CB9FA /* Chat.swift */,
 				9D177B2A1B54DDC3009CB9FA /* Person.swift */,
 				9D177B2B1B54DDC3009CB9FA /* Review.swift */,
 				9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */,
@@ -1089,7 +1089,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Phillip Trent III (3SQB2J3GG7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,
@@ -1111,7 +1112,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Phillip Trent III (3SQB2J3GG7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,

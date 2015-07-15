@@ -23,6 +23,7 @@ class iCloudAvailability: AsyncOperation {
   }
 }
 
+//MARK: - User Profile
 class FetchFullProfileForUserRecordID: AsyncOperation {
   var person: Person = Person()
   private let recordID: CKRecordID

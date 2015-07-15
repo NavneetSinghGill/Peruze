@@ -50,9 +50,9 @@ class Person: NSObject {
     if let imageAsset = record.objectForKey("Image") as? CKAsset {
       image = UIImage(data: NSData(contentsOfURL: imageAsset.fileURL)!)
     }
-    firstName = record.objectForKey("FirstName") as! String
-    lastName = record.objectForKey("LastName") as! String
-    id = record.objectForKey("FacebookID") as! String
+    firstName = record.objectForKey("FirstName") as? String
+    lastName = record.objectForKey("LastName") as? String
+    id = record.objectForKey("FacebookID") as? String
     recordID = record.recordID
     super.init()
   }

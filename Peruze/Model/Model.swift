@@ -24,7 +24,7 @@ struct NotificationCenterKeys {
   static let LocationDidStartUpdates = "LocationDidStartUpdates"
   static let LocationDidFinishUpdates = "LocationDidFinishUpdates"
   struct Error {
-    static let PeruseUpdateError = "PeruseUpdateError"
+    static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
   }
 }
@@ -51,8 +51,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   var requests = [Exchange]()
   var chats = [Chat]()
   var locationManager: CLLocationManager!
-  private var userFriends = [Int]()
   private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+  private var peopleWithinRange = [Person]()
   
   class func sharedInstance() -> Model {
     return modelSingletonGlobal
@@ -65,6 +65,20 @@ class Model: NSObject, CLLocationManagerDelegate {
     locationManager.activityType = .Other
     locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
     locationManager.startMonitoringSignificantLocationChanges()
+    
+    NSUserDefaults.standardUserDefaults().addObserver(self,
+      forKeyPath: UserDefaultsKeys.UsersDistancePreference,
+      options: NSKeyValueObservingOptions.New,
+      context: nil)
+    NSUserDefaults.standardUserDefaults().addObserver(self,
+      forKeyPath: UserDefaultsKeys.UsersFriendsPreference,
+      options: NSKeyValueObservingOptions.New,
+      context: nil)
+    
+  }
+  override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    println("Key path did change")
+    fetchItemsWithinRangeAndPrivacy()
   }
   private func userPrivacySetting() -> FriendsPrivacy {
     let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as! Int
@@ -155,34 +169,84 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   //MARK: - For Peruse Screen
-  private var itemCursor: CKQueryCursor?
-  func fetchItemsWithinRangeAndPrivacy() {
-    createSubscriptionForItems()
-    println("fetch items within range and privacy")
+  
+  private func queryForItemsWithinRange() -> CKQuery {
+    println(__FUNCTION__)
+    //check authorization status
+    let authorized = CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways
     
-    let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
-    let query = CKQuery(recordType: RecordTypes.Item, predicate: predicate)
-    println("Query = \(query)")
-    let queryOp = CKQueryOperation(query: query)
-    println("Query Op = \(queryOp)")
-    queryOp.recordFetchedBlock = { (record) -> Void in
-      println("Downloaded Record = \(record)")
-      let newItem = Item(record: record, database: self.publicDB)
-      self.fetchMinimumPersonForID(record.creatorUserRecordID, completion: { (owner, error) -> Void in
-        newItem.owner = owner
-        self.peruseItems.append(newItem)
-      })
+    //create predicates
+    let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
+    let everywhereLocation = NSPredicate(value: true)
+    let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+      "Location",
+      locationManager.location ?? CLLocation(),
+      userDistanceSettingInKm())
+    
+    //choose and concatenate predicates
+    let locationPredicate = userDistanceIsEverywhere() || !authorized ? everywhereLocation : specificLocation
+    let othersInRange = NSCompoundPredicate(type: .AndPredicateType, subpredicates: [locationPredicate, notMyItemsPredicate])
+    
+    //fetch users within range of self.location
+    let usersWithinRangeQuery = CKQuery(recordType: RecordTypes.Item, predicate: othersInRange)
+    return usersWithinRangeQuery
+  }
+  
+  private var usersWithinRangeCursor: CKQueryCursor?
+  func fetchItemsWithinRangeAndPrivacy() {
+    println(__FUNCTION__)
+    var itemQueryResults = [CKRecord]()
+    let itemsWithinRangeQuery = queryForItemsWithinRange()
+    let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
+    itemsOp.desiredKeys = nil //TODO: Change this
+    itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
+      println("item in range record = \(itemRecord)")
+      itemQueryResults.append(itemRecord)
     }
-    queryOp.queryCompletionBlock = { (queryCursor, error) -> Void in
-      //TODO: Handle Error
+    itemsOp.queryCompletionBlock = { (cursor, error) -> Void in
+      self.usersWithinRangeCursor = cursor
       if error != nil {
         println(error.localizedDescription)
-      } else {
-        self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: nil)
+        println(error.localizedFailureReason)
+        println(error.localizedRecoverySuggestion)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.Error.PeruzeUpdateError, object: error)
+        return
       }
-      
+      self.peruseItems.removeAll(keepCapacity: true)
+      for item in itemQueryResults {
+        let newItem = Item(record: item, database: self.publicDB)
+        self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
+          newItem.owner = owner
+          self.peruseItems.append(newItem)
+        })
+      }
+      //work with results
     }
-    publicDB.addOperation(queryOp)
+    publicDB.addOperation(itemsOp)
+    
+    //    let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
+    //    let query = CKQuery(recordType: RecordTypes.Item, predicate: predicate)
+    //    println("Query = \(query)")
+    //    let queryOp = CKQueryOperation(query: query)
+    //    println("Query Op = \(queryOp)")
+    //    queryOp.recordFetchedBlock = { (record) -> Void in
+    //      println("Downloaded Record = \(record)")
+    //      let newItem = Item(record: record, database: self.publicDB)
+    //      self.fetchMinimumPersonForID(record.creatorUserRecordID, completion: { (owner, error) -> Void in
+    //        newItem.owner = owner
+    //        self.peruseItems.append(newItem)
+    //      })
+    //    }
+    //    queryOp.queryCompletionBlock = { (queryCursor, error) -> Void in
+    //      //TODO: Handle Error
+    //      if error != nil {
+    //        println(error.localizedDescription)
+    //      } else {
+    //        self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: nil)
+    //      }
+    //
+    //    }
+    //    publicDB.addOperation(queryOp)
   }
   
   private func createSubscriptionForItems() {
@@ -211,7 +275,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     } else {
       publicDB.fetchRecordWithID(recordID, completionHandler: { (ownerRecord, error) -> Void in
         if error != nil {
-          self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruseUpdateError, forObject: error)
+          self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruzeUpdateError, forObject: error)
         } else {
           item.owner = Person(record: ownerRecord, database: self.publicDB)
           self.peruseItems.append(item)
@@ -247,6 +311,9 @@ class Model: NSObject, CLLocationManagerDelegate {
     newItem.setObject(title, forKey: "Title")
     newItem.setObject(details, forKey: "Description")
     newItem.setObject(imageAsset, forKey: "Image")
+    if locationManager.location != nil {
+      newItem.setObject(locationManager.location, forKey: "Location")
+    }
     
     publicDB.saveRecord(newItem, completionHandler: { (savedRecord, error) -> Void in
       if error == nil {
@@ -395,7 +462,6 @@ class Model: NSObject, CLLocationManagerDelegate {
       publicDB.addOperation(fetchMyRecordOperation)
     }
   }
-  
   //MARK: - For Write Review Screen
   func uploadReview(review: Review, forUser user: Person) {
     
@@ -408,9 +474,9 @@ class Model: NSObject, CLLocationManagerDelegate {
     let modifyOperation = CKModifyRecordsOperation(recordsToSave: [myNewLocationRecord], recordIDsToDelete: nil)
     
     modifyOperation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) -> Void in
-      println("------ Location Record Saved ---------")
+      println("- - - - - - Location Record Saved - - - - - - - - -")
       println(savedRecords)
-      println("----- Location Record Error -------")
+      println("- - - - - Location Record Error - - - - - - -")
       println(error ?? "No error")
     }
     
