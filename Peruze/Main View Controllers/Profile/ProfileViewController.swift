@@ -54,14 +54,34 @@ class ProfileViewController: UIViewController {
   @IBOutlet weak var favoritesButton: UIButton!
   @IBOutlet weak var exchangesButton: UIButton!
   @IBOutlet weak var starView: StarView!
+  @IBOutlet weak var containerView: UIView!
+  private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
   
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
+    containerView.alpha = 0.0
+    containerSpinner.startAnimating()
+    view.addSubview(containerSpinner)
+    
     if personForProfile == nil {
       personForProfile = Model.sharedInstance().myProfile
     }
     
+    Model.sharedInstance().completePerson(personForProfile!, completion: { (completeProfile, error) -> Void in
+      if error != nil {
+        let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
+        return
+      } else {
+        self.personForProfile = completeProfile
+        self.containerSpinner.stopAnimating()
+        UIView.animateWithDuration(0.5){
+          self.containerView.alpha = 1.0
+        }
+      }
+    })
+
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = .redColor()
@@ -79,6 +99,10 @@ class ProfileViewController: UIViewController {
         vc.profileOwner = personForProfile
       }
     }
+  }
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    containerSpinner.frame = containerView.frame
   }
   
   //MARK: - Handling Tab Segues

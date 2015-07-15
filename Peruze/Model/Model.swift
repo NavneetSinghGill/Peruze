@@ -98,7 +98,10 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   //MARK: - Profile Setup
   
-  func setInfoForLoggedInUser(firstName: String?, lastName: String?, facebookID: String?, image: UIImage, completion:((NSError?) -> Void)? = nil) {
+  func setFacebookProfileForLoggedInUser(profile: FBSDKProfile, andImage image: UIImage,  withCompletion completion: (NSError? -> Void)? = nil) {
+    setInfoForLoggedInUser(profile.firstName, lastName: profile.lastName, facebookID: profile.userID, image: image, completion: completion)
+  }
+  func setInfoForLoggedInUser(firstName: String?, lastName: String?, facebookID: String?, image: UIImage, completion:(NSError? -> Void)? = nil) {
     let imageName = firstName?.stringByReplacingOccurrencesOfString(" ", withString: "_", options: .CaseInsensitiveSearch, range: nil)
     let (localImageURL, saveError) = saveImage(image, withName: imageName ?? "temp_file")
     let imageAsset = CKAsset(fileURL: localImageURL)
@@ -292,8 +295,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   //MARK: - For Profile Screen
   
-  func completePerson(person: Person, completion: ((Person) -> Void)){
-    var returnPerson: Person = Person()
+  func completePerson(person: Person, completion: ((Person?, NSError?) -> Void)){
+    var returnPerson: Person = person
     var desiredKeys = [String]()
     //check for recordID and facebookID
     assert(person.recordID != nil,
@@ -323,10 +326,14 @@ class Model: NSObject, CLLocationManagerDelegate {
     //completedExchanges (always retrieve)
     let fetch = FetchFullProfileForUserRecordID(recordID: person.recordID, desiredKeys: desiredKeys)
     fetch.completionHandler = { (completedOperation) -> Void in
+      if completedOperation.error != nil {
+        completion(nil, completedOperation.error)
+      }
       if let op = completedOperation as? FetchFullProfileForUserRecordID {
-        completion(op.person)
+        completion(op.person, op.error)
       }
     }
+    NSOperationQueue().addOperation(fetch)
   }
   
   func fetchFullProfileForRecordID(recordID: CKRecordID, completion: (Person, NSError) -> Void) {
@@ -352,39 +359,31 @@ class Model: NSObject, CLLocationManagerDelegate {
     publicDB.addOperation(fetchOperation)
   }
   
-  func fetchMyProfileWithCompletion(completion: NSError? -> Void) {
+  func fetchMyProfileWithCompletion(completion: (Person?, NSError?) -> Void) {
     println("fetch my profile with completion")
-    let fetchMyRecordOperation = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
-    fetchMyRecordOperation.perRecordCompletionBlock = { (record, recordID, error) -> Void in
-      if error != nil { completion(error); return }
-      self.myProfile = Person(record: record, database: self.publicDB)
-      println("fetch my record operation")
-      
-      let getProfileOp = FetchFullProfileForUserRecordID(recordID: self.myProfile!.recordID)
-      getProfileOp.completionHandler = { (operation) -> Void in
-        println("getProfileOp completed")
-        if operation.error != nil {
-          println(operation.error!.localizedDescription)
-          completion(operation.error)
-          return
-        }
-        if let profileOp = operation as? FetchFullProfileForUserRecordID {
-          self.myProfile = profileOp.person
-          completion(nil)
-          println("----------------------- MY PROFILE ------------------- ")
-          println(self.myProfile)
-        }
+    if myProfile != nil {
+      self.completePerson(myProfile!, completion: { (completedPerson, completionError) -> Void in
+        self.myProfile = completedPerson
+        completion(completedPerson, completionError)
+      })
+    } else {
+      let fetchMyRecordOperation = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
+      fetchMyRecordOperation.perRecordCompletionBlock = { (record, recordID, error) -> Void in
+        if error != nil { completion(nil, error); return }
+        self.myProfile = Person(record: record, database: self.publicDB)
+        println("fetch my record operation")
+        
+        self.completePerson(self.myProfile!, completion: { (completedProfile, completionError) -> Void in
+          if completionError != nil {
+            completion (nil, completionError)
+            return
+          }
+          self.myProfile = completedProfile
+          completion(completedProfile, completionError)
+        })
       }
-      
-      //make operation queue
-      let opQueue = NSOperationQueue()
-      opQueue.qualityOfService = NSQualityOfService.UserInitiated
-      opQueue.name = "Fetch My Profile With Completion Q"
-      
-      //add operations to the queues
-      opQueue.addOperation(getProfileOp)
+      publicDB.addOperation(fetchMyRecordOperation)
     }
-    publicDB.addOperation(fetchMyRecordOperation)
   }
   
   //MARK: - For Write Review Screen
@@ -436,7 +435,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     if distance > 20 {
       //significant location update
-      fetchItemsWithinRangeAndPrivacy()
+      //fetchItemsWithinRangeAndPrivacy()
       updateUserLocation(locations.last! as! CLLocation)
     }
   }

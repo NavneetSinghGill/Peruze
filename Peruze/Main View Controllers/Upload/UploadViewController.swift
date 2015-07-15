@@ -155,7 +155,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     //MARK: - Upload
     @IBAction func upload(sender: UIButton) {
         if !NetworkConnection.connectedToNetwork() {
-            let alert = ErrorAlertFactory.AlertForNetworkWithTryAgainBlock(tryAgain: { self.upload(sender) })
+            let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock(tryAgain: { self.upload(sender) })
             presentViewController(alert, animated: true, completion: nil)
             return
         }

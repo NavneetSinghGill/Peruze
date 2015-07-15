@@ -16,9 +16,6 @@ protocol FacebookProfilePictureRetrievalDelegate {
   var percentLoaded: Int? { get set } //out of 100%
 }
 
-protocol FacebookProfileInformationRetrievalDelegate {
-  
-}
 
 class FacebookDataSource: NSObject {
   private struct Constants {
@@ -28,7 +25,6 @@ class FacebookDataSource: NSObject {
     static let ProfilePath = "me/?fields=id,last_name,first_name"
   }
   var profilePictureRetrievalDelegate: FacebookProfilePictureRetrievalDelegate?
-  var profileInfoRetrievalDelegate: FacebookProfileInformationRetrievalDelegate?
   
   func getProfilePhotosWithCompletion(completionBlock: ((success: Bool, error: NSError?) -> Void)) {
     
@@ -72,11 +68,11 @@ class FacebookDataSource: NSObject {
       waitUntilFinished: false)
   }
   
-  func getUserProfileWithCompletion(completion: ((result: FBSDKProfile?, error: NSError?) -> Void)) {
+  class func getUserProfileWithCompletion(completion: ((result: FBSDKProfile?, error: NSError?) -> Void)) {
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue()) {
-      request.startWithCompletionHandler {[unowned self] (connection, result, error) -> Void in
+      request.startWithCompletionHandler {(connection, result, error) -> Void in
         if error != nil {
           println(error.localizedDescription)
           return

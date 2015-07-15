@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="item" id="gTV-IL-0wX" customClass="PeruseItemCollectionViewCell" customModule="Peruse" customModuleProvider="target">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="item" id="gTV-IL-0wX" customClass="PeruseItemCollectionViewCell" customModule="Peruze" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="411" height="650"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -33,7 +33,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atW-1V-LPr" userLabel="Profile Picture" customClass="CircleImage" customModule="Peruse" customModuleProvider="target">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atW-1V-LPr" userLabel="Profile Picture" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="95" height="95"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
