@@ -161,7 +161,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     println("fetch items within range and privacy")
     
     let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
-    let query = CKQuery(recordType: RecordTypes.Item, predicate: NSPredicate(value: true))
+    let query = CKQuery(recordType: RecordTypes.Item, predicate: predicate)
     println("Query = \(query)")
     let queryOp = CKQueryOperation(query: query)
     println("Query Op = \(queryOp)")
