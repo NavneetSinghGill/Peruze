@@ -178,7 +178,7 @@
 		9D177B1C1B54DDC3009CB9FA /* RequestsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsDataSource.swift; sourceTree = "<group>"; };
 		9D177B1D1B54DDC3009CB9FA /* RequestsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
 		9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsViewController.swift; sourceTree = "<group>"; };
-		9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = "Main View Controllers/SettingsViewController.swift"; sourceTree = "<group>"; };
 		9D177B211B54DDC3009CB9FA /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		9D177B231B54DDC3009CB9FA /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperations.swift; sourceTree = "<group>"; };
@@ -340,7 +340,6 @@
 				9D177AFD1B54DDC3009CB9FA /* Peruse */,
 				9D177B061B54DDC3009CB9FA /* Profile */,
 				9D177B191B54DDC3009CB9FA /* Requests */,
-				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
 				9D177B201B54DDC3009CB9FA /* Upload */,
 			);
 			path = "Main View Controllers";
@@ -637,6 +636,7 @@
 			children = (
 				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
 				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
+				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
 				9D177AF41B54DDC3009CB9FA /* Main View Controllers */,
 				9D177AE91B54DDC3009CB9FA /* Custom Classes */,
 				9D177B221B54DDC3009CB9FA /* Model */,
