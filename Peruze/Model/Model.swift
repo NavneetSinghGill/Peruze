@@ -67,20 +67,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
     locationManager.startMonitoringSignificantLocationChanges()
     
-    NSUserDefaults.standardUserDefaults().addObserver(self,
-      forKeyPath: UserDefaultsKeys.UsersDistancePreference,
-      options: NSKeyValueObservingOptions.New,
-      context: nil)
-    NSUserDefaults.standardUserDefaults().addObserver(self,
-      forKeyPath: UserDefaultsKeys.UsersFriendsPreference,
-      options: NSKeyValueObservingOptions.New,
-      context: nil)
-    
-  }
-  
-  override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-    println("Key path did change")
-    fetchItemsWithinRangeAndPrivacy()
   }
   
   private func userPrivacySetting() -> FriendsPrivacy {
@@ -103,8 +89,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   private func userDistanceSettingInMi() -> Int {
     return NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Int ?? 25
   }
-  private func userDistanceSettingInKm() -> Float {
-    return convertToKilometers(userDistanceSettingInMi())
+  private func userDistanceSettingInMeters() -> Float {
+    return convertToKilometers(userDistanceSettingInMi()) * 1000
   }
   private func convertToKilometers(miles: Int) -> Float {
     return Float(miles) * 1.60934
@@ -203,6 +189,23 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     publicDB.addOperation(itemsOp)
     
+    switch userPrivacySetting() {
+    case .Everyone : //Do nothing! YAY! Kind of...
+      //all relevant keys are desired
+      break
+    case .Friends :
+      //get my facebook friends
+      //set desired keys to only owner
+      //get owner's facebook ID
+      //check for friend
+      //get the rest of the information
+      break
+    case .FriendsOfFriends :
+      break
+    }
+    
+    
+    
   }
   
   
@@ -217,7 +220,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
       locationManager.location ?? CLLocation(),
-      userDistanceSettingInKm())
+      userDistanceSettingInMeters())
     
     //choose and concatenate predicates
     let locationPredicate = userDistanceIsEverywhere() || !authorized ? everywhereLocation : specificLocation
@@ -291,6 +294,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     newItem.setObject(title, forKey: "Title")
     newItem.setObject(details, forKey: "Description")
     newItem.setObject(imageAsset, forKey: "Image")
+    newItem.setObject(myProfile!.id, forKey: "OwnerFacebookID")
     if locationManager.location != nil {
       newItem.setObject(locationManager.location, forKey: "Location")
     }

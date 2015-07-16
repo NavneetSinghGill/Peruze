@@ -163,6 +163,40 @@ class FetchFacebookUserProfile: AsyncOperation {
   }
 }
 
+///Fetches the currently logged in facebook user's profile
+class FetchFacebookFriends: AsyncOperation {
+  private struct Constants {
+    static let ProfilePath = "me/?fields=friends"
+  }
+  var profile: FBSDKProfile?
+  
+  override func main() {
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    
+    dispatch_async(dispatch_get_main_queue()) {
+      request.startWithCompletionHandler {(connection, result, error) -> Void in
+        if error != nil { self.error = error; self.finish(); return }
+        
+        if let dictRepresentation = result as? [String: AnyObject] {
+          self.profile = FBSDKProfile(userID: result["id"] as! String,
+            firstName: result["first_name"] as! String,
+            middleName: nil,
+            lastName: result["last_name"] as! String,
+            name: nil,
+            linkURL: nil,
+            refreshDate: nil)
+        }
+        dispatch_async(dispatch_get_main_queue()) {
+          UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+          self.finish()
+        }
+      }
+    }
+  }
+}
+
+
 
 
 
