@@ -71,6 +71,7 @@ class InitialViewController: UIViewController {
         if result?.lastName == nil { self.setupAndSegueToSetupProfileVC(); return }
         if result!.lastName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
         //if there isn't anything wrong with my profile, segue to tab bar
+        Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         self.setupAndSegueToTabBarVC()
       }
     }

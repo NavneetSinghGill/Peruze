@@ -143,7 +143,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //setup operation queue
     let operationQueue = NSOperationQueue()
-    operationQueue.qualityOfService = NSQualityOfService.UserInitiated
+    operationQueue.qualityOfService = .Utility
     
     //check for iCloud availability
     let iCloudFinishedSuccessfully = NSBlockOperation(block: {})

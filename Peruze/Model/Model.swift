@@ -10,6 +10,7 @@ import UIKit
 import CloudKit
 import FBSDKLoginKit
 import JSQMessagesViewController
+import AsyncOpKit
 
 struct NotificationCenterKeys {
   static let PeruzeItemsDidFinishUpdate = "PeruseItemsDidFinishUpdate"
@@ -40,11 +41,7 @@ struct RecordTypes {
 }
 class Model: NSObject, CLLocationManagerDelegate {
   var myProfile: Person?
-  var peruseItems = [Item]() {
-    didSet {
-      self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: nil)
-    }
-  }
+  var peruseItems = [Item]()
   var favoritedItems = [Item]()
   var uploadedItems = [Item]()
   var exchangedItems = [Exchange]()
@@ -67,24 +64,10 @@ class Model: NSObject, CLLocationManagerDelegate {
     locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
     locationManager.startMonitoringSignificantLocationChanges()
     
-    NSUserDefaults.standardUserDefaults().addObserver(self,
-      forKeyPath: UserDefaultsKeys.UsersDistancePreference,
-      options: NSKeyValueObservingOptions.New,
-      context: nil)
-    NSUserDefaults.standardUserDefaults().addObserver(self,
-      forKeyPath: UserDefaultsKeys.UsersFriendsPreference,
-      options: NSKeyValueObservingOptions.New,
-      context: nil)
-    
-  }
-  
-  override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-    println("Key path did change")
-    fetchItemsWithinRangeAndPrivacy()
   }
   
   private func userPrivacySetting() -> FriendsPrivacy {
-    let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as! Int
+    let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Int ?? FriendsPrivacy.Everyone.rawValue
     switch value {
     case FriendsPrivacy.Friends.rawValue:
       return .Friends
@@ -103,8 +86,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   private func userDistanceSettingInMi() -> Int {
     return NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Int ?? 25
   }
-  private func userDistanceSettingInKm() -> Float {
-    return convertToKilometers(userDistanceSettingInMi())
+  private func userDistanceSettingInMeters() -> Float {
+    return convertToKilometers(userDistanceSettingInMi()) * 1000
   }
   private func convertToKilometers(miles: Int) -> Float {
     return Float(miles) * 1.60934
@@ -175,34 +158,85 @@ class Model: NSObject, CLLocationManagerDelegate {
   func fetchItemsWithinRangeAndPrivacy() {
     println(__FUNCTION__)
     var itemQueryResults = [CKRecord]()
-    let itemsWithinRangeQuery = queryForItemsWithinRange()
-    let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
-    itemsOp.desiredKeys = nil //TODO: Change this
-    itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
-      println("item in range record = \(itemRecord)")
-      itemQueryResults.append(itemRecord)
-    }
-    itemsOp.queryCompletionBlock = { (cursor, error) -> Void in
+    
+    
+    let queryCompletionBlock = { (cursor: CKQueryCursor! , error: NSError!) -> Void in
       self.usersWithinRangeCursor = cursor
       if error != nil {
         println(error.localizedDescription)
         println(error.localizedFailureReason)
         println(error.localizedRecoverySuggestion)
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.Error.PeruzeUpdateError, object: error)
+        self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruzeUpdateError, forObject: error)
         return
       }
       self.peruseItems.removeAll(keepCapacity: false)
-      for item in itemQueryResults {
-        let newItem = Item(record: item, database: self.publicDB)
-        self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
-          newItem.owner = owner
-          self.peruseItems.append(newItem)
-        })
+      //make asynchronous closure for updating items
+      let updatePeruseItems = AsyncClosuresOperation(queueKind: .Main, asyncClosure: {
+        (controller: AsyncClosureObjectProtocol) -> Void in
+        
+        //for each item, make CKRecord into Item and 
+        for item in itemQueryResults {
+          let newItem = Item(record: item, database: self.publicDB)
+          self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
+            newItem.owner = owner
+            self.peruseItems.append(newItem)
+            if item == itemQueryResults.last! {
+              controller.finishClosure()
+            }
+          })
+        }
+      })
+      updatePeruseItems.completionBlock = {
+        self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: nil)
       }
+      (NSOperationQueue.currentQueue() ?? NSOperationQueue.mainQueue()).addOperation(updatePeruseItems)
+      
+      
       //work with results
     }
-    publicDB.addOperation(itemsOp)
     
+    
+    
+    
+    
+    switch userPrivacySetting() {
+    case .Everyone :
+      let itemsWithinRangeQuery = queryForItemsWithinRange()
+      let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
+      itemsOp.desiredKeys = nil //TODO: Change this
+      itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
+        println("item in range record = \(itemRecord)")
+        itemQueryResults.append(itemRecord)
+      }
+      itemsOp.queryCompletionBlock = queryCompletionBlock
+      publicDB.addOperation(itemsOp)
+      break
+    case .Friends :
+      let fetchFriends = FetchFacebookFriends()
+      fetchFriends.completionHandler = { (operation) -> Void in
+        if operation.error != nil {
+          println(operation.error!)
+          return
+        }
+        if let friendsOp = operation as? FetchFacebookFriends {
+          println(friendsOp.facebookIDs)
+          let friendsPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsOp.facebookIDs)
+          let rangeAndPrivacyPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([self.queryForItemsWithinRange().predicate, friendsPredicate])
+          let rangeAndPrivacyQuery = CKQuery(recordType: RecordTypes.Item, predicate: rangeAndPrivacyPredicate)
+          let rangeAndPrivacyOp = CKQueryOperation(query: rangeAndPrivacyQuery)
+          rangeAndPrivacyOp.queryCompletionBlock = queryCompletionBlock
+          rangeAndPrivacyOp.recordFetchedBlock = { (itemRecord) -> Void in
+            println("item in range record = \(itemRecord)")
+            itemQueryResults.append(itemRecord)
+          }
+          self.publicDB.addOperation(rangeAndPrivacyOp)
+        }
+      }
+      NSOperationQueue.mainQueue().addOperation(fetchFriends)
+      break
+    case .FriendsOfFriends :
+      break
+    }
   }
   
   
@@ -217,7 +251,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
       locationManager.location ?? CLLocation(),
-      userDistanceSettingInKm())
+      userDistanceSettingInMeters())
     
     //choose and concatenate predicates
     let locationPredicate = userDistanceIsEverywhere() || !authorized ? everywhereLocation : specificLocation
@@ -285,12 +319,13 @@ class Model: NSObject, CLLocationManagerDelegate {
       //there was an error writing the data
       println("There was an error writing the png writing to the file.")
     }
-    
+    assert(myProfile != nil, "myProfile can not be nil when trying to upload an item")
     let newItem = CKRecord(recordType: RecordTypes.Item)
     let imageAsset = CKAsset(fileURL: NSURL(fileURLWithPath: path))
     newItem.setObject(title, forKey: "Title")
     newItem.setObject(details, forKey: "Description")
     newItem.setObject(imageAsset, forKey: "Image")
+    newItem.setObject(myProfile!.id, forKey: "OwnerFacebookID")
     if locationManager.location != nil {
       newItem.setObject(locationManager.location, forKey: "Location")
     }
@@ -388,7 +423,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     let fetchOperation = CKFetchRecordsOperation(recordIDs:[recordID])
     fetchOperation.desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
     fetchOperation.perRecordCompletionBlock = { (record, _, error) -> Void in
-      println("Person fetched with record: \(record) and error: \(error)")
+      //println("Person fetched with record: \(record) and error: \(error)")
       if error != nil {
         println(error.localizedDescription)
         completion(Person(), error)

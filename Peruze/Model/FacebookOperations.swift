@@ -50,12 +50,12 @@ class DownloadProfilePhotoURLs: AsyncOperation {
     if cancelled { finish(); return [] }
     
     //find profile album
-    let profileAlbum: AnyObject = JSON.enumerateData(allAlbumData, forKey: "type", equalToValue: "profile")
+    let profileAlbum: AnyObject? = JSON.enumerateData(allAlbumData, forKey: "type", equalToValue: "profile")
     
     if cancelled { finish(); return [] }
     
     //find photo data in profile album
-    let profileAlbumPhotoData: AnyObject = JSON.objectWithPathComponents(["photos", "data"], fromData: profileAlbum)
+    let profileAlbumPhotoData: AnyObject = JSON.objectWithPathComponents(["photos", "data"], fromData: profileAlbum!)
     
     if cancelled { finish(); return [] }
     
@@ -160,6 +160,77 @@ class FetchFacebookUserProfile: AsyncOperation {
         }
       }
     }
+  }
+}
+
+///Fetches the currently logged in facebook user's profile
+class FetchFacebookFriends: AsyncOperation {
+  private struct Constants {
+    static let ProfilePath = "me/?fields=friends.fields(id)"
+  }
+  
+  var facebookIDs = [String]()
+  
+  override func main() {
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    dispatch_async(dispatch_get_main_queue()) {
+      request.startWithCompletionHandler {(connection, result, error) -> Void in
+        if error != nil { self.error = error; self.finish(); return }
+        /// array of dictionary objects each with a single "id" : "friendFacebookID" object
+        let friendsData = JSON.objectWithPathComponents(["friends", "data"], fromData: result) as? [[String: AnyObject]]
+        //add the facebook IDs to the whole facebook IDs
+        self.facebookIDs = self.facebookIDs + self.facebookIDsFromArray(friendsData)
+        //if there's a next string, there's more data to be retrieved
+        if let nextURLString = JSON.objectWithPathComponents(["friends", "paging", "next"], fromData: result) as? String {
+          if let nextURL = NSURL(string: nextURLString) {
+            self.recursivelyPageDataFromURL(nextURL)
+          } else {
+            self.finish()
+          }
+        } else {
+          self.finish()
+        }
+      }
+    }
+  }
+  
+  private func recursivelyPageDataFromURL(url: NSURL) {
+    let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
+      var jsonError: NSError?
+      var jsonData: AnyObject? = NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments, error: &jsonError)
+      if jsonData == nil { self.finish(); return }
+      if resultError != nil {
+        self.error = resultError
+        self.finish()
+      } else if resultData != nil {
+        let friendsData = JSON.objectWithPathComponents(["data"], fromData: jsonData!) as? [[String: AnyObject]]
+        self.facebookIDs = self.facebookIDs + self.facebookIDsFromArray(friendsData)
+      } else {
+        self.finish()
+      }
+      if let nextURLString = JSON.objectWithPathComponents(["paging", "next"], fromData: jsonData!) as? String {
+        if let nextURL = NSURL(string: nextURLString) {
+          self.recursivelyPageDataFromURL(nextURL)
+        } else {
+          self.finish()
+        }
+      } else {
+        self.finish()
+      }
+    })
+    getDataTask.resume()
+  }
+  
+  private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {
+    if array == nil { return [] }
+    var returnArray = [String]()
+    for obj in array! {
+      if let facebookID = obj["id"] as? String {
+        returnArray.append(facebookID)
+      }
+    }
+    return returnArray
   }
 }
 
