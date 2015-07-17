@@ -19,7 +19,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource {
     override init() {
         super.init()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemsUpdated", name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-      //model.fetchItemsWithinRangeAndPrivacy()
     }
     func itemsUpdated() {
         println("items updated")

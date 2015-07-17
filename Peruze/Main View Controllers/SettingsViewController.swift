@@ -76,13 +76,13 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     distanceValues.sort(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
-    distanceSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as! Float
+    distanceSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Float ?? distanceSlider.maximumValue
     
     //friends
     friendsValues.sort(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
-    friendsSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as! Float
+    friendsSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Float ?? friendsSlider.maximumValue
 
     rangeLabel.text = "\(Int(distanceSlider.value)) mi"
     

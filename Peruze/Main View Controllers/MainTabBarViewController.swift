@@ -14,14 +14,10 @@ class MainTabBarViewController: UITabBarController {
     tabBar.tintColor = UIColor.redColor()
     if Model.sharedInstance().myProfile != nil {
       if Model.sharedInstance().locationManager.location != nil {
-        
         Model.sharedInstance().updateUserLocation(Model.sharedInstance().locationManager.location)
       }
-      Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
     } else {
-      Model.sharedInstance().fetchMyProfileWithCompletion() { error -> Void in
-        
-      }
+      Model.sharedInstance().fetchMyProfileWithCompletion({_, _ -> Void in})
     }
   }
 }
