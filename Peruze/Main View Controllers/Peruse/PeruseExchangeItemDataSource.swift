@@ -18,12 +18,11 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource {
   var collectionView:UICollectionView? {
     didSet {
       collectionView!.dataSource = self
-      collectionView!.reloadData()
       let nib = UINib(nibName: Constants.NibName, bundle: nil)
       collectionView!.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
     }
   }
-  var exchangeItems = Model.sharedInstance().myProfile?.uploads ?? [Item]() {
+  var exchangeItems = [Item]() {
     didSet {
       collectionView?.reloadData()
     }

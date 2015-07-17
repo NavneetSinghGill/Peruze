@@ -174,7 +174,7 @@ class Model: NSObject, CLLocationManagerDelegate {
       let updatePeruseItems = AsyncClosuresOperation(queueKind: .Main, asyncClosure: {
         (controller: AsyncClosureObjectProtocol) -> Void in
         
-        //for each item, make CKRecord into Item and 
+        //for each item, make CKRecord into Item and
         for item in itemQueryResults {
           let newItem = Item(record: item, database: self.publicDB)
           self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
@@ -414,6 +414,11 @@ class Model: NSObject, CLLocationManagerDelegate {
       }
       if let op = completedOperation as? FetchFullProfileForUserRecordID {
         completion(op.person, op.error)
+        if person.recordID == (self.myProfile?.recordID ?? CKRecordID(recordName: "false")) {
+          self.myProfile = op.person
+          self.postNotificationOnMainThread(NotificationCenterKeys.UploadsDidFinishUpdate, forObject: nil)
+          self.postNotificationOnMainThread(NotificationCenterKeys.FavoritesDidFinishUpdate, forObject: nil)
+        }
       }
     }
     NSOperationQueue().addOperation(fetch)

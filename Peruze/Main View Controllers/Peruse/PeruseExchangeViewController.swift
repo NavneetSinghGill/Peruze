@@ -39,7 +39,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   private var dataSource = PeruseExchangeItemDataSource()
   @IBOutlet weak var collectionView: UICollectionView! {
     didSet {
-      collectionView.dataSource = dataSource
+      dataSource.collectionView = collectionView
     }
   }
   @IBOutlet weak var topBlurView: UIVisualEffectView!
@@ -95,6 +95,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     otherPersonsItemLabel.text = itemSelectedForExchange!.title
     otherPersonsProfileImageView.image = itemSelectedForExchange!.owner.image
     
+    //NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadsUpdated", name: NotificationCenterKeys.UploadsDidFinishUpdate, object: nil)
+    dataSource.exchangeItems = Model.sharedInstance().myProfile?.uploads ?? []
   }
   
   override func viewDidLayoutSubviews() {
@@ -121,7 +123,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.setNeedsDisplay()
     view.insertSubview(greenCircle, aboveSubview: leftCircleImageView)
   }
-  
+
   //MARK: - Handling Segues
   @IBAction func bottomBlurTap(sender: AnyObject) {
     let bufferSize:CGFloat = 32
