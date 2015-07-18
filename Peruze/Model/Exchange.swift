@@ -18,7 +18,7 @@ class Exchange: NSObject {
   var itemRequested: Item!
   var itemOffered: Item!
   var dateExchanged: NSDate?
-  
+  var recordID: CKRecordID?
   
   init(status: ExchangeStatus, itemRequested: Item, itemOffered: Item, dateExchanged: NSDate?) {
     self.status = status
@@ -36,6 +36,7 @@ class Exchange: NSObject {
     let offeredReference = record.objectForKey("OfferedItem") as? CKReference
     itemOffered = Item()
     itemOffered.id = offeredReference?.recordID
+    recordID = record.recordID
     super.init()
   }
 }

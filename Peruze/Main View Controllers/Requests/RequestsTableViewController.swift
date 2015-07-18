@@ -73,12 +73,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
+  
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
     let deny = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       //TODO: Change this
       self.dataSource.requests.removeAtIndex(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
       self.checkForEmptyData(true)
+      
     }
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       //TODO: Change this
@@ -92,11 +94,11 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete
   }
-  func requestAccepted(item: Item, forItem: Item) {
+  func requestAccepted(request: Exchange) {
     dataSource.deleteItemAtIndex(0)
   }
   
-  func requestDenied(item: Item, forItem: Item) {
+  func requestDenied(request: Exchange) {
     dataSource.deleteItemAtIndex(0)
   }
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
