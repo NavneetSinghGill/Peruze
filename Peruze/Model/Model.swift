@@ -370,26 +370,38 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   //MARK: - For Requests Screen
   func fetchExchangeRequests(completion: ([Exchange]?, NSError?) -> Void) {
+    ///All errors returned from each request to pass back to the user
+    var aggregatedErrors = [NSError]()
+    
+    //Make sure that there are uploads to reference
     if let profileUploads = myProfile?.uploads {
       //create the predicate
       let possibleRequestedItems = profileUploads.map { CKReference(recordID: $0.id, action: .DeleteSelf) }
       let requestedItemPredicate = NSPredicate(format: "RequestedItem IN %@", possibleRequestedItems)
       let pendingRequestPredicate = NSPredicate(format: "ExchangeStatus == %i", ExchangeStatus.Pending.rawValue)
       let requestPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([pendingRequestPredicate, requestedItemPredicate])
-      //create the operation and handle completions
+      
+      //clear requests
+      //TODO: Make this able to insert/delete specific indexPaths
       self.requests = []
+      
+      //create the operation
       let requestQueryOp = CKQueryOperation(query: CKQuery(recordType: RecordTypes.Exchange, predicate: requestPredicate))
+      //handle per-record completion
       requestQueryOp.recordFetchedBlock = { (record) -> Void in
         self.requests.append(Exchange(record: record))
       }
+      //handle full completion
       requestQueryOp.queryCompletionBlock = { (_, error) -> Void in
         if error != nil {
-          completion(nil, error)
-        } else {
-          self.fetchItemsForExchangeObjectsOperation(self.requests) { (completeExchanges:[Exchange]?, error: NSError?) -> Void in
-            self.requests = completeExchanges!
-            completion(completeExchanges, error)
-          }
+          println("Fetch Exchange Requests Has An Error:")
+          println(error)
+          aggregatedErrors.append(error!)
+        }
+        self.fetchItemsForExchangeObjectsOperation(self.requests) { (completeExchanges:[Exchange]?, error: NSError?) -> Void in
+          self.requests = completeExchanges!
+          if error != nil { aggregatedErrors.append(error!) }
+          completion(completeExchanges, aggregatedErrors.last)
         }
       }
       publicDB.addOperation(requestQueryOp)
@@ -397,13 +409,20 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   private func fetchItemsForExchangeObjectsOperation(exchanges: [Exchange], completion: ([Exchange]?, NSError?) -> Void) {
+    //check for exchanges
+    if exchanges.count == 0 {
+      completion([], nil)
+    }
+    //start fetching errors setup
+    var aggregatedErrors = [NSError]()
     var returnExchanges = exchanges
     var collectedRecordIDs = exchanges.map({ $0.itemOffered.id })
     let fetchRecords = CKFetchRecordsOperation(recordIDs: collectedRecordIDs)
     fetchRecords.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
       if error != nil {
-        completion(nil, error)
-        return
+        println("Fetch Items For Exchange Requests Has An Error:")
+        println(error)
+        aggregatedErrors.append(error!)
       }
       //handle exchanges
       for exchange in returnExchanges {
@@ -419,56 +438,90 @@ class Model: NSObject, CLLocationManagerDelegate {
         if let matchingOfferedItem = recordsByID[exchange.itemOffered.id] as? CKRecord {
           exchange.itemOffered = Item(record: matchingOfferedItem, database: self.publicDB)
           self.fetchMinimumPersonForID(matchingOfferedItem.creatorUserRecordID, completion: { (owner, error) -> Void in
+            if error != nil {
+              println("Fetch Minimum Person For ID (Exchange Requests) Has An Error:")
+              println(error)
+              aggregatedErrors.append(error!)
+            }
             exchange.itemOffered.owner = owner
             if exchange == returnExchanges.last! {
-              completion(returnExchanges, error)
+              completion(returnExchanges, aggregatedErrors.last)
             }
           })
         }
-        
       }
     }
     publicDB.addOperation(fetchRecords)
   }
   
+  /**
+  Accepts an exchange request from the Requests section
+  :param: exchange The exchange that is being accepted
+  :param: completion A completion block that returns the updated set of requests and the error from interacting with the database
+  */
   func acceptExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
+    ///Errors to return to the user
+    var aggregatedErrors = [NSError]()
+    
+    ///The exchange record to update the database with
     let modifiedExchange = CKRecord(recordType: RecordTypes.Exchange, recordID: exchange.recordID)
     modifiedExchange.setObject(ExchangeStatus.Accepted.rawValue, forKey: "ExchangeStatus")
+    
+    ///The operation for saving the modified exchange to the server
     let modifyExchangeOp = CKModifyRecordsOperation(recordsToSave: [modifiedExchange], recordIDsToDelete: nil)
-    modifyExchangeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
+    modifyExchangeOp.savePolicy = .ChangedKeys //forces update without fetch
     modifyExchangeOp.modifyRecordsCompletionBlock = { (recordsSaved, recordsDeleted, error) -> Void in
-      println(recordsSaved)
-      println(recordsDeleted)
-      println(error)
-      
+      if error != nil { aggregatedErrors.append(error!) }
     }
+    
+    ///Operation wrapper for fetching the exchange requests
     let fetchRequests = NSBlockOperation { () -> Void in
       self.fetchExchangeRequests({ (exchanges, error) -> Void in
-        completion?(exchanges, error)
+        if error != nil { aggregatedErrors.append(error!) }
+        completion?(exchanges, aggregatedErrors.last)
       })
     }
+    
+    //the request to fetch the new exchanges has to wait on the saving of the modified exchange
     fetchRequests.addDependency(modifyExchangeOp)
+    
+    //add operations to their queues
     publicDB.addOperation(modifyExchangeOp)
     NSOperationQueue.mainQueue().addOperation(fetchRequests)
   }
   
+  /**
+  Denies an exchange request from the Requests section
+  :param: exchange The exchange that is being denied
+  :param: completion A completion block that returns the updated set of requests and the error from interacting with the database
+  */
   func denyExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
+    ///Errors to return to the user
+    var aggregatedErrors = [NSError]()
+    
+    ///The exchange record to update the database with
     let modifiedExchange = CKRecord(recordType: RecordTypes.Exchange, recordID: exchange.recordID)
     modifiedExchange.setObject(ExchangeStatus.Denied.rawValue, forKey: "ExchangeStatus")
+    
+    ///The operation for saving the modified exchange to the server
     let modifyExchangeOp = CKModifyRecordsOperation(recordsToSave: [modifiedExchange], recordIDsToDelete: nil)
-    modifyExchangeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
+    modifyExchangeOp.savePolicy = .ChangedKeys //forces update without fetch
     modifyExchangeOp.modifyRecordsCompletionBlock = { (recordsSaved, recordsDeleted, error) -> Void in
-      println(recordsSaved)
-      println(recordsDeleted)
-      println(error)
-      
+      if error != nil { aggregatedErrors.append(error!) }
     }
+    
+    ///Operation wrapper for fetching the exchange requests
     let fetchRequests = NSBlockOperation { () -> Void in
       self.fetchExchangeRequests({ (exchanges, error) -> Void in
-        completion?(exchanges, error)
+        if error != nil { aggregatedErrors.append(error!) }
+        completion?(exchanges, aggregatedErrors.last)
       })
     }
+    
+    //the request to fetch the new exchanges has to wait on the saving of the modified exchange
     fetchRequests.addDependency(modifyExchangeOp)
+    
+    //add operations to their queues
     publicDB.addOperation(modifyExchangeOp)
     NSOperationQueue.mainQueue().addOperation(fetchRequests)
   }
@@ -525,7 +578,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     let fetchOperation = CKFetchRecordsOperation(recordIDs:[recordID])
     fetchOperation.desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
     fetchOperation.perRecordCompletionBlock = { (record, _, error) -> Void in
-      //println("Person fetched with record: \(record) and error: \(error)")
+      println("Person fetched with record: \(record) and error: \(error)")
       if error != nil {
         println(error.localizedDescription)
         completion(Person(), error)
