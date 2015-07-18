@@ -10,28 +10,29 @@ import UIKit
 import CloudKit
 
 class Item: NSObject {
-    var image: UIImage!
-    var owner: Person!
-    var title: String!
-    var detail: String!
-    var id: String!
-    override init() {
-        super.init()
-    }
-    convenience init(image: UIImage, owner: Person, title: String, detail: String, id: String) {
-        self.init()
-        self.image = image
-        self.owner = owner
-        self.title = title
-        self.detail = detail
-        self.id = id
-    }
-    convenience init(record: CKRecord, database: CKDatabase) {
-        self.init()
-        detail = record.objectForKey("Description") as? String ?? ""
-        let asset = record.objectForKey("Image") as? CKAsset
-        let fileURLPath = asset?.fileURL.path ?? ""
-        image = UIImage(contentsOfFile: fileURLPath) ?? UIImage()
-        title = record.objectForKey("Title") as? String ?? ""
-    }
+  var image: UIImage!
+  var owner: Person!
+  var title: String!
+  var detail: String!
+  var id: CKRecordID!
+  override init() {
+    super.init()
+  }
+  convenience init(image: UIImage, owner: Person, title: String, detail: String, id: CKRecordID) {
+    self.init()
+    self.image = image
+    self.owner = owner
+    self.title = title
+    self.detail = detail
+    self.id = id
+  }
+  convenience init(record: CKRecord, database: CKDatabase) {
+    self.init()
+    detail = record.objectForKey("Description") as? String ?? ""
+    let asset = record.objectForKey("Image") as? CKAsset
+    let fileURLPath = asset?.fileURL.path ?? ""
+    image = UIImage(contentsOfFile: fileURLPath) ?? UIImage()
+    title = record.objectForKey("Title") as? String ?? ""
+    id = record.recordID
+  }
 }

@@ -22,11 +22,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource {
       collectionView!.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
     }
   }
-  var exchangeItems = [Item]() {
-    didSet {
-      collectionView?.reloadData()
-    }
-  }
+  var exchangeItems = [Item]() 
 
   func deleteItemsAtIndexPaths(paths: [NSIndexPath]) -> [Item] {
     var returnValue = [Item]()

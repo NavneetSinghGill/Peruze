@@ -304,6 +304,14 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   //MARK: - For Exchanges Screen
   func uploadRequest(request: Exchange) {
+    let newRequest = CKRecord(recordType: RecordTypes.Exchange)
+    
+    let offeredReference = CKReference(recordID: request.itemOffered.id, action: CKReferenceAction.DeleteSelf)
+    let requestedReference = CKReference(recordID: request.itemRequested.id, action: CKReferenceAction.DeleteSelf)
+    newRequest.setObject(request.status.rawValue, forKey: "ExchangeStatus")
+    newRequest.setObject(offeredReference, forKey: "OfferedItem")
+    newRequest.setObject(requestedReference, forKey: "RequestedItem")
+    let saveNewRequestOp = CKModifyRecordsOperation(recordsToSave: newRequest, recordIDsToDelete: nil)
     
   }
   //MARK: - For Upload Screen
