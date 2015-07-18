@@ -1826,7 +1826,7 @@
         <scene sceneID="p0s-zE-W23">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6aH-2X-zzE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Peruze" image="Peruse_Tab_Bar_Icon" id="23V-kT-LlO"/>
+                    <tabBarItem key="tabBarItem" title="Peruze" image="Peruse_Tab_Bar_Icon" selectedImage="Peruse_Tab_Bar_Icon" id="23V-kT-LlO"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JxI-NV-BWp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1845,7 +1845,7 @@
         <scene sceneID="QLe-wK-pNx">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ddf-cW-WAM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Upload" image="Upload" id="F11-BG-xlX"/>
+                    <tabBarItem key="tabBarItem" title="Upload" image="Upload" selectedImage="Upload" id="F11-BG-xlX"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iiB-sb-xHY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1864,7 +1864,7 @@
         <scene sceneID="ylX-wr-Xim">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ayN-ni-w2T" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" image="Chat" id="1t9-U0-N3M"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="Chat" selectedImage="Chat" id="1t9-U0-N3M"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="D5b-WJ-ba4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1883,13 +1883,16 @@
         <scene sceneID="9bT-bu-Bly">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f2x-I8-eCe" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Requests" image="Requests" id="HSc-y8-r5U"/>
+                    <tabBarItem key="tabBarItem" title="Requests" image="Requests" selectedImage="Requests" id="HSc-y8-r5U"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7S2-C4-S3h">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="rUx-CY-dyT">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="cNX-dZ-oup" kind="relationship" relationship="rootViewController" id="yyZ-9N-CMD"/>
                     </connections>
@@ -1902,7 +1905,7 @@
         <scene sceneID="NCw-qJ-UiN">
             <objects>
                 <navigationController storyboardIdentifier="ProfileNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Hwe-MH-A3q" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" image="Profile" id="9G4-4m-lhi"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="Profile" selectedImage="Profile" id="9G4-4m-lhi"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fjo-fK-Zcp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

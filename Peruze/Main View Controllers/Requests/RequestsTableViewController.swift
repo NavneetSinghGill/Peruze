@@ -73,30 +73,48 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
+  
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-    let deny = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
-      //TODO: Change this
-      self.dataSource.requests.removeAtIndex(indexPath.row)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+    let actionCompletion = { (reloadedRequests: [Exchange]?, error: NSError?) -> Void in
+      if error != nil {
+        let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
+        return
+      }
+      self.dataSource.requests = reloadedRequests ?? []
+      self.tableView.reloadData()
       self.checkForEmptyData(true)
     }
-    let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
-      //TODO: Change this
-      self.dataSource.requests.removeAtIndex(indexPath.row)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.checkForEmptyData(true)
-    }
-    accept.backgroundColor = .greenColor()
+    
+    let deny = denyEditActionWithCompletion(actionCompletion)
+    let accept = acceptEditActionWithCompletion(actionCompletion)
     return [deny, accept]
   }
+  private func denyEditActionWithCompletion(actionCompletion: ([Exchange]?, NSError?) -> Void) -> UITableViewRowAction {
+    return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
+      let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
+      self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+      Model.sharedInstance().denyExchangeRequest(deletedRequest, completion: actionCompletion)
+    }
+  }
+  private func acceptEditActionWithCompletion(actionCompletion: ([Exchange]?, NSError?) -> Void) -> UITableViewRowAction {
+    let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
+      let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
+      self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+      Model.sharedInstance().acceptExchangeRequest(deletedRequest, completion: actionCompletion)
+    }
+    accept.backgroundColor = .greenColor()
+    return accept
+  }
+  
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete
   }
-  func requestAccepted(item: Item, forItem: Item) {
+  func requestAccepted(request: Exchange) {
     dataSource.deleteItemAtIndex(0)
   }
   
-  func requestDenied(item: Item, forItem: Item) {
+  func requestDenied(request: Exchange) {
     dataSource.deleteItemAtIndex(0)
   }
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
