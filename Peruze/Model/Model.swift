@@ -174,7 +174,7 @@ class Model: NSObject, CLLocationManagerDelegate {
       let updatePeruseItems = AsyncClosuresOperation(queueKind: .Main, asyncClosure: {
         (controller: AsyncClosureObjectProtocol) -> Void in
         
-        //for each item, make CKRecord into Item and 
+        //for each item, make CKRecord into Item and
         for item in itemQueryResults {
           let newItem = Item(record: item, database: self.publicDB)
           self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
@@ -304,12 +304,17 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   //MARK: - For Exchanges Screen
   func uploadRequest(request: Exchange) {
+    let newRequest = CKRecord(recordType: RecordTypes.Exchange)
     
+    let offeredReference = CKReference(recordID: request.itemOffered.id, action: CKReferenceAction.DeleteSelf)
+    let requestedReference = CKReference(recordID: request.itemRequested.id, action: CKReferenceAction.DeleteSelf)
+    newRequest.setObject(request.status.rawValue, forKey: "ExchangeStatus")
+    newRequest.setObject(offeredReference, forKey: "OfferedItem")
+    newRequest.setObject(requestedReference, forKey: "RequestedItem")
+    let saveNewRequestOp = CKModifyRecordsOperation(recordsToSave: [newRequest], recordIDsToDelete: nil)
+    publicDB.addOperation(saveNewRequestOp)
   }
   //MARK: - For Upload Screen
-  func uploadItem(item: Item) {
-    
-  }
   func uploadItemWithImage(image: UIImage!, title: String, andDetails details: String) {
     //change the image into a url
     let pngData = UIImagePNGRepresentation(image)
@@ -414,6 +419,11 @@ class Model: NSObject, CLLocationManagerDelegate {
       }
       if let op = completedOperation as? FetchFullProfileForUserRecordID {
         completion(op.person, op.error)
+        if person.recordID == (self.myProfile?.recordID ?? CKRecordID(recordName: "false")) {
+          self.myProfile = op.person
+          self.postNotificationOnMainThread(NotificationCenterKeys.UploadsDidFinishUpdate, forObject: nil)
+          self.postNotificationOnMainThread(NotificationCenterKeys.FavoritesDidFinishUpdate, forObject: nil)
+        }
       }
     }
     NSOperationQueue().addOperation(fetch)
