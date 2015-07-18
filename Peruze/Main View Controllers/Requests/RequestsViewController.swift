@@ -60,14 +60,28 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   }
   
   func requestAccepted(request: Exchange) {
-    dataSource.deleteItemAtIndex(0) //TODO: Change This
+    dataSource.deleteRequest(request)
     collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-    checkForEmptyData()
+    Model.sharedInstance().acceptExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
+      self.dataSource.requests = reloadedRequests ?? []
+      self.collectionView.reloadData()
+      if error != nil {
+        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+      }
+      self.checkForEmptyData()
+    })
   }
   
   func requestDenied(request: Exchange) {
-    dataSource.deleteItemAtIndex(0) //TODO: Change This
+    dataSource.deleteRequest(request)
     collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-    checkForEmptyData()
+    Model.sharedInstance().denyExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
+      self.dataSource.requests = reloadedRequests ?? []
+      self.collectionView.reloadData()
+      if error != nil {
+        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+      }
+      self.checkForEmptyData()
+    })
   }
 }

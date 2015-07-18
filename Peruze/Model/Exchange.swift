@@ -18,14 +18,19 @@ class Exchange: NSObject {
   var itemRequested: Item!
   var itemOffered: Item!
   var dateExchanged: NSDate?
-  var recordID: CKRecordID?
+  var recordID: CKRecordID!
   
-  init(status: ExchangeStatus, itemRequested: Item, itemOffered: Item, dateExchanged: NSDate?) {
-    self.status = status
-    self.itemRequested = itemRequested
-    self.itemOffered = itemOffered
-    self.dateExchanged = dateExchanged
-    super.init()
+  init(status: ExchangeStatus? = nil,
+    itemRequested: Item? = nil,
+    itemOffered: Item? = nil,
+    dateExchanged: NSDate? = nil,
+    recordID: CKRecordID? = nil) {
+      self.status = status
+      self.itemRequested = itemRequested
+      self.itemOffered = itemOffered
+      self.dateExchanged = dateExchanged
+      self.recordID = recordID
+      super.init()
   }
   init(record: CKRecord, database: CKDatabase? = nil) {
     status = ExchangeStatus(rawValue: record.objectForKey("ExchangeStatus") as! Int)

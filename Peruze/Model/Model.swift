@@ -377,6 +377,7 @@ class Model: NSObject, CLLocationManagerDelegate {
       let pendingRequestPredicate = NSPredicate(format: "ExchangeStatus == %i", ExchangeStatus.Pending.rawValue)
       let requestPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([pendingRequestPredicate, requestedItemPredicate])
       //create the operation and handle completions
+      self.requests = []
       let requestQueryOp = CKQueryOperation(query: CKQuery(recordType: RecordTypes.Exchange, predicate: requestPredicate))
       requestQueryOp.recordFetchedBlock = { (record) -> Void in
         self.requests.append(Exchange(record: record))
@@ -427,15 +428,49 @@ class Model: NSObject, CLLocationManagerDelegate {
         
       }
     }
-   publicDB.addOperation(fetchRecords)
+    publicDB.addOperation(fetchRecords)
   }
   
-  func acceptExchangeRequest(exchange: Exchange) {
-    
+  func acceptExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
+    let modifiedExchange = CKRecord(recordType: RecordTypes.Exchange, recordID: exchange.recordID)
+    modifiedExchange.setObject(ExchangeStatus.Accepted.rawValue, forKey: "ExchangeStatus")
+    let modifyExchangeOp = CKModifyRecordsOperation(recordsToSave: [modifiedExchange], recordIDsToDelete: nil)
+    modifyExchangeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
+    modifyExchangeOp.modifyRecordsCompletionBlock = { (recordsSaved, recordsDeleted, error) -> Void in
+      println(recordsSaved)
+      println(recordsDeleted)
+      println(error)
+      
+    }
+    let fetchRequests = NSBlockOperation { () -> Void in
+      self.fetchExchangeRequests({ (exchanges, error) -> Void in
+        completion?(exchanges, error)
+      })
+    }
+    fetchRequests.addDependency(modifyExchangeOp)
+    publicDB.addOperation(modifyExchangeOp)
+    NSOperationQueue.mainQueue().addOperation(fetchRequests)
   }
   
-  func denyExchangeRequest(exchange: Exchange) {
-    
+  func denyExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
+    let modifiedExchange = CKRecord(recordType: RecordTypes.Exchange, recordID: exchange.recordID)
+    modifiedExchange.setObject(ExchangeStatus.Denied.rawValue, forKey: "ExchangeStatus")
+    let modifyExchangeOp = CKModifyRecordsOperation(recordsToSave: [modifiedExchange], recordIDsToDelete: nil)
+    modifyExchangeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
+    modifyExchangeOp.modifyRecordsCompletionBlock = { (recordsSaved, recordsDeleted, error) -> Void in
+      println(recordsSaved)
+      println(recordsDeleted)
+      println(error)
+      
+    }
+    let fetchRequests = NSBlockOperation { () -> Void in
+      self.fetchExchangeRequests({ (exchanges, error) -> Void in
+        completion?(exchanges, error)
+      })
+    }
+    fetchRequests.addDependency(modifyExchangeOp)
+    publicDB.addOperation(modifyExchangeOp)
+    NSOperationQueue.mainQueue().addOperation(fetchRequests)
   }
   
   //MARK: - For Profile Screen

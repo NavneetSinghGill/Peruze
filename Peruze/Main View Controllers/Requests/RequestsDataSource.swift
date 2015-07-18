@@ -64,9 +64,19 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) { /* keep this empty */}
   
   //MARK: - Editing Data
-  func deleteItemAtIndex(index: Int) {
-    if requests.count > 0{
+  func deleteItemAtIndex(index: Int) -> Exchange {
+    var retValue = Exchange()
+    if requests.count > 0 {
+      retValue = requests[index]
       requests.removeAtIndex(index)
+    }
+    return retValue
+  }
+  func deleteRequest(requestToDelete: Exchange) {
+    for i in 0..<requests.count {
+      if requests[i].recordID == requestToDelete.recordID {
+        requests.removeAtIndex(i)
+      }
     }
   }
 }
