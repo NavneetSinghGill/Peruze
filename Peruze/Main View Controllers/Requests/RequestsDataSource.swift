@@ -16,7 +16,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
         static let TableViewReuseIdentifier = "ProfileExchange"
     }
     var requestDelegate: RequestCollectionViewCellDelegate?
-    var items = [Item]()
+    var requests = [Exchange]()
     override init() {
         super.init()
     }
@@ -27,13 +27,13 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
         collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.CollectionViewReuseIdentifier)
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.CollectionViewReuseIdentifier, forIndexPath: indexPath) as! RequestsCollectionViewCell
         cell.delegate = requestDelegate
-        cell.itemOfferedToUser = items[indexPath.item]
-        cell.itemRequestedFromUser = items[indexPath.item + 1]
+        cell.itemOfferedToUser = requests[indexPath.row].itemOffered
+        cell.itemRequestedFromUser = requests[indexPath.row].itemRequested
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count - 1
+        return requests.count
     }
     
     //MARK: - UITableView Data Source
@@ -42,8 +42,8 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
         tableView.registerNib(nib, forCellReuseIdentifier: Constants.TableViewReuseIdentifier)
         var cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
         //TODO: Format the date label
-        let myItem = items[indexPath.row + 1]
-        let theirItem = items[indexPath.row]
+        let myItem = requests[indexPath.row].itemRequested
+        let theirItem = requests[indexPath.row].itemOffered
         cell.profileImageView.image = theirItem.owner.image
         cell.nameLabel.text = "\(theirItem.owner.firstName)'s"
         cell.itemLabel.text = "\(theirItem.title)"
@@ -54,7 +54,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count - 1
+        return requests.count
     }
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -63,8 +63,8 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
 
     //MARK: - Editing Data
     func deleteItemAtIndex(index: Int) {
-        if items.count > 0{
-            items.removeAtIndex(index)
+        if requests.count > 0{
+            requests.removeAtIndex(index)
         }
     }
 }

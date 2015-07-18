@@ -10,27 +10,32 @@ import UIKit
 import CloudKit
 
 enum ExchangeStatus: Int {
-    case Pending = 0, Accepted, Denied, Completed, Canceled
+  case Pending = 0, Accepted, Denied, Completed, Canceled
 }
 
 class Exchange: NSObject {
-    var status: ExchangeStatus!
-    var itemRequested: Item!
-    var itemOffered: Item!
-    var dateExchanged: NSDate?
-    
-    override init() {
-        super.init()
-    }
-    convenience init(status: ExchangeStatus, itemRequested: Item, itemOffered: Item, dateExchanged: NSDate?) {
-        self.init()
-        self.status = status
-        self.itemRequested = itemRequested
-        self.itemOffered = itemOffered
-        self.dateExchanged = dateExchanged
-    }
-    convenience init(record: CKRecord, database: CKDatabase) {
-        
-        self.init()
-    }
+  var status: ExchangeStatus!
+  var itemRequested: Item!
+  var itemOffered: Item!
+  var dateExchanged: NSDate?
+  
+  
+  init(status: ExchangeStatus, itemRequested: Item, itemOffered: Item, dateExchanged: NSDate?) {
+    self.status = status
+    self.itemRequested = itemRequested
+    self.itemOffered = itemOffered
+    self.dateExchanged = dateExchanged
+    super.init()
+  }
+  init(record: CKRecord, database: CKDatabase? = nil) {
+    status = ExchangeStatus(rawValue: record.objectForKey("ExchangeStatus") as! Int)
+    dateExchanged = record.objectForKey("DateExchanged") as? NSDate
+    let requestedReference = record.objectForKey("RequestedItem") as? CKReference
+    itemRequested = Item()
+    itemRequested.id = requestedReference?.recordID
+    let offeredReference = record.objectForKey("OfferedItem") as? CKReference
+    itemOffered = Item()
+    itemOffered.id = offeredReference?.recordID
+    super.init()
+  }
 }

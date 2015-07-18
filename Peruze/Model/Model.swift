@@ -195,10 +195,6 @@ class Model: NSObject, CLLocationManagerDelegate {
       //work with results
     }
     
-    
-    
-    
-    
     switch userPrivacySetting() {
     case .Everyone :
       let itemsWithinRangeQuery = queryForItemsWithinRange()
@@ -373,6 +369,67 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   //MARK: - For Requests Screen
+  func fetchExchangeRequests(completion: ([Exchange]?, NSError?) -> Void) {
+    if let profileUploads = myProfile?.uploads {
+      //create the predicate
+      let possibleRequestedItems = profileUploads.map { CKReference(recordID: $0.id, action: .DeleteSelf) }
+      let requestedItemPredicate = NSPredicate(format: "RequestedItem IN %@", possibleRequestedItems)
+      let pendingRequestPredicate = NSPredicate(format: "ExchangeStatus == %i", ExchangeStatus.Pending.rawValue)
+      let requestPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([pendingRequestPredicate, requestedItemPredicate])
+      //create the operation and handle completions
+      let requestQueryOp = CKQueryOperation(query: CKQuery(recordType: RecordTypes.Exchange, predicate: requestPredicate))
+      requestQueryOp.recordFetchedBlock = { (record) -> Void in
+        self.requests.append(Exchange(record: record))
+      }
+      requestQueryOp.queryCompletionBlock = { (_, error) -> Void in
+        if error != nil {
+          completion(nil, error)
+        } else {
+          self.fetchItemsForExchangeObjectsOperation(self.requests) { (completeExchanges:[Exchange]?, error: NSError?) -> Void in
+            self.requests = completeExchanges!
+            completion(completeExchanges, error)
+          }
+        }
+      }
+      publicDB.addOperation(requestQueryOp)
+    }
+  }
+  
+  private func fetchItemsForExchangeObjectsOperation(exchanges: [Exchange], completion: ([Exchange]?, NSError?) -> Void) {
+    var returnExchanges = exchanges
+    var collectedRecordIDs = exchanges.map({ $0.itemOffered.id })
+    let fetchRecords = CKFetchRecordsOperation(recordIDs: collectedRecordIDs)
+    fetchRecords.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+      if error != nil {
+        completion(nil, error)
+        return
+      }
+      //handle exchanges
+      for exchange in returnExchanges {
+        //find item requested
+        if let uploads = self.myProfile?.uploads {
+          for upload in uploads {
+            if upload.id == exchange.itemRequested.id {
+              exchange.itemRequested = upload
+            }
+          }
+        }
+        //find item offered
+        if let matchingOfferedItem = recordsByID[exchange.itemOffered.id] as? CKRecord {
+          exchange.itemOffered = Item(record: matchingOfferedItem, database: self.publicDB)
+          self.fetchMinimumPersonForID(matchingOfferedItem.creatorUserRecordID, completion: { (owner, error) -> Void in
+            exchange.itemOffered.owner = owner
+            if exchange == returnExchanges.last! {
+              completion(returnExchanges, error)
+            }
+          })
+        }
+        
+      }
+    }
+   publicDB.addOperation(fetchRecords)
+  }
+  
   func acceptExchangeRequest(exchange: Exchange) {
     
   }
