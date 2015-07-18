@@ -311,13 +311,10 @@ class Model: NSObject, CLLocationManagerDelegate {
     newRequest.setObject(request.status.rawValue, forKey: "ExchangeStatus")
     newRequest.setObject(offeredReference, forKey: "OfferedItem")
     newRequest.setObject(requestedReference, forKey: "RequestedItem")
-    let saveNewRequestOp = CKModifyRecordsOperation(recordsToSave: newRequest, recordIDsToDelete: nil)
-    
+    let saveNewRequestOp = CKModifyRecordsOperation(recordsToSave: [newRequest], recordIDsToDelete: nil)
+    publicDB.addOperation(saveNewRequestOp)
   }
   //MARK: - For Upload Screen
-  func uploadItem(item: Item) {
-    
-  }
   func uploadItemWithImage(image: UIImage!, title: String, andDetails details: String) {
     //change the image into a url
     let pngData = UIImagePNGRepresentation(image)
