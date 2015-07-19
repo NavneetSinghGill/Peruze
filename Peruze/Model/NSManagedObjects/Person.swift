@@ -8,10 +8,21 @@
 
 import Foundation
 import CoreData
+import CloudKit
 
 @objc(Person)
 class Person: NSManagedObject {
-
-// Insert code here to add functionality to your managed object subclass
-
+  class func personForRecord(record: CKRecord) -> Person {
+    let person = Person()
+    person.recordIDName = record.recordID.recordName
+    person.firstName = record.objectForKey("FirstName") as? String
+    person.lastName = record.objectForKey("LastName") as? String
+    person.facebookID = record.objectForKey("FacebookID") as? String
+    //fetch image
+    if let url = (record.objectForKey("Image") as? CKAsset)?.fileURL {
+      person.image = NSData(contentsOfURL: url)
+    }
+    return person
+  }
+  
 }
