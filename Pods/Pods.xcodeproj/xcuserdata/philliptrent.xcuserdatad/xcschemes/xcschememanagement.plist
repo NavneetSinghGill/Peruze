@@ -19,7 +19,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>PPTopMostController.xcscheme</key>
+		<key>MagicalRecord.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -37,12 +37,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>13074F219EFE70BD1F8FFB006ECD6350</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3A7DD539676DDECD8094C3F9CD305D41</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>95B6F378F4DACFCC522392C27669BB60</key>
+		<key>66206E0109041E97AFAD2DCD0CC83A29</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,17 +57,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B567414BDF049A2422EE739BA41C6DDF</key>
+		<key>F533F23C92B3E3DC03B0DCD6D2C337DC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B9A25A77C20088F38BE002677FF88DCF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D35715710800E794BDFB24BE43D6D5C2</key>
+		<key>FCEB44319584DD3551F895F8EE49BED0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

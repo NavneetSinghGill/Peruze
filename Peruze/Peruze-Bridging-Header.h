@@ -3,3 +3,4 @@
 //
 #import "TGCameraViewController.h"
 #import "TGCameraColor.h"
+#define MR_SHORTHAND

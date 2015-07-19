@@ -55,13 +55,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Peruze/AsyncOpKit.framework'
   install_framework 'Pods-Peruze/JSQMessagesViewController.framework'
   install_framework 'Pods-Peruze/JSQSystemSoundPlayer.framework'
-  install_framework 'Pods-Peruze/PPTopMostController.framework'
+  install_framework 'Pods-Peruze/MagicalRecord.framework'
   install_framework 'Pods-Peruze/Reachability.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Peruze/AsyncOpKit.framework'
   install_framework 'Pods-Peruze/JSQMessagesViewController.framework'
   install_framework 'Pods-Peruze/JSQSystemSoundPlayer.framework'
-  install_framework 'Pods-Peruze/PPTopMostController.framework'
+  install_framework 'Pods-Peruze/MagicalRecord.framework'
   install_framework 'Pods-Peruze/Reachability.framework'
 fi

@@ -3,21 +3,21 @@ PODS:
   - JSQMessagesViewController (7.1.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - PPTopMostController (0.0.1)
+  - MagicalRecord (2.3.0)
   - Reachability (3.2)
 
 DEPENDENCIES:
   - AsyncOpKit
   - JSQMessagesViewController (~> 7.0)
   - JSQSystemSoundPlayer (~> 2.0.1)
-  - PPTopMostController
+  - MagicalRecord
   - Reachability
 
 SPEC CHECKSUMS:
   AsyncOpKit: 2cb96804722b01fa4e8c4aae2e9e3e31f8dda4f2
   JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
+  MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
 
 COCOAPODS: 0.38.0

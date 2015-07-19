@@ -6,19 +6,19 @@
 //  Copyright (c) 2015 Peruse, LLC. All rights reserved.
 //
 
-import UIKit
-import CloudKit
-
-class Review: NSObject {
-    var starRatingValue: Float = 0
-    var reviewer: Person!
-    var date: NSDate!
-    var title: String!
-    var personBeingReviewed: Person!
-    override init() {
-        super.init()
-    }
-    convenience init(record: CKRecord, database: CKDatabase) {
-        self.init()
-    }
-}
+//import UIKit
+//import CloudKit
+//
+//class Review: NSObject {
+//    var starRatingValue: Float = 0
+//    var reviewer: Person!
+//    var date: NSDate!
+//    var title: String!
+//    var personBeingReviewed: Person!
+//    override init() {
+//        super.init()
+//    }
+//    convenience init(record: CKRecord, database: CKDatabase) {
+//        self.init()
+//    }
+//}
