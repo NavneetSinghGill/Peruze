@@ -15,10 +15,10 @@ class GetPersonOperation: Operation {
   let database: CKDatabase
   let context: NSManagedObjectContext
   
-  init(recordID: CKRecordID, database: CKDatabase, context: NSManagedObjectContext? = managedConcurrentObjectContext) {
+  init(recordID: CKRecordID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.personID = recordID
     self.database = database
-    self.context = context!
+    self.context = context
     super.init()
   }
   /**

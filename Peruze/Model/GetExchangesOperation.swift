@@ -117,11 +117,11 @@ class GetExchangesOperation: Operation {
   init(personRecordIDName: String,
     status: ExchangeStatus,
     database: CKDatabase,
-    context: NSManagedObjectContext? = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.personRecordIDName = personRecordIDName
       self.status = status
       self.database = database
-      self.context = context!
+      self.context = context
       super.init()
   }
   

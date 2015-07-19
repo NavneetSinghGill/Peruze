@@ -131,6 +131,7 @@
 		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
+		9D9E21911B5C68D400C166C8 /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9E21901B5C68D400C166C8 /* AlertOperation.swift */; };
 		9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969A1B5B51D600273677 /* OperationQueue.swift */; };
 		9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969B1B5B51D600273677 /* ExclusivityController.swift */; };
 		9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969D1B5B51D600273677 /* Operation.swift */; };
@@ -330,6 +331,7 @@
 		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
+		9D9E21901B5C68D400C166C8 /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
 		9DEB969A1B5B51D600273677 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		9DEB969B1B5B51D600273677 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
 		9DEB969D1B5B51D600273677 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 		9D177B221B54DDC3009CB9FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9D9E21901B5C68D400C166C8 /* AlertOperation.swift */,
 				9D45D22E1B5B6B6E00D555F3 /* CloudKitOperations */,
 				9D45D2131B5B5D1C00D555F3 /* NSManagedObjects */,
 				9DE8B4F01B5B51B7002D993E /* Operations */,
@@ -1090,6 +1093,7 @@
 				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
 				9DEB96C21B5B51D600273677 /* URLSessionTaskOperation.swift in Sources */,
+				9D9E21911B5C68D400C166C8 /* AlertOperation.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
 				9DEB96D31B5B51D600273677 /* PhotosCondition.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,

@@ -25,10 +25,10 @@ class GetUploadsOperation: Operation {
   */
   init(recordID: CKRecordID,
     database: CKDatabase,
-    context: NSManagedObjectContext? = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.personID = recordID
     self.database = database
-    self.context = context!
+    self.context = context
     super.init()
   }
   
