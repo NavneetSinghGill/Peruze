@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+enum ExchangeStatus: Int {
+  case Pending = 0, Accepted, Denied, Completed, Canceled
+}
+
 @objc(Exchange)
 class Exchange: NSManagedObject {
 

@@ -9,9 +9,6 @@
 //import UIKit
 //import CloudKit
 //
-//enum ExchangeStatus: Int {
-//  case Pending = 0, Accepted, Denied, Completed, Canceled
-//}
 //
 //class Exchange: NSObject {
 //  var status: ExchangeStatus!

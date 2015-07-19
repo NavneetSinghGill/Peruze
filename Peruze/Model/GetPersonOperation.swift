@@ -8,7 +8,7 @@
 
 import Foundation
 import CloudKit
-import CoreData
+import MagicalRecord
 
 class GetPersonOperation: Operation {
   let personID: CKRecordID
@@ -22,13 +22,14 @@ class GetPersonOperation: Operation {
     super.init()
   }
   /**
-    - parameter itemIDName: A valid recordIDName whose owner corresponds to the person
-                that you wish to fetch
-    - parameter context: The `NSManagedObjectContext` that will be used as the
-                basis for importing data. The operation will internally
-                construct a new `NSManagedObjectContext` that points
-                to the same `NSPersistentStoreCoordinator` as the
-                passed-in context.
+  - parameter itemIDName: A valid recordIDName whose owner corresponds to the person
+              that you wish to fetch
+  - parameter database: The database to place the fetch request on
+  - parameter context: The `NSManagedObjectContext` that will be used as the
+              basis for importing data. The operation will internally
+              construct a new `NSManagedObjectContext` that points
+              to the same `NSPersistentStoreCoordinator` as the
+              passed-in context.
   */
   init(itemIDName: String, database: CKDatabase, context: NSManagedObjectContext? = managedConcurrentObjectContext) {
     self.database = database
@@ -60,9 +61,29 @@ class GetPersonOperation: Operation {
       if error != nil {
         self.finishWithError(error)
       } else {
+        //add person to the database
+        MagicalRecord.saveWithBlockAndWait({ (context) -> Void in
+          for recordID in recordsByID!.keys {
+            
+            //fetch each person with the returned ID
+            let localPerson = Person.findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
+            
+            //set the returned properties
+            localPerson.firstName = localPerson.firstName ?? recordsByID![recordID]!.objectForKey("FirstName") as? String
+            localPerson.lastName = localPerson.lastName ?? recordsByID![recordID]!.objectForKey("LastName") as? String
+            localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
+            
+            //check for image property and set the data
+            if let imageAsset = recordsByID![recordID]!.objectForKey("Image") as? CKAsset {
+              localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
+            }
+            
+            //save the context
+            context.saveToPersistentStoreAndWait()
+          }
+        })
         
-        
-        
+        //because the operations inside of the block wait, we can call finish outside of the block
         self.finish()
       }
     }
