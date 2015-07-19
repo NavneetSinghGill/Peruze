@@ -125,6 +125,12 @@
 		9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2231B5B5D8A00D555F3 /* Item.swift */; };
 		9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2241B5B5D8A00D555F3 /* Message.swift */; };
 		9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2251B5B5D8A00D555F3 /* Review.swift */; };
+		9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */; };
+		9D45D2321B5B6BAC00D555F3 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */; };
+		9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */; };
+		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
+		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
+		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
 		9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969A1B5B51D600273677 /* OperationQueue.swift */; };
 		9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969B1B5B51D600273677 /* ExclusivityController.swift */; };
 		9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969D1B5B51D600273677 /* Operation.swift */; };
@@ -318,6 +324,12 @@
 		9D45D2231B5B5D8A00D555F3 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = NSManagedObjects/Item.swift; sourceTree = "<group>"; };
 		9D45D2241B5B5D8A00D555F3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = NSManagedObjects/Message.swift; sourceTree = "<group>"; };
 		9D45D2251B5B5D8A00D555F3 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Review.swift; path = NSManagedObjects/Review.swift; sourceTree = "<group>"; };
+		9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFullProfileOperation.swift; sourceTree = "<group>"; };
+		9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
+		9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUploadsOperation.swift; sourceTree = "<group>"; };
+		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
+		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
+		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
 		9DEB969A1B5B51D600273677 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		9DEB969B1B5B51D600273677 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
 		9DEB969D1B5B51D600273677 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -496,6 +508,7 @@
 		9D177B221B54DDC3009CB9FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9D45D22E1B5B6B6E00D555F3 /* CloudKitOperations */,
 				9D45D2131B5B5D1C00D555F3 /* NSManagedObjects */,
 				9DE8B4F01B5B51B7002D993E /* Operations */,
 				9D177B291B54DDC3009CB9FA /* Model.swift */,
@@ -789,6 +802,19 @@
 			name = NSManagedObjects;
 			sourceTree = "<group>";
 		};
+		9D45D22E1B5B6B6E00D555F3 /* CloudKitOperations */ = {
+			isa = PBXGroup;
+			children = (
+				9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */,
+				9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */,
+				9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */,
+				9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */,
+				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
+				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
+			);
+			name = CloudKitOperations;
+			sourceTree = "<group>";
+		};
 		9DE8B4F01B5B51B7002D993E /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1052,6 +1078,7 @@
 				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
 				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
 				9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */,
+				9D45D2321B5B6BAC00D555F3 /* GetReviewsOperation.swift in Sources */,
 				9DEB96CD1B5B51D600273677 /* MutuallyExclusive.swift in Sources */,
 				9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */,
 				9DEB96D61B5B51D600273677 /* UserNotificationCondition.swift in Sources */,
@@ -1072,7 +1099,9 @@
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
 				9DEB96D01B5B51D600273677 /* PassbookCondition.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
+				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
+				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
 				9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */,
 				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
 				9DEB96D91B5B51D600273677 /* CKContainer+Operations.swift in Sources */,
@@ -1106,6 +1135,7 @@
 				9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */,
 				9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */,
 				9DEB96CF1B5B51D600273677 /* CloudCondition.swift in Sources */,
+				9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
 				9DEB96C81B5B51D600273677 /* OperationErrors.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
@@ -1159,6 +1189,7 @@
 				9DEB96CB1B5B51D600273677 /* NegatedCondition.swift in Sources */,
 				9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */,
 				9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */,
+				9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */,
 				9DEB96D11B5B51D600273677 /* LocationCondition.swift in Sources */,
 				9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */,
 				9DEB96CC1B5B51D600273677 /* NoCancelledDependencies.swift in Sources */,
@@ -1169,6 +1200,7 @@
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
 				9D177BC51B54DDC3009CB9FA /* TGAlbum.m in Sources */,
 				9D177B9B1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift in Sources */,
+				9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -190,14 +190,14 @@ class FetchDependencyFavorites: AsyncOperation {
   override func main() {
     for object in dependencies {
       //make sure that the record is in dependencies
-//      if object.respondsToSelector("record"){
-//        if let record = object.record?() as? CKRecord {
-//          if record.recordType == RecordTypes.User {
-//            assert(self.record == nil, "FetchDependencyFavorites has more than one dependency with a User Record")
-//            self.record = record
-//          }
-//        }
-//      }
+      if object.respondsToSelector("record"){
+        if let record = object.record?() as? CKRecord {
+          if record.recordType == RecordTypes.User {
+            assert(self.record == nil, "FetchDependencyFavorites has more than one dependency with a User Record")
+            self.record = record
+          }
+        }
+      }
     }
     assert(self.record != nil, "FetchDependencyFavorites instance does not have a dependency with a User Record")
     

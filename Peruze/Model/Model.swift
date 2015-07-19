@@ -11,6 +11,7 @@ import CloudKit
 import FBSDKLoginKit
 import JSQMessagesViewController
 import AsyncOpKit
+import MagicalRecord
 
 struct NotificationCenterKeys {
   static let PeruzeItemsDidFinishUpdate = "PeruseItemsDidFinishUpdate"
@@ -97,6 +98,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   func setFacebookProfileForLoggedInUser(profile: FBSDKProfile, andImage image: UIImage,  withCompletion completion: (NSError? -> Void)? = nil) {
     setInfoForLoggedInUser(profile.firstName, lastName: profile.lastName, facebookID: profile.userID, image: image, completion: completion)
+    
   }
   func setInfoForLoggedInUser(firstName: String?, lastName: String?, facebookID: String?, image: UIImage, completion:(NSError? -> Void)? = nil) {
     let imageName = firstName?.stringByReplacingOccurrencesOfString(" ", withString: "_", options: .CaseInsensitiveSearch, range: nil)
@@ -662,7 +664,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   //MARK: - Location Delegate
   func updateUserLocation(location: CLLocation) {
     if myProfile == nil { return }
-    let myNewLocationRecord = CKRecord(recordType: RecordTypes.User, recordID: (myProfile?.recordID)!)
+    let myNewLocationRecord = CKRecord(recordType: RecordTypes.User, recordID: (CKRecordID(recordName: myProfile!.recordIDName!)))
     myNewLocationRecord.setObject(location, forKey: "Location")
     let modifyOperation = CKModifyRecordsOperation(recordsToSave: [myNewLocationRecord], recordIDsToDelete: nil)
     
@@ -739,4 +741,6 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
 }
 let modelSingletonGlobal = Model()
+let managedMainObjectContext = NSManagedObjectContext.MR_defaultContext()
+let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 
