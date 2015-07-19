@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Override point for customization after application launch.
     // Setup CoreData with MagicalRecord
     
-    
+    MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }
