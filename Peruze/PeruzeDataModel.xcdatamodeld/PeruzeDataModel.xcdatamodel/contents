@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8154.4" systemVersion="14F6a" minimumToolsVersion="Xcode 7.0">
-    <entity name="Chat" syncable="YES">
+    <entity name="Chat" representedClassName=".Chat" syncable="YES">
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exchange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exchange" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" syncable="YES"/>
     </entity>
-    <entity name="Exchange" syncable="YES">
+    <entity name="Exchange" representedClassName=".Exchange" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="itemOffered" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
         <relationship name="itemRequested" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
     </entity>
-    <entity name="Item" syncable="YES">
+    <entity name="Item" representedClassName=".Item" syncable="YES">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="ownerFacebookID" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,12 +20,12 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" syncable="YES"/>
     </entity>
-    <entity name="Message" syncable="YES">
+    <entity name="Message" representedClassName=".Message" syncable="YES">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Person" syncable="YES">
+    <entity name="Person" representedClassName=".Person" syncable="YES">
         <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -33,7 +33,7 @@
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favorites" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
     </entity>
-    <entity name="Review" syncable="YES">
+    <entity name="Review" representedClassName=".Review" syncable="YES">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
