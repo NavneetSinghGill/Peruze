@@ -25,7 +25,7 @@ class Person: NSObject {
   }
   
   init(mutualFriends: Int = 0,
-    image: UIImage? = nil,
+    image: UIImage? = UIImage(),
     firstName: String = "",
     lastName: String = "",
     uploads: [Item] = [],
@@ -49,6 +49,8 @@ class Person: NSObject {
     assert(record.recordType == RecordTypes.User, "Trying to create a person from a non User record")
     if let imageAsset = record.objectForKey("Image") as? CKAsset {
       image = UIImage(data: NSData(contentsOfURL: imageAsset.fileURL)!)
+    } else {
+      image = UIImage()
     }
     firstName = record.objectForKey("FirstName") as? String
     lastName = record.objectForKey("LastName") as? String

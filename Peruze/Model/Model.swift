@@ -413,7 +413,26 @@ class Model: NSObject, CLLocationManagerDelegate {
     if exchanges.count == 0 {
       completion([], nil)
     }
-    //start fetching errors setup
+
+    
+    
+//    var aggregatedErrors = [NSError]()
+//    var itemOfferedRecordIDs = exchanges.map({ $0.itemOffered.id })
+//    let finishOperation = NSBlockOperation {
+//      completion([], aggregatedErrors.last)
+//    }
+//    let fetchItemsOffered = CKFetchRecordsOperation(recordIDs: itemOfferedRecordIDs)
+//    fetchItemsOffered.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+//      if error != nil { aggregatedErrors.append(error!) }
+//      
+//      
+//    }
+
+    
+    
+    
+    
+    
     var aggregatedErrors = [NSError]()
     var returnExchanges = exchanges
     var collectedRecordIDs = exchanges.map({ $0.itemOffered.id })
@@ -425,26 +444,27 @@ class Model: NSObject, CLLocationManagerDelegate {
         aggregatedErrors.append(error!)
       }
       //handle exchanges
-      for exchange in returnExchanges {
+      for i in 0..<returnExchanges.count {
         //find item requested
         if let uploads = self.myProfile?.uploads {
           for upload in uploads {
-            if upload.id == exchange.itemRequested.id {
-              exchange.itemRequested = upload
+            if upload.id == returnExchanges[i].itemRequested.id {
+              returnExchanges[i].itemRequested = upload
             }
           }
         }
         //find item offered
-        if let matchingOfferedItem = recordsByID[exchange.itemOffered.id] as? CKRecord {
-          exchange.itemOffered = Item(record: matchingOfferedItem, database: self.publicDB)
+        if let matchingOfferedItem = recordsByID[returnExchanges[i].itemOffered.id] as? CKRecord {
+          returnExchanges[i].itemOffered = Item(record: matchingOfferedItem, database: self.publicDB)
           self.fetchMinimumPersonForID(matchingOfferedItem.creatorUserRecordID, completion: { (owner, error) -> Void in
             if error != nil {
               println("Fetch Minimum Person For ID (Exchange Requests) Has An Error:")
               println(error)
               aggregatedErrors.append(error!)
             }
-            exchange.itemOffered.owner = owner
-            if exchange == returnExchanges.last! {
+            assert(owner != nil, "owner returned from fetchMinimumPersonForID was nil")
+            returnExchanges[i].itemOffered.owner = owner
+            if i == returnExchanges.count - 1 {
               completion(returnExchanges, aggregatedErrors.last)
             }
           })

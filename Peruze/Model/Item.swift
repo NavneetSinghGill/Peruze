@@ -34,5 +34,8 @@ class Item: NSObject {
     image = UIImage(contentsOfFile: fileURLPath) ?? UIImage()
     title = record.objectForKey("Title") as? String ?? ""
     id = record.recordID
+    let ownerRef = record.objectForKey("Owner") as? CKReference
+    owner = Person()
+    owner.recordID = ownerRef?.recordID
   }
 }

@@ -21,6 +21,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   }
   @IBOutlet weak var collectionView: UICollectionView! {
     didSet {
+      dataSource.requestDelegate = self
       collectionView.dataSource = dataSource
       collectionView.delegate = self
       collectionView.pagingEnabled = true
@@ -45,6 +46,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
     layout.sectionInset = insets
     collectionView.reloadData()
     if let indexPath = indexPathToScrollToOnInit {
+      if collectionView.numberOfItemsInSection(0) <= indexPath.item { return }
       collectionView.scrollToItemAtIndexPath(indexPath,
         atScrollPosition: UICollectionViewScrollPosition.None,
         animated: false)
@@ -60,8 +62,8 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   }
   
   func requestAccepted(request: Exchange) {
-    dataSource.deleteRequest(request)
-    collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+    let deletedItemIndexPath = dataSource.deleteRequest(request)
+    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
     Model.sharedInstance().acceptExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
       self.dataSource.requests = reloadedRequests ?? []
       self.collectionView.reloadData()
@@ -73,8 +75,8 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   }
   
   func requestDenied(request: Exchange) {
-    dataSource.deleteRequest(request)
-    collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+    let deletedItemIndexPath = dataSource.deleteRequest(request)
+    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
     Model.sharedInstance().denyExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
       self.dataSource.requests = reloadedRequests ?? []
       self.collectionView.reloadData()

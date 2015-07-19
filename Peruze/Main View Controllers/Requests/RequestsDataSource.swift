@@ -37,8 +37,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     let nib = UINib(nibName: Constants.TableViewNibName, bundle: nil)
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.TableViewReuseIdentifier)
     var cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
-    //TODO: Format the date label
-    
     let myItem = requests[indexPath.row].itemRequested
     let theirItem = requests[indexPath.row].itemOffered
     cell.profileImageView.image = theirItem.owner.image
@@ -61,7 +59,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return true
   }
-  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) { /* keep this empty */}
+  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) { /* keep this empty */ }
   
   //MARK: - Editing Data
   func deleteItemAtIndex(index: Int) -> Exchange {
@@ -72,11 +70,15 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     }
     return retValue
   }
-  func deleteRequest(requestToDelete: Exchange) {
+  func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
+    var returnPath = NSIndexPath(forItem: 0, inSection: 0)
     for i in 0..<requests.count {
       if requests[i].recordID == requestToDelete.recordID {
         requests.removeAtIndex(i)
+        return NSIndexPath(forItem: i, inSection: 0)
       }
     }
+    assertionFailure("Tried to delete a request that was not in the requests")
+    return NSIndexPath()
   }
 }
