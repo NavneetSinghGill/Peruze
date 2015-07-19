@@ -100,11 +100,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   func setInfoForLoggedInUser(firstName: String?, lastName: String?, facebookID: String?, image: UIImage, completion:(NSError? -> Void)? = nil) {
     let imageName = firstName?.stringByReplacingOccurrencesOfString(" ", withString: "_", options: .CaseInsensitiveSearch, range: nil)
-    let (localImageURL, saveError) = saveImage(image, withName: imageName ?? "temp_file")
-    let imageAsset = CKAsset(fileURL: localImageURL)
-    
-    ///Error to pass back to completion block
-    var error: NSError? = saveError
+    let (localImageURL, _) = saveImage(image, withName: imageName ?? "temp_file")
+    let imageAsset = CKAsset(fileURL: localImageURL!)
     
     //create the fetch and save user operations
     let startIndicator = StartNetworkIndicator()
@@ -117,20 +114,20 @@ class Model: NSObject, CLLocationManagerDelegate {
     fetchUserOperation.perRecordCompletionBlock = { (record, recordID, error) -> Void in
       //check for error
       if error != nil { completion?(error); return }
-      println("Successfully fetched record with id \(recordID)")
+      print("Successfully fetched record with id \(recordID)")
       //modify the record
-      if firstName != nil { record.setObject(firstName, forKey: "FirstName") }
-      if lastName != nil { record.setObject(lastName, forKey: "LastName") }
-      if facebookID != nil { record.setObject(facebookID, forKey: "FacebookID") }
-      record.setObject(imageAsset, forKey: "Image")
+      if firstName != nil { record!.setObject(firstName, forKey: "FirstName") }
+      if lastName != nil { record!.setObject(lastName, forKey: "LastName") }
+      if facebookID != nil { record!.setObject(facebookID, forKey: "FacebookID") }
+      record!.setObject(imageAsset, forKey: "Image")
       //save the record
-      saveUserOperation.recordsToSave = [record]
+      saveUserOperation.recordsToSave = [record!]
       self.publicDB.addOperation(saveUserOperation)
     }
     
     saveUserOperation.modifyRecordsCompletionBlock = {(savedRecords, deletedRecordIDs, operationError) -> Void in
-      println("Saved the following records \(savedRecords)")
-      self.myProfile = Person(record: savedRecords.first as! CKRecord, database: self.publicDB)
+      print("Saved the following records \(savedRecords)")
+      self.myProfile = Person(record: savedRecords!.first!, database: self.publicDB)
       if operationError != nil {
         completion?(operationError)
       } else {
@@ -156,16 +153,16 @@ class Model: NSObject, CLLocationManagerDelegate {
   private var usersWithinRangeCursor: CKQueryCursor?
   private var cursorDistanceSettingInMi: Int?
   func fetchItemsWithinRangeAndPrivacy() {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
     var itemQueryResults = [CKRecord]()
     
     
-    let queryCompletionBlock = { (cursor: CKQueryCursor! , error: NSError!) -> Void in
+    let queryCompletionBlock = { (cursor: CKQueryCursor? , error: NSError?) -> Void in
       self.usersWithinRangeCursor = cursor
       if error != nil {
-        println(error.localizedDescription)
-        println(error.localizedFailureReason)
-        println(error.localizedRecoverySuggestion)
+        print(error!.localizedDescription)
+        print(error!.localizedFailureReason)
+        print(error!.localizedRecoverySuggestion)
         self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruzeUpdateError, forObject: error)
         return
       }
@@ -177,7 +174,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         //for each item, make CKRecord into Item and
         for item in itemQueryResults {
           let newItem = Item(record: item, database: self.publicDB)
-          self.fetchMinimumPersonForID(item.creatorUserRecordID, completion: { (owner, error) -> Void in
+          self.fetchMinimumPersonForID(item.creatorUserRecordID!, completion: { (owner, error) -> Void in
             newItem.owner = owner
             self.peruseItems.append(newItem)
             if item == itemQueryResults.last! {
@@ -201,7 +198,7 @@ class Model: NSObject, CLLocationManagerDelegate {
       let itemsOp = CKQueryOperation(query: itemsWithinRangeQuery)
       itemsOp.desiredKeys = nil //TODO: Change this
       itemsOp.recordFetchedBlock = { (itemRecord) -> Void in
-        println("item in range record = \(itemRecord)")
+        print("item in range record = \(itemRecord)")
         itemQueryResults.append(itemRecord)
       }
       itemsOp.queryCompletionBlock = queryCompletionBlock
@@ -211,18 +208,18 @@ class Model: NSObject, CLLocationManagerDelegate {
       let fetchFriends = FetchFacebookFriends()
       fetchFriends.completionHandler = { (operation) -> Void in
         if operation.error != nil {
-          println(operation.error!)
+          print(operation.error!)
           return
         }
         if let friendsOp = operation as? FetchFacebookFriends {
-          println(friendsOp.facebookIDs)
+          print(friendsOp.facebookIDs)
           let friendsPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsOp.facebookIDs)
           let rangeAndPrivacyPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([self.queryForItemsWithinRange().predicate, friendsPredicate])
           let rangeAndPrivacyQuery = CKQuery(recordType: RecordTypes.Item, predicate: rangeAndPrivacyPredicate)
           let rangeAndPrivacyOp = CKQueryOperation(query: rangeAndPrivacyQuery)
           rangeAndPrivacyOp.queryCompletionBlock = queryCompletionBlock
           rangeAndPrivacyOp.recordFetchedBlock = { (itemRecord) -> Void in
-            println("item in range record = \(itemRecord)")
+            print("item in range record = \(itemRecord)")
             itemQueryResults.append(itemRecord)
           }
           self.publicDB.addOperation(rangeAndPrivacyOp)
@@ -237,7 +234,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   
   private func queryForItemsWithinRange() -> CKQuery {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
     //check authorization status
     let authorized = CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways
     
@@ -260,20 +257,20 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   
   private func createSubscriptionForItems() {
-    println("Create Subscription for Items")
+    print("Create Subscription for Items")
     let predicate = NSPredicate(format: "creatorUserRecordID != %@", myProfile!.recordID)
     let subscription = CKSubscription(recordType: RecordTypes.Item,
       predicate: predicate,
       subscriptionID: SubscritionTypes.PeruzeItemUpdates,
-      options: .FiresOnRecordUpdate | .FiresOnRecordCreation | .FiresOnRecordDeletion)
+      options: [.FiresOnRecordUpdate, .FiresOnRecordCreation, .FiresOnRecordDeletion])
     publicDB.saveSubscription(subscription, completionHandler: { (savedSubscription, error) -> Void in
       if error != nil {
         //handle error
-        println(error.localizedDescription)
+        print(error!.localizedDescription)
         return
       } else {
-        println("- - - - - Subscription Saved - - - - -")
-        println(savedSubscription)
+        print("- - - - - Subscription Saved - - - - -")
+        print(savedSubscription)
       }
     })
   }
@@ -283,11 +280,11 @@ class Model: NSObject, CLLocationManagerDelegate {
       self.peruseItems.append(item)
       self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: item)
     } else {
-      publicDB.fetchRecordWithID(recordID, completionHandler: { (ownerRecord, error) -> Void in
+      publicDB.fetchRecordWithID(recordID!, completionHandler: { (ownerRecord, error) -> Void in
         if error != nil {
           self.postNotificationOnMainThread(NotificationCenterKeys.Error.PeruzeUpdateError, forObject: error)
         } else {
-          item.owner = Person(record: ownerRecord, database: self.publicDB)
+          item.owner = Person(record: ownerRecord!, database: self.publicDB)
           self.peruseItems.append(item)
           self.postNotificationOnMainThread(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, forObject: item)
         }
@@ -316,9 +313,9 @@ class Model: NSObject, CLLocationManagerDelegate {
     let pngData = UIImagePNGRepresentation(image)
     let imageName = title.stringByReplacingOccurrencesOfString(" ", withString: "_", options: .CaseInsensitiveSearch, range: nil)
     let path = documentsPathForFileName(imageName + ".png")
-    if !pngData.writeToFile(path, atomically: true) {
+    if !pngData!.writeToFile(path, atomically: true) {
       //there was an error writing the data
-      println("There was an error writing the png writing to the file.")
+      print("There was an error writing the png writing to the file.")
     }
     assert(myProfile != nil, "myProfile can not be nil when trying to upload an item")
     let newItem = CKRecord(recordType: RecordTypes.Item)
@@ -334,18 +331,24 @@ class Model: NSObject, CLLocationManagerDelegate {
     publicDB.saveRecord(newItem, completionHandler: { (savedRecord, error) -> Void in
       if error == nil {
         //successfully saved
-        println("---- record saved ----")
-        println(savedRecord)
+        print("---- record saved ----")
+        print(savedRecord)
         self.postNotificationOnMainThread(NotificationCenterKeys.UploadItemDidFinishSuccessfully, forObject: savedRecord)
         var removeError: NSError? {
           didSet {
-            println(removeError?.localizedDescription)
+            print(removeError?.localizedDescription)
             //handle error
           }
         }
-        NSFileManager.defaultManager().removeItemAtPath(path, error: &removeError)
+        do {
+          try NSFileManager.defaultManager().removeItemAtPath(path)
+        } catch let error as NSError {
+          removeError = error
+        } catch {
+          fatalError()
+        }
       } else {
-        println(error.localizedDescription)
+        print(error!.localizedDescription)
         //error handling
       }
     })
@@ -394,8 +397,8 @@ class Model: NSObject, CLLocationManagerDelegate {
       //handle full completion
       requestQueryOp.queryCompletionBlock = { (_, error) -> Void in
         if error != nil {
-          println("Fetch Exchange Requests Has An Error:")
-          println(error)
+          print("Fetch Exchange Requests Has An Error:")
+          print(error)
           aggregatedErrors.append(error!)
         }
         self.fetchItemsForExchangeObjectsOperation(self.requests) { (completeExchanges:[Exchange]?, error: NSError?) -> Void in
@@ -435,12 +438,12 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     var aggregatedErrors = [NSError]()
     var returnExchanges = exchanges
-    var collectedRecordIDs = exchanges.map({ $0.itemOffered.id })
+    let collectedRecordIDs = exchanges.map({ $0.itemOffered.id! })
     let fetchRecords = CKFetchRecordsOperation(recordIDs: collectedRecordIDs)
     fetchRecords.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
       if error != nil {
-        println("Fetch Items For Exchange Requests Has An Error:")
-        println(error)
+        print("Fetch Items For Exchange Requests Has An Error:")
+        print(error)
         aggregatedErrors.append(error!)
       }
       //handle exchanges
@@ -454,12 +457,12 @@ class Model: NSObject, CLLocationManagerDelegate {
           }
         }
         //find item offered
-        if let matchingOfferedItem = recordsByID[returnExchanges[i].itemOffered.id] as? CKRecord {
+        if let matchingOfferedItem = recordsByID![returnExchanges[i].itemOffered.id] {
           returnExchanges[i].itemOffered = Item(record: matchingOfferedItem, database: self.publicDB)
-          self.fetchMinimumPersonForID(matchingOfferedItem.creatorUserRecordID, completion: { (owner, error) -> Void in
+          self.fetchMinimumPersonForID(matchingOfferedItem.creatorUserRecordID!, completion: { (owner, error) -> Void in
             if error != nil {
-              println("Fetch Minimum Person For ID (Exchange Requests) Has An Error:")
-              println(error)
+              print("Fetch Minimum Person For ID (Exchange Requests) Has An Error:")
+              print(error)
               aggregatedErrors.append(error!)
             }
             assert(owner != nil, "owner returned from fetchMinimumPersonForID was nil")
@@ -476,8 +479,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   /**
   Accepts an exchange request from the Requests section
-  :param: exchange The exchange that is being accepted
-  :param: completion A completion block that returns the updated set of requests and the error from interacting with the database
+  - parameter exchange: The exchange that is being accepted
+  - parameter completion: A completion block that returns the updated set of requests and the error from interacting with the database
   */
   func acceptExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
     ///Errors to return to the user
@@ -512,8 +515,8 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   /**
   Denies an exchange request from the Requests section
-  :param: exchange The exchange that is being denied
-  :param: completion A completion block that returns the updated set of requests and the error from interacting with the database
+  - parameter exchange: The exchange that is being denied
+  - parameter completion: A completion block that returns the updated set of requests and the error from interacting with the database
   */
   func denyExchangeRequest(exchange: Exchange, completion: (([Exchange]?, NSError?) -> Void)? = nil) {
     ///Errors to return to the user
@@ -549,7 +552,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   //MARK: - For Profile Screen
   
   func completePerson(person: Person, completion: ((Person?, NSError?) -> Void)){
-    var returnPerson: Person = person
+    let returnPerson: Person = person
     var desiredKeys = [String]()
     //check for recordID and facebookID
     assert(person.recordID != nil,
@@ -598,12 +601,12 @@ class Model: NSObject, CLLocationManagerDelegate {
     let fetchOperation = CKFetchRecordsOperation(recordIDs:[recordID])
     fetchOperation.desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
     fetchOperation.perRecordCompletionBlock = { (record, _, error) -> Void in
-      println("Person fetched with record: \(record) and error: \(error)")
+      print("Person fetched with record: \(record) and error: \(error)")
       if error != nil {
-        println(error.localizedDescription)
+        print(error!.localizedDescription)
         completion(Person(), error)
       } else {
-        let result = Person(record: record, database: self.publicDB)
+        let result = Person(record: record!, database: self.publicDB)
         completion(result, error)
       }
     }
@@ -611,14 +614,14 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   func fetchMyMinimumProfileWithCompletion(completion: (Person?, NSError?) -> Void) {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
     if myProfile != nil {
       completion(myProfile, nil)
     } else {
       let fetchMyRecordOp = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
       fetchMyRecordOp.perRecordCompletionBlock = { (record, recordID, error) -> Void in
         if error != nil { completion(nil, error); return }
-        let personResult = Person(record: record)
+        let personResult = Person(record: record!)
         self.myProfile = personResult
         completion(self.myProfile, nil)
       }
@@ -627,7 +630,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   func fetchMyProfileWithCompletion(completion: (Person?, NSError?) -> Void) {
-    println("fetch my profile with completion")
+    print("fetch my profile with completion")
     if myProfile != nil {
       self.completePerson(myProfile!, completion: { (completedPerson, completionError) -> Void in
         self.myProfile = completedPerson
@@ -637,8 +640,8 @@ class Model: NSObject, CLLocationManagerDelegate {
       let fetchMyRecordOperation = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
       fetchMyRecordOperation.perRecordCompletionBlock = { (record, recordID, error) -> Void in
         if error != nil { completion(nil, error); return }
-        self.myProfile = Person(record: record, database: self.publicDB)
-        println("fetch my record operation")
+        self.myProfile = Person(record: record!, database: self.publicDB)
+        print("fetch my record operation")
         
         self.completePerson(self.myProfile!, completion: { (completedProfile, completionError) -> Void in
           if completionError != nil {
@@ -659,22 +662,22 @@ class Model: NSObject, CLLocationManagerDelegate {
   //MARK: - Location Delegate
   func updateUserLocation(location: CLLocation) {
     if myProfile == nil { return }
-    let myNewLocationRecord = CKRecord(recordType: RecordTypes.User, recordID: myProfile?.recordID)
+    let myNewLocationRecord = CKRecord(recordType: RecordTypes.User, recordID: (myProfile?.recordID)!)
     myNewLocationRecord.setObject(location, forKey: "Location")
     let modifyOperation = CKModifyRecordsOperation(recordsToSave: [myNewLocationRecord], recordIDsToDelete: nil)
     
     modifyOperation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) -> Void in
-      println("- - - - - - Location Record Saved - - - - - - - - -")
-      println(savedRecords)
-      println("- - - - - Location Record Error - - - - - - -")
-      println(error ?? "No error")
+      print("- - - - - - Location Record Saved - - - - - - - - -")
+      print(savedRecords)
+      print("- - - - - Location Record Error - - - - - - -")
+      print(error ?? "No error")
     }
     
     modifyOperation.savePolicy = CKRecordSavePolicy.ChangedKeys
     publicDB.addOperation(modifyOperation)
   }
   
-  func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+  func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
     switch status {
     case .AuthorizedAlways:
       locationManager.startUpdatingLocation()
@@ -684,13 +687,13 @@ class Model: NSObject, CLLocationManagerDelegate {
       break
     }
   }
-  func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-    println("location manager did fail with error: \(error)")
+  func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    print("location manager did fail with error: \(error)")
   }
   var currentLocation: CLLocation!
-  func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     currentLocation = currentLocation ?? CLLocationManager().location
-    let newLocation = locations.last! as! CLLocation
+    let newLocation = locations.last! as CLLocation
     let locationAge = -newLocation.timestamp.timeIntervalSinceNow
     
     if locationAge > 5.0 { return }
@@ -700,7 +703,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     currentLocation = newLocation
     
     if distance > 20 {
-      updateUserLocation(locations.last! as! CLLocation)
+      updateUserLocation(locations.last! as CLLocation)
     }
   }
   
@@ -713,7 +716,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   private func documentsPathForFileName(name: String) -> String {
     let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-    let documentsPath = paths.first! as! String
+    let documentsPath = paths.first! as String
     return documentsPath.stringByAppendingPathComponent(name)
   }
   
@@ -722,7 +725,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     var error: NSError?
     let path = documentsPathForFileName(name + ".png")
     let pngData = UIImagePNGRepresentation(image)
-    if !pngData.writeToFile(path, atomically: true) {
+    if !pngData!.writeToFile(path, atomically: true) {
       error = NSError(domain: WriteFileErrorDomain,
         code: 0,
         userInfo: [

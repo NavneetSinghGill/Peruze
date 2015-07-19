@@ -75,7 +75,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     collectionView.delegate = self
     
     //setup gesture recognizers
-    var longPress = UILongPressGestureRecognizer(target: self, action: Constants.LongPressActionHandlerIdentifier)
+    let longPress = UILongPressGestureRecognizer(target: self, action: Constants.LongPressActionHandlerIdentifier)
     longPress.delegate = self
     longPress.minimumPressDuration = Constants.MinimumLongPressDuration
     view.addGestureRecognizer(longPress)
@@ -100,7 +100,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    var layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
+    let layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
     
     //cell size
     let width = (collectionView.frame.width - 4.0 * Constants.BufferSpace) / 3.0
@@ -126,14 +126,6 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //MARK: - Handling Segues
   @IBAction func bottomBlurTap(sender: AnyObject) {
     let bufferSize:CGFloat = 32
-    var checkFrame = CGRectMake(checkmark.frame.origin.x - bufferSize,
-      checkmark.frame.origin.y - bufferSize,
-      checkmark.frame.width + 2 * bufferSize,
-      checkmark.frame.height + 2 * bufferSize)
-    var xFrame = CGRectMake(x.frame.origin.x - bufferSize,
-      x.frame.origin.y - bufferSize,
-      x.frame.width + 2 * bufferSize,
-      x.frame.height + 2 * bufferSize)
     if sender.state == UIGestureRecognizerState.Ended {
       if sender.locationInView(bottomBlurView).x >= checkmark.frame.minX - bufferSize {
         exchangeCompleted()
@@ -145,12 +137,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   private func exchangeCompleted() {
     if !NetworkConnection.connectedToNetwork() {
-      let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock(tryAgain: { self.exchangeCompleted() })
+      let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock({ self.exchangeCompleted() })
       presentViewController(alert, animated: true, completion: nil)
       return
     }
     if itemInCircleView == nil {
-      var alert = UIAlertView(title: Constants.NoItemAlert.title,
+      let alert = UIAlertView(title: Constants.NoItemAlert.title,
         message: "\(self.itemSelectedForExchange!.owner.firstName) is our really good friend! Surely you don't want to offer nothing in return for \(itemSelectedForExchange!.title).",
         delegate: self,
         cancelButtonTitle: Constants.NoItemAlert.cancelTitle)
@@ -238,7 +230,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   private func cellPickedUpFromCircleView() {
     if let currentCircleImage = leftCircleImageView,
       let yourItem = itemInCircleView {
-        var newCircleImage = CircleImage(frame: currentCircleImage.frame.copyWithWidth(cellSize!.width, andHeight: cellSize!.width))
+        let newCircleImage = CircleImage(frame: currentCircleImage.frame.copyWithWidth(cellSize!.width, andHeight: cellSize!.width))
         newCircleImage.center = currentCircleImage.center
         pickedUpCell = PickedUpCell(circleImage: newCircleImage,
           indexPath: NSIndexPath(forItem: 0, inSection: 0),
@@ -264,7 +256,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     //make check if cell is upload new item cell
     if indexPath.item == collectionView.numberOfItemsInSection(0) - 1 {
       segueToUploadNewItem()
-      println("Segue to upload item")
+      print("Segue to upload item")
       return
     }
     
@@ -287,7 +279,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   }
   
   private func moveCellToLocation(location: CGPoint) {
-    if let cell = pickedUpCell {
+    if pickedUpCell != nil {
       animateMovingCellToLocation(location)
     }
   }

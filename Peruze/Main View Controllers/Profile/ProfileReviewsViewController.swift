@@ -39,7 +39,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     refreshControl.endRefreshing()
   }
   private func checkForEmptyData(animated: Bool) {
-    if dataSource.reviews.count == 0 && tableView.visibleCells().count == 0 {
+    if dataSource.reviews.count == 0 && tableView.visibleCells.count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
         self.tableView.alpha = 0.0
@@ -52,15 +52,15 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     }
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return find(tallRowsIndexPaths, indexPath) == nil ? Constants.TableViewCellHeight : UITableViewAutomaticDimension
+    return tallRowsIndexPaths.indexOf(indexPath) == nil ? Constants.TableViewCellHeight : UITableViewAutomaticDimension
   }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
-      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier) as? UIViewController
-      println("segue to write review")
+      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
+      print("segue to write review")
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {
-      let foundMatch = find(tallRowsIndexPaths, indexPath)
+      let foundMatch = tallRowsIndexPaths.indexOf(indexPath)
       if foundMatch != nil {
         tallRowsIndexPaths.removeAtIndex(foundMatch!)
       } else {

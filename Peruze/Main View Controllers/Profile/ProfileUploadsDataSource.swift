@@ -25,7 +25,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource {
         let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
         tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
+        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
             forIndexPath: indexPath) as! ProfileUploadsTableViewCell
         if items.count > indexPath.row {
             cell.titleTextLabel.text = items[indexPath.row].title
@@ -35,7 +35,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource {
             cell.accessoryType = editableCells ? .DisclosureIndicator : .None
             cell.userInteractionEnabled = editableCells
         } else {
-            println("There is no cell for NSIndexPath: \(indexPath)")
+            print("There is no cell for NSIndexPath: \(indexPath)")
         }
         return cell
     }

@@ -24,7 +24,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
         let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
         tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifiers.TableViewCell)
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifiers.TableViewCell,
+        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifiers.TableViewCell,
             forIndexPath: indexPath) as! ProfileUploadsTableViewCell
         if favorites.count > indexPath.row {
             cell.titleTextLabel.text = favorites[indexPath.row].title
@@ -32,7 +32,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
             cell.descriptionTextLabel.text = favorites[indexPath.row].description
             cell.circleImageView.image = favorites[indexPath.row].image
         } else {
-            println("There is no cell for NSIndexPath: \(indexPath)")
+            print("There is no cell for NSIndexPath: \(indexPath)")
         }
         return cell
     }
@@ -50,7 +50,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
         collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
         cell.item = indexPath.item < favorites.count ? favorites[indexPath.item] : nil
         cell.delegate = itemDelegate
         cell.setNeedsDisplay()

@@ -29,7 +29,7 @@ public class CircleImage: UIView {
         backgroundColor = .clearColor()
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

@@ -61,7 +61,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   private func checkForEmptyData(animated: Bool) {
-    if tableView.visibleCells().count == 0 {
+    if tableView.visibleCells.count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
         self.tableView.alpha = 0.0
@@ -74,7 +74,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
-  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     let actionCompletion = { (reloadedRequests: [Exchange]?, error: NSError?) -> Void in
       if error != nil {
         let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)

@@ -71,7 +71,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
             let cancel = UIAlertAction(title: Constants.NoStarRating.Cancel, style: UIAlertActionStyle.Cancel) { (_) -> Void in }
             alert.addAction(cancel)
             presentViewController(alert, animated: true, completion: nil)
-        } else if titleTextField.text.isEmpty {
+        } else if titleTextField.text!.isEmpty {
             let alert = UIAlertController(title: Constants.NoTitle.Title, message: Constants.NoTitle.Message, preferredStyle: UIAlertControllerStyle.Alert)
             let cancel = UIAlertAction(title: Constants.NoTitle.Cancel, style: UIAlertActionStyle.Cancel) { (_) -> Void in }
             alert.addAction(cancel)
@@ -96,7 +96,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     func keyboardWillShow(sender: NSNotification) {
         keyboardOnScreen = true
         if let userInfo = sender.userInfo {
-            if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
+            if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
                 let top = navigationController?.navigationBar.frame.maxY ?? 0
                 let bottom = keyboardFrame.height
                 let insets = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)

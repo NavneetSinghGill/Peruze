@@ -56,7 +56,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         return true
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let normal = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
             self.dataSource.chats.removeAtIndex(indexPath.item)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -74,7 +74,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     //MARK: - ChatDeletionDelgate Methods
     func cancelExchangeWithOtherItem(otherItem: Item) {
         for i in 0..<dataSource.chats.count {
-            println(i)
+            print(i)
             if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
                 dataSource.chats.removeAtIndex(i)
                 tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -95,7 +95,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         checkForEmptyData(true)
     }
     private func checkForEmptyData(animated: Bool) {
-        if tableView.visibleCells().count == 0 {
+        if tableView.visibleCells.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.noChatsLabel.alpha = 1.0
                 self.tableView.alpha = 0.0

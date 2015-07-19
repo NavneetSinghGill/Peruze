@@ -22,7 +22,7 @@ class DoubleCircleImage: UIView {
     private var prominentImage: CircleImage?
     private var lesserImage: CircleImage?
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         lesserImage = CircleImage()
         lesserImage!.image = itemImages?.lesserImage

@@ -65,8 +65,8 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
         let cell = delegate?.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as? JSQMessagesCollectionViewCell
         let message = messages![indexPath.item]
         
-        cell?.textView.textColor = message.senderId == senderId() ? Constants.OutgoingBubble.textColor : Constants.IncomingBubble.textColor
-        cell?.textView.text = message.text
+        cell?.textView?.textColor = message.senderId == senderId() ? Constants.OutgoingBubble.textColor : Constants.IncomingBubble.textColor
+        cell?.textView?.text = message.text
         return cell ?? UICollectionViewCell()
     }
     

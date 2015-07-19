@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileFavoritesCollectionViewController: PeruseViewController, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
+class ProfileFavoritesCollectionViewController: PeruseViewController {
     
     private struct Constants {
         static let ExchangeSegueIdentifier = "toOfferToExchangeView"
@@ -29,15 +29,15 @@ class ProfileFavoritesCollectionViewController: PeruseViewController, PeruseItem
     var storedBottom: CGFloat = 0
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        var layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
+        let layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
         let top = navigationController?.navigationBar.frame.maxY ?? storedTop
         if storedTop == 0 { storedTop = top }
-        var bottom = view.frame.maxY
+        let bottom = view.frame.maxY
         let left: CGFloat = 0
         let right: CGFloat = 0
         let insets = UIEdgeInsetsMake(top, left, bottom, right)
         collectionView.scrollIndicatorInsets = insets
-        var cellSize = CGSizeMake(collectionView.frame.width, bottom - top)
+        let cellSize = CGSizeMake(collectionView.frame.width, bottom - top)
         layout.itemSize = cellSize
         collectionView.reloadData()
         

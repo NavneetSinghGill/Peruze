@@ -21,14 +21,14 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemsUpdated", name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
     }
     func itemsUpdated() {
-        println("items updated")
+        print("items updated")
         items = model.peruseItems
         collectionView?.reloadData()
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
         collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
         cell.item = indexPath.item < items.count ? items[indexPath.item] : nil
         cell.delegate = itemDelegate
         cell.setNeedsDisplay()

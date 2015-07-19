@@ -70,15 +70,15 @@ class FacebookDataSource: NSObject {
   
   class func getUserProfileWithCompletion(completion: ((result: FBSDKProfile?, error: NSError?) -> Void)) {
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue()) {
       request.startWithCompletionHandler {(connection, result, error) -> Void in
         if error != nil {
-          println(error.localizedDescription)
+          print(error.localizedDescription)
           return
         }
         var profile: FBSDKProfile?
-        if let dictRepresentation = result as? [String: AnyObject] {
+        if let _ = result as? [String: AnyObject] {
           profile = FBSDKProfile(userID: result["id"] as! String,
             firstName: result["first_name"] as! String,
             middleName: nil,
@@ -87,7 +87,7 @@ class FacebookDataSource: NSObject {
             linkURL: nil,
             refreshDate: nil)
         } else {
-          println("result is not a [String: AnyObject] dictionary")
+          print("result is not a [String: AnyObject] dictionary")
         }
         dispatch_async(dispatch_get_main_queue()) {
           UIApplication.sharedApplication().networkActivityIndicatorVisible = false

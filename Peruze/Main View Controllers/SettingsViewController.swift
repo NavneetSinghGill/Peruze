@@ -67,19 +67,19 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
       if !success {
-        println(error)
+        print(error)
         self.profilePictureFetchingError()
       }
       self.loadingCircle?.stop()
     }
     //distance
-    distanceValues.sort(<)
+    distanceValues.sortInPlace(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
     distanceSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Float ?? distanceSlider.maximumValue
     
     //friends
-    friendsValues.sort(<)
+    friendsValues.sortInPlace(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
     friendsSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Float ?? friendsSlider.maximumValue
@@ -141,7 +141,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   
   //MARK: - Errors and Alerts
   private func profilePictureFetchingError() {
-    var notEnoughProfilePicturesAlertView = UIAlertView(title: Constants.Alerts.ProfilePhoto.Title,
+    let notEnoughProfilePicturesAlertView = UIAlertView(title: Constants.Alerts.ProfilePhoto.Title,
       message: Constants.Alerts.ProfilePhoto.Message,
       delegate: nil,
       cancelButtonTitle: Constants.Alerts.ProfilePhoto.CancelButton)
@@ -331,14 +331,11 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     let title = "Can't Access Friends"
     let message = "Because of your security settings, we can't see who your friends are on Facebook! You can change that in Settings later, but for now, you'll see everyone's posts."
     let cancelTitle = "Dismiss"
-    let settingsTitle = "Allow Access"
     let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
     let cancelAction = UIAlertAction(title: cancelTitle, style: UIAlertActionStyle.Cancel) { (action) -> Void in
       self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
     }
-    let settingsAction = UIAlertAction(title: settingsTitle, style: UIAlertActionStyle.Default) { (action) -> Void in
-      self.friendsSlider.setValue(self.friendsSlider.maximumValue, animated: true)
-    }
+    
     alert.addAction(cancelAction)
     presentViewController(alert, animated: true, completion: nil)
   }

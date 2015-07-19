@@ -56,7 +56,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
       if !success {
-        println(error)
+        print(error)
         self.profilePictureFetchingError()
       }
       dispatch_async(dispatch_get_main_queue()) {
@@ -227,7 +227,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   private func handleError(error: NSError?, handler:(Void -> Void)? = nil) {
     dispatch_async(dispatch_get_main_queue()){
       if error != nil {
-        println(error!.localizedDescription)
+        print(error!.localizedDescription)
         let alert = ErrorAlertFactory.alertFromError(error!)
         self.presentViewController(alert, animated: true, completion: nil)
         self.view.userInteractionEnabled = true
@@ -238,7 +238,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     }
   }
   private func profilePictureFetchingError() {
-    var notEnoughProfilePicturesAlertView = UIAlertView(title: Constants.NotEnoughProfilePicturesTitle,
+    let notEnoughProfilePicturesAlertView = UIAlertView(title: Constants.NotEnoughProfilePicturesTitle,
       message: Constants.NotEnoughProfilePicturesMessage,
       delegate: nil,
       cancelButtonTitle: Constants.NotEnoughProfilePicturesCancelButton)
@@ -276,9 +276,9 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
       }
     }
   }
-  override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
     if center.image == nil || loadingCircle != nil {
-      var hitNextWithoutImageAlertView = UIAlertView(title: Constants.HitNextWithoutImageTitle, message: Constants.HitNextWithoutImageMessage, delegate: nil, cancelButtonTitle: Constants.HitNextWithoutImageCancelButton)
+      let hitNextWithoutImageAlertView = UIAlertView(title: Constants.HitNextWithoutImageTitle, message: Constants.HitNextWithoutImageMessage, delegate: nil, cancelButtonTitle: Constants.HitNextWithoutImageCancelButton)
       hitNextWithoutImageAlertView.show()
       return false
     }

@@ -59,13 +59,13 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     super.awakeFromNib()
     
     //add gesture recognizers
-    var singleTap = UITapGestureRecognizer(target: self, action: "singleTap:")
+    let singleTap = UITapGestureRecognizer(target: self, action: "singleTap:")
     singleTap.numberOfTapsRequired = 1
     singleTap.enabled = true
     singleTap.cancelsTouchesInView = false
     scrollView.addGestureRecognizer(singleTap)
     
-    var doubleTap = UITapGestureRecognizer(target: self, action: "doubleTap:")
+    let doubleTap = UITapGestureRecognizer(target: self, action: "doubleTap:")
     doubleTap.numberOfTapsRequired = 2
     doubleTap.enabled = true
     doubleTap.cancelsTouchesInView = false
@@ -143,7 +143,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   }
   
   private func heartFlash() {
-    var heart = UIImageView()
+    let heart = UIImageView()
     heart.frame = ownerProfileImage.frame
     heart.frame.origin = CGPointMake(itemImageView.frame.origin.x + (itemImageView.frame.width / 2) - (heart.frame.width / 2), itemImageView.frame.origin.y + (itemImageView.frame.height / 2) - (heart.frame.height / 2))
     heart.contentMode = .ScaleAspectFit

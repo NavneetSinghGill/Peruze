@@ -25,7 +25,7 @@ class WritePNGImageToPath: AsyncOperation {
   override func main() {
     let pngData = UIImagePNGRepresentation(image)
     if cancelled { finish() ; return }
-    if !pngData.writeToFile(path, atomically: true) {
+    if !pngData!.writeToFile(path, atomically: true) {
       error = NSError(domain: WriteFileErrorDomain,
         code: 0,
         userInfo: [
@@ -46,7 +46,11 @@ class RemoveFileAtPath: AsyncOperation {
     super.init()
   }
   override func main() {
-    NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
+    do {
+      try NSFileManager.defaultManager().removeItemAtPath(path)
+    } catch let error1 as NSError {
+      error = error1
+    }
     finish()
   }
 }

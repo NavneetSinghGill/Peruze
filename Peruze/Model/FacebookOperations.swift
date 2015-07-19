@@ -139,13 +139,13 @@ class FetchFacebookUserProfile: AsyncOperation {
   
   override func main() {
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     
     dispatch_async(dispatch_get_main_queue()) {
       request.startWithCompletionHandler {(connection, result, error) -> Void in
         if error != nil { self.error = error; self.finish(); return }
         
-        if let dictRepresentation = result as? [String: AnyObject] {
+        if let _ = result as? [String: AnyObject] {
           self.profile = FBSDKProfile(userID: result["id"] as! String,
             firstName: result["first_name"] as! String,
             middleName: nil,
@@ -173,7 +173,7 @@ class FetchFacebookFriends: AsyncOperation {
   
   override func main() {
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    var request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
+    let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue()) {
       request.startWithCompletionHandler {(connection, result, error) -> Void in
         if error != nil { self.error = error; self.finish(); return }
@@ -198,7 +198,15 @@ class FetchFacebookFriends: AsyncOperation {
   private func recursivelyPageDataFromURL(url: NSURL) {
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
-      var jsonData: AnyObject? = NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments, error: &jsonError)
+      var jsonData: AnyObject?
+      do {
+        jsonData = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
+      } catch let error as NSError {
+        jsonError = error
+        jsonData = nil
+      } catch {
+        fatalError()
+      }
       if jsonData == nil { self.finish(); return }
       if resultError != nil {
         self.error = resultError
@@ -219,7 +227,7 @@ class FetchFacebookFriends: AsyncOperation {
         self.finish()
       }
     })
-    getDataTask.resume()
+    getDataTask!.resume()
   }
   
   private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {

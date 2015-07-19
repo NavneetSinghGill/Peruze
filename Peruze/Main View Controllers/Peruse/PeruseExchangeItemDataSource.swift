@@ -46,7 +46,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource {
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let nib = UINib(nibName: Constants.NibName, bundle: nil)
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
-    var cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseExchangeItemCollectionViewCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseExchangeItemCollectionViewCell
     if indexPath.item < exchangeItems.count {
       cell.itemNameLabel.text = exchangeItems[indexPath.item].title
       cell.imageView.image = exchangeItems[indexPath.item].image

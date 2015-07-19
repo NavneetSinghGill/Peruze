@@ -14,24 +14,7 @@ let NetworkErrorDomain = "NetworkErrorDomain"
 
 class NetworkConnection: NSObject {
   //MARK: - Network Reachability
-  class func connectedToNetwork() -> Bool {
-    var zeroAddress = sockaddr_in()
-    zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
-    zeroAddress.sin_family = sa_family_t(AF_INET)
-    
-    let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
-      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0)).takeRetainedValue()
-    }
-    
-    var flags : SCNetworkReachabilityFlags = 0
-    if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == 0 {
-      return false
-    }
-    
-    let isReachable = (flags & UInt32(kSCNetworkFlagsReachable)) != 0
-    let needsConnection = (flags & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-    return (isReachable && !needsConnection)
-  }
+  
   class func defaultError() -> NSError {
     let domain = NetworkErrorDomain
     let code = 0
@@ -39,31 +22,27 @@ class NetworkConnection: NSObject {
     return NSError(domain: domain, code: code, userInfo: userInfo)
   }
   
-  
-  //    SWIFT 2.0
-  //
-  //
-  //    func connectedToNetwork() -> Bool {
-  //
-  //        var zeroAddress = sockaddr_in()
-  //        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
-  //        zeroAddress.sin_family = sa_family_t(AF_INET)
-  //
-  //        guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
-  //            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-  //        }) else {
-  //            return false
-  //        }
-  //
-  //        var flags : SCNetworkReachabilityFlags = []
-  //        if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == 0 {
-  //            return false
-  //        }
-  //
-  //        let isReachable = flags.contains(.Reachable)
-  //        let needsConnection = flags.contains(.ConnectionRequired)
-  //        return (isReachable && !needsConnection)
-  //    }
+  class func connectedToNetwork() -> Bool {
+    
+    var zeroAddress = sockaddr_in()
+    zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+    zeroAddress.sin_family = sa_family_t(AF_INET)
+    
+    guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
+      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+    }) else {
+      return false
+    }
+    
+    var flags : SCNetworkReachabilityFlags = []
+    if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == 0 {
+      return false
+    }
+    
+    let isReachable = flags.contains(.Reachable)
+    let needsConnection = flags.contains(.ConnectionRequired)
+    return (isReachable && !needsConnection)
+  }
   
 }
 

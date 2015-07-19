@@ -37,7 +37,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         navigationController?.navigationBar.tintColor = .redColor()
         
         //setup done button
-        if let navController = navigationController {
+        if navigationController != nil {
             doneButton.enabled = false
             doneButton.hidden = true
         }
@@ -155,14 +155,14 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     //MARK: - Upload
     @IBAction func upload(sender: UIButton) {
         if !NetworkConnection.connectedToNetwork() {
-            let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock(tryAgain: { self.upload(sender) })
+            let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock({ self.upload(sender) })
             presentViewController(alert, animated: true, completion: nil)
             return
         }
-        if mainImageView.image != Constants.DefaultImage && !titleTextField.text.isEmpty {
+        if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
             beginUpload()
             Model.sharedInstance().uploadItemWithImage(mainImageView.image,
-                title: titleTextField.text,
+                title: titleTextField.text!,
                 andDetails: descriptionTextView.text)
         } else {
             let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: UIAlertControllerStyle.Alert)
@@ -205,7 +205,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     private func setImage(image: UIImage) {
         mainImageView.image = image
         cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
-        if !titleTextField.text.isEmpty  && mainImageView.image != Constants.DefaultImage {
+        if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true
         }
     }
@@ -214,7 +214,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     func keyboardWillShow(sender: NSNotification) {
         keyboardOnScreen = true
         if let userInfo = sender.userInfo {
-            if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
+            if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
                 let top = navigationController?.navigationBar.frame.maxY ?? 0
                 let bottom = keyboardFrame.height
                 let insets = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
@@ -248,7 +248,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     @IBAction func textFieldEditingChanged(sender: UITextField) {
-        if !sender.text.isEmpty  && mainImageView.image != Constants.DefaultImage {
+        if !sender.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true
         }
     }

@@ -40,12 +40,12 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   override func viewDidLoad() {
     super.viewDidLoad()
     //distance
-    distanceValues.sort(<)
+    distanceValues.sortInPlace(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
     distanceSlider.setValue(distanceSlider.maximumValue, animated: false)
     //friends
-    friendsValues.sort(<)
+    friendsValues.sortInPlace(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
     friendsSlider.setValue(friendsSlider.maximumValue, animated: false)
@@ -125,7 +125,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     pulseCircleView!.frame = CGRectMake(view.bounds.width / 2, view.bounds.height / 2, 0, 0)
     pulseCircleView!.layer.removeAllAnimations()
     UIView.transitionWithView(pulseCircleView!, duration: Constants.PulseCircleAnimationDuration,
-      options: .Repeat | .CurveEaseInOut, animations: {
+      options: [.Repeat, .CurveEaseInOut], animations: {
         self.pulseCircleView!.frame = destinationRect
         self.pulseCircleView!.setNeedsDisplay()
       }, completion: nil)
@@ -184,7 +184,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
       locationManager.requestAlwaysAuthorization()
     } else if CLLocationManager.authorizationStatus() != .AuthorizedAlways {
-      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert(actionCompletion: {
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert({
         self.userWarnedAboutLimitedFunction = true
         self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
         self.updateCircleView(self.distanceSlider.value)
@@ -200,16 +200,16 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   var userWarnedAboutLimitedFunction = false
   
   @IBAction func done(sender: UIButton) {
-    println("done")
+    print("done")
     //check location authorizations
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
-      println("authorization status not determined")
+      print("authorization status not determined")
       locationManager.requestAlwaysAuthorization()
       return
     }
     if CLLocationManager.authorizationStatus() != .AuthorizedAlways && !userWarnedAboutLimitedFunction {
-      println("User hasn't been warned")
-      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert(actionCompletion: {
+      print("User hasn't been warned")
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert({
         self.userWarnedAboutLimitedFunction = true
         self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
         self.updateCircleView(self.distanceSlider.value)
@@ -220,11 +220,11 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     
     //check facebook access
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && !FBSDKAccessToken.currentAccessToken().declinedPermissions.contains("user_friends") {
-      println("checking facebook access for granted permission")
+      print("checking facebook access for granted permission")
       let manager = FBSDKLoginManager()
       manager.logInWithReadPermissions(["user_friends"], handler: { (loginResult, error) -> Void in
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          println("login result retrieved with error \(error)")
+          print("login result retrieved with error \(error)")
           if error != nil {
             let alert = ErrorAlertFactory.alertFromError(error, dismissCompletion: nil)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -247,7 +247,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
       assertionFailure("authorization status and friends slider do not correspond")
     }
-    println("passed all things and ready to set/dismiss!")
+    print("passed all things and ready to set/dismiss!")
 
     //set all values and dismiss
     NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)

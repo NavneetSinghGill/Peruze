@@ -26,8 +26,8 @@ class ProfileContainerViewController: UITabBarController {
     tabBar.hidden = true
   }
   private func setChildViewControllerData() {
-    println("Container View Child View Controllers")
-    println(self.childViewControllers)
+    print("Container View Child View Controllers")
+    print(self.childViewControllers)
     for childVC in childViewControllers {
       switch childVC {
       case let uploadsVC as ProfileUploadsViewController:

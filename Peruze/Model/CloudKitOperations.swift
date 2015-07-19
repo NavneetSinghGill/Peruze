@@ -44,9 +44,9 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
     let recordReference = CKReference(recordID: recordID, action: CKReferenceAction.None)
 
     //create query completion block
-    let queryCompletionBlock = { (queryCursor: CKQueryCursor!, error: NSError!) -> Void in
+    let queryCompletionBlock = { (queryCursor: CKQueryCursor?, error: NSError?) -> Void in
       if error != nil {
-        println("Error: \(error.localizedDescription). \(error.localizedFailureReason)")
+        print("Error: \(error!.localizedDescription). \(error!.localizedFailureReason)")
         self.error = error
         self.cancel()
         return
@@ -72,7 +72,7 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
     let exchangeOp = CKQueryOperation(query: exchangeQuery)
     exchangeOp.queryCompletionBlock = queryCompletionBlock
     exchangeOp.recordFetchedBlock = { record -> Void in
-      println("exchange returned data with record: \(record)")
+      print("exchange returned data with record: \(record)")
       self.person.completedExchanges.append(Exchange(record: record, database: self.publicDB))
     }
     
@@ -90,7 +90,7 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
     let reviewOp = CKQueryOperation(query: reviewQuery)
     reviewOp.queryCompletionBlock = queryCompletionBlock
     reviewOp.recordFetchedBlock = { record -> Void in
-      println("review returned data with record: \(record)")
+      print("review returned data with record: \(record)")
       self.person.reviews.append(Review(record: record, database: self.publicDB))
     }
     
@@ -100,14 +100,14 @@ class FetchFullProfileForUserRecordID: AsyncOperation {
     let uploadOp = CKQueryOperation(query: uploadQuery)
     uploadOp.queryCompletionBlock = queryCompletionBlock
     uploadOp.recordFetchedBlock = { record -> Void in
-      println("upload returned data with record: \(record)")
+      print("upload returned data with record: \(record)")
       self.person.uploads.append(Item(record: record, database: self.publicDB))
     }
     
     //finish operation
     let finishOperation = NSBlockOperation {
       self.finish()
-      println("Get Full Profile For User Record Finished Successfully")
+      print("Get Full Profile For User Record Finished Successfully")
     }
     
     //add dependencies
@@ -152,7 +152,7 @@ class FetchUserRecordWithID: AsyncOperation {
     let userRecordFetch = CKFetchRecordsOperation(recordIDs: [recordID])
     userRecordFetch.desiredKeys = desiredKeys
     userRecordFetch.perRecordCompletionBlock = { (record, recordID, error) -> Void in
-      println("user record fetch complete with recordID: \(recordID)")
+      print("user record fetch complete with recordID: \(recordID)")
       //error handling
       if error != nil {
         self.error = error
@@ -190,14 +190,14 @@ class FetchDependencyFavorites: AsyncOperation {
   override func main() {
     for object in dependencies {
       //make sure that the record is in dependencies
-      if object.respondsToSelector("record"){
-        if let record = object.record! as CKRecord! {
-          if record.recordType == RecordTypes.User {
-            assert(self.record == nil, "FetchDependencyFavorites has more than one dependency with a User Record")
-            self.record = record
-          }
-        }
-      }
+//      if object.respondsToSelector("record"){
+//        if let record = object.record?() as? CKRecord {
+//          if record.recordType == RecordTypes.User {
+//            assert(self.record == nil, "FetchDependencyFavorites has more than one dependency with a User Record")
+//            self.record = record
+//          }
+//        }
+//      }
     }
     assert(self.record != nil, "FetchDependencyFavorites instance does not have a dependency with a User Record")
     
@@ -209,20 +209,20 @@ class FetchDependencyFavorites: AsyncOperation {
       let favoritesFetch = CKFetchRecordsOperation(recordIDs: favoriteIDs)
       //add completion handler
       favoritesFetch.fetchRecordsCompletionBlock = { (recordsByRecordID, operationError) -> Void in
-        println("fetched favorites with records \(recordsByRecordID)")
+        print("fetched favorites with records \(recordsByRecordID)")
         //check for an error
         if self.error != nil {
           self.error = operationError
         } else {
           //set the favorites
-          self.favorites = [AnyObject](recordsByRecordID.values) as! [CKRecord]
+          self.favorites = [CKRecord](recordsByRecordID!.values)
         }
         self.finish()
       }
       CKContainer.defaultContainer().publicCloudDatabase.addOperation(favoritesFetch)
     } else {
       //if the record does not have a favorites object
-      println("The record passed to fetch dependency favorites does not have a favorites object")
+      print("The record passed to fetch dependency favorites does not have a favorites object")
       finish()
     }
   }

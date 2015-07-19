@@ -119,7 +119,8 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
         
         if Constants.contentImages.count > 0 {
             let firstController = getItemController(0)!
-            let startingViewControllers = [firstController] as [AnyObject]
+            let startingViewControllers = [firstController]
+          UIPageViewControllerNavigationDirection.Forward
             pageController.setViewControllers(startingViewControllers, direction: .Forward, animated: false, completion: nil)
         }
         
@@ -218,7 +219,7 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
                                 return
                             }
                         } else if error != nil {
-                            println(error.localizedDescription)
+                            print(error.localizedDescription)
                         }
                         FBSDKLoginManager().logOut()
                     })

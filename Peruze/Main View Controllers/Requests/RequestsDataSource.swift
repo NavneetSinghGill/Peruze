@@ -22,7 +22,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let nib = UINib(nibName: Constants.CollectionViewNibName, bundle: nil)
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.CollectionViewReuseIdentifier)
-    var cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.CollectionViewReuseIdentifier, forIndexPath: indexPath) as! RequestsCollectionViewCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.CollectionViewReuseIdentifier, forIndexPath: indexPath) as! RequestsCollectionViewCell
     cell.delegate = requestDelegate
     cell.exchange = requests[indexPath.row]
     return cell
@@ -36,7 +36,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let nib = UINib(nibName: Constants.TableViewNibName, bundle: nil)
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.TableViewReuseIdentifier)
-    var cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
     let myItem = requests[indexPath.row].itemRequested
     let theirItem = requests[indexPath.row].itemOffered
     cell.profileImageView.image = theirItem.owner.image
@@ -71,7 +71,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     return retValue
   }
   func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
-    var returnPath = NSIndexPath(forItem: 0, inSection: 0)
     for i in 0..<requests.count {
       if requests[i].recordID == requestToDelete.recordID {
         requests.removeAtIndex(i)

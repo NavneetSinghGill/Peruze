@@ -32,7 +32,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   private var storedBottom: CGFloat = 0
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    var layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
+    let layout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
     let top = navigationController?.navigationBar.frame.maxY ?? storedTop
     if storedTop == 0 { storedTop = top }
     let bottom = tabBarController?.tabBar.frame.height ?? storedBottom
@@ -41,7 +41,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
     let right: CGFloat = 0
     let insets = UIEdgeInsetsMake(top, left, bottom, right)
     collectionView.scrollIndicatorInsets = insets
-    var cellSize = CGSizeMake(collectionView.frame.width, view.frame.height - bottom - top)
+    let cellSize = CGSizeMake(collectionView.frame.width, view.frame.height - bottom - top)
     layout.itemSize = cellSize
     layout.sectionInset = insets
     collectionView.reloadData()

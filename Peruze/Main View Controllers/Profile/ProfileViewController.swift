@@ -150,7 +150,7 @@ class ProfileViewController: UIViewController {
   }
   //MARK: - Setting Info for Child View Controllers
   private func updateChildViewControllers() {
-    println(self.childViewControllers)
+    print(self.childViewControllers)
     for childVC in childViewControllers {
       if let container = childVC as? ProfileContainerViewController {
         container.profileOwner = personForProfile

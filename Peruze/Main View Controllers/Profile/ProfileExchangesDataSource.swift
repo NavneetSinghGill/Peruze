@@ -18,7 +18,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource {
         let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
         tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
+        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
             forIndexPath: indexPath) as! ProfileExchangesTableViewCell
         //TODO: Format the date label
         cell.profileImageView.image = exchanges[indexPath.row].itemOffered.owner.image

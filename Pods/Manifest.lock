@@ -20,4 +20,4 @@ SPEC CHECKSUMS:
   PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
 
-COCOAPODS: 0.38.0.beta.2
+COCOAPODS: 0.38.0
