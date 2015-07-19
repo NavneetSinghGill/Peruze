@@ -32,6 +32,7 @@ class InitialViewController: UIViewController {
     view.addSubview(spinner)
     spinner.hidesWhenStopped = true
     spinner.startAnimating()
+    
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
