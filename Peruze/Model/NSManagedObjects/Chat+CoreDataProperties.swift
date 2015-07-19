@@ -15,7 +15,7 @@ import CoreData
 extension Chat {
 
     @NSManaged var recordIDName: String?
-    @NSManaged var exchange: NSManagedObject?
+    @NSManaged var exchange: Exchange?
     @NSManaged var messages: NSSet?
 
 }

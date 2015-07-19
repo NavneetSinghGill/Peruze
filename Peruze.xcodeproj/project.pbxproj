@@ -113,18 +113,18 @@
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */; };
 		9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */; };
-		9D45D2071B5B5D1600D555F3 /* Chat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D1FB1B5B5D1500D555F3 /* Chat+CoreDataProperties.swift */; };
-		9D45D2081B5B5D1600D555F3 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D1FC1B5B5D1500D555F3 /* Chat.swift */; };
-		9D45D2091B5B5D1600D555F3 /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D1FD1B5B5D1500D555F3 /* Exchange+CoreDataProperties.swift */; };
-		9D45D20A1B5B5D1600D555F3 /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D1FE1B5B5D1500D555F3 /* Exchange.swift */; };
-		9D45D20B1B5B5D1600D555F3 /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D1FF1B5B5D1500D555F3 /* Review+CoreDataProperties.swift */; };
-		9D45D20C1B5B5D1600D555F3 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2001B5B5D1600D555F3 /* Review.swift */; };
-		9D45D20D1B5B5D1600D555F3 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2011B5B5D1600D555F3 /* Item+CoreDataProperties.swift */; };
-		9D45D20E1B5B5D1600D555F3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2021B5B5D1600D555F3 /* Item.swift */; };
-		9D45D20F1B5B5D1600D555F3 /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2031B5B5D1600D555F3 /* Message+CoreDataProperties.swift */; };
-		9D45D2101B5B5D1600D555F3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2041B5B5D1600D555F3 /* Message.swift */; };
-		9D45D2111B5B5D1600D555F3 /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2051B5B5D1600D555F3 /* Person+CoreDataProperties.swift */; };
-		9D45D2121B5B5D1600D555F3 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2061B5B5D1600D555F3 /* Person.swift */; };
+		9D45D21A1B5B5D6200D555F3 /* Chat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2141B5B5D6200D555F3 /* Chat+CoreDataProperties.swift */; };
+		9D45D21B1B5B5D6200D555F3 /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2151B5B5D6200D555F3 /* Review+CoreDataProperties.swift */; };
+		9D45D21C1B5B5D6200D555F3 /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2161B5B5D6200D555F3 /* Message+CoreDataProperties.swift */; };
+		9D45D21D1B5B5D6200D555F3 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2171B5B5D6200D555F3 /* Item+CoreDataProperties.swift */; };
+		9D45D21E1B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2181B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift */; };
+		9D45D21F1B5B5D6200D555F3 /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2191B5B5D6200D555F3 /* Person+CoreDataProperties.swift */; };
+		9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2201B5B5D8A00D555F3 /* Person.swift */; };
+		9D45D2271B5B5D8B00D555F3 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2211B5B5D8A00D555F3 /* Chat.swift */; };
+		9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2221B5B5D8A00D555F3 /* Exchange.swift */; };
+		9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2231B5B5D8A00D555F3 /* Item.swift */; };
+		9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2241B5B5D8A00D555F3 /* Message.swift */; };
+		9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2251B5B5D8A00D555F3 /* Review.swift */; };
 		9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969A1B5B51D600273677 /* OperationQueue.swift */; };
 		9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969B1B5B51D600273677 /* ExclusivityController.swift */; };
 		9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969D1B5B51D600273677 /* Operation.swift */; };
@@ -306,18 +306,18 @@
 		9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeruzeTests.swift; sourceTree = "<group>"; };
 		9D449CAB1B54DA13005C7CC0 /* Peruze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Peruze.entitlements; sourceTree = "<group>"; };
 		9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		9D45D1FB1B5B5D1500D555F3 /* Chat+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Chat+CoreDataProperties.swift"; path = "NSManagedObjects/Chat+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D1FC1B5B5D1500D555F3 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chat.swift; path = NSManagedObjects/Chat.swift; sourceTree = "<group>"; };
-		9D45D1FD1B5B5D1500D555F3 /* Exchange+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataProperties.swift"; path = "NSManagedObjects/Exchange+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D1FE1B5B5D1500D555F3 /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Exchange.swift; path = NSManagedObjects/Exchange.swift; sourceTree = "<group>"; };
-		9D45D1FF1B5B5D1500D555F3 /* Review+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Review+CoreDataProperties.swift"; path = "NSManagedObjects/Review+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D2001B5B5D1600D555F3 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Review.swift; path = NSManagedObjects/Review.swift; sourceTree = "<group>"; };
-		9D45D2011B5B5D1600D555F3 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Item+CoreDataProperties.swift"; path = "NSManagedObjects/Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D2021B5B5D1600D555F3 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = NSManagedObjects/Item.swift; sourceTree = "<group>"; };
-		9D45D2031B5B5D1600D555F3 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "NSManagedObjects/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D2041B5B5D1600D555F3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = NSManagedObjects/Message.swift; sourceTree = "<group>"; };
-		9D45D2051B5B5D1600D555F3 /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Person+CoreDataProperties.swift"; path = "NSManagedObjects/Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9D45D2061B5B5D1600D555F3 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Person.swift; path = NSManagedObjects/Person.swift; sourceTree = "<group>"; };
+		9D45D2141B5B5D6200D555F3 /* Chat+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Chat+CoreDataProperties.swift"; path = "NSManagedObjects/Chat+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2151B5B5D6200D555F3 /* Review+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Review+CoreDataProperties.swift"; path = "NSManagedObjects/Review+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2161B5B5D6200D555F3 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "NSManagedObjects/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2171B5B5D6200D555F3 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Item+CoreDataProperties.swift"; path = "NSManagedObjects/Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2181B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataProperties.swift"; path = "NSManagedObjects/Exchange+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2191B5B5D6200D555F3 /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Person+CoreDataProperties.swift"; path = "NSManagedObjects/Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9D45D2201B5B5D8A00D555F3 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Person.swift; path = NSManagedObjects/Person.swift; sourceTree = "<group>"; };
+		9D45D2211B5B5D8A00D555F3 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chat.swift; path = NSManagedObjects/Chat.swift; sourceTree = "<group>"; };
+		9D45D2221B5B5D8A00D555F3 /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Exchange.swift; path = NSManagedObjects/Exchange.swift; sourceTree = "<group>"; };
+		9D45D2231B5B5D8A00D555F3 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = NSManagedObjects/Item.swift; sourceTree = "<group>"; };
+		9D45D2241B5B5D8A00D555F3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = NSManagedObjects/Message.swift; sourceTree = "<group>"; };
+		9D45D2251B5B5D8A00D555F3 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Review.swift; path = NSManagedObjects/Review.swift; sourceTree = "<group>"; };
 		9DEB969A1B5B51D600273677 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		9DEB969B1B5B51D600273677 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
 		9DEB969D1B5B51D600273677 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -773,18 +773,18 @@
 		9D45D2131B5B5D1C00D555F3 /* NSManagedObjects */ = {
 			isa = PBXGroup;
 			children = (
-				9D45D1FB1B5B5D1500D555F3 /* Chat+CoreDataProperties.swift */,
-				9D45D1FC1B5B5D1500D555F3 /* Chat.swift */,
-				9D45D1FD1B5B5D1500D555F3 /* Exchange+CoreDataProperties.swift */,
-				9D45D1FE1B5B5D1500D555F3 /* Exchange.swift */,
-				9D45D1FF1B5B5D1500D555F3 /* Review+CoreDataProperties.swift */,
-				9D45D2001B5B5D1600D555F3 /* Review.swift */,
-				9D45D2011B5B5D1600D555F3 /* Item+CoreDataProperties.swift */,
-				9D45D2021B5B5D1600D555F3 /* Item.swift */,
-				9D45D2031B5B5D1600D555F3 /* Message+CoreDataProperties.swift */,
-				9D45D2041B5B5D1600D555F3 /* Message.swift */,
-				9D45D2051B5B5D1600D555F3 /* Person+CoreDataProperties.swift */,
-				9D45D2061B5B5D1600D555F3 /* Person.swift */,
+				9D45D2201B5B5D8A00D555F3 /* Person.swift */,
+				9D45D2211B5B5D8A00D555F3 /* Chat.swift */,
+				9D45D2221B5B5D8A00D555F3 /* Exchange.swift */,
+				9D45D2231B5B5D8A00D555F3 /* Item.swift */,
+				9D45D2241B5B5D8A00D555F3 /* Message.swift */,
+				9D45D2251B5B5D8A00D555F3 /* Review.swift */,
+				9D45D2141B5B5D6200D555F3 /* Chat+CoreDataProperties.swift */,
+				9D45D2151B5B5D6200D555F3 /* Review+CoreDataProperties.swift */,
+				9D45D2161B5B5D6200D555F3 /* Message+CoreDataProperties.swift */,
+				9D45D2171B5B5D6200D555F3 /* Item+CoreDataProperties.swift */,
+				9D45D2181B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift */,
+				9D45D2191B5B5D6200D555F3 /* Person+CoreDataProperties.swift */,
 			);
 			name = NSManagedObjects;
 			sourceTree = "<group>";
@@ -1048,7 +1048,6 @@
 				9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */,
 				9DEB96C61B5B51D600273677 /* BlockObserver.swift in Sources */,
 				9DEB96CE1B5B51D600273677 /* ReachabilityCondition.swift in Sources */,
-				9D45D20F1B5B5D1600D555F3 /* Message+CoreDataProperties.swift in Sources */,
 				9D177BBF1B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift in Sources */,
 				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
 				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
@@ -1058,26 +1057,24 @@
 				9DEB96D61B5B51D600273677 /* UserNotificationCondition.swift in Sources */,
 				9DEB96C51B5B51D600273677 /* OperationObserver.swift in Sources */,
 				9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */,
-				9D45D2081B5B5D1600D555F3 /* Chat.swift in Sources */,
 				9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */,
 				9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */,
 				9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */,
-				9D45D20A1B5B5D1600D555F3 /* Exchange.swift in Sources */,
 				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
 				9DEB96C21B5B51D600273677 /* URLSessionTaskOperation.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
 				9DEB96D31B5B51D600273677 /* PhotosCondition.swift in Sources */,
-				9D45D2091B5B5D1600D555F3 /* Exchange+CoreDataProperties.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
+				9D45D21E1B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
 				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
 				9DEB96D01B5B51D600273677 /* PassbookCondition.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
-				9D45D20C1B5B5D1600D555F3 /* Review.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */,
+				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
 				9DEB96D91B5B51D600273677 /* CKContainer+Operations.swift in Sources */,
 				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,
 				9DEB96C11B5B51D600273677 /* GroupOperation.swift in Sources */,
@@ -1087,14 +1084,17 @@
 				9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */,
 				9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */,
 				9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */,
+				9D45D21B1B5B5D6200D555F3 /* Review+CoreDataProperties.swift in Sources */,
 				9DEB96C71B5B51D600273677 /* TimeoutObserver.swift in Sources */,
 				9D177B931B54DDC3009CB9FA /* PeruseViewController.swift in Sources */,
 				9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */,
+				9D45D21C1B5B5D6200D555F3 /* Message+CoreDataProperties.swift in Sources */,
 				9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */,
 				9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */,
 				9DEB96C41B5B51D600273677 /* DelayOperation.swift in Sources */,
 				9DEB96DA1B5B51D600273677 /* UIUserNotifications+Operations.swift in Sources */,
 				9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */,
+				9D45D2271B5B5D8B00D555F3 /* Chat.swift in Sources */,
 				9D177BCB1B54DDC3009CB9FA /* TGCameraGrid.m in Sources */,
 				9D177BCC1B54DDC3009CB9FA /* TGCameraShot.m in Sources */,
 				9DEB96C91B5B51D600273677 /* OperationCondition.swift in Sources */,
@@ -1102,9 +1102,10 @@
 				9D177BA61B54DDC3009CB9FA /* RequestsCollectionViewCell.swift in Sources */,
 				9D177BAD1B54DDC3009CB9FA /* Chat.swift in Sources */,
 				9DEB96D21B5B51D600273677 /* CalendarCondition.swift in Sources */,
+				9D45D21F1B5B5D6200D555F3 /* Person+CoreDataProperties.swift in Sources */,
 				9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */,
+				9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */,
 				9DEB96CF1B5B51D600273677 /* CloudCondition.swift in Sources */,
-				9D45D2101B5B5D1600D555F3 /* Message.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
 				9DEB96C81B5B51D600273677 /* OperationErrors.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
@@ -1113,10 +1114,9 @@
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
-				9D45D2071B5B5D1600D555F3 /* Chat+CoreDataProperties.swift in Sources */,
+				9D45D21A1B5B5D6200D555F3 /* Chat+CoreDataProperties.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
 				9DEB96C31B5B51D600273677 /* LocationOperation.swift in Sources */,
-				9D45D2111B5B5D1600D555F3 /* Person+CoreDataProperties.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
 				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
 				9DEB96D41B5B51D600273677 /* HealthCondition.swift in Sources */,
@@ -1127,9 +1127,10 @@
 				9D177BD51B54DDC4009CB9FA /* TGTintedButton.m in Sources */,
 				9DEB96D81B5B51D600273677 /* NSOperation+Operations.swift in Sources */,
 				9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */,
+				9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */,
 				9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */,
 				9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */,
-				9D45D20B1B5B5D1600D555F3 /* Review+CoreDataProperties.swift in Sources */,
+				9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */,
 				9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */,
 				9D177B7B1B54DDC3009CB9FA /* CircleImage.swift in Sources */,
 				9D177BD61B54DDC4009CB9FA /* TGTintedLabel.m in Sources */,
@@ -1144,26 +1145,25 @@
 				9DEB96D71B5B51D600273677 /* Dictionary+Operations.swift in Sources */,
 				9D177B9F1B54DDC3009CB9FA /* ProfileReviewsViewController.swift in Sources */,
 				9D177BB21B54DDC3009CB9FA /* Item.swift in Sources */,
-				9D45D2121B5B5D1600D555F3 /* Person.swift in Sources */,
 				9D177BC71B54DDC3009CB9FA /* TGCamera.m in Sources */,
 				9D177BA81B54DDC3009CB9FA /* RequestsDataSource.swift in Sources */,
+				9D45D21D1B5B5D6200D555F3 /* Item+CoreDataProperties.swift in Sources */,
 				9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */,
 				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
 				9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */,
 				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
 				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,
-				9D45D20E1B5B5D1600D555F3 /* Item.swift in Sources */,
 				9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */,
 				9D177B891B54DDC3009CB9FA /* ChatTableViewController.swift in Sources */,
 				9DEB96CB1B5B51D600273677 /* NegatedCondition.swift in Sources */,
 				9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */,
+				9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */,
 				9DEB96D11B5B51D600273677 /* LocationCondition.swift in Sources */,
 				9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */,
 				9DEB96CC1B5B51D600273677 /* NoCancelledDependencies.swift in Sources */,
 				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
 				9D177BB41B54DDC3009CB9FA /* Person.swift in Sources */,
-				9D45D20D1B5B5D1600D555F3 /* Item+CoreDataProperties.swift in Sources */,
 				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
 				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,

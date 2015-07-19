@@ -18,6 +18,6 @@ extension Review {
     @NSManaged var recordIDName: String?
     @NSManaged var starRating: NSNumber?
     @NSManaged var title: String?
-    @NSManaged var userBeingReviewed: NSManagedObject?
+    @NSManaged var userBeingReviewed: Person?
 
 }

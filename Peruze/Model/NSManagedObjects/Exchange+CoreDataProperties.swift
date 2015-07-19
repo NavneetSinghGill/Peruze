@@ -17,7 +17,7 @@ extension Exchange {
     @NSManaged var date: NSDate?
     @NSManaged var recordIDName: String?
     @NSManaged var status: NSNumber?
-    @NSManaged var itemOffered: NSManagedObject?
-    @NSManaged var itemRequested: NSManagedObject?
+    @NSManaged var itemOffered: Item?
+    @NSManaged var itemRequested: Item?
 
 }
