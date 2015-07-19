@@ -43,10 +43,11 @@ class GetPersonOperation: Operation {
     //figure out what keys need to be fetched
     let person = Person.findFirstByAttribute("recordIDName", withValue: personID.recordName)
     var desiredKeys = [String]()
-    desiredKeys = desiredKeys + (person.firstName == nil ? ["FirstName"] : [])
-    desiredKeys = desiredKeys + (person.lastName == nil ? ["LastName"] : [])
-    desiredKeys = desiredKeys + (person.image == nil ? ["Image"] : [])
-    desiredKeys = desiredKeys + (person.facebookID == nil ? ["FacebookID"] : [])
+    desiredKeys += (person.firstName  == nil ? ["FirstName"]  : [])
+    desiredKeys += (person.lastName   == nil ? ["LastName"]   : [])
+    desiredKeys += (person.image      == nil ? ["Image"]      : [])
+    desiredKeys += (person.facebookID == nil ? ["FacebookID"] : [])
+    desiredKeys += ["FavoriteItems"]
     
     //if the person is complete, finish and return
     if desiredKeys.count == 0 {
@@ -62,26 +63,34 @@ class GetPersonOperation: Operation {
         self.finishWithError(error)
       } else {
         //add person to the database
-        MagicalRecord.saveWithBlockAndWait({ (context) -> Void in
+        MagicalRecord.saveWithBlockAndWait { (context) -> Void in
           for recordID in recordsByID!.keys {
             
             //fetch each person with the returned ID
             let localPerson = Person.findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
             
             //set the returned properties
-            localPerson.firstName = localPerson.firstName ?? recordsByID![recordID]!.objectForKey("FirstName") as? String
-            localPerson.lastName = localPerson.lastName ?? recordsByID![recordID]!.objectForKey("LastName") as? String
+            localPerson.firstName  = localPerson.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
+            localPerson.lastName   = localPerson.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
             localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
             
             //check for image property and set the data
-            if let imageAsset = recordsByID![recordID]!.objectForKey("Image") as? CKAsset {
+            if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
               localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
+            }
+            
+            if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {
+              let favorites = favoriteReferences.map {
+                Item.findFirstOrCreateByAttribute("recordIDName",
+                  withValue: $0.recordID.recordName , inContext: context)
+              }
+              localPerson.favorites = NSSet(array: favorites)
             }
             
             //save the context
             context.saveToPersistentStoreAndWait()
           }
-        })
+        }
         
         //because the operations inside of the block wait, we can call finish outside of the block
         self.finish()

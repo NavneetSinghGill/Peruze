@@ -7,6 +7,9 @@
 //
 
 import Foundation
+///A group operation to fetch all aspects of a user's profile
 class GetFullProfileOperation: GroupOperation {
-  
+  let fetchPersonOperation: GetPersonOperation
+  let fetchReviewsOperation: GetReviewsOperation
+  let fetchUploadsOperation: GetUploadsOperation
 }
