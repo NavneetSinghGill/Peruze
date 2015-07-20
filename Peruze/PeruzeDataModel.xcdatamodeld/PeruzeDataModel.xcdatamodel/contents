@@ -2,13 +2,14 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8154.4" systemVersion="14F6a" minimumToolsVersion="Xcode 7.0">
     <entity name="Chat" representedClassName=".Chat" syncable="YES">
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="exchange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exchange" syncable="YES"/>
-        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" syncable="YES"/>
+        <relationship name="exchange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exchange" inverseName="chat" inverseEntity="Exchange" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="chat" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Exchange" representedClassName=".Exchange" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="exchange" inverseEntity="Chat" syncable="YES"/>
         <relationship name="creator" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" syncable="YES"/>
         <relationship name="itemOffered" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
         <relationship name="itemRequested" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
@@ -25,12 +26,14 @@
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat" syncable="YES"/>
     </entity>
     <entity name="Person" representedClassName=".Person" syncable="YES">
         <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="me" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exchanges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exchange" syncable="YES"/>
         <relationship name="favorites" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
@@ -46,10 +49,10 @@
     </entity>
     <elements>
         <element name="Chat" positionX="-108" positionY="-664" width="128" height="88"/>
-        <element name="Exchange" positionX="63" positionY="-666" width="128" height="135"/>
+        <element name="Exchange" positionX="63" positionY="-666" width="128" height="148"/>
         <element name="Item" positionX="54" positionY="-495" width="128" height="133"/>
-        <element name="Message" positionX="-326" positionY="-639" width="128" height="90"/>
-        <element name="Person" positionX="252" positionY="-603" width="128" height="178"/>
+        <element name="Message" positionX="-326" positionY="-639" width="128" height="103"/>
+        <element name="Person" positionX="252" positionY="-603" width="128" height="193"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="120"/>
     </elements>
 </model>

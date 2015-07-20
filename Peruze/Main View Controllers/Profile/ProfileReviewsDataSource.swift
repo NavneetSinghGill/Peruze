@@ -28,7 +28,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource {
             forIndexPath: indexPath) as! ProfileReviewsTableViewCell
             //TODO: Edit the cell contents
             cell.titleLabel.text = "\(indexPath.row + 1). \(reviews[indexPath.row].title)"
-            cell.starView.numberOfStars = reviews[indexPath.row].starRatingValue
+            cell.starView.numberOfStars = reviews[indexPath.row].starRating?.floatValue ?? 0
             cell.subtitleLabel.text = "\(reviews[indexPath.row].reviewer.firstName) \(reviews[indexPath.row].reviewer.lastName) - October 31, 2014"
             cell.review.text = "\(reviews[indexPath.row].description)"
             return cell

@@ -60,19 +60,16 @@ class InitialViewController: UIViewController {
       spinner.stopAnimating()
       setupAndSegueToOnboardVC()
     } else {
-      Model.sharedInstance().fetchMyMinimumProfileWithCompletion() { result, error  -> Void in
+      let getMyProfileOp = GetCurrentUserOperation(database: CKContainer.defaultContainer().publicCloudDatabase)
+      getMyProfileOp.completionBlock = {
+        let myPerson = Person.findFirstByAttribute("me", withValue: true)
         self.spinner.stopAnimating()
-        if error != nil {
-          let alert = ErrorAlertFactory.alertForiCloudSignIn()
-          self.presentViewController(alert, animated: true, completion: nil)
-          return
-        }
-        if result?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }
-        if result!.firstName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
-        if result?.lastName == nil { self.setupAndSegueToSetupProfileVC(); return }
-        if result!.lastName.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
+        
+        if myPerson?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if myPerson!.firstName!.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
+        if myPerson?.lastName == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if myPerson!.lastName!.isEmpty { self.setupAndSegueToSetupProfileVC(); return }
         //if there isn't anything wrong with my profile, segue to tab bar
-        Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         self.setupAndSegueToTabBarVC()
       }
     }

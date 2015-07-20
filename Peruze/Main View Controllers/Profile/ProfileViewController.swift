@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController {
       personForProfile = Model.sharedInstance().myProfile
     }
     //setup the known information about the person
-    profileImageView.image = personForProfile!.image
+    profileImageView.image = UIImage(data: personForProfile!.image!)
     profileNameLabel.text = "\(personForProfile!.firstName) \(personForProfile!.lastName)"
     //TODO: set #ofStars
     

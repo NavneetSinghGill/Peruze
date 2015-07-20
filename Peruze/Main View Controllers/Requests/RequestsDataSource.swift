@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MagicalRecord
 
 class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -44,7 +45,9 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.CollectionViewReuseIdentifier)
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.CollectionViewReuseIdentifier, forIndexPath: indexPath) as! RequestsCollectionViewCell
     cell.delegate = requestDelegate
-    cell.exchange = requests[indexPath.row]
+    if let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as? Exchange {
+      cell.exchange = exchange
+    }
     return cell
   }
   
@@ -59,25 +62,25 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
     
     if let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as? Exchange {
-      let myItem = requests[indexPath.row].itemRequested
-      let theirItem = requests[indexPath.row].itemOffered
-      cell.profileImageView.image = theirItem.owner.image
-      cell.nameLabel.text = "\(theirItem.owner.firstName)'s"
+      let myItem = exchange.itemRequested!
+      let theirItem = exchange.itemOffered!
+      cell.profileImageView.image = UIImage(data: theirItem.owner!.image!)
+      cell.nameLabel.text = "\(theirItem.owner!.firstName)'s"
       cell.itemLabel.text = "\(theirItem.title)"
       cell.itemSubtitle.text = "for your \(myItem.title)"
-      if let requestDate = requests[indexPath.row].dateExchanged {
+      if let requestDate = exchange.date {
         let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
         cell.dateLabel.text = dateString
       } else {
         cell.dateLabel.text = ""
       }
-      cell.itemsExchangedImage.itemImages = (theirItem.image, myItem.image)
+      cell.itemsExchangedImage.itemImages = (UIImage(data: theirItem.image!)!, UIImage(data: myItem.image!)!)
       cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
     }
     return cell
   }
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return requests.count
+    return fetchedResultsController.sections?[section].numberOfObjects ?? 0
   }
   func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return true
@@ -86,21 +89,21 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   //MARK: - Editing Data
   func deleteItemAtIndex(index: Int) -> Exchange {
-    var retValue = Exchange()
-    if requests.count > 0 {
-      retValue = requests[index]
-      requests.removeAtIndex(index)
+    guard let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as? Exchange  else {
+      assertionFailure("The item returned at the given index was not an exchange")
+      abort()
     }
+    retValue.status = ExchangeStatus.Denied.rawValue
     return retValue
   }
+  
   func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
-    for i in 0..<requests.count {
-      if requests[i].recordID == requestToDelete.recordID {
-        requests.removeAtIndex(i)
-        return NSIndexPath(forItem: i, inSection: 0)
-      }
+    let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
+    guard let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as? Exchange  else {
+      assertionFailure("The item returned at the given index was not an exchange")
+      abort()
     }
-    assertionFailure("Tried to delete a request that was not in the requests")
-    return NSIndexPath()
+    retValue.status = ExchangeStatus.Denied.rawValue
+    return retIndexPath
   }
 }

@@ -12,17 +12,11 @@ import CloudKit
 
 @objc(Person)
 class Person: NSManagedObject {
-  class func personForRecord(record: CKRecord) -> Person {
-    let person = Person()
-    person.recordIDName = record.recordID.recordName
-    person.firstName = record.objectForKey("FirstName") as? String
-    person.lastName = record.objectForKey("LastName") as? String
-    person.facebookID = record.objectForKey("FacebookID") as? String
-    //fetch image
-    if let url = (record.objectForKey("Image") as? CKAsset)?.fileURL {
-      person.image = NSData(contentsOfURL: url)
+  var formattedName: String {
+    if let firstName = firstName,let lastName = lastName {
+    return firstName + " " + lastName
+    } else {
+      return ""
     }
-    return person
   }
-  
 }

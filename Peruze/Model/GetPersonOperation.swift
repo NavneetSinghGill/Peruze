@@ -41,7 +41,7 @@ class GetPersonOperation: Operation {
   
   override func execute() {
     //figure out what keys need to be fetched
-    let person = Person.findFirstByAttribute("recordIDName", withValue: personID.recordName)
+    let person = Person.findFirstOrCreateByAttribute("recordIDName", withValue: personID.recordName, inContext: context)
     var desiredKeys = [String]()
     desiredKeys += (person.firstName  == nil ? ["FirstName"]  : [])
     desiredKeys += (person.lastName   == nil ? ["LastName"]   : [])

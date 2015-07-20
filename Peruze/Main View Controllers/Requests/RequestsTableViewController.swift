@@ -35,19 +35,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   func refresh() {
     //reload the data
-    Model.sharedInstance().fetchExchangeRequests { (results, error) -> Void in
-      if error != nil {
-        ErrorAlertFactory.alertFromError(error!, dismissCompletion: { action -> Void in
-          self.refreshControl?.endRefreshing()
-        })
-      } else if results != nil {
-        self.dataSource.requests = results!
-        self.tableView.reloadData()
-        self.refreshControl?.endRefreshing()
-      } else {
-        self.refreshControl?.endRefreshing()
-      }
-    }
+    refreshControl?.endRefreshing()
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -81,7 +69,6 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         self.presentViewController(alert, animated: true, completion: nil)
         return
       }
-      self.dataSource.requests = reloadedRequests ?? []
       self.tableView.reloadData()
       self.checkForEmptyData(true)
     }

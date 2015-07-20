@@ -52,7 +52,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   @IBOutlet weak var itemYoureExchangingLabel: UILabel!
   private var itemInCircleView: Item? {
     didSet {
-      leftCircleImageView.image = itemInCircleView?.image
+      leftCircleImageView.image = UIImage(data: itemInCircleView?.image)
       itemYoureExchangingLabel.text = itemInCircleView?.title
     }
   }
@@ -88,8 +88,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.alpha = 1.0
     
     //setup item selected for exchange
-    rightCircleImageView.image = itemSelectedForExchange!.image
-    otherPersonsFullNameLabel.text = itemSelectedForExchange!.owner.formattedName
+    rightCircleImageView.image = UIImage(data: itemSelectedForExchange!.image)
+    otherPersonsFullNameLabel.text = itemSelectedForExchange!.owner!.formattedName
     mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
     otherPersonsFirstNameLabel.text = "for \(itemSelectedForExchange!.owner.firstName)'s"
     otherPersonsItemLabel.text = itemSelectedForExchange!.title

@@ -59,15 +59,9 @@
 		9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */; };
 		9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */; };
 		9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B211B54DDC3009CB9FA /* UploadViewController.swift */; };
-		9D177BAD1B54DDC3009CB9FA /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B231B54DDC3009CB9FA /* Chat.swift */; };
-		9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */; };
-		9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B251B54DDC3009CB9FA /* Exchange.swift */; };
 		9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */; };
 		9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */; };
-		9D177BB21B54DDC3009CB9FA /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B281B54DDC3009CB9FA /* Item.swift */; };
 		9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B291B54DDC3009CB9FA /* Model.swift */; };
-		9D177BB41B54DDC3009CB9FA /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2A1B54DDC3009CB9FA /* Person.swift */; };
-		9D177BB51B54DDC3009CB9FA /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2B1B54DDC3009CB9FA /* Review.swift */; };
 		9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */; };
 		9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */; };
 		9D177BB81B54DDC3009CB9FA /* Onboard_Exchange.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */; };
@@ -111,6 +105,37 @@
 		9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
+		9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */; };
+		9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */; };
+		9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */; };
+		9D3EA1BA1B5DA68D005D63AC /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */; };
+		9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */; };
+		9D3EA1BC1B5DA68D005D63AC /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */; };
+		9D3EA1BD1B5DA68D005D63AC /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */; };
+		9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */; };
+		9D3EA1BF1B5DA68D005D63AC /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */; };
+		9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */; };
+		9D3EA1C11B5DA68D005D63AC /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */; };
+		9D3EA1C21B5DA68D005D63AC /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */; };
+		9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */; };
+		9D3EA1C41B5DA68D005D63AC /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */; };
+		9D3EA1C51B5DA68D005D63AC /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */; };
+		9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */; };
+		9D3EA1C71B5DA68D005D63AC /* NSOperation+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */; };
+		9D3EA1C81B5DA68D005D63AC /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AA1B5DA68D005D63AC /* Operation.swift */; };
+		9D3EA1C91B5DA68D005D63AC /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */; };
+		9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */; };
+		9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */; };
+		9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */; };
+		9D3EA1CD1B5DA68D005D63AC /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */; };
+		9D3EA1CE1B5DA68D005D63AC /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */; };
+		9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */; };
+		9D3EA1D01B5DA68D005D63AC /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */; };
+		9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */; };
+		9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */; };
+		9D3EA1D31B5DA68D005D63AC /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */; };
+		9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */; };
+		9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */; };
 		9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */; };
 		9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */; };
 		9D45D21A1B5B5D6200D555F3 /* Chat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2141B5B5D6200D555F3 /* Chat+CoreDataProperties.swift */; };
@@ -132,36 +157,6 @@
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
 		9D9E21911B5C68D400C166C8 /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9E21901B5C68D400C166C8 /* AlertOperation.swift */; };
-		9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969A1B5B51D600273677 /* OperationQueue.swift */; };
-		9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969B1B5B51D600273677 /* ExclusivityController.swift */; };
-		9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969D1B5B51D600273677 /* Operation.swift */; };
-		9DEB96C01B5B51D600273677 /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969E1B5B51D600273677 /* BlockOperation.swift */; };
-		9DEB96C11B5B51D600273677 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB969F1B5B51D600273677 /* GroupOperation.swift */; };
-		9DEB96C21B5B51D600273677 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A01B5B51D600273677 /* URLSessionTaskOperation.swift */; };
-		9DEB96C31B5B51D600273677 /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A11B5B51D600273677 /* LocationOperation.swift */; };
-		9DEB96C41B5B51D600273677 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A21B5B51D600273677 /* DelayOperation.swift */; };
-		9DEB96C51B5B51D600273677 /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A41B5B51D600273677 /* OperationObserver.swift */; };
-		9DEB96C61B5B51D600273677 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A51B5B51D600273677 /* BlockObserver.swift */; };
-		9DEB96C71B5B51D600273677 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A61B5B51D600273677 /* TimeoutObserver.swift */; };
-		9DEB96C81B5B51D600273677 /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A81B5B51D600273677 /* OperationErrors.swift */; };
-		9DEB96C91B5B51D600273677 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96A91B5B51D600273677 /* OperationCondition.swift */; };
-		9DEB96CA1B5B51D600273677 /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AA1B5B51D600273677 /* SilentCondition.swift */; };
-		9DEB96CB1B5B51D600273677 /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AB1B5B51D600273677 /* NegatedCondition.swift */; };
-		9DEB96CC1B5B51D600273677 /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AC1B5B51D600273677 /* NoCancelledDependencies.swift */; };
-		9DEB96CD1B5B51D600273677 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AD1B5B51D600273677 /* MutuallyExclusive.swift */; };
-		9DEB96CE1B5B51D600273677 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AE1B5B51D600273677 /* ReachabilityCondition.swift */; };
-		9DEB96CF1B5B51D600273677 /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96AF1B5B51D600273677 /* CloudCondition.swift */; };
-		9DEB96D01B5B51D600273677 /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B01B5B51D600273677 /* PassbookCondition.swift */; };
-		9DEB96D11B5B51D600273677 /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B11B5B51D600273677 /* LocationCondition.swift */; };
-		9DEB96D21B5B51D600273677 /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B21B5B51D600273677 /* CalendarCondition.swift */; };
-		9DEB96D31B5B51D600273677 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B31B5B51D600273677 /* PhotosCondition.swift */; };
-		9DEB96D41B5B51D600273677 /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B41B5B51D600273677 /* HealthCondition.swift */; };
-		9DEB96D51B5B51D600273677 /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B51B5B51D600273677 /* RemoteNotificationCondition.swift */; };
-		9DEB96D61B5B51D600273677 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B61B5B51D600273677 /* UserNotificationCondition.swift */; };
-		9DEB96D71B5B51D600273677 /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B81B5B51D600273677 /* Dictionary+Operations.swift */; };
-		9DEB96D81B5B51D600273677 /* NSOperation+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96B91B5B51D600273677 /* NSOperation+Operations.swift */; };
-		9DEB96D91B5B51D600273677 /* CKContainer+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96BA1B5B51D600273677 /* CKContainer+Operations.swift */; };
-		9DEB96DA1B5B51D600273677 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96BB1B5B51D600273677 /* UIUserNotifications+Operations.swift */; };
 		9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96DE1B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -230,15 +225,9 @@
 		9D177B1E1B54DDC3009CB9FA /* RequestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsViewController.swift; sourceTree = "<group>"; };
 		9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = "Main View Controllers/SettingsViewController.swift"; sourceTree = "<group>"; };
 		9D177B211B54DDC3009CB9FA /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
-		9D177B231B54DDC3009CB9FA /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
-		9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperations.swift; sourceTree = "<group>"; };
-		9D177B251B54DDC3009CB9FA /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exchange.swift; sourceTree = "<group>"; };
 		9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookOperations.swift; sourceTree = "<group>"; };
 		9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManagementOperations.swift; sourceTree = "<group>"; };
-		9D177B281B54DDC3009CB9FA /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9D177B291B54DDC3009CB9FA /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		9D177B2A1B54DDC3009CB9FA /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
-		9D177B2B1B54DDC3009CB9FA /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		9D177B2C1B54DDC3009CB9FA /* NetworkConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = Onboard/InitialViewController.swift; sourceTree = "<group>"; };
 		9D177B2F1B54DDC3009CB9FA /* Onboard_Exchange.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Onboard_Exchange.m4v; sourceTree = "<group>"; };
@@ -306,6 +295,37 @@
 		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCurrentUserOperation.swift; sourceTree = "<group>"; };
+		9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockObserver.swift; path = Peruze/Operations/BlockObserver.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockOperation.swift; path = Peruze/Operations/BlockOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarCondition.swift; path = Peruze/Operations/CalendarCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CKContainer+Operations.swift"; path = "Peruze/Operations/CKContainer+Operations.swift"; sourceTree = SOURCE_ROOT; };
+		9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudCondition.swift; path = Peruze/Operations/CloudCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DelayOperation.swift; path = Peruze/Operations/DelayOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Operations.swift"; path = "Peruze/Operations/Dictionary+Operations.swift"; sourceTree = SOURCE_ROOT; };
+		9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExclusivityController.swift; path = Peruze/Operations/ExclusivityController.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupOperation.swift; path = Peruze/Operations/GroupOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthCondition.swift; path = Peruze/Operations/HealthCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCondition.swift; path = Peruze/Operations/LocationCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationOperation.swift; path = Peruze/Operations/LocationOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutuallyExclusive.swift; path = Peruze/Operations/MutuallyExclusive.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NegatedCondition.swift; path = Peruze/Operations/NegatedCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoCancelledDependencies.swift; path = Peruze/Operations/NoCancelledDependencies.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSOperation+Operations.swift"; path = "Peruze/Operations/NSOperation+Operations.swift"; sourceTree = SOURCE_ROOT; };
+		9D3EA1AA1B5DA68D005D63AC /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operation.swift; path = Peruze/Operations/Operation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationCondition.swift; path = Peruze/Operations/OperationCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationErrors.swift; path = Peruze/Operations/OperationErrors.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationObserver.swift; path = Peruze/Operations/OperationObserver.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationQueue.swift; path = Peruze/Operations/OperationQueue.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PassbookCondition.swift; path = Peruze/Operations/PassbookCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosCondition.swift; path = Peruze/Operations/PhotosCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReachabilityCondition.swift; path = Peruze/Operations/ReachabilityCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteNotificationCondition.swift; path = Peruze/Operations/RemoteNotificationCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SilentCondition.swift; path = Peruze/Operations/SilentCondition.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Peruze/Operations/TimeoutObserver.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIUserNotifications+Operations.swift"; path = "Peruze/Operations/UIUserNotifications+Operations.swift"; sourceTree = SOURCE_ROOT; };
+		9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionTaskOperation.swift; path = Peruze/Operations/URLSessionTaskOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserNotificationCondition.swift; path = Peruze/Operations/UserNotificationCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D449C861B54D9F9005C7CC0 /* Peruze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peruze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D449C8A1B54D9F9005C7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D449C9B1B54D9F9005C7CC0 /* PeruzeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeruzeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -332,36 +352,6 @@
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
 		9D9E21901B5C68D400C166C8 /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
-		9DEB969A1B5B51D600273677 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
-		9DEB969B1B5B51D600273677 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
-		9DEB969D1B5B51D600273677 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		9DEB969E1B5B51D600273677 /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
-		9DEB969F1B5B51D600273677 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
-		9DEB96A01B5B51D600273677 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
-		9DEB96A11B5B51D600273677 /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationOperation.swift; sourceTree = "<group>"; };
-		9DEB96A21B5B51D600273677 /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };
-		9DEB96A41B5B51D600273677 /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationObserver.swift; sourceTree = "<group>"; };
-		9DEB96A51B5B51D600273677 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
-		9DEB96A61B5B51D600273677 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
-		9DEB96A81B5B51D600273677 /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationErrors.swift; sourceTree = "<group>"; };
-		9DEB96A91B5B51D600273677 /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
-		9DEB96AA1B5B51D600273677 /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentCondition.swift; sourceTree = "<group>"; };
-		9DEB96AB1B5B51D600273677 /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegatedCondition.swift; sourceTree = "<group>"; };
-		9DEB96AC1B5B51D600273677 /* NoCancelledDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCancelledDependencies.swift; sourceTree = "<group>"; };
-		9DEB96AD1B5B51D600273677 /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
-		9DEB96AE1B5B51D600273677 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
-		9DEB96AF1B5B51D600273677 /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCondition.swift; sourceTree = "<group>"; };
-		9DEB96B01B5B51D600273677 /* PassbookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassbookCondition.swift; sourceTree = "<group>"; };
-		9DEB96B11B5B51D600273677 /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCondition.swift; sourceTree = "<group>"; };
-		9DEB96B21B5B51D600273677 /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCondition.swift; sourceTree = "<group>"; };
-		9DEB96B31B5B51D600273677 /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCondition.swift; sourceTree = "<group>"; };
-		9DEB96B41B5B51D600273677 /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCondition.swift; sourceTree = "<group>"; };
-		9DEB96B51B5B51D600273677 /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationCondition.swift; sourceTree = "<group>"; };
-		9DEB96B61B5B51D600273677 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
-		9DEB96B81B5B51D600273677 /* Dictionary+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Operations.swift"; sourceTree = "<group>"; };
-		9DEB96B91B5B51D600273677 /* NSOperation+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperation+Operations.swift"; sourceTree = "<group>"; };
-		9DEB96BA1B5B51D600273677 /* CKContainer+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKContainer+Operations.swift"; sourceTree = "<group>"; };
-		9DEB96BB1B5B51D600273677 /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIUserNotifications+Operations.swift"; sourceTree = "<group>"; };
 		9DEB96DF1B5B56DA00273677 /* PeruzeDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeruzeDataModel.xcdatamodel; sourceTree = "<group>"; };
 		DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Peruze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -515,13 +505,7 @@
 				9D45D2131B5B5D1C00D555F3 /* NSManagedObjects */,
 				9DE8B4F01B5B51B7002D993E /* Operations */,
 				9D177B291B54DDC3009CB9FA /* Model.swift */,
-				9D177B251B54DDC3009CB9FA /* Exchange.swift */,
-				9D177B281B54DDC3009CB9FA /* Item.swift */,
-				9D177B231B54DDC3009CB9FA /* Chat.swift */,
-				9D177B2A1B54DDC3009CB9FA /* Person.swift */,
-				9D177B2B1B54DDC3009CB9FA /* Review.swift */,
 				9D177B271B54DDC3009CB9FA /* FileManagementOperations.swift */,
-				9D177B241B54DDC3009CB9FA /* CloudKitOperations.swift */,
 				9D177B261B54DDC3009CB9FA /* FacebookOperations.swift */,
 			);
 			path = Model;
@@ -814,6 +798,7 @@
 				9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */,
 				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
 				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
+				9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */,
 			);
 			name = CloudKitOperations;
 			sourceTree = "<group>";
@@ -833,8 +818,8 @@
 		9DEB969C1B5B51D600273677 /* Operation Queue */ = {
 			isa = PBXGroup;
 			children = (
-				9DEB969A1B5B51D600273677 /* OperationQueue.swift */,
-				9DEB969B1B5B51D600273677 /* ExclusivityController.swift */,
+				9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */,
+				9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */,
 			);
 			name = "Operation Queue";
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -843,12 +828,12 @@
 		9DEB96A31B5B51D600273677 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				9DEB969D1B5B51D600273677 /* Operation.swift */,
-				9DEB969E1B5B51D600273677 /* BlockOperation.swift */,
-				9DEB969F1B5B51D600273677 /* GroupOperation.swift */,
-				9DEB96A01B5B51D600273677 /* URLSessionTaskOperation.swift */,
-				9DEB96A11B5B51D600273677 /* LocationOperation.swift */,
-				9DEB96A21B5B51D600273677 /* DelayOperation.swift */,
+				9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */,
+				9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */,
+				9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */,
+				9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */,
+				9D3EA1AA1B5DA68D005D63AC /* Operation.swift */,
+				9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */,
 			);
 			name = Operations;
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -857,9 +842,9 @@
 		9DEB96A71B5B51D600273677 /* Observers */ = {
 			isa = PBXGroup;
 			children = (
-				9DEB96A41B5B51D600273677 /* OperationObserver.swift */,
-				9DEB96A51B5B51D600273677 /* BlockObserver.swift */,
-				9DEB96A61B5B51D600273677 /* TimeoutObserver.swift */,
+				9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */,
+				9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */,
+				9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */,
 			);
 			name = Observers;
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -868,21 +853,21 @@
 		9DEB96B71B5B51D600273677 /* Conditions */ = {
 			isa = PBXGroup;
 			children = (
-				9DEB96A81B5B51D600273677 /* OperationErrors.swift */,
-				9DEB96A91B5B51D600273677 /* OperationCondition.swift */,
-				9DEB96AA1B5B51D600273677 /* SilentCondition.swift */,
-				9DEB96AB1B5B51D600273677 /* NegatedCondition.swift */,
-				9DEB96AC1B5B51D600273677 /* NoCancelledDependencies.swift */,
-				9DEB96AD1B5B51D600273677 /* MutuallyExclusive.swift */,
-				9DEB96AE1B5B51D600273677 /* ReachabilityCondition.swift */,
-				9DEB96AF1B5B51D600273677 /* CloudCondition.swift */,
-				9DEB96B01B5B51D600273677 /* PassbookCondition.swift */,
-				9DEB96B11B5B51D600273677 /* LocationCondition.swift */,
-				9DEB96B21B5B51D600273677 /* CalendarCondition.swift */,
-				9DEB96B31B5B51D600273677 /* PhotosCondition.swift */,
-				9DEB96B41B5B51D600273677 /* HealthCondition.swift */,
-				9DEB96B51B5B51D600273677 /* RemoteNotificationCondition.swift */,
-				9DEB96B61B5B51D600273677 /* UserNotificationCondition.swift */,
+				9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */,
+				9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */,
+				9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */,
+				9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */,
+				9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */,
+				9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */,
+				9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */,
+				9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */,
+				9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */,
+				9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */,
+				9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */,
+				9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */,
+				9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */,
+				9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */,
+				9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */,
 			);
 			name = Conditions;
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -891,10 +876,10 @@
 		9DEB96BC1B5B51D600273677 /* Convenience Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				9DEB96B81B5B51D600273677 /* Dictionary+Operations.swift */,
-				9DEB96B91B5B51D600273677 /* NSOperation+Operations.swift */,
-				9DEB96BA1B5B51D600273677 /* CKContainer+Operations.swift */,
-				9DEB96BB1B5B51D600273677 /* UIUserNotifications+Operations.swift */,
+				9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */,
+				9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */,
+				9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */,
+				9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */,
 			);
 			name = "Convenience Extensions";
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -1075,97 +1060,96 @@
 			files = (
 				9D177BA11B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift in Sources */,
 				9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */,
-				9DEB96C61B5B51D600273677 /* BlockObserver.swift in Sources */,
-				9DEB96CE1B5B51D600273677 /* ReachabilityCondition.swift in Sources */,
 				9D177BBF1B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift in Sources */,
+				9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */,
 				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
 				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
-				9DEB96BF1B5B51D600273677 /* Operation.swift in Sources */,
 				9D45D2321B5B6BAC00D555F3 /* GetReviewsOperation.swift in Sources */,
-				9DEB96CD1B5B51D600273677 /* MutuallyExclusive.swift in Sources */,
 				9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */,
-				9DEB96D61B5B51D600273677 /* UserNotificationCondition.swift in Sources */,
-				9DEB96C51B5B51D600273677 /* OperationObserver.swift in Sources */,
 				9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */,
 				9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */,
+				9D3EA1C41B5DA68D005D63AC /* MutuallyExclusive.swift in Sources */,
 				9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */,
 				9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */,
 				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
-				9DEB96C21B5B51D600273677 /* URLSessionTaskOperation.swift in Sources */,
+				9D3EA1BD1B5DA68D005D63AC /* DelayOperation.swift in Sources */,
 				9D9E21911B5C68D400C166C8 /* AlertOperation.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
-				9DEB96D31B5B51D600273677 /* PhotosCondition.swift in Sources */,
+				9D3EA1CE1B5DA68D005D63AC /* PhotosCondition.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
 				9D45D21E1B5B5D6200D555F3 /* Exchange+CoreDataProperties.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
 				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
-				9DEB96D01B5B51D600273677 /* PassbookCondition.swift in Sources */,
+				9D3EA1C71B5DA68D005D63AC /* NSOperation+Operations.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
+				9D3EA1D01B5DA68D005D63AC /* RemoteNotificationCondition.swift in Sources */,
 				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
+				9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
-				9D177BAE1B54DDC3009CB9FA /* CloudKitOperations.swift in Sources */,
+				9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */,
+				9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */,
 				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
-				9DEB96D91B5B51D600273677 /* CKContainer+Operations.swift in Sources */,
 				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,
-				9DEB96C11B5B51D600273677 /* GroupOperation.swift in Sources */,
-				9DEB96C01B5B51D600273677 /* BlockOperation.swift in Sources */,
+				9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */,
 				9D177BD31B54DDC4009CB9FA /* TGCameraSlideUpView.m in Sources */,
 				9D177B831B54DDC3009CB9FA /* JSON.swift in Sources */,
 				9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */,
 				9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */,
+				9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */,
+				9D3EA1C11B5DA68D005D63AC /* HealthCondition.swift in Sources */,
 				9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */,
+				9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */,
 				9D45D21B1B5B5D6200D555F3 /* Review+CoreDataProperties.swift in Sources */,
-				9DEB96C71B5B51D600273677 /* TimeoutObserver.swift in Sources */,
+				9D3EA1C51B5DA68D005D63AC /* NegatedCondition.swift in Sources */,
 				9D177B931B54DDC3009CB9FA /* PeruseViewController.swift in Sources */,
 				9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */,
 				9D45D21C1B5B5D6200D555F3 /* Message+CoreDataProperties.swift in Sources */,
 				9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */,
 				9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */,
-				9DEB96C41B5B51D600273677 /* DelayOperation.swift in Sources */,
-				9DEB96DA1B5B51D600273677 /* UIUserNotifications+Operations.swift in Sources */,
+				9D3EA1C81B5DA68D005D63AC /* Operation.swift in Sources */,
 				9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */,
 				9D45D2271B5B5D8B00D555F3 /* Chat.swift in Sources */,
+				9D3EA1C91B5DA68D005D63AC /* OperationCondition.swift in Sources */,
 				9D177BCB1B54DDC3009CB9FA /* TGCameraGrid.m in Sources */,
 				9D177BCC1B54DDC3009CB9FA /* TGCameraShot.m in Sources */,
-				9DEB96C91B5B51D600273677 /* OperationCondition.swift in Sources */,
+				9D3EA1D31B5DA68D005D63AC /* UIUserNotifications+Operations.swift in Sources */,
 				9D177B801B54DDC3009CB9FA /* UploadingEyesView.swift in Sources */,
 				9D177BA61B54DDC3009CB9FA /* RequestsCollectionViewCell.swift in Sources */,
-				9D177BAD1B54DDC3009CB9FA /* Chat.swift in Sources */,
-				9DEB96D21B5B51D600273677 /* CalendarCondition.swift in Sources */,
 				9D45D21F1B5B5D6200D555F3 /* Person+CoreDataProperties.swift in Sources */,
 				9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */,
 				9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */,
-				9DEB96CF1B5B51D600273677 /* CloudCondition.swift in Sources */,
+				9D3EA1C21B5DA68D005D63AC /* LocationCondition.swift in Sources */,
 				9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
-				9DEB96C81B5B51D600273677 /* OperationErrors.swift in Sources */,
+				9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */,
+				9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */,
+				9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */,
+				9D3EA1CD1B5DA68D005D63AC /* PassbookCondition.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
-				9DEB96CA1B5B51D600273677 /* SilentCondition.swift in Sources */,
-				9D177BB51B54DDC3009CB9FA /* Review.swift in Sources */,
+				9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */,
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				9D45D21A1B5B5D6200D555F3 /* Chat+CoreDataProperties.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
-				9DEB96C31B5B51D600273677 /* LocationOperation.swift in Sources */,
+				9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
+				9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */,
 				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
-				9DEB96D41B5B51D600273677 /* HealthCondition.swift in Sources */,
 				9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */,
 				9D177B7E1B54DDC3009CB9FA /* LoadingCircleView.swift in Sources */,
 				9D177B981B54DDC3009CB9FA /* ProfileExchangesViewController.swift in Sources */,
-				9DEB96D51B5B51D600273677 /* RemoteNotificationCondition.swift in Sources */,
 				9D177BD51B54DDC4009CB9FA /* TGTintedButton.m in Sources */,
-				9DEB96D81B5B51D600273677 /* NSOperation+Operations.swift in Sources */,
+				9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */,
 				9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */,
+				9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */,
 				9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */,
 				9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */,
 				9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */,
 				9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */,
-				9DEB96BD1B5B51D600273677 /* OperationQueue.swift in Sources */,
 				9D177B7B1B54DDC3009CB9FA /* CircleImage.swift in Sources */,
 				9D177BD61B54DDC4009CB9FA /* TGTintedLabel.m in Sources */,
 				9D177B961B54DDC3009CB9FA /* ProfileExchangesTableViewCell.swift in Sources */,
@@ -1176,29 +1160,25 @@
 				9D177B991B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift in Sources */,
 				9D177B901B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift in Sources */,
 				9D177B8E1B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift in Sources */,
-				9DEB96D71B5B51D600273677 /* Dictionary+Operations.swift in Sources */,
 				9D177B9F1B54DDC3009CB9FA /* ProfileReviewsViewController.swift in Sources */,
-				9D177BB21B54DDC3009CB9FA /* Item.swift in Sources */,
 				9D177BC71B54DDC3009CB9FA /* TGCamera.m in Sources */,
+				9D3EA1BF1B5DA68D005D63AC /* ExclusivityController.swift in Sources */,
 				9D177BA81B54DDC3009CB9FA /* RequestsDataSource.swift in Sources */,
 				9D45D21D1B5B5D6200D555F3 /* Item+CoreDataProperties.swift in Sources */,
 				9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */,
 				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
-				9DEB96BE1B5B51D600273677 /* ExclusivityController.swift in Sources */,
 				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
+				9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */,
 				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,
 				9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */,
 				9D177B891B54DDC3009CB9FA /* ChatTableViewController.swift in Sources */,
-				9DEB96CB1B5B51D600273677 /* NegatedCondition.swift in Sources */,
+				9D3EA1BC1B5DA68D005D63AC /* CloudCondition.swift in Sources */,
+				9D3EA1BA1B5DA68D005D63AC /* CalendarCondition.swift in Sources */,
 				9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */,
 				9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */,
 				9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */,
-				9DEB96D11B5B51D600273677 /* LocationCondition.swift in Sources */,
-				9D177BAF1B54DDC3009CB9FA /* Exchange.swift in Sources */,
-				9DEB96CC1B5B51D600273677 /* NoCancelledDependencies.swift in Sources */,
 				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
-				9D177BB41B54DDC3009CB9FA /* Person.swift in Sources */,
 				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
 				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
