@@ -7,16 +7,36 @@
 //
 
 import UIKit
+import CoreData
 
-class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
+class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
     static let CollectionViewNibName = "RequestsCollectionViewCell"
     static let CollectionViewReuseIdentifier = "request"
     static let TableViewNibName = "ProfileExchangesTableViewCell"
     static let TableViewReuseIdentifier = "ProfileExchange"
   }
+  var fetchedResultsController: NSFetchedResultsController!
   var requestDelegate: RequestCollectionViewCellDelegate?
-  var requests = [Exchange]()
+  
+  override init() {
+    super.init()
+    let requestPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", Model.sharedInstance().myProfile.recordIDName!)
+    let statusPredicate = NSPredicate(format: "status == %i", ExchangeStatus.Pending.rawValue)
+    let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([requestPredicate, statusPredicate])
+    fetchedResultsController = Exchange.fetchAllSortedBy("date",
+      ascending: true,
+      withPredicate: fetchedResultsPredicate,
+      groupBy: nil,
+      delegate: self)
+    do {
+      try fetchedResultsController.performFetch()
+    } catch {
+      print(error)
+      //TODO: Actually handle this error
+    }
+  }
+  
   
   //MARK: - UICollectionView Data Source
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -29,7 +49,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   }
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return requests.count
+    return fetchedResultsController.sections?[section].numberOfObjects ?? 0
   }
   
   //MARK: - UITableView Data Source
@@ -37,20 +57,23 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     let nib = UINib(nibName: Constants.TableViewNibName, bundle: nil)
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.TableViewReuseIdentifier)
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
-    let myItem = requests[indexPath.row].itemRequested
-    let theirItem = requests[indexPath.row].itemOffered
-    cell.profileImageView.image = theirItem.owner.image
-    cell.nameLabel.text = "\(theirItem.owner.firstName)'s"
-    cell.itemLabel.text = "\(theirItem.title)"
-    cell.itemSubtitle.text = "for your \(myItem.title)"
-    if let requestDate = requests[indexPath.row].dateExchanged {
-      let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
-      cell.dateLabel.text = dateString
-    } else {
-      cell.dateLabel.text = ""
+    
+    if let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as? Exchange {
+      let myItem = requests[indexPath.row].itemRequested
+      let theirItem = requests[indexPath.row].itemOffered
+      cell.profileImageView.image = theirItem.owner.image
+      cell.nameLabel.text = "\(theirItem.owner.firstName)'s"
+      cell.itemLabel.text = "\(theirItem.title)"
+      cell.itemSubtitle.text = "for your \(myItem.title)"
+      if let requestDate = requests[indexPath.row].dateExchanged {
+        let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
+        cell.dateLabel.text = dateString
+      } else {
+        cell.dateLabel.text = ""
+      }
+      cell.itemsExchangedImage.itemImages = (theirItem.image, myItem.image)
+      cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
     }
-    cell.itemsExchangedImage.itemImages = (theirItem.image, myItem.image)
-    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
     return cell
   }
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

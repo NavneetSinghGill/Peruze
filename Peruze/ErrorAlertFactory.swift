@@ -71,7 +71,6 @@ class ErrorAlertFactory: NSObject {
   private class func facebookFriendsAlert(message: String, completion: (Void -> Void)?) -> UIAlertController {
     let title = "Can't Access Friends"
     let cancelTitle = "Dismiss"
-    let settingsTitle = "Allow Access"
     let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
     let cancelAction = UIAlertAction(title: cancelTitle, style: UIAlertActionStyle.Cancel) { (action) -> Void in
       completion?()

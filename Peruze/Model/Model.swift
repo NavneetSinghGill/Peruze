@@ -41,7 +41,7 @@ struct RecordTypes {
   static let User = "Users"
 }
 class Model: NSObject, CLLocationManagerDelegate {
-  var myProfile: Person?
+  var myProfile: Person!
   var peruseItems = [Item]()
   var favoritedItems = [Item]()
   var uploadedItems = [Item]()

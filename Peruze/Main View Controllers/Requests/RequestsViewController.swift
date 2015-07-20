@@ -28,6 +28,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
       collectionView.showsHorizontalScrollIndicator = false
     }
   }
+  
   private var storedTop: CGFloat = 0
   private var storedBottom: CGFloat = 0
   override func viewDidLayoutSubviews() {
