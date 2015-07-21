@@ -149,7 +149,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   override func didPressAccessoryButton(sender: UIButton!) {
     switch sender {
     case cancelButton!:
-      let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel the exchange with \(otherItem!.owner.firstName)? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
+      let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel the exchange with \(otherItem!.owner!.firstName)? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
       let doNotDelete = UIAlertAction(title: "Do Not Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
       let doDelete = UIAlertAction(title: "Cancel Exchange", style: UIAlertActionStyle.Destructive) { (alertAction) -> Void in
         self.delegate!.cancelExchangeWithOtherItem(self.otherItem!)
@@ -173,7 +173,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
     switch button {
     case completeButton!:
-      let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange with \(otherItem!.owner.firstName)!", preferredStyle: UIAlertControllerStyle.Alert)
+      let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange with \(otherItem!.owner!.firstName)!", preferredStyle: UIAlertControllerStyle.Alert)
       let successfulExchange = UIAlertAction(title: "We've successfully exchanged.", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
         self.delegate!.completeExchangeWithOtherItem(self.otherItem!)
         self.navigationController!.popViewControllerAnimated(true)

@@ -10,6 +10,7 @@ import UIKit
 import SystemConfiguration
 import FBSDKLoginKit
 import CloudKit
+import MagicalRecord
 
 class InitialViewController: UIViewController {
   
@@ -62,7 +63,8 @@ class InitialViewController: UIViewController {
     } else {
       let getMyProfileOp = GetCurrentUserOperation(database: CKContainer.defaultContainer().publicCloudDatabase)
       getMyProfileOp.completionBlock = {
-        let myPerson = Person.findFirstByAttribute("me", withValue: true)
+        print("Finished")
+        let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
         self.spinner.stopAnimating()
         
         if myPerson?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }
@@ -72,6 +74,7 @@ class InitialViewController: UIViewController {
         //if there isn't anything wrong with my profile, segue to tab bar
         self.setupAndSegueToTabBarVC()
       }
+      OperationQueue().addOperation(getMyProfileOp)
     }
   }
   

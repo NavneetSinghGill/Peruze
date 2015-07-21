@@ -198,7 +198,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
       dismissViewControllerAnimated(true) {
-        Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
+        //Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         //TODO: Pass edited data back to dataSource
       }
     }

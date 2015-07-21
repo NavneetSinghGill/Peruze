@@ -90,11 +90,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   private func exchangeInitiated() {
     //TODO: create an exchange and pass it to the data model
-    let newExchange = Exchange(status: ExchangeStatus.Pending,
-      itemRequested: self.itemToForwardToExchange!,
-      itemOffered: self.itemChosenToExchange!,
-      dateExchanged: nil)
-    Model.sharedInstance().uploadRequest(newExchange)
   }
   
   func segueToProfile(owner: Person) {

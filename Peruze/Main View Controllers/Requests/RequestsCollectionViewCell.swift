@@ -30,17 +30,17 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   private var itemOfferedToUser: Item? {
     didSet {
       if let item = itemOfferedToUser {
-        profilePicture.image = item.owner.image
-        profileName.text = item.owner.formattedName
-        theirItemImageView.image = item.image
-        forTheirLabel.text = "for \(item.owner.firstName)'s"
+        profilePicture.image = UIImage(data: item.owner!.image!)
+        profileName.text = item.owner!.formattedName
+        theirItemImageView.image = UIImage(data: item.image!)
+        forTheirLabel.text = "for \(item.owner!.firstName)'s"
         aboutTheirItemLabel.text = "About \(item.title)"
         theirItemNameLabel.text = item.title
         theirItemDescription.numberOfLines = 0
         theirItemDescription.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
         theirItemDescription.text = item.description
         theirSquareItemImageView.contentMode =  .ScaleAspectFill
-        theirSquareItemImageView.image = item.image
+        theirSquareItemImageView.image = UIImage(data: item.image!)
         setNeedsDisplay()
       }
     }
@@ -50,7 +50,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   private var itemRequestedFromUser: Item? {
     didSet {
       if let item = itemRequestedFromUser {
-        yourItemImageView.image = item.image
+        yourItemImageView.image = UIImage(data: item.image!)
         yourItemNameLabel.text = item.title
         setNeedsDisplay()
       }

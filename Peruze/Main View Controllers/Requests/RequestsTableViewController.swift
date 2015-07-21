@@ -81,14 +81,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
       self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-      Model.sharedInstance().denyExchangeRequest(deletedRequest, completion: actionCompletion)
+      //Model.sharedInstance().denyExchangeRequest(deletedRequest, completion: actionCompletion)
     }
   }
   private func acceptEditActionWithCompletion(actionCompletion: ([Exchange]?, NSError?) -> Void) -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
       self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-      Model.sharedInstance().acceptExchangeRequest(deletedRequest, completion: actionCompletion)
+      //Model.sharedInstance().acceptExchangeRequest(deletedRequest, completion: actionCompletion)
     }
     accept.backgroundColor = .greenColor()
     return accept

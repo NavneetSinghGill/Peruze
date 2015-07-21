@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CloudKit
 class ProfileViewController: UIViewController {
   
   private struct Constants {
@@ -67,20 +67,16 @@ class ProfileViewController: UIViewController {
     //TODO: set #ofStars
     
     //get the updated information for the profile
-    Model.sharedInstance().completePerson(personForProfile!, completion: { (completeProfile, error) -> Void in
-      if error != nil {
-        let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
-        self.presentViewController(alert, animated: true, completion: nil)
-        return
-      } else {
-        self.personForProfile = completeProfile
-        self.containerSpinner.stopAnimating()
-        UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
-          self.updateChildViewControllers()
-        })
-      }
-    })
-
+    
+    let completePerson = GetFullProfileOperation(personRecordID: CKRecordID(recordName: personForProfile!.recordIDName!)) {
+      let completeProfile = Person.findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
+      self.personForProfile = completeProfile
+      self.containerSpinner.stopAnimating()
+      UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
+        self.updateChildViewControllers()
+      })
+    }
+    NSOperationQueue.mainQueue().addOperation(completePerson)
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = .redColor()

@@ -120,7 +120,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     } else if scrollView.contentOffset != CGPointMake(0, 0) {
       scrollView.scrollRectToVisible(CGRectMake(0, 0, 10, 10), animated: true)
     } else if CGRectContainsPoint(ownerProfileImage.frame, sender.locationInView(contentView)) {
-      delegate?.segueToProfile(item!.owner)
+      delegate?.segueToProfile(item!.owner!)
     }
   }
   
@@ -132,11 +132,11 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   
   private func updateUI() {
     if let item = item {
-      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
-      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
-      ownerNameLabel.text = item.owner.formattedName
-      ownerProfileImage.image = item.owner.image
-      itemImageView.image = item.image
+//      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
+//      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
+//      ownerNameLabel.text = item.owner.formattedName
+//      ownerProfileImage.image = item.owner.image
+//      itemImageView.image = item.image
       itemNameLabel.text = item.title
       itemDescriptionTextView.text = item.detail
     }

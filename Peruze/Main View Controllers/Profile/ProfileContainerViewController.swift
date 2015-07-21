@@ -31,16 +31,16 @@ class ProfileContainerViewController: UITabBarController {
     for childVC in childViewControllers {
       switch childVC {
       case let uploadsVC as ProfileUploadsViewController:
-        uploadsVC.dataSource.items = profileOwner!.uploads
+        //uploadsVC.dataSource.items = profileOwner!.uploads
         break
       case let favoritesVC as ProfileFavoritesViewController:
-        favoritesVC.dataSource.favorites = profileOwner!.favorites
+        //favoritesVC.dataSource.favorites = profileOwner!.favorites
         break
       case let reviewsVC as ProfileReviewsViewController:
-        reviewsVC.dataSource.reviews = profileOwner!.reviews
+        //reviewsVC.dataSource.reviews = profileOwner!.reviews
         break
       case let exchangesVC as ProfileExchangesViewController:
-        exchangesVC.dataSource.exchanges = profileOwner!.completedExchanges
+        //exchangesVC.dataSource.exchanges = profileOwner!.completedExchanges
         break
       default:
         //do nothing

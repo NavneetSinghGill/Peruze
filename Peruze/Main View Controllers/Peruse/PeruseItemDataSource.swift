@@ -22,7 +22,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource {
     }
     func itemsUpdated() {
         print("items updated")
-        items = model.peruseItems
+      //items = model.peruseItems
         collectionView?.reloadData()
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

@@ -146,40 +146,40 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     operationQueue.qualityOfService = .Utility
     
     //check for iCloud availability
-    let iCloudFinishedSuccessfully = NSBlockOperation(block: {})
-    let iCloudAvailabilityOperation = iCloudAvailability()
-    iCloudAvailabilityOperation.completionHandler = { (finishedOp) -> Void in
-      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
-      if let availabilityOperation = finishedOp as? iCloudAvailability {
-        if availabilityOperation.accountStatus == CKAccountStatus.NoAccount {
-          let alert = ErrorAlertFactory.alertForiCloudSignIn()
-          NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.presentViewController(alert, animated: true, completion: nil)
-          }
-          operationQueue.cancelAllOperations()
-          return
-        } else {
-          operationQueue.addOperation(iCloudFinishedSuccessfully)
-        }
-      }
-    }
+//    let iCloudFinishedSuccessfully = NSBlockOperation(block: {})
+//    let iCloudAvailabilityOperation = iCloudAvailability()
+//    iCloudAvailabilityOperation.completionHandler = { (finishedOp) -> Void in
+//      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
+//      if let availabilityOperation = finishedOp as? iCloudAvailability {
+//        if availabilityOperation.accountStatus == CKAccountStatus.NoAccount {
+//          let alert = ErrorAlertFactory.alertForiCloudSignIn()
+//          NSOperationQueue.mainQueue().addOperationWithBlock {
+//            self.presentViewController(alert, animated: true, completion: nil)
+//          }
+//          operationQueue.cancelAllOperations()
+//          return
+//        } else {
+//          operationQueue.addOperation(iCloudFinishedSuccessfully)
+//        }
+//      }
+//    }
     
     //upload facebook profile info
-    let getProfileFinishedSuccessfully = NSBlockOperation(block: {})
-    let getFacebookProfileOp = FetchFacebookUserProfile()
-    getFacebookProfileOp.completionHandler = { (finishedOp) -> Void in
-      //handle error
-      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
-      //save profile
-      if let profileOp = finishedOp as? FetchFacebookUserProfile {
-        Model.sharedInstance().setFacebookProfileForLoggedInUser(profileOp.profile!, andImage: self.center.image!) {
-          (error) -> Void in
-          self.nextLoadingTearDown()
-          operationQueue.addOperation(getProfileFinishedSuccessfully)
-        }
-      }
-    }
-    
+//    let getProfileFinishedSuccessfully = NSBlockOperation(block: {})
+//    let getFacebookProfileOp = FetchFacebookUserProfile()
+//    getFacebookProfileOp.completionHandler = { (finishedOp) -> Void in
+//      //handle error
+//      self.handleError(finishedOp.error, handler: { self.nextLoadingTearDown() })
+//      //save profile
+//      if let profileOp = finishedOp as? FetchFacebookUserProfile {
+//        Model.sharedInstance().setFacebookProfileForLoggedInUser(profileOp.profile!, andImage: self.center.image!) {
+//          (error) -> Void in
+//          self.nextLoadingTearDown()
+//          operationQueue.addOperation(getProfileFinishedSuccessfully)
+//        }
+//      }
+//    }
+//    
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation(block: {
       self.nextLoadingTearDown()
@@ -187,13 +187,13 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     })
     
     //add dependencies
-    performSegueOp.addDependency(iCloudFinishedSuccessfully)
-    performSegueOp.addDependency(getProfileFinishedSuccessfully)
-    getFacebookProfileOp.addDependency(iCloudAvailabilityOperation)
+//    performSegueOp.addDependency(iCloudFinishedSuccessfully)
+//    performSegueOp.addDependency(getProfileFinishedSuccessfully)
+//    getFacebookProfileOp.addDependency(iCloudAvailabilityOperation)
     
     //add operations to respective queues
-    operationQueue.addOperation(iCloudAvailabilityOperation)
-    operationQueue.addOperation(getFacebookProfileOp)
+//    operationQueue.addOperation(iCloudAvailabilityOperation)
+    //    operationQueue.addOperation(getFacebookProfileOp)
     NSOperationQueue.mainQueue().addOperation(performSegueOp)
   }
   

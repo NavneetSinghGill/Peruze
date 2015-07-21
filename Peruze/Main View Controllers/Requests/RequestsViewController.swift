@@ -65,26 +65,26 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   func requestAccepted(request: Exchange) {
     let deletedItemIndexPath = dataSource.deleteRequest(request)
     collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
-    Model.sharedInstance().acceptExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
-      self.dataSource.requests = reloadedRequests ?? []
-      self.collectionView.reloadData()
-      if error != nil {
-        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
-      }
-      self.checkForEmptyData()
-    })
+//    Model.sharedInstance().acceptExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
+//      self.dataSource.requests = reloadedRequests ?? []
+//      self.collectionView.reloadData()
+//      if error != nil {
+//        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+//      }
+//      self.checkForEmptyData()
+//    })
   }
   
   func requestDenied(request: Exchange) {
     let deletedItemIndexPath = dataSource.deleteRequest(request)
     collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
-    Model.sharedInstance().denyExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
-      self.dataSource.requests = reloadedRequests ?? []
-      self.collectionView.reloadData()
-      if error != nil {
-        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
-      }
-      self.checkForEmptyData()
-    })
+//    Model.sharedInstance().denyExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
+//      self.dataSource.requests = reloadedRequests ?? []
+//      self.collectionView.reloadData()
+//      if error != nil {
+//        ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
+//      }
+//      self.checkForEmptyData()
+//    })
   }
 }

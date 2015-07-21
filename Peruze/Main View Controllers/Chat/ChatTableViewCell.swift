@@ -11,11 +11,11 @@ import UIKit
 class ChatTableViewCell: UITableViewCell {
     var data: Chat? {
         didSet {
-            itemImage.itemImages = (data!.exchage.itemOffered.image, data!.exchage.itemRequested.image)
-            theirItemNameLabel.text = "\(data!.exchage.itemOffered.title)"
-            yourItemNameLabel.text = "for \(data!.exchage.itemRequested.title)"
-            let name = data!.messages.last!.senderDisplayName == data!.exchage.itemRequested.owner.firstName ? "you" : "\(data!.messages.last!.senderDisplayName)"
-            mostRecentTextString.text = name + ": \(data!.messages.last!.text)"
+//            itemImage.itemImages = (data!.exchage.itemOffered.image, data!.exchage.itemRequested.image)
+//            theirItemNameLabel.text = "\(data!.exchage.itemOffered.title)"
+//            yourItemNameLabel.text = "for \(data!.exchage.itemRequested.title)"
+//            let name = data!.messages.last!.senderDisplayName == data!.exchage.itemRequested.owner.firstName ? "you" : "\(data!.messages.last!.senderDisplayName)"
+          //mostRecentTextString.text = name + ": \(data!.messages.last!.text)"
         }
     }
     @IBOutlet weak var itemImage: DoubleCircleImage!

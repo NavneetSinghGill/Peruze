@@ -52,7 +52,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   @IBOutlet weak var itemYoureExchangingLabel: UILabel!
   private var itemInCircleView: Item? {
     didSet {
-      leftCircleImageView.image = UIImage(data: itemInCircleView?.image)
+      leftCircleImageView.image = UIImage(data: itemInCircleView!.image!)
       itemYoureExchangingLabel.text = itemInCircleView?.title
     }
   }
@@ -88,14 +88,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.alpha = 1.0
     
     //setup item selected for exchange
-    rightCircleImageView.image = UIImage(data: itemSelectedForExchange!.image)
+    rightCircleImageView.image = UIImage(data: itemSelectedForExchange!.image!)
     otherPersonsFullNameLabel.text = itemSelectedForExchange!.owner!.formattedName
-    mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
-    otherPersonsFirstNameLabel.text = "for \(itemSelectedForExchange!.owner.firstName)'s"
+    //mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
+    otherPersonsFirstNameLabel.text = "for \(itemSelectedForExchange!.owner!.firstName)'s"
     otherPersonsItemLabel.text = itemSelectedForExchange!.title
-    otherPersonsProfileImageView.image = itemSelectedForExchange!.owner.image
-    
-    dataSource.exchangeItems = Model.sharedInstance().myProfile?.uploads ?? []
+    otherPersonsProfileImageView.image = UIImage(data: itemSelectedForExchange!.owner!.image!)
   }
   
   override func viewDidLayoutSubviews() {
@@ -122,7 +120,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.setNeedsDisplay()
     view.insertSubview(greenCircle, aboveSubview: leftCircleImageView)
   }
-
+  
   //MARK: - Handling Segues
   @IBAction func bottomBlurTap(sender: AnyObject) {
     let bufferSize:CGFloat = 32
@@ -143,7 +141,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     }
     if itemInCircleView == nil {
       let alert = UIAlertView(title: Constants.NoItemAlert.title,
-        message: "\(self.itemSelectedForExchange!.owner.firstName) is our really good friend! Surely you don't want to offer nothing in return for \(itemSelectedForExchange!.title).",
+        message: "\(self.itemSelectedForExchange!.owner!.firstName) is our really good friend! Surely you don't want to offer nothing in return for \(itemSelectedForExchange!.title).",
         delegate: self,
         cancelButtonTitle: Constants.NoItemAlert.cancelTitle)
       alert.show()
@@ -175,10 +173,10 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //MARK: Variables
   private var pickedUpCell: PickedUpCell? {
     didSet {
-      pickedUpCell?.circleImage.image = pickedUpCell?.item.image
-      pickedUpCell?.circleImage.backgroundColor = .clearColor()
-      if pickedUpCell?.circleImage != nil {
-        view.addSubview(pickedUpCell!.circleImage)
+      if let pickedUpCell = pickedUpCell {
+        pickedUpCell.circleImage.image = UIImage(data: pickedUpCell.item.image!)
+        pickedUpCell.circleImage.backgroundColor = .clearColor()
+        view.addSubview(pickedUpCell.circleImage)
       }
     }
   }
@@ -391,7 +389,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
         self.itemYoureExchangingLabel.alpha = 0.0
       }
     } else {
-      leftCircleImageView.image = item!.image
+      leftCircleImageView.image = UIImage(data: item!.image!)
       itemYoureExchangingLabel.text = item!.title
       UIView.animateWithDuration(0.3) {
         self.itemYoureExchangingLabel.alpha = 1.0

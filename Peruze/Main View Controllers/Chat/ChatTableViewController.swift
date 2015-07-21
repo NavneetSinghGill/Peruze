@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JSQMessagesViewController
 
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
     private struct Constants {
@@ -75,22 +76,22 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     func cancelExchangeWithOtherItem(otherItem: Item) {
         for i in 0..<dataSource.chats.count {
             print(i)
-            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
-                dataSource.chats.removeAtIndex(i)
-                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            }
+//            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
+//                dataSource.chats.removeAtIndex(i)
+//                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            }
         }
         checkForEmptyData(true)
     }
     
     func completeExchangeWithOtherItem(otherItem: Item) {
         for i in 0..<dataSource.chats.count {
-            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
-                dataSource.chats.removeAtIndex(i)
-                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            }
+//            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
+//                dataSource.chats.removeAtIndex(i)
+//                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            }
         }
         checkForEmptyData(true)
     }
@@ -108,10 +109,10 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         if let cell = sender as? ChatTableViewCell {
             if let destVC = segue.destinationViewController as? ChatCollectionViewController {
                 destVC.title = cell.theirItemNameLabel.text
-                destVC.messages = cell.data?.messages
-                destVC.otherItem = cell.data?.exchage.itemRequested
-                destVC.senderId = "\(cell.data!.exchage.itemOffered.owner.id)"
-                destVC.senderDisplayName = cell.data?.exchage.itemOffered.owner.firstName
+                destVC.messages = cell.data?.messages?.allObjects as! [JSQMessage]
+              //destVC.otherItem = cell.data?.exchage.itemRequested
+              //destVC.senderId = "\(cell.data!.exchage.itemOffered.owner.id)"
+              //destVC.senderDisplayName = cell.data?.exchage.itemOffered.owner.firstName
                 destVC.delegate = self
             }
         }

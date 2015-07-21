@@ -104,6 +104,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       abort()
     }
     retValue.status = ExchangeStatus.Denied.rawValue
-    return retIndexPath
+    return retIndexPath!
   }
 }

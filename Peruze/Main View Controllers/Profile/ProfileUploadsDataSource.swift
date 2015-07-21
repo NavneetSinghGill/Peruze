@@ -31,7 +31,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource {
             cell.titleTextLabel.text = items[indexPath.row].title
             cell.subtitleTextLabel.text = ""
             cell.descriptionTextLabel.text = items[indexPath.row].detail
-            cell.circleImageView.image = items[indexPath.row].image
+            cell.circleImageView.image = UIImage(data: items[indexPath.row].image!)
             cell.accessoryType = editableCells ? .DisclosureIndicator : .None
             cell.userInteractionEnabled = editableCells
         } else {

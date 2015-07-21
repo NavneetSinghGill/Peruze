@@ -17,9 +17,11 @@ class GetCurrentUserOperation: Operation {
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.database = database
     self.context = context
+    print("init operation")
     super.init()
   }
   override func execute() {
+    print("execute of Get Current User Operation")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     
     fetchUser.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in

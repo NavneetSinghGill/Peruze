@@ -88,7 +88,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   //MARK: - Profile Setup
   
-  func fetchMyMinimumProfileWithCompletion(completion: (Person?, NSError? -> Void)) {
+  func fetchMyMinimumProfileWithCompletion(completion: ((Person?, NSError?) -> Void)) {
     let fetchMyProfileOp = GetCurrentUserOperation(database: publicDB)
     fetchMyProfileOp.addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
     fetchMyProfileOp

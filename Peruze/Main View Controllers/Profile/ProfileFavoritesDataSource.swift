@@ -28,9 +28,9 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
             forIndexPath: indexPath) as! ProfileUploadsTableViewCell
         if favorites.count > indexPath.row {
             cell.titleTextLabel.text = favorites[indexPath.row].title
-            cell.subtitleTextLabel.text = "by \(favorites[indexPath.row].owner.firstName)"
+            cell.subtitleTextLabel.text = "by \(favorites[indexPath.row].owner!.firstName)"
             cell.descriptionTextLabel.text = favorites[indexPath.row].description
-            cell.circleImageView.image = favorites[indexPath.row].image
+            cell.circleImageView.image = UIImage(data: favorites[indexPath.row].image!)
         } else {
             print("There is no cell for NSIndexPath: \(indexPath)")
         }

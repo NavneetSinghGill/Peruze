@@ -161,9 +161,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         }
         if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
             beginUpload()
-            Model.sharedInstance().uploadItemWithImage(mainImageView.image,
-                title: titleTextField.text!,
-                andDetails: descriptionTextView.text)
+//            Model.sharedInstance().uploadItemWithImage(mainImageView.image,
+//                title: titleTextField.text!,
+//                andDetails: descriptionTextView.text)
         } else {
             let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
