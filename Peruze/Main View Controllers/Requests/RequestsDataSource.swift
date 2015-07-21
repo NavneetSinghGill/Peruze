@@ -22,10 +22,11 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   override init() {
     super.init()
-    let requestPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", Model.sharedInstance().myProfile.recordIDName!)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let requestPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", me.recordIDName!)
     let statusPredicate = NSPredicate(format: "status == %i", ExchangeStatus.Pending.rawValue)
     let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([requestPredicate, statusPredicate])
-    fetchedResultsController = Exchange.fetchAllSortedBy("date",
+    fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
       groupBy: nil,

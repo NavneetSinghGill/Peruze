@@ -64,7 +64,7 @@ class InitialViewController: UIViewController {
       let getMyProfileOp = GetCurrentUserOperation(database: CKContainer.defaultContainer().publicCloudDatabase)
       getMyProfileOp.completionBlock = {
         print("Finished")
-        let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
+        let myPerson = Person.MR_findFirstByAttribute("me", withValue: true) as Person!
         self.spinner.stopAnimating()
         
         if myPerson?.firstName == nil { self.setupAndSegueToSetupProfileVC(); return }

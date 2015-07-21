@@ -9,6 +9,7 @@
 import Foundation
 import AsyncOpKit
 import FBSDKCoreKit
+import MagicalRecord
 
 //MARK: - Download Profile Photo
 
@@ -131,33 +132,37 @@ class DownloadImagesForURLs: AsyncOperation {
 }
 
 ///Fetches the currently logged in facebook user's profile
-class FetchFacebookUserProfile: AsyncOperation {
+class FetchFacebookUserProfile: Operation {
+  
   private struct Constants {
     static let ProfilePath = "me/?fields=id,last_name,first_name"
   }
-  var profile: FBSDKProfile?
   
-  override func main() {
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+  let context: NSManagedObjectContext
+  
+  init(context: NSManagedObjectContext) {
+    self.context = context
+    super.init()
+  }
+  
+  override func execute() {
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
-    
     dispatch_async(dispatch_get_main_queue()) {
       request.startWithCompletionHandler {(connection, result, error) -> Void in
-        if error != nil { self.error = error; self.finish(); return }
-        
-        if let _ = result as? [String: AnyObject] {
-          self.profile = FBSDKProfile(userID: result["id"] as! String,
-            firstName: result["first_name"] as! String,
-            middleName: nil,
-            lastName: result["last_name"] as! String,
-            name: nil,
-            linkURL: nil,
-            refreshDate: nil)
+        if error != nil {
+          self.finishWithError(error)
+          return
         }
-        dispatch_async(dispatch_get_main_queue()) {
-          UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-          self.finish()
+        if let result = result as? [String: AnyObject] {
+          MagicalRecord.saveWithBlockAndWait { (context) -> Void in
+            let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: context)
+            localMe.firstName = result["first_name"] as? String
+            localMe.lastName = result["last_name"] as? String
+            localMe.facebookID = result["id"] as? String
+            context.MR_saveToPersistentStoreAndWait()
+          }
         }
+        self.finish()
       }
     }
   }
