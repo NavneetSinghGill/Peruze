@@ -14,7 +14,7 @@ Retrieves the uploads of the specified person and stores them in the `uploads` p
 `Person` object
 */
 class GetUploadsOperation: Operation {
-  let personID: CKRecordID
+  let personIDName: String
   let database: CKDatabase
   let context: NSManagedObjectContext
   /**
@@ -26,29 +26,32 @@ class GetUploadsOperation: Operation {
   init(recordID: CKRecordID,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    self.personID = recordID
-    self.database = database
-    self.context = context
-    super.init()
+      self.personIDName = recordID.recordName
+      self.database = database
+      self.context = context
+      super.init()
   }
   
   override func execute() {
     
+    defer {
+      self.context.MR_saveToPersistentStoreAndWait()
+    }
+    
     //create operation for fetching relevant records
-    let getUploadsPredicate = NSPredicate(format: "creatorRecordID == %@", personID)
+    let getUploadsPredicate = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personIDName))
     let getUploadsQuery = CKQuery(recordType: RecordTypes.Item, predicate: getUploadsPredicate)
     let getUploadsOperation = CKQueryOperation(query: getUploadsQuery)
     
     getUploadsOperation.recordFetchedBlock = { (record) -> Void in
-      MagicalRecord.saveWithBlockAndWait { (context) -> Void in
+        MagicalRecord.saveWithBlockAndWait { (context) -> Void in
         
-        let localUpload = Item.findFirstOrCreateByAttribute("recordIDName",
+        let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: record.recordID.recordName, inContext: context)
         
-        if let ownerRecordID = record.creatorUserRecordID?.recordName {
-          localUpload.owner = Person.findFirstOrCreateByAttribute("recordIDName",
-            withValue: ownerRecordID, inContext: context)
-        }
+        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: self.personIDName, inContext: context)
+        localUpload.recordIDName = record.recordID.recordName
         
         if let title = record.objectForKey("Title") as? String {
           localUpload.title = title
@@ -67,10 +70,11 @@ class GetUploadsOperation: Operation {
         }
         
         //save the context
-        context.saveToPersistentStoreAndWait()
+        context.MR_saveToPersistentStoreAndWait()
       }
     }
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in
+      if error != nil { print("Get Uploads Finished With Error: \(error)") }
       self.finishWithError(error)
     }
     

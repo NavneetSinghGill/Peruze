@@ -17,15 +17,14 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     static let TableViewNibName = "ProfileExchangesTableViewCell"
     static let TableViewReuseIdentifier = "ProfileExchange"
   }
+  var tableView: UITableView!
   var fetchedResultsController: NSFetchedResultsController!
   var requestDelegate: RequestCollectionViewCellDelegate?
   
   override init() {
     super.init()
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let requestPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", me.recordIDName!)
-    let statusPredicate = NSPredicate(format: "status == %i", ExchangeStatus.Pending.rawValue)
-    let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([requestPredicate, statusPredicate])
+    let statusPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
+    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
@@ -38,7 +37,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       //TODO: Actually handle this error
     }
   }
-  
   
   //MARK: - UICollectionView Data Source
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -62,31 +60,99 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.TableViewReuseIdentifier)
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
     
-    if let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as? Exchange {
-      let myItem = exchange.itemRequested!
-      let theirItem = exchange.itemOffered!
-      cell.profileImageView.image = UIImage(data: theirItem.owner!.image!)
-      cell.nameLabel.text = "\(theirItem.owner!.firstName)'s"
-      cell.itemLabel.text = "\(theirItem.title)"
-      cell.itemSubtitle.text = "for your \(myItem.title)"
-      if let requestDate = exchange.date {
-        let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
-        cell.dateLabel.text = dateString
-      } else {
-        cell.dateLabel.text = ""
-      }
-      cell.itemsExchangedImage.itemImages = (UIImage(data: theirItem.image!)!, UIImage(data: myItem.image!)!)
-      cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+    //get exchange
+    let exchange = fetchedResultsController.objectAtIndexPath(indexPath)
+    
+    //make sure that all the values are present
+    guard
+      let myItem = exchange.valueForKey("itemRequested") as? NSManagedObject,
+      let myItemTitle = myItem.valueForKey("title") as? String,
+      let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
+      let theirItemTitle = theirItem.valueForKey("title") as? String,
+      let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
+      let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
+      let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
+      let theirItemImage = theirItem.valueForKey("image") as? NSData,
+      let myItemImage = myItem.valueForKey("image") as? NSData
+    //let exchangeStatus = exchange.valueForKey("status") as? NSNumber
+      else {
+        return errorCell()
     }
+    cell.itemSubtitle.text = "for your \(myItemTitle)"
+    cell.itemLabel.text = theirItemTitle
+    cell.profileImageView.image = UIImage(data: theirProfileImageData)
+    cell.nameLabel.text = "\(theirOwnerFirstName)'s"
+    cell.itemsExchangedImage.itemImages = (UIImage(data: theirItemImage)!, UIImage(data: myItemImage)!)
+    
+    if let requestDate = exchange.valueForKey("date") as? NSDate {
+      let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      cell.dateLabel.text = dateString
+    } else {
+      cell.dateLabel.text = " "
+    }
+    
+    //cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+    
     return cell
   }
+  
+  private func errorCell() -> ProfileExchangesTableViewCell {
+    let returnCell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier) as! ProfileExchangesTableViewCell
+    returnCell.nameLabel.text = "Error"
+    returnCell.itemLabel.text = "Please refresh"
+    return returnCell
+  }
+  
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return fetchedResultsController.sections?[section].numberOfObjects ?? 0
   }
+  
   func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return true
   }
-  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) { /* keep this empty */ }
+  
+  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    /* keep this empty */
+  }
+  
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    tableView.beginUpdates()
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    switch type {
+    case .Insert:
+      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    case .Delete:
+      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    default:
+      break
+    }
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    switch type {
+    case .Insert:
+      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Delete:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Update:
+      tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Move:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    }
+  }
+  
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    tableView.endUpdates()
+  }
   
   //MARK: - Editing Data
   func deleteItemAtIndex(index: Int) -> Exchange {

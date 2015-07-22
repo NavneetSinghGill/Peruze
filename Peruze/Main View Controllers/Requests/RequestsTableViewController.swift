@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import CloudKit
 
 class RequestsTableViewController: UIViewController, UITableViewDelegate, RequestCollectionViewCellDelegate {
   let dataSource = RequestsDataSource()
   @IBOutlet weak var tableView: UITableView! {
     didSet {
       dataSource.requestDelegate = self
+      dataSource.tableView = tableView
       tableView.dataSource = dataSource
       tableView.delegate = self
       tableView.rowHeight = Constants.TableViewRowHeight
@@ -27,15 +29,44 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    refreshControl?.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
-    tableView.addSubview(refreshControl!)
+    refreshControl?.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+    tableView.insertSubview(refreshControl!, atIndex: 0)
     title = "Requests"
     navigationController?.navigationBar.tintColor = .redColor()
     view.backgroundColor = .whiteColor()
   }
   func refresh() {
     //reload the data
-    refreshControl?.endRefreshing()
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let fetchExchanges = GetAllParticipatingExchangesOperation(
+      personRecordIDName: me.recordIDName!,
+      status: ExchangeStatus.Pending,
+      database: publicDB
+    )
+    let fetchMissingItems = GetItemOperation(database: publicDB)
+    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
+    let updateExchanges = UpdateExchangesOperation(database: publicDB)
+    updateExchanges.completionBlock = {
+        do {
+          try self.dataSource.fetchedResultsController.performFetch()
+          dispatch_async(dispatch_get_main_queue()){
+            self.tableView.reloadData()
+          }
+        } catch {
+          print(error)
+          //TODO: Actually handle this error
+        }
+      dispatch_async(dispatch_get_main_queue()){
+        self.refreshControl?.endRefreshing()
+      }
+    }
+    
+    fetchMissingItems.addDependency(fetchExchanges)
+    fetchMissingPeople.addDependency(fetchMissingItems)
+    updateExchanges.addDependency(fetchMissingPeople)
+    OperationQueue().addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
+    
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -58,7 +89,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
+    //performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   

@@ -34,6 +34,10 @@ class GetReviewsOperation: Operation {
   
   override func execute() {
     
+    defer {
+      self.context.MR_saveToPersistentStoreAndWait()
+    }
+    
     //create operation for fetching relevant records
     let personReference = CKReference(recordID: personID, action: .None)
     let getUploadsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
@@ -68,7 +72,7 @@ class GetReviewsOperation: Operation {
         }
         
         //save the context
-        context.saveToPersistentStoreAndWait()
+        context.MR_saveToPersistentStoreAndWait()
       }
     }
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in

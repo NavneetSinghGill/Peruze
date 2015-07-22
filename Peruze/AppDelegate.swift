@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Setup CoreData with MagicalRecord
     
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
+    MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }

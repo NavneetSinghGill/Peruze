@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 import CloudKit
 import MagicalRecord
 
@@ -21,6 +20,11 @@ class GetCurrentUserOperation: Operation {
     super.init()
   }
   override func execute() {
+    
+    defer {
+      self.context.MR_saveToPersistentStoreAndWait()
+    }
+    
     print("execute of Get Current User Operation")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     
@@ -64,6 +68,9 @@ class GetCurrentUserOperation: Operation {
               withValue: $0.recordID.recordName , inContext: context)
           }
           person.favorites = NSSet(array: favorites)
+          
+          //save the context
+          context.MR_saveToPersistentStoreAndWait()
         }
       }
       self.finish()

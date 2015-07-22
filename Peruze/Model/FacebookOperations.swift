@@ -232,7 +232,7 @@ class FetchFacebookFriends: AsyncOperation {
         self.finish()
       }
     })
-    getDataTask!.resume()
+    getDataTask.resume()
   }
   
   private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {

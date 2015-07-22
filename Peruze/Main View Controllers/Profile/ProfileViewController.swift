@@ -59,7 +59,7 @@ class ProfileViewController: UIViewController {
     
     //check for a person, if there's no person, then it's my profile
     if personForProfile == nil {
-      personForProfile = Model.sharedInstance().myProfile
+      personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
     }
     //setup the known information about the person
     profileImageView.image = UIImage(data: personForProfile!.image!)
@@ -69,7 +69,7 @@ class ProfileViewController: UIViewController {
     //get the updated information for the profile
     
     let completePerson = GetFullProfileOperation(personRecordID: CKRecordID(recordName: personForProfile!.recordIDName!)) {
-      let completeProfile = Person.findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
+      let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
       self.personForProfile = completeProfile
       self.containerSpinner.stopAnimating()
       UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in

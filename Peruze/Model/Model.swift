@@ -93,7 +93,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     fetchMyProfileOp.addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
     fetchMyProfileOp
     let blockCompletionOp = BlockOperation { () -> Void in
-      let fetchedPerson: Person? = Person.findFirstByAttribute("me", withValue: true)
+      let fetchedPerson: Person? = Person.MR_findFirstByAttribute("me", withValue: true)
       completion(fetchedPerson, nil)
     }
     blockCompletionOp.addDependency(fetchMyProfileOp)

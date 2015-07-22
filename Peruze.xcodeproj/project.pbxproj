@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
 		9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */; };
 		9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE71B54DDC3009CB9FA /* Main.storyboard */; };
@@ -105,6 +106,7 @@
 		9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
+		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
 		9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */; };
 		9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */; };
 		9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */; };
@@ -173,6 +175,7 @@
 /* Begin PBXFileReference section */
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
+		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetItemOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
 		9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D177AE61B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -295,6 +298,7 @@
 		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
 		9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCurrentUserOperation.swift; sourceTree = "<group>"; };
 		9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockObserver.swift; path = Peruze/Operations/BlockObserver.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockOperation.swift; path = Peruze/Operations/BlockOperation.swift; sourceTree = SOURCE_ROOT; };
@@ -799,6 +803,8 @@
 				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
 				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
 				9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */,
+				9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */,
+				9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */,
 			);
 			name = CloudKitOperations;
 			sourceTree = "<group>";
@@ -1108,6 +1114,7 @@
 				9D3EA1F51B5DFAC1005D63AC /* Person+CoreDataProperties.swift in Sources */,
 				9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */,
 				9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */,
+				9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */,
 				9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */,
 				9D3EA1C81B5DA68D005D63AC /* Operation.swift in Sources */,
 				9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */,
@@ -1139,6 +1146,7 @@
 				9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
 				9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */,
+				9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */,
 				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
 				9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */,
 				9D177B7E1B54DDC3009CB9FA /* LoadingCircleView.swift in Sources */,
@@ -1271,6 +1279,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1316,6 +1325,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
