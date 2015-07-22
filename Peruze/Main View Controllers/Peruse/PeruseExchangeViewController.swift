@@ -34,7 +34,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   //MARK: - Variables
   var delegate: PeruseExchangeViewControllerDelegate?
-  var itemSelectedForExchange: Item?
+  var itemSelectedForExchange: ItemStruct!
   private var cellSize: CGSize?
   private var dataSource = PeruseExchangeItemDataSource()
   @IBOutlet weak var collectionView: UICollectionView! {
@@ -50,9 +50,9 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //your item
   @IBOutlet weak var leftCircleImageView: CircleImage!
   @IBOutlet weak var itemYoureExchangingLabel: UILabel!
-  private var itemInCircleView: Item? {
+  private var itemInCircleView: ItemStruct? {
     didSet {
-      leftCircleImageView.image = UIImage(data: itemInCircleView!.image!)
+      leftCircleImageView.image = itemInCircleView!.image
       itemYoureExchangingLabel.text = itemInCircleView?.title
     }
   }
@@ -88,12 +88,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.alpha = 1.0
     
     //setup item selected for exchange
-    rightCircleImageView.image = UIImage(data: itemSelectedForExchange!.image!)
-    otherPersonsFullNameLabel.text = itemSelectedForExchange!.owner!.formattedName
+    rightCircleImageView.image = itemSelectedForExchange.image
+    otherPersonsFullNameLabel.text = itemSelectedForExchange.owner.formattedName
     //mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
-    otherPersonsFirstNameLabel.text = "for \(itemSelectedForExchange!.owner!.firstName)'s"
-    otherPersonsItemLabel.text = itemSelectedForExchange!.title
-    otherPersonsProfileImageView.image = UIImage(data: itemSelectedForExchange!.owner!.image!)
+    otherPersonsFirstNameLabel.text = "for \(itemSelectedForExchange.owner.formattedName)'s"
+    otherPersonsItemLabel.text = itemSelectedForExchange.title
+    otherPersonsProfileImageView.image = itemSelectedForExchange.owner.image
   }
   
   override func viewDidLayoutSubviews() {
@@ -141,7 +141,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     }
     if itemInCircleView == nil {
       let alert = UIAlertView(title: Constants.NoItemAlert.title,
-        message: "\(self.itemSelectedForExchange!.owner!.firstName) is our really good friend! Surely you don't want to offer nothing in return for \(itemSelectedForExchange!.title).",
+        message: "\(self.itemSelectedForExchange.owner.formattedName) is our really good friend! Surely you don't want to offer nothing in return for \(itemSelectedForExchange.title).",
         delegate: self,
         cancelButtonTitle: Constants.NoItemAlert.cancelTitle)
       alert.show()
@@ -167,14 +167,14 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     var circleImage: CircleImage
     var indexPath: NSIndexPath
     var originalFrame: CGRect
-    var item: Item
+    var item: ItemStruct
   }
   
   //MARK: Variables
   private var pickedUpCell: PickedUpCell? {
     didSet {
       if let pickedUpCell = pickedUpCell {
-        pickedUpCell.circleImage.image = UIImage(data: pickedUpCell.item.image!)
+        pickedUpCell.circleImage.image = pickedUpCell.item.image
         pickedUpCell.circleImage.backgroundColor = .clearColor()
         view.addSubview(pickedUpCell.circleImage)
       }
@@ -267,10 +267,10 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     
     //set picked up cell
     let circleImageFrame = collectionView.convertRect(cellToPickUp!.frame, toView: view).copyWithHeight(cellToPickUp!.frame.width)
-    self.pickedUpCell = PickedUpCell(circleImage: CircleImage(frame: circleImageFrame),
-      indexPath: indexPath,
-      originalFrame: circleImageFrame,
-      item: itemData!)
+//    self.pickedUpCell = PickedUpCell(circleImage: CircleImage(frame: circleImageFrame),
+//      indexPath: indexPath,
+//      originalFrame: circleImageFrame,
+//      item: itemData!)
     
     //animate and display things
     collectionView.deleteItemsAtIndexPaths([indexPath])
@@ -286,7 +286,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     if let currentItem = itemInCircleView {
       //place the cell in the collection view
       let startIndexPath = NSIndexPath(forItem: 0, inSection: 0)
-      dataSource.addItemsAtIndexPaths([currentItem], paths: [startIndexPath])
+//      dataSource.addItemsAtIndexPaths([currentItem], paths: [startIndexPath])
       collectionView.insertItemsAtIndexPaths([startIndexPath])
       let cellCreated = collectionView.cellForItemAtIndexPath(startIndexPath) as? PeruseExchangeItemCollectionViewCell
       
@@ -332,7 +332,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   private func putPickedUpCellBackInCollectionView() {
     if let cell = pickedUpCell {
-      dataSource.addItemsAtIndexPaths([cell.item], paths: [cell.indexPath])
+//    dataSource.addItemsAtIndexPaths([cell.item], paths: [cell.indexPath])
       collectionView.insertItemsAtIndexPaths([cell.indexPath])
       let cellCreated = collectionView.cellForItemAtIndexPath(cell.indexPath) as? PeruseExchangeItemCollectionViewCell
       
@@ -424,6 +424,6 @@ private extension CGRect {
 
 //MARK: - PeruseExchangeViewControllerDelegate
 protocol PeruseExchangeViewControllerDelegate {
-  var itemChosenToExchange: Item? {get set}
+  var itemChosenToExchange: ItemStruct? {get set}
 }
 

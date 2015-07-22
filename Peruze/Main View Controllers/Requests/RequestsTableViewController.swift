@@ -44,9 +44,9 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       status: ExchangeStatus.Pending,
       database: publicDB
     )
-    let fetchMissingItems = GetItemOperation(database: publicDB)
+    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
     let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
-    let updateExchanges = UpdateExchangesOperation(database: publicDB)
+    let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
     updateExchanges.completionBlock = {
         do {
           try self.dataSource.fetchedResultsController.performFetch()

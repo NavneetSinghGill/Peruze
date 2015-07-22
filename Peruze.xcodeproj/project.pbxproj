@@ -107,6 +107,8 @@
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
+		9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */; };
+		9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */; };
 		9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */; };
 		9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */; };
 		9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */; };
@@ -299,6 +301,8 @@
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
+		9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemOperation.swift; sourceTree = "<group>"; };
+		9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateItemOperation.swift; sourceTree = "<group>"; };
 		9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCurrentUserOperation.swift; sourceTree = "<group>"; };
 		9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockObserver.swift; path = Peruze/Operations/BlockObserver.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockOperation.swift; path = Peruze/Operations/BlockOperation.swift; sourceTree = SOURCE_ROOT; };
@@ -703,6 +707,38 @@
 			name = Uploads;
 			sourceTree = "<group>";
 		};
+		9D3B34AC1B60182900EBFB87 /* Get */ = {
+			isa = PBXGroup;
+			children = (
+				9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */,
+				9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */,
+				9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */,
+				9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */,
+				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
+				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
+				9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */,
+				9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */,
+			);
+			name = Get;
+			sourceTree = "<group>";
+		};
+		9D3B34AD1B60182D00EBFB87 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */,
+				9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */,
+			);
+			name = Update;
+			sourceTree = "<group>";
+		};
+		9D3B34AE1B60183200EBFB87 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */,
+			);
+			name = Post;
+			sourceTree = "<group>";
+		};
 		9D449C7D1B54D9F9005C7CC0 = {
 			isa = PBXGroup;
 			children = (
@@ -796,15 +832,9 @@
 		9D45D22E1B5B6B6E00D555F3 /* CloudKitOperations */ = {
 			isa = PBXGroup;
 			children = (
-				9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */,
-				9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */,
-				9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */,
-				9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */,
-				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
-				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
-				9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */,
-				9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */,
-				9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */,
+				9D3B34AE1B60183200EBFB87 /* Post */,
+				9D3B34AD1B60182D00EBFB87 /* Update */,
+				9D3B34AC1B60182900EBFB87 /* Get */,
 			);
 			name = CloudKitOperations;
 			sourceTree = "<group>";
@@ -1096,6 +1126,7 @@
 				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
 				9D3EA1F71B5DFAC1005D63AC /* Item+CoreDataProperties.swift in Sources */,
 				9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */,
+				9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */,
 				9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */,
 				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
 				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,
@@ -1192,6 +1223,7 @@
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
 				9D177BC51B54DDC3009CB9FA /* TGAlbum.m in Sources */,
 				9D177B9B1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift in Sources */,
+				9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */,
 				9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

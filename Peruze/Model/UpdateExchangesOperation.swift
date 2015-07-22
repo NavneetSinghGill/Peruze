@@ -10,7 +10,7 @@ import Foundation
 import MagicalRecord
 import CloudKit
 
-class UpdateExchangesOperation: Operation {
+class UpdateAllExchangesOperation: Operation {
   let database: CKDatabase
   let context: NSManagedObjectContext
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {

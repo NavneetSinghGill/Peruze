@@ -10,7 +10,106 @@ import Foundation
 import MagicalRecord
 import CloudKit
 
+class GetItemInRangeOperation: GetItemOperation {
+  let range: Float?
+  let location: CLLocation
+  ///If range is nil, then will retrieve all items
+  init(range: Float? = nil, location: CLLocation, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    self.range = range
+    self.location = location
+    super.init(database: database, context: context)
+  }
+  
+  override func getPredicate() -> NSPredicate {
+    
+    //create predicates
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: me.recordIDName!))
+    let everywhereLocation = NSPredicate(value: true)
+    let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+      "Location",
+      location,
+      range ?? 0)
+    
+    //choose and concatenate predicates
+    let locationPredicate = range == nil ? everywhereLocation : specificLocation
+    let othersInRange = NSCompoundPredicate(type: .AndPredicateType, subpredicates: [locationPredicate, notMyItemsPredicate])
+    return othersInRange
+  }
+}
+
 class GetItemOperation: Operation {
+  
+  let database: CKDatabase
+  let context: NSManagedObjectContext
+  
+  init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    self.database = database
+    self.context = context
+    super.init()
+  }
+  
+  override func execute() {
+    
+    defer {
+      self.context.MR_saveOnlySelfAndWait()
+    }
+    
+    //create operation for fetching relevant records
+    let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
+    let getItemsOperation = CKQueryOperation(query: getItemQuery)
+    
+    getItemsOperation.recordFetchedBlock = { (record) -> Void in
+      MagicalRecord.saveWithBlockAndWait { (context) -> Void in
+        
+        let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: record.recordID.recordName, inContext: context)
+        localUpload.recordIDName = record.recordID.recordName
+        
+        if let ownerRecordIDName = record.creatorUserRecordID?.recordName {
+          localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+            withValue: ownerRecordIDName,
+            inContext: context)
+        }
+        
+        if let title = record.objectForKey("Title") as? String {
+          localUpload.title = title
+        }
+        
+        if let detail = record.objectForKey("Description") as? String {
+          localUpload.detail = detail
+        }
+        
+        if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
+          localUpload.ownerFacebookID = ownerFacebookID
+        }
+        
+        if let imageAsset = record.objectForKey("Image") as? CKAsset {
+          localUpload.image = NSData(contentsOfURL: imageAsset.fileURL)
+        }
+        
+        //save the context
+        context.MR_saveToPersistentStoreAndWait()
+      }
+    }
+    
+    getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
+      if error != nil { print("Get Uploads Finished With Error: \(error)") }
+      self.finishWithError(error)
+    }
+    
+    //add that operation to the operationQueue of self.database
+    self.database.addOperation(getItemsOperation)
+  }
+  
+  func getPredicate() -> NSPredicate {
+    return NSPredicate(value: false)
+  }
+  
+}
+
+
+class GetAllItemsWithMissingDataOperation: Operation {
   
   let context: NSManagedObjectContext
   let database: CKDatabase
@@ -72,7 +171,7 @@ class GetItemOperation: Operation {
             } else {
               print("Title is not a String")
             }
-
+            
             
             //get detail
             if let description = recordsByID[recordID]!.valueForKey("Description") as? String {
@@ -80,7 +179,7 @@ class GetItemOperation: Operation {
             } else {
               print("Description is not a String")
             }
-
+            
             
             //fill in creator details
             if let creator = recordsByID[recordID]!.creatorUserRecordID {
@@ -92,7 +191,7 @@ class GetItemOperation: Operation {
               } else {
                 print("OwnerFacebookID is not a String")
               }
-
+              
             } else {
               print("creator is nil")
             }

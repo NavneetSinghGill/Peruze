@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
+import MagicalRecord
 
 class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
   private struct Constants {
@@ -18,10 +19,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   
   private var dataSource = PeruseItemDataSource()
-  private var itemToForwardToExchange: Item?
+  private var itemToForwardToExchange: ItemStruct?
   
   //the item the user owns that he/she selected to exchange
-  var itemChosenToExchange: Item? {
+  var itemChosenToExchange: ItemStruct? {
     didSet {
       if itemChosenToExchange != nil {
         let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
@@ -83,7 +84,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     collectionView.reloadData()
   }
   
-  func segueToExchange(item: Item) {
+  func segueToExchange(item: ItemStruct) {
     itemToForwardToExchange = item
     performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
   }
@@ -92,16 +93,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //TODO: create an exchange and pass it to the data model
   }
   
-  func segueToProfile(owner: Person) {
+  func segueToProfile(owner: OwnerStruct) {
     let profileNav = storyboard!.instantiateViewControllerWithIdentifier(Constants.ProfileNavigationControllerIdentifier) as? UINavigationController
     if profileNav == nil { assertionFailure("profile navigation view controller from storyboard is nil") }
     let profileVC = profileNav?.viewControllers[0] as? ProfileViewController
     if profileVC == nil { assertionFailure("profile view controller from storybaord is nil") }
-    profileVC!.personForProfile = owner
+    profileVC!.personForProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: owner.recordIDName)
     presentViewController(profileNav!, animated: true, completion: nil)
   }
   
-  func itemFavorited(item: Item, favorite: Bool) {
+  func itemFavorited(item: ItemStruct, favorite: Bool) {
     //favorite data
     print("item favorited!")
   }
