@@ -12,7 +12,7 @@ import AsyncOpKit
 let WriteFileErrorDomain = "Error Writing File"
 let ReadFileErrorDomain = "Error Reading File"
 
-class WritePNGImageToPath: AsyncOperation {
+class WritePNGImageToPath: Operation {
   private let image: UIImage
   private let path: String
   
@@ -21,12 +21,10 @@ class WritePNGImageToPath: AsyncOperation {
     self.path = path
     super.init()
   }
-  
-  override func main() {
+  override func execute() {
     let pngData = UIImagePNGRepresentation(image)
-    if cancelled { finish() ; return }
     if !pngData!.writeToFile(path, atomically: true) {
-      error = NSError(domain: WriteFileErrorDomain,
+      let error = NSError(domain: WriteFileErrorDomain,
         code: 0,
         userInfo: [
           NSLocalizedDescriptionKey: "Error Writing File",
@@ -34,8 +32,10 @@ class WritePNGImageToPath: AsyncOperation {
           NSLocalizedRecoverySuggestionErrorKey: "Close and reopen the application. "
         ]
       )
+      finishWithError(error)
+    } else {
+      finish()
     }
-    finish()
   }
 }
 

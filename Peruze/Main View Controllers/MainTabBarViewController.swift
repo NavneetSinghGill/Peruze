@@ -7,17 +7,20 @@
 //
 
 import UIKit
+import CloudKit
 
 class MainTabBarViewController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     tabBar.tintColor = UIColor.redColor()
-    if Model.sharedInstance().myProfile != nil {
-      if Model.sharedInstance().locationManager.location != nil {
-        //Model.sharedInstance().updateUserLocation(Model.sharedInstance().locationManager.location!)
-      }
-    } else {
-      //Model.sharedInstance().fetchMyProfileWithCompletion({_, _ -> Void in})
-    }
+    
+  }
+  override func viewDidAppear(animated: Bool) {
+    let getItemsOperation = GetItemInRangeOperation(
+      range: nil,
+      location: CLLocation(),
+      database: CKContainer.defaultContainer().publicCloudDatabase,
+      context: managedMainObjectContext)
+    OperationQueue().addOperation(getItemsOperation)
   }
 }

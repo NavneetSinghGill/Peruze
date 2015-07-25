@@ -44,7 +44,6 @@ class UpdateAllExchangesOperation: Operation {
       }
       
       for recordID in recordsByID.keys {
-        MagicalRecord.saveWithBlockAndWait { (context) -> Void in
           guard let record = recordsByID[recordID] else {
             self.finishWithError(error)
             return
@@ -53,13 +52,13 @@ class UpdateAllExchangesOperation: Operation {
           //find or create the record
           let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
             withValue: recordID.recordName,
-            inContext: context)
+            inContext: self.context)
           
           //set creator
           if let creatorIDName = record.creatorUserRecordID?.recordName {
             localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
               withValue: creatorIDName,
-              inContext: context)
+              inContext: self.context)
           }
           
           //set exchange status
@@ -78,17 +77,17 @@ class UpdateAllExchangesOperation: Operation {
           if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
             localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
               withValue: itemOfferedReference.recordID.recordName,
-              inContext: context)
+              inContext: self.context)
           }
           
           //set item requested
           if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
             localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
               withValue: itemRequestedReference.recordID.recordName,
-              inContext: context)
+              inContext: self.context)
           }
           
-        }
+        self.context.MR_saveOnlySelfAndWait()
       }
       self.finishWithError(error)
     }

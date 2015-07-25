@@ -35,9 +35,9 @@ struct SubscritionTypes {
 struct RecordTypes {
   static let Item = "Item"
   static let Exchange = "Exchange"
-  static let Chat = "Chat"
   static let Review = "Review"
   static let User = "Users"
+  static let Message = "Message"
 }
 class Model: NSObject, CLLocationManagerDelegate {
   var myProfile: Person!

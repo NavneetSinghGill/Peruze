@@ -9,7 +9,7 @@
 import UIKit
 
 class ChatTableViewCell: UITableViewCell {
-    var data: Chat? {
+    var data: Exchange? {
         didSet {
 //            itemImage.itemImages = (data!.exchage.itemOffered.image, data!.exchage.itemRequested.image)
 //            theirItemNameLabel.text = "\(data!.exchage.itemOffered.title)"

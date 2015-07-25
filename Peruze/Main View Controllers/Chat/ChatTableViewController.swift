@@ -109,7 +109,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         if let cell = sender as? ChatTableViewCell {
             if let destVC = segue.destinationViewController as? ChatCollectionViewController {
                 destVC.title = cell.theirItemNameLabel.text
-                destVC.messages = cell.data?.messages?.allObjects as! [JSQMessage]
+              //destVC.messages = cell.data?.messages?.allObjects as! [JSQMessage]
               //destVC.otherItem = cell.data?.exchage.itemRequested
               //destVC.senderId = "\(cell.data!.exchage.itemOffered.owner.id)"
               //destVC.senderDisplayName = cell.data?.exchage.itemOffered.owner.firstName

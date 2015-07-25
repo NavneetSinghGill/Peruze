@@ -154,13 +154,12 @@ class FetchFacebookUserProfile: Operation {
           return
         }
         if let result = result as? [String: AnyObject] {
-          MagicalRecord.saveWithBlockAndWait { (context) -> Void in
-            let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: context)
+            let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
             localMe.firstName = result["first_name"] as? String
             localMe.lastName = result["last_name"] as? String
             localMe.facebookID = result["id"] as? String
-            context.MR_saveToPersistentStoreAndWait()
-          }
+            self.context.MR_saveOnlySelfAndWait()
+          
         }
         self.finish()
       }

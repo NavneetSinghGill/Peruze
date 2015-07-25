@@ -34,11 +34,15 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   override init() {
     super.init()
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let myID = me.valueForKey("recordIDName") as! String
+    fetchRequest.predicate = NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "image", ascending: true)]
     fetchRequest.includesSubentities = true
+    fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
-    fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.lastName"]
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+    fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName"]
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedMainObjectContext, sectionNameKeyPath: nil, cacheName: nil)
     do {
       try fetchedResultsController.performFetch()
     } catch {
@@ -67,30 +71,41 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+    let item = fetchedResultsController.objectAtIndexPath(indexPath)
     
     guard
-      let item = fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject,
       let itemImageData = item.valueForKey("image") as? NSData,
       let itemTitle = item.valueForKey("title") as? String,
-      let itemDetail = item.valueForKey("detail") as? String//,
-//      let itemOwner = item.valueForKey("owner") as? NSManagedObject,
-//      let ownerFirstName = item.valueForKey("firstName") as? String,
-//      let ownerLastName = item.valueForKey("lastName") as? String,
-//      let ownerImageData = item.valueForKey("image") as? NSData
+      let itemDetail = item.valueForKey("detail") as? String,
+      let itemRecordIDName = item.valueForKey("recordIDName") as? String
       else {
-        return UICollectionViewCell()
+        cell.item = errorCell()
+        cell.setNeedsDisplay()
+        return cell
     }
+    guard
+      let itemOwner = item.valueForKey("owner") as? NSManagedObject,
+      let ownerFirstName = itemOwner.valueForKey("firstName") as? String,
+      let ownerImageData = itemOwner.valueForKey("image") as? NSData,
+      let ownerRecordID = itemOwner.valueForKey("recordIDName") as? String
+      else {
+        print("issue with the owner of the item")
+        cell.item = errorCell()
+        cell.setNeedsDisplay()
+        return cell
+    }
+    
     let localOwner = OwnerStruct(
-      image: UIImage(data: itemImageData)!,
-      formattedName: "",
-      recordIDName: ""
+      image: UIImage(data: ownerImageData)!,
+      formattedName: ownerFirstName,
+      recordIDName: ownerRecordID
     )
     let localItem = ItemStruct(
       image: UIImage(data: itemImageData)!,
       title: itemTitle,
       detail: itemDetail,
       owner: localOwner,
-      recordIDName: ""
+      recordIDName: itemRecordIDName
     )
     
     cell.item = localItem
@@ -101,6 +116,21 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+    
+  }
+  private func errorCell() -> ItemStruct {
+    let localOwner = OwnerStruct(
+      image: UIImage(),
+      formattedName: "",
+      recordIDName: ""
+    )
+    return ItemStruct(
+      image: UIImage(),
+      title: "Error Loading Item",
+      detail: "There was an error loading this item. Our apologies.",
+      owner: localOwner,
+      recordIDName: ""
+    )
   }
   
 }

@@ -60,11 +60,33 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     //Register for push notifications
     let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil)
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
     UIApplication.sharedApplication().registerForRemoteNotifications()
+    
+    
+    NSNotificationCenter.defaultCenter().addObserver(self,
+      selector: "receivedNotification:",
+      name: NSManagedObjectContextObjectsDidChangeNotification,
+      object: managedMainObjectContext)
   }
+  
+  func receivedNotification(notification: NSNotification) {
+    let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey]
+    let deletedObjects = notification.userInfo?[NSDeletedObjectsKey]
+    let insertedObjects = notification.userInfo?[NSInsertedObjectsKey]
+    collectionView.reloadData()
+    print("- - - - - updated objects - - - - -")
+    print(updatedObjects)
+    print("- - - - - deleted objects - - - - -")
+    print(deletedObjects)
+    print("- - - - - inserted objects - - - - -")
+    print(insertedObjects)
+    
+  }
+  
   //store top and bottom for when navigation controller is animating pop and is nil
   private var storedTop: CGFloat = 0
   private var storedBottom: CGFloat = 0
@@ -106,6 +128,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //favorite data
     print("item favorited!")
   }
+  
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
       if let destVC = segue.destinationViewController as? PeruseExchangeViewController {

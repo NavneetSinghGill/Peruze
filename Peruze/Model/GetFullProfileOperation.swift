@@ -67,6 +67,7 @@ class GetFullProfileOperation: GroupOperation {
     if let firstError = errors.first where
       ( operation === fetchPersonOperation || operation === fetchReviewsOperation ||
         operation === fetchUploadsOperation || operation === fetchExchangesOperation ) {
+          print("Get Full Profile Operation Failed With Error: \(firstError)")
       produceAlert(firstError)
     }
   }

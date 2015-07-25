@@ -45,14 +45,13 @@ class GetReviewsOperation: Operation {
     let getUploadsOperation = CKQueryOperation(query: getUploadsQuery)
     
     getUploadsOperation.recordFetchedBlock = { (record) -> Void in
-      MagicalRecord.saveWithBlockAndWait { (context) -> Void in
-        
+      
         let localUpload = Item.findFirstOrCreateByAttribute("recordIDName",
-          withValue: record.recordID.recordName, inContext: context)
+          withValue: record.recordID.recordName, inContext: self.context)
         
         if let ownerRecordID = record.creatorUserRecordID?.recordName {
           localUpload.owner = Person.findFirstOrCreateByAttribute("recordIDName",
-            withValue: ownerRecordID, inContext: context)
+            withValue: ownerRecordID, inContext: self.context)
         }
         
         if let title = record.objectForKey("Title") as? String {
@@ -72,8 +71,8 @@ class GetReviewsOperation: Operation {
         }
         
         //save the context
-        context.MR_saveToPersistentStoreAndWait()
-      }
+        self.context.MR_saveOnlySelfAndWait()
+      
     }
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in
       self.finishWithError(error)

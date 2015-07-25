@@ -43,11 +43,10 @@ class GetCurrentUserOperation: Operation {
       }
       
       //save the records to the local DB
-      MagicalRecord.saveWithBlockAndWait { (context) -> Void in
         let recordID = recordsByID!.keys.first!
         let person = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: recordID.recordName,
-          inContext: context) as Person!
+          inContext: self.context) as Person!
         
         //set the returned properties
         person.me = true
@@ -65,13 +64,13 @@ class GetCurrentUserOperation: Operation {
         if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {
           let favorites = favoriteReferences.map {
             Item.MR_findFirstOrCreateByAttribute("recordIDName",
-              withValue: $0.recordID.recordName , inContext: context)
+              withValue: $0.recordID.recordName , inContext: self.context)
           }
           person.favorites = NSSet(array: favorites)
           
           //save the context
-          context.MR_saveToPersistentStoreAndWait()
-        }
+          self.context.MR_saveOnlySelfAndWait()
+        
       }
       self.finish()
     }

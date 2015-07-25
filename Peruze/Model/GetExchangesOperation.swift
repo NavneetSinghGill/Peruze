@@ -150,51 +150,51 @@ class GetExchangesOperation: Operation {
     
     //handle returned objects
     getExchangesOperation.recordFetchedBlock = { (record) -> Void in
-      MagicalRecord.saveWithBlockAndWait { (context) -> Void in
-        
-        //find or create the record
-        let requestingPerson = Person.MR_findFirstByAttribute("recordIDName",
-          withValue: self.personRecordIDName,
-          inContext: context)
-        let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: record.recordID.recordName,
-          inContext: context)
-        
-        //set creator
-        if let creatorIDName = record.creatorUserRecordID?.recordName {
-          localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: creatorIDName,
-            inContext: context)
-        }
-        
-        //set exchange status
-        if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int64 {
-          localExchange.status = NSNumber(longLong: newExchangeStatus)
-        }
-        
-        //set date
-        if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
-          localExchange.date = localExchange.date ?? newDate
-        }
-        
-        //set item offered
-        if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
-          localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: itemOfferedReference.recordID.recordName,
-            inContext: context)
-        }
-        
-        //set item requested
-        if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
-          localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: itemRequestedReference.recordID.recordName,
-            inContext: context)
-        }
-        
-        //add this exchange to the requesting user's exchanges
-        requestingPerson?.exchanges = requestingPerson?.exchanges?.setByAddingObject(localExchange)
-        
+      
+      //find or create the record
+      let requestingPerson = Person.MR_findFirstByAttribute("recordIDName",
+        withValue: self.personRecordIDName,
+        inContext: self.context)
+      let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+        withValue: record.recordID.recordName,
+        inContext: self.context)
+      
+      //set creator
+      if let creatorIDName = record.creatorUserRecordID?.recordName {
+        localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: creatorIDName,
+          inContext: self.context)
       }
+      
+      //set exchange status
+      if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int64 {
+        localExchange.status = NSNumber(longLong: newExchangeStatus)
+      }
+      
+      //set date
+      if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
+        localExchange.date = localExchange.date ?? newDate
+      }
+      
+      //set item offered
+      if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
+        localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: itemOfferedReference.recordID.recordName,
+          inContext: self.context)
+      }
+      
+      //set item requested
+      if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
+        localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: itemRequestedReference.recordID.recordName,
+          inContext: self.context)
+      }
+      
+      //add this exchange to the requesting user's exchanges
+      requestingPerson?.exchanges = requestingPerson?.exchanges?.setByAddingObject(localExchange)
+      
+      //save the context
+      self.context.MR_saveOnlySelfAndWait()
     }
     
     getExchangesOperation.queryCompletionBlock = { (cursor, error) -> Void in

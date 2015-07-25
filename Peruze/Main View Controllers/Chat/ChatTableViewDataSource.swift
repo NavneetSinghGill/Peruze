@@ -14,13 +14,12 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource {
         static let NibName = "ChatTableViewCell"
         
     }
-    var chats = [Chat]()
+    var chats = [Exchange]()
     
     
     //MARK: - Lifecycle Methods
     override init() {
         super.init()
-        chats = [Chat]()
     }
     
     //MARK: - UITableViewDataSource Methods

@@ -12,7 +12,7 @@ import CoreLocation
 /**
 `LocationOperation` is an `Operation` subclass to do a "one-shot" request to
 get the user's current location, with a desired accuracy. This operation will
-prompt for `WhenInUse` location authorization, if the app does not already
+prompt for `Always` location authorization, if the app does not already
 have it.
 */
 class LocationOperation: Operation, CLLocationManagerDelegate {
@@ -28,7 +28,7 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
     self.accuracy = accuracy
     self.handler = locationHandler
     super.init()
-    addCondition(LocationCondition(usage: .WhenInUse))
+    addCondition(LocationCondition(usage: .Always))
     addCondition(MutuallyExclusive<CLLocationManager>())
   }
   
