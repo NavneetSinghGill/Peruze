@@ -9,11 +9,10 @@
 import Foundation
 import CloudKit
 import MagicalRecord
-
+///Retrieves all of the chats and their subsequent messages for the loggen in user
 class GetChatsOperation: GroupOperation {
   let getExchangesOp: GetAllParticipatingExchangesOperation
-  let getChatsOp: GetChatsForAcceptedExchangesOperation
-  let getMessagesOp: GetAllMessagesForAllChats
+  let getMessagesOp: GetMessagesForAcceptedExchangesOperation
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext, completion: (Void -> Void) = {}) {
     
@@ -21,36 +20,33 @@ class GetChatsOperation: GroupOperation {
     let myRecordIDName = myRecord.valueForKey("recordIDName") as? String
     
     /*
-    This operation is made of 3 operations
-    1. Get exchanges that the logged in user is a part
-    of that have a completed status
-    2. Get the chats that correspond to those exchanges
-    3. Get the messages that correspond to those chats
+    This operation is made of 2 operations
+    1. Get exchanges that the logged in user is a part of that have a completed status
+    2. Get the messages that correspond to those exchanges
     */
     
     getExchangesOp = GetAllParticipatingExchangesOperation(personRecordIDName: myRecordIDName!, database: database, context: context)
-    getChatsOp = GetChatsForAcceptedExchangesOperation(database: database, context: context)
-    getMessagesOp = GetAllMessagesForAllChats(database: database, context: context)
+    getMessagesOp = GetMessagesForAcceptedExchangesOperation(database: database, context: context)
     
     let finishingOp = NSBlockOperation(block: completion)
     
     //add dependencies
-    getMessagesOp.addDependency(getChatsOp)
-    getChatsOp.addDependency(getExchangesOp)
-    finishingOp.addDependencies([getExchangesOp, getChatsOp, getMessagesOp])
+    getMessagesOp.addDependency(getExchangesOp)
+    finishingOp.addDependencies([getExchangesOp, getMessagesOp])
     
-    super.init(operations: [getExchangesOp, getChatsOp, getMessagesOp, finishingOp])
+    super.init(operations: [getExchangesOp, getMessagesOp, finishingOp])
   }
   
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if let firstError = errors.first where
-      ( operation === getExchangesOp || operation === getChatsOp || operation === getMessagesOp ) {
+      ( operation === getExchangesOp || operation === getMessagesOp ) {
         print("GetChatsOperation Failed With Error: \(firstError)")
     }
   }
+  
 }
 
-class GetChatsForAcceptedExchangesOperation: Operation {
+class GetMessagesForAcceptedExchangesOperation: Operation {
   
   let database: CKDatabase
   let context: NSManagedObjectContext
@@ -127,18 +123,3 @@ class GetChatsForAcceptedExchangesOperation: Operation {
   }
 }
 
-class GetAllMessagesForAllChats: Operation {
-  
-  let database: CKDatabase
-  let context: NSManagedObjectContext
-  
-  init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    self.database = database
-    self.context = context
-    super.init()
-  }
-  
-  override func execute() {
-    
-  }
-}
