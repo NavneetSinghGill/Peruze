@@ -8,6 +8,7 @@
 
 import UIKit
 import JSQMessagesViewController
+import CloudKit
 
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
     private struct Constants {
@@ -46,7 +47,14 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
     }
     func refresh() {
-        refreshControl.endRefreshing()
+      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+      let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
+        dispatch_async(dispatch_get_main_queue()) {
+          self.refreshControl.endRefreshing()
+          self.tableView.reloadData()
+        }
+      }
+      OperationQueue().addOperation(chatOp)
     }
     //MARK: Editing
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
