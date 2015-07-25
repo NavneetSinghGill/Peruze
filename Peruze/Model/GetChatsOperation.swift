@@ -91,16 +91,26 @@ class GetChatsForAcceptedExchangesOperation: Operation {
     
     //Add the messages to the database and save the context
     messagesQueryOp.recordFetchedBlock = { (record) -> Void in
+      
       let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
-      if let messageText = record.objectForKey("") as? String {
-        
+      
+      if let messageText = record.objectForKey("Text") as? String {
+        localMessage.text = messageText
       }
       
-      if let messageImage = record.objectForKey("") as? CKAsset {
-        
+      if let messageImage = record.objectForKey("Image") as? CKAsset {
+        localMessage.image = NSData(contentsOfURL: messageImage.fileURL)
       }
       
+      if let exchange = record.objectForKey("Exchange") as? CKReference {
+        let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: exchange.recordID.recordName,
+          inContext: self.context)
+        localMessage.setValue(messageExchange, forKey:"exchange")
+      }
+      
+      self.context.saveOnlySelfAndWait()
     }
     
     //Finish this operation
