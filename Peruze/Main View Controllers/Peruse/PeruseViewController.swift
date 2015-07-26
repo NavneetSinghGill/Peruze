@@ -70,7 +70,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     NSNotificationCenter.defaultCenter().addObserver(self,
       selector: "receivedNotification:",
       name: NSManagedObjectContextObjectsDidChangeNotification,
-      object: managedMainObjectContext)
+      object: managedConcurrentObjectContext)
   }
   
   func receivedNotification(notification: NSNotification) {

@@ -19,7 +19,7 @@ class ChatTableViewCell: UITableViewCell {
       }
       
       guard let offeredImageData = itemOffered.valueForKey("image") as? NSData,
-        let requestedImageData = itemOffered.valueForKey("image") as? NSData else {
+        let requestedImageData = itemRequested.valueForKey("image") as? NSData else {
           print("Error: Issue with image data in ChatTableViewCell")
           return
       }

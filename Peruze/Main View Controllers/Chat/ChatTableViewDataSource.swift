@@ -21,7 +21,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   //MARK: - Lifecycle Methods
   override init() {
     super.init()
-    let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
+    let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: chatPredicate,

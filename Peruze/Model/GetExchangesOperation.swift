@@ -60,7 +60,7 @@ class GetAllParticipatingExchangesOperation: GetExchangesOperation {
     //3
     let participantPredicate = NSPredicate(value: true)// NSCompoundPredicate(orPredicateWithSubpredicates: [personIsCreator, personIsBeingRequestedFrom])
     //4
-    let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
+    let statusPredicate = NSPredicate(value: true)//status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
     
     //5
     let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, participantPredicate])
