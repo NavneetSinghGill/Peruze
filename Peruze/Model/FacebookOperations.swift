@@ -158,7 +158,7 @@ class FetchFacebookUserProfile: Operation {
             localMe.firstName = result["first_name"] as? String
             localMe.lastName = result["last_name"] as? String
             localMe.facebookID = result["id"] as? String
-            self.context.MR_saveOnlySelfAndWait()
+            self.context.MR_saveToPersistentStoreAndWait()
           
         }
         self.finish()

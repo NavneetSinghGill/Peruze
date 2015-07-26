@@ -174,8 +174,10 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
       }
     }
     
-    //upload facebook profile info
+    //upload facebook profile info and fetch user info from the cloud
     let getFacebookProfileOp = FetchFacebookUserProfile(context: managedMainObjectContext)
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let getCurrentUserOp = GetCurrentUserOperation(database: publicDB, context: managedMainObjectContext)
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation(block: {
@@ -186,9 +188,10 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //add dependencies
     getFacebookProfileOp.addDependency(iCloudFinishedSuccessfully)
-    performSegueOp.addDependencies([iCloudFinishedSuccessfully, getFacebookProfileOp])
+    getCurrentUserOp.addDependency(getFacebookProfileOp)
+    performSegueOp.addDependencies([iCloudFinishedSuccessfully, getFacebookProfileOp, getCurrentUserOp])
     
-    operationQueue.addOperations([iCloudAccountStatus, performSegueOp, getFacebookProfileOp], waitUntilFinished: false)
+    operationQueue.addOperations([iCloudAccountStatus, performSegueOp, getFacebookProfileOp, getCurrentUserOp], waitUntilFinished: false)
   }
   
   

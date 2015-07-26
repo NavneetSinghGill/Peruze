@@ -52,7 +52,7 @@ class GetItemOperation: Operation {
   override func execute() {
     
     defer {
-      self.context.MR_saveOnlySelfAndWait()
+      self.context.MR_saveToPersistentStoreAndWait()
     }
     
     //create operation for fetching relevant records
@@ -89,7 +89,7 @@ class GetItemOperation: Operation {
         }
         
         //save the context
-        self.context.MR_saveOnlySelfAndWait()
+        self.context.MR_saveToPersistentStoreAndWait()
       }
     }
     
@@ -194,7 +194,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
           } else {
             print("creator is nil")
           }
-          self.context.MR_saveOnlySelfAndWait()
+          self.context.MR_saveToPersistentStoreAndWait()
         }
         
       }

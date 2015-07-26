@@ -25,7 +25,13 @@ class GetChatsOperation: GroupOperation {
     2. Get the messages that correspond to those exchanges
     */
     
-    getExchangesOp = GetAllParticipatingExchangesOperation(personRecordIDName: myRecordIDName!, database: database, context: context)
+    getExchangesOp = GetAllParticipatingExchangesOperation (
+      personRecordIDName: myRecordIDName!,
+      status: ExchangeStatus.Accepted,
+      database: database,
+      context: context
+    )
+    
     getMessagesOp = GetMessagesForAcceptedExchangesOperation(database: database, context: context)
     
     let finishingOp = NSBlockOperation(block: completion)
@@ -60,7 +66,7 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
   override func execute() {
     
     //Get all accepted exchanges from the database
-    let exchangesPredicate = NSPredicate(format: "status == %i && recordIDName != nil", ExchangeStatus.Accepted.rawValue)
+    let exchangesPredicate = NSPredicate(format: "status = %@"/*" && recordIDName != nil"*/, NSNumber(integer: ExchangeStatus.Accepted.rawValue))
     guard let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
       ascending: true,
       withPredicate: exchangesPredicate,
@@ -77,6 +83,11 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
       let recordID = CKRecordID(recordName: id!)
       let recordRef = CKReference(recordID: recordID, action: .None)
       exchangeReferences.append(recordRef)
+    }
+    
+    if exchangeReferences.count == 0 {
+      self.finish()
+      return
     }
     
     //Query the server for messages that correspond to those CKReferences
@@ -106,7 +117,7 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
         localMessage.setValue(messageExchange, forKey:"exchange")
       }
       
-      self.context.saveOnlySelfAndWait()
+      self.context.MR_saveToPersistentStoreAndWait()
     }
     
     //Finish this operation

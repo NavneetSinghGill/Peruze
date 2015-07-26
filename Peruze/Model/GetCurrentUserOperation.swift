@@ -32,6 +32,8 @@ class GetCurrentUserOperation: Operation {
       
       //make sure there were no errors
       if error != nil {
+        print("GetCurrentUserOperation failed with error:")
+        print(error)
         self.finishWithError(error)
         return
       }
@@ -44,12 +46,11 @@ class GetCurrentUserOperation: Operation {
       
       //save the records to the local DB
         let recordID = recordsByID!.keys.first!
-        let person = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: recordID.recordName,
+        let person = Person.MR_findFirstOrCreateByAttribute("me",
+          withValue: true,
           inContext: self.context) as Person!
         
         //set the returned properties
-        person.me = true
         person.recordIDName = recordID.recordName
         person.firstName  = person.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
         person.lastName   = person.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
@@ -69,7 +70,7 @@ class GetCurrentUserOperation: Operation {
           person.favorites = NSSet(array: favorites)
           
           //save the context
-          self.context.MR_saveOnlySelfAndWait()
+          self.context.MR_saveToPersistentStoreAndWait()
         
       }
       self.finish()

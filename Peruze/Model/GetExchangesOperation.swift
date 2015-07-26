@@ -60,7 +60,8 @@ class GetAllParticipatingExchangesOperation: GetExchangesOperation {
     //3
     let participantPredicate = NSPredicate(value: true)// NSCompoundPredicate(orPredicateWithSubpredicates: [personIsCreator, personIsBeingRequestedFrom])
     //4
-    let statusPredicate = NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
+    let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
+    
     //5
     let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, participantPredicate])
     
@@ -194,7 +195,7 @@ class GetExchangesOperation: Operation {
       requestingPerson?.exchanges = requestingPerson?.exchanges?.setByAddingObject(localExchange)
       
       //save the context
-      self.context.MR_saveOnlySelfAndWait()
+      self.context.MR_saveToPersistentStoreAndWait()
     }
     
     getExchangesOperation.queryCompletionBlock = { (cursor, error) -> Void in

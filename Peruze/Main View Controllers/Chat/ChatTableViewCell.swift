@@ -10,7 +10,7 @@ import UIKit
 import MagicalRecord
 
 class ChatTableViewCell: UITableViewCell {
-  var data: Exchange? {
+  var data: NSManagedObject? {
     didSet {
       guard let itemOffered = data?.valueForKey("itemOffered") as? NSManagedObject,
         let itemRequested = data?.valueForKey("itemRequested") as? NSManagedObject else {

@@ -71,7 +71,7 @@ class GetReviewsOperation: Operation {
         }
         
         //save the context
-        self.context.MR_saveOnlySelfAndWait()
+        self.context.MR_saveToPersistentStoreAndWait()
       
     }
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in

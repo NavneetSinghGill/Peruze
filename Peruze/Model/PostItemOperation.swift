@@ -32,7 +32,7 @@ class PostItemOperation: GroupOperation {
       tempItem.title = title
       tempItem.detail = detail
       tempItem.recordIDName = recordIDName ?? "tempID"
-      context.MR_saveOnlySelfAndWait()
+      context.MR_saveToPersistentStoreAndWait()
       
       let item = Item.MR_findFirstByAttribute("recordIDName", withValue: recordIDName ?? "tempID", inContext: context)
       item.recordIDName = recordIDName
@@ -58,7 +58,7 @@ class PostItemOperation: GroupOperation {
           localItem.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
           localMe.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
           localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
-          context.MR_saveOnlySelfAndWait()
+          context.MR_saveToPersistentStoreAndWait()
         } catch {
           print("There was an error in getLocationOp completion: \(error)")
         }
@@ -120,7 +120,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       print("Error in SaveItemInfoToLocalStorage: \(error)")
     }
     
-    context.MR_saveOnlySelfAndWait()
+    context.MR_saveToPersistentStoreAndWait()
     finish()
     
   }

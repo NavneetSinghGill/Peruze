@@ -83,7 +83,7 @@ class GetPersonOperation: Operation {
           if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
             localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
           }
-          self.context.MR_saveOnlySelfAndWait()
+          self.context.MR_saveToPersistentStoreAndWait()
         }
         
         //because the operations inside of the block wait, we can call finish outside of the block
@@ -161,7 +161,7 @@ class GetAllPersonsWithMissingData: Operation {
         print("Person lastName: \(localPerson.lastName)")
         print("Person facebookID: \(localPerson.facebookID)")
         
-        self.context.MR_saveOnlySelfAndWait()
+        self.context.MR_saveToPersistentStoreAndWait()
       }
       
       //because the operations inside of the block wait, we can call finish outside of the block

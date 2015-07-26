@@ -7,40 +7,103 @@
 //
 
 import UIKit
+import MagicalRecord
 
-class ChatTableViewDataSource: NSObject, UITableViewDataSource {
-    private struct Constants {
-        static let ReuseIdentifier = "chat"
-        static let NibName = "ChatTableViewCell"
-        
-    }
-    var chats = [Exchange]()
+class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+  private struct Constants {
+    static let ReuseIdentifier = "chat"
+    static let NibName = "ChatTableViewCell"
     
-    
-    //MARK: - Lifecycle Methods
-    override init() {
-        super.init()
+  }
+  var fetchedResultsController: NSFetchedResultsController!
+  var tableView: UITableView!
+  
+  //MARK: - Lifecycle Methods
+  override init() {
+    super.init()
+    let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
+    fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
+      ascending: true,
+      withPredicate: chatPredicate,
+      groupBy: nil,
+      delegate: self)
+    do {
+      try fetchedResultsController.performFetch()
+    } catch {
+      print("There was an error with the fetchedResultsController in the Chat Table View Data Source:")
+      print(error)
+      //TODO: Actually handle this error
     }
+  }
+  
+  //MARK: - UITableViewDataSource Methods
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
+    tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
     
-    //MARK: - UITableViewDataSource Methods
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
-        tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
-        cell!.data = chats[indexPath.item]
-        
-        return cell!
-    }
+    let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
+    cell!.data = fetchedResultsController.objectAtIndexPath(indexPath)
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chats.count
-    }
+    return cell!
+  }
+  
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+  }
+  
+  func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return true
+  }
+  
+  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    /* keep this empty */
+  }
 
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+  //MARK: - NSFetchedResultsControllerDelegate
+  
+  private func errorCell() -> ChatTableViewCell {
+    let returnCell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier) as! ChatTableViewCell
+    
+    return returnCell
+  }
+
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    tableView.beginUpdates()
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    switch type {
+    case .Insert:
+      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    case .Delete:
+      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    default:
+      break
     }
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    switch type {
+    case .Insert:
+      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Delete:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Update:
+      tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Move:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
     }
+  }
+  
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    tableView.endUpdates()
+  }
 }
+

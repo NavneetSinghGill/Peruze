@@ -21,7 +21,7 @@ class UpdateAllExchangesOperation: Operation {
   override func execute() {
     
     defer {
-      context.MR_saveOnlySelfAndWait()
+      context.MR_saveToPersistentStoreAndWait()
     }
     
     guard let allExchanges = Exchange.MR_findAll() as? [NSManagedObject] else {
@@ -87,7 +87,7 @@ class UpdateAllExchangesOperation: Operation {
               inContext: self.context)
           }
           
-        self.context.MR_saveOnlySelfAndWait()
+        self.context.MR_saveToPersistentStoreAndWait()
       }
       self.finishWithError(error)
     }
