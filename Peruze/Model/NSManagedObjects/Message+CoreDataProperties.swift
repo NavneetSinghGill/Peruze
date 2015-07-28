@@ -17,6 +17,7 @@ extension Message {
     @NSManaged var image: NSData?
     @NSManaged var recordIDName: String?
     @NSManaged var text: String?
+    @NSManaged var date: NSDate?
     @NSManaged var exchange: Exchange?
     @NSManaged var sender: Person?
 

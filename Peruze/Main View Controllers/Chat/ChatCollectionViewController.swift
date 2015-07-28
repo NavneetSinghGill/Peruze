@@ -8,23 +8,21 @@
 
 import UIKit
 import JSQMessagesViewController
+import MagicalRecord
 
 class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TGCameraDelegate {
   private struct Constants {
     static let BufferSize: CGFloat = 8
   }
-  
   var delegate: ChatDeletionDelegate?
-  var messages: [JSQMessage]?
-  var otherItem: Item?
+  var exchange: NSManagedObject!
   var dataSource: ChatCollectionViewDataSource? {
     didSet {
-      dataSource?.delegate = self
-      dataSource?.otherPerson = otherItem?.owner
+      dataSource!.delegate = self
       collectionView!.dataSource = dataSource
-      dataSource?.messages = messages
     }
   }
+  
   private var sendButton: UIButton?
   private var cancelButton: UIButton?
   private var completeButton: UIButton?
@@ -38,7 +36,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
     
-    dataSource = ChatCollectionViewDataSource()
+    dataSource = ChatCollectionViewDataSource(exchange: exchange)
     
     //set the properties of the input toolbar
     inputToolbar?.contentView?.tintColor = .redColor()
@@ -68,22 +66,21 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     inputToolbar?.contentView?.rightBarButtonItem = completeButton
     inputToolbar?.contentView?.rightBarButtonItem?.enabled = true
     
-    
-    
   }
   
   //MARK: - Required Subclassing Methods for Collection View and Layout
   override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
-    return cell
+    return super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
   }
+  
   override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
     return kJSQMessagesCollectionViewCellLabelHeightDefault
   }
+  
   override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-    if indexPath.item % 3 == 0 { return kJSQMessagesCollectionViewCellLabelHeightDefault }
-    return 0
+    return indexPath.item % 3 == 0 ? kJSQMessagesCollectionViewCellLabelHeightDefault : 0
   }
+  
   override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
     return 0
   }
@@ -149,10 +146,10 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   override func didPressAccessoryButton(sender: UIButton!) {
     switch sender {
     case cancelButton!:
-      let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel the exchange with \(otherItem!.owner!.firstName)? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
+      let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel this exchange? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
       let doNotDelete = UIAlertAction(title: "Do Not Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
       let doDelete = UIAlertAction(title: "Cancel Exchange", style: UIAlertActionStyle.Destructive) { (alertAction) -> Void in
-        self.delegate!.cancelExchangeWithOtherItem(self.otherItem!)
+        //self.delegate!.cancelExchange(self.exchange)
         self.navigationController!.popViewControllerAnimated(true)
       }
       alert.addAction(doNotDelete)
@@ -173,9 +170,9 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
     switch button {
     case completeButton!:
-      let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange with \(otherItem!.owner!.firstName)!", preferredStyle: UIAlertControllerStyle.Alert)
+      let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange!", preferredStyle: UIAlertControllerStyle.Alert)
       let successfulExchange = UIAlertAction(title: "We've successfully exchanged.", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-        self.delegate!.completeExchangeWithOtherItem(self.otherItem!)
+        //self.delegate!.completeExchange(self.exchange)
         self.navigationController!.popViewControllerAnimated(true)
       }
       let notExchangedYet = UIAlertAction(title: "We're not done yet!", style: UIAlertActionStyle.Cancel, handler: nil)
@@ -206,6 +203,6 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
 }
 protocol ChatDeletionDelegate {
-  func cancelExchangeWithOtherItem(otherItem: Item)
-  func completeExchangeWithOtherItem(otherItem: Item)
+  func cancelExchange(exchange: Exchange)
+  func completeExchange(exchange: Exchange)
 }

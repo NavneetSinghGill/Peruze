@@ -81,27 +81,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   //MARK: - ChatDeletionDelgate Methods
-  func cancelExchangeWithOtherItem(otherItem: Item) {
-    //        for i in 0..<dataSource.chats.count {
-    //           print(i)
-    //            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
-    //                dataSource.chats.removeAtIndex(i)
-    //                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
-    //                break
-    //            }
-    //}
-    //checkForEmptyData(true)
+  func cancelExchange(exchange: Exchange) {
+    //TODO: Complete this
   }
   
-  func completeExchangeWithOtherItem(otherItem: Item) {
-    //for i in 0..<dataSource.chats.count {
-    //            if dataSource.chats[i].exchage.itemRequested.id == otherItem.id {
-    //                dataSource.chats.removeAtIndex(i)
-    //                tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)] , withRowAnimation: UITableViewRowAnimation.Automatic)
-    //                break
-    //            }
-    //        }
-    //checkForEmptyData(true)
+  func completeExchange(exchange: Exchange) {
+    //TODO: Complete This
   }
   private func checkForEmptyData(animated: Bool) {
     //        if tableView.visibleCells.count == 0 {
@@ -114,15 +99,19 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   //MARK: - Navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if let cell = sender as? ChatTableViewCell {
-      if let destVC = segue.destinationViewController as? ChatCollectionViewController {
-        destVC.title = cell.theirItemNameLabel.text
-        //destVC.messages = cell.data?.messages?.allObjects as! [JSQMessage]
-        //destVC.otherItem = cell.data?.exchage.itemRequested
-        //destVC.senderId = "\(cell.data!.exchage.itemOffered.owner.id)"
-        //destVC.senderDisplayName = cell.data?.exchage.itemOffered.owner.firstName
-        destVC.delegate = self
-      }
+    guard
+      let cell = sender as? ChatTableViewCell,
+      let destVC = segue.destinationViewController as? ChatCollectionViewController
+      else {
+        return
     }
+    destVC.title = cell.theirItemNameLabel.text
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedMainObjectContext)
+    destVC.exchange = cell.data
+    destVC.senderId = me.valueForKey("recordIDName") as! String
+    destVC.senderDisplayName =  me.valueForKey("firstName") as! String
+    destVC.delegate = self
   }
+  
+  
 }
