@@ -47,7 +47,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
       withPredicate: exchangePredicate,
       groupBy: nil,
       delegate: self,
-      inContext: managedMainObjectContext
+      inContext: managedConcurrentObjectContext
     )
   }
   
@@ -105,12 +105,12 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   //MARK: - Button Action Methods
   func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
     let postMessageOp = PostMessageOperation(
-      date: date,
+      date: date ?? NSDate(timeIntervalSinceNow: 0),
       text: text,
       image: nil,
       exchangeRecordIDName: exchange.valueForKey("recordIDName") as! String,
       database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedMainObjectContext) {
+      context: managedConcurrentObjectContext) {
         //do something
         delegate?.collectionView?.reloadData()
     }
@@ -118,13 +118,15 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   }
   
   private func JSQMessageFromMessage(message: NSManagedObject) -> JSQMessage {
+    
     guard
-    let date = message.valueForKey("date") as? NSDate,
-    let sender = message.valueForKey("sender") as? NSManagedObject,
-    let senderId = sender.valueForKey("recordIDName") as? String,
-    let senderDisplayName = sender.valueForKey("firstName") as? String
-    else {
-      return JSQMessage()
+      let date = message.valueForKey("date") as? NSDate,
+      let sender = message.valueForKey("sender") as? NSManagedObject,
+      let senderId = sender.valueForKey("recordIDName") as? String,
+      let senderDisplayName = sender.valueForKey("firstName") as? String
+      else {
+        print("Error: Vital message information was nil.")
+        return JSQMessage()
     }
     
     if let imageData = message.valueForKey("image") as? NSData {
@@ -145,7 +147,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
         text: text)
       return message
     }
-    
+    print("Error: There was no text or imageData.")
     return JSQMessage()
   }
 }

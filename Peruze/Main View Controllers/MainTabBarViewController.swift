@@ -20,7 +20,7 @@ class MainTabBarViewController: UITabBarController {
       range: nil,
       location: CLLocation(),
       database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedMainObjectContext)
+      context: managedConcurrentObjectContext)
     OperationQueue().addOperation(getItemsOperation)
   }
 }

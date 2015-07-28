@@ -69,14 +69,16 @@ class ProfileViewController: UIViewController {
     //get the updated information for the profile
     
     let completePerson = GetFullProfileOperation(personRecordID: CKRecordID(recordName: personForProfile!.recordIDName!)) {
-      let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
-      self.personForProfile = completeProfile
-      self.containerSpinner.stopAnimating()
-      UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
-        self.updateChildViewControllers()
-      })
+      dispatch_async(dispatch_get_main_queue()) {
+        let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
+        self.personForProfile = completeProfile
+        self.containerSpinner.stopAnimating()
+        UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
+          self.updateChildViewControllers()
+        })
+      }
     }
-    NSOperationQueue.mainQueue().addOperation(completePerson)
+    OperationQueue().addOperation(completePerson)
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = .redColor()

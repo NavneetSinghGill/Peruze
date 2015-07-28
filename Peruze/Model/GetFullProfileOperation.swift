@@ -45,10 +45,22 @@ class GetFullProfileOperation: GroupOperation {
     5. Finishing operation that holds the completion block
     */
     fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: database , context: context)
+      fetchPersonOperation.completionBlock = {
+        print("Finished FetchPersonOperation")
+      }
     fetchReviewsOperation = GetReviewsOperation(recordID: personRecordID, database: database, context: context)
+      fetchReviewsOperation.completionBlock = {
+        print("Finished fetchReviewsOperation")
+      }
     fetchUploadsOperation = GetUploadsOperation(recordID: personRecordID, database: database, context: context)
+      fetchUploadsOperation.completionBlock = {
+        print("Finished fetchUploadsOperation")
+      }
     fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
       status: ExchangeStatus.Completed, database: database, context: context)
+      fetchExchangesOperation.completionBlock = {
+        print("Finished fetchExchangesOperation")
+      }
     
     let finishOperation = NSBlockOperation(block: completionHandler)
     
@@ -60,13 +72,11 @@ class GetFullProfileOperation: GroupOperation {
     
     super.init(operations: [fetchPersonOperation, fetchReviewsOperation, fetchUploadsOperation, fetchExchangesOperation, finishOperation])
     
-    name = "Get Earthquakes"
+    name = "Get Full Profile"
   }
   
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
-    if let firstError = errors.first where
-      ( operation === fetchPersonOperation || operation === fetchReviewsOperation ||
-        operation === fetchUploadsOperation || operation === fetchExchangesOperation ) {
+    if let firstError = errors.first {
           print("Get Full Profile Operation Failed With Error: \(firstError)")
       produceAlert(firstError)
     }

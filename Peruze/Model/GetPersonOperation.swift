@@ -40,13 +40,13 @@ class GetPersonOperation: Operation {
   }
   
   override func execute() {
-    
+    print("Hit " + __FUNCTION__ + " in " + __FILE__)
     defer {
       self.context.MR_saveToPersistentStoreAndWait()
     }
     
     //figure out what keys need to be fetched
-    let person = Person.findFirstOrCreateByAttribute("recordIDName", withValue: personID.recordName, inContext: context)
+    let person = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: personID.recordName, inContext: context)
     var desiredKeys = [String]()
     desiredKeys += (person.firstName  == nil ? ["FirstName"]  : [])
     desiredKeys += (person.lastName   == nil ? ["LastName"]   : [])
@@ -71,7 +71,10 @@ class GetPersonOperation: Operation {
         for recordID in recordsByID!.keys {
           
           //fetch each person with the returned ID
-          let localPerson = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
+          var localPerson = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
+          localPerson = localPerson ?? Person.MR_findFirstOrCreateByAttribute("me",
+            withValue: true,
+            inContext: self.context)
           
           //set the returned properties
           localPerson.recordIDName = recordID.recordName
@@ -144,10 +147,18 @@ class GetAllPersonsWithMissingData: Operation {
         //add person to the database
         
         //fetch each person with the returned ID
-        let localPerson = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID.recordName, inContext: self.context)
+        var localPerson: Person!
+        if recordID.recordName == "__defaultOwner__" {
+          localPerson = Person.MR_findFirstOrCreateByAttribute("me",
+            withValue: true,
+            inContext: self.context)
+        } else {
+          localPerson = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+            withValue: recordID.recordName,
+            inContext: self.context)
+        }
         
         //set the returned properties
-        localPerson.recordIDName = recordID.recordName
         localPerson.firstName  = localPerson.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
         localPerson.lastName   = localPerson.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
         localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String

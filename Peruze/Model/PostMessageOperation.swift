@@ -89,15 +89,15 @@ class SaveMessageWithTempRecordIDOperation: Operation {
   }
   
   override func execute() {
-    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedMainObjectContext)
-    let newMessage = Message.MR_createEntityInContext(managedMainObjectContext)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    let newMessage = Message.MR_createEntityInContext(managedConcurrentObjectContext)
     let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName, inContext: context)
     newMessage.date = date
     newMessage.text = text
     newMessage.sender = me
     newMessage.recordIDName = tempID
     newMessage.exchange = exchange
-    managedMainObjectContext.MR_saveToPersistentStoreAndWait()
+    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     finish()
   }
 }
@@ -113,7 +113,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
   
   init(temporaryID: String,
     database: CKDatabase,
-    context: NSManagedObjectContext = managedMainObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.temporaryID = temporaryID
       self.database = database
       self.context = context
@@ -126,6 +126,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     let messageRecord = CKRecord(recordType: RecordTypes.Message)
     messageRecord.setObject(localMessage.valueForKey("text") as? String, forKey: "Text")
     messageRecord.setObject(localMessage.valueForKey("image") as? NSData, forKey: "Image")
+    messageRecord.setObject(localMessage.valueForKey("date") as? NSDate, forKey: "Date")
     if let exchange = localMessage.valueForKey("Exchange") as? NSManagedObject,
       let exchangeID = exchange.valueForKey("recordIDName") as? String {
         let exchangeRecordID = CKRecordID(recordName: exchangeID)

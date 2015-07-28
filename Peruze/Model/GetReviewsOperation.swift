@@ -33,7 +33,7 @@ class GetReviewsOperation: Operation {
   }
   
   override func execute() {
-    
+    print("Hit " + __FUNCTION__ + " in " + __FILE__)
     defer {
       self.context.MR_saveToPersistentStoreAndWait()
     }
@@ -46,32 +46,37 @@ class GetReviewsOperation: Operation {
     
     getUploadsOperation.recordFetchedBlock = { (record) -> Void in
       
-        let localUpload = Item.findFirstOrCreateByAttribute("recordIDName",
-          withValue: record.recordID.recordName, inContext: self.context)
-        
-        if let ownerRecordID = record.creatorUserRecordID?.recordName {
-          localUpload.owner = Person.findFirstOrCreateByAttribute("recordIDName",
-            withValue: ownerRecordID, inContext: self.context)
-        }
-        
-        if let title = record.objectForKey("Title") as? String {
-          localUpload.title = title
-        }
-        
-        if let detail = record.objectForKey("Description") as? String {
-          localUpload.detail = detail
-        }
-        
-        if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
-          localUpload.ownerFacebookID = ownerFacebookID
-        }
-        
-        if let imageAsset = record.objectForKey("Image") as? CKAsset {
-          localUpload.image = NSData(contentsOfURL: imageAsset.fileURL)
-        }
-        
-        //save the context
-        self.context.MR_saveToPersistentStoreAndWait()
+      let localUpload = Item.findFirstOrCreateByAttribute("recordIDName",
+        withValue: record.recordID.recordName, inContext: self.context)
+      
+      if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
+        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("me",
+          withValue: true,
+          inContext: self.context)
+      } else {
+        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: record.creatorUserRecordID?.recordName,
+          inContext: self.context)
+      }
+      
+      if let title = record.objectForKey("Title") as? String {
+        localUpload.title = title
+      }
+      
+      if let detail = record.objectForKey("Description") as? String {
+        localUpload.detail = detail
+      }
+      
+      if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
+        localUpload.ownerFacebookID = ownerFacebookID
+      }
+      
+      if let imageAsset = record.objectForKey("Image") as? CKAsset {
+        localUpload.image = NSData(contentsOfURL: imageAsset.fileURL)
+      }
+      
+      //save the context
+      self.context.MR_saveToPersistentStoreAndWait()
       
     }
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in

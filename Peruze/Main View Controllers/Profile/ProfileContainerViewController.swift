@@ -31,7 +31,7 @@ class ProfileContainerViewController: UITabBarController {
     for childVC in childViewControllers {
       switch childVC {
       case let uploadsVC as ProfileUploadsViewController:
-        //uploadsVC.dataSource.items = profileOwner!.uploads
+        uploadsVC.dataSource.personRecordID = profileOwner?.valueForKey("recordIDName") as? String
         break
       case let favoritesVC as ProfileFavoritesViewController:
         //favoritesVC.dataSource.favorites = profileOwner!.favorites

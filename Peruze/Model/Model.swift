@@ -765,6 +765,5 @@ class Model: NSObject, CLLocationManagerDelegate {
 //  }
 }
 let modelSingletonGlobal = Model()
-let managedMainObjectContext = NSManagedObjectContext.MR_defaultContext()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 

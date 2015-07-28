@@ -106,7 +106,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         return
     }
     destVC.title = cell.theirItemNameLabel.text
-    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedMainObjectContext)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     destVC.exchange = cell.data
     destVC.senderId = me.valueForKey("recordIDName") as! String
     destVC.senderDisplayName =  me.valueForKey("firstName") as! String

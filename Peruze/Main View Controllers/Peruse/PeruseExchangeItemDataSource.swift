@@ -27,7 +27,12 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
   
   override init() {
     super.init()
-    fetchedResultsController = Item.MR_fetchAllWithDelegate(self)
+    fetchedResultsController = Item.MR_fetchAllSortedBy("title",
+      ascending: true,
+      withPredicate: NSPredicate(value: true),
+      groupBy: nil,
+      delegate: self,
+      inContext: managedConcurrentObjectContext)
     do {
       try fetchedResultsController.performFetch()
     } catch {

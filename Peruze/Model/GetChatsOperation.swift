@@ -110,11 +110,23 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
         localMessage.image = NSData(contentsOfURL: messageImage.fileURL)
       }
       
+      localMessage.date = record.objectForKey("Date") as? NSDate
+      
       if let exchange = record.objectForKey("Exchange") as? CKReference {
         let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: exchange.recordID.recordName,
           inContext: self.context)
-        localMessage.setValue(messageExchange, forKey:"exchange")
+        localMessage.exchange = messageExchange
+      }
+      
+      if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
+        localMessage.sender = Person.MR_findFirstOrCreateByAttribute("me",
+          withValue: true,
+          inContext: self.context)
+      } else {
+        localMessage.sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: record.creatorUserRecordID?.recordName,
+          inContext: self.context)
       }
       
       self.context.MR_saveToPersistentStoreAndWait()

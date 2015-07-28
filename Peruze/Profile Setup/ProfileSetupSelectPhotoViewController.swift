@@ -175,9 +175,9 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     }
     
     //upload facebook profile info and fetch user info from the cloud
-    let getFacebookProfileOp = FetchFacebookUserProfile(context: managedMainObjectContext)
+    let getFacebookProfileOp = FetchFacebookUserProfile(context: managedConcurrentObjectContext)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-    let getCurrentUserOp = GetCurrentUserOperation(database: publicDB, context: managedMainObjectContext)
+    let getCurrentUserOp = GetCurrentUserOperation(database: publicDB, context: managedConcurrentObjectContext)
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation(block: {

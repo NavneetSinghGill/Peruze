@@ -133,7 +133,7 @@ class GetExchangesOperation: Operation {
   }
   
   override func execute() {
-    
+    print("Hit " + __FUNCTION__ + " in " + __FILE__)
     defer {
       self.context.MR_saveToPersistentStoreAndWait()
     }
@@ -161,9 +161,13 @@ class GetExchangesOperation: Operation {
         inContext: self.context)
       
       //set creator
-      if let creatorIDName = record.creatorUserRecordID?.recordName {
+      if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
+        localExchange.creator = Person.MR_findFirstOrCreateByAttribute("me",
+          withValue: true,
+          inContext: self.context)
+      } else {
         localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: creatorIDName,
+          withValue: record.creatorUserRecordID?.recordName,
           inContext: self.context)
       }
       

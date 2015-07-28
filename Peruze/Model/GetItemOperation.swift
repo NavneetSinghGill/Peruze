@@ -50,7 +50,7 @@ class GetItemOperation: Operation {
   }
   
   override func execute() {
-    
+    print("Hit " + __FUNCTION__ + " in " + __FILE__)
     defer {
       self.context.MR_saveToPersistentStoreAndWait()
     }
@@ -68,9 +68,16 @@ class GetItemOperation: Operation {
       localUpload.recordIDName = record.recordID.recordName
       
       if let ownerRecordIDName = record.creatorUserRecordID?.recordName {
-        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: ownerRecordIDName,
-          inContext: self.context)
+        
+        if ownerRecordIDName == "__defaultOwner__" {
+          localUpload.owner = Person.MR_findFirstOrCreateByAttribute("me",
+            withValue: true,
+            inContext: self.context)
+        } else {
+          localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+            withValue: ownerRecordIDName,
+            inContext: self.context)
+        }
         
         if let title = record.objectForKey("Title") as? String {
           localUpload.title = title
