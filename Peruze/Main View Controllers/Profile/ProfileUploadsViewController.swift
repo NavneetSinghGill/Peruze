@@ -53,17 +53,17 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   //MARK: Editing
   private func checkForEmptyData(animated: Bool) {
-    if dataSource.items.count == 0 {
-      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-        self.titleLabel.alpha = 1.0
-        self.tableView.alpha = 0.0
-      }
-    } else {
-      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-        self.titleLabel.alpha = 0.0
-        self.tableView.alpha = 1.0
-      }
-    }
+//    if dataSource.items.count == 0 {
+//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//        self.titleLabel.alpha = 1.0
+//        self.tableView.alpha = 0.0
+//      }
+//    } else {
+//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//        self.titleLabel.alpha = 0.0
+//        self.tableView.alpha = 1.0
+//      }
+//    }
   }
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete
@@ -75,7 +75,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { (rowAction, indexPath) -> Void in
-      self.dataSource.items.removeAtIndex(indexPath.row)
+//      self.dataSource.items.removeAtIndex(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
       self.checkForEmptyData(true)
     }

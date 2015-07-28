@@ -29,11 +29,6 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       tableView.reloadData()
     }
   }
-  var items = [Item]() {
-    didSet {
-      tableView.reloadData()
-    }
-  }
   override init() {
     super.init()
     guard let personRecordID = personRecordID else {
@@ -54,20 +49,20 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
       forIndexPath: indexPath) as! ProfileUploadsTableViewCell
-    if items.count > indexPath.row {
-      cell.titleTextLabel.text = items[indexPath.row].title
-      cell.subtitleTextLabel.text = ""
-      cell.descriptionTextLabel.text = items[indexPath.row].detail
-      cell.circleImageView.image = UIImage(data: items[indexPath.row].image!)
-      cell.accessoryType = editableCells ? .DisclosureIndicator : .None
-      cell.userInteractionEnabled = editableCells
-    } else {
-      print("There is no cell for NSIndexPath: \(indexPath)")
-    }
+    
+    let item = fetchedResultsController.objectAtIndexPath(indexPath)
+    
+    cell.titleTextLabel.text = (item.valueForKey("title") as! String)
+    cell.subtitleTextLabel.text = ""
+    cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
+    cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
+    cell.accessoryType = editableCells ? .DisclosureIndicator : .None
+    cell.userInteractionEnabled = editableCells
+    
     return cell
   }
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return items.count
+    return fetchedResultsController?.sections?[section].numberOfObjects ?? 0
   }
   func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return editableCells
@@ -75,4 +70,50 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     
   }
+  
+  
+  //MARK: - NSFetchedResultsControllerDelegate
+  
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    tableView.beginUpdates()
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    switch type {
+    case .Insert:
+      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    case .Delete:
+      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      break
+    default:
+      break
+    }
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    switch type {
+    case .Insert:
+      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Delete:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Update:
+      tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    case .Move:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      break
+    }
+  }
+  
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    tableView.endUpdates()
+  }
+  
+  
+  
+  
 }

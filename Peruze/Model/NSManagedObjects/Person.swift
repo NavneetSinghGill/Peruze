@@ -13,7 +13,8 @@ import CloudKit
 @objc(Person)
 class Person: NSManagedObject {
   var formattedName: String {
-    if let firstName = firstName,let lastName = lastName {
+    if let firstName = self.valueForKey("firstName") as? String,
+      let lastName = self.valueForKey("lastName") as? String {
     return firstName + " " + lastName
     } else {
       return ""

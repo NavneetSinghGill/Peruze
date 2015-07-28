@@ -115,6 +115,8 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     /* keep this empty */
   }
   
+  //MARK: - NSFetchedResultsControllerDelegate
+
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
     tableView.beginUpdates()
   }

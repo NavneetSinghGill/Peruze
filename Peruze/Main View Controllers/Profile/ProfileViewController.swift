@@ -63,7 +63,7 @@ class ProfileViewController: UIViewController {
     }
     //setup the known information about the person
     profileImageView.image = UIImage(data: personForProfile!.image!)
-    profileNameLabel.text = "\(personForProfile!.firstName) \(personForProfile!.lastName)"
+    profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
     //TODO: set #ofStars
     
     //get the updated information for the profile
