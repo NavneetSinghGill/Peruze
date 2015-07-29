@@ -59,6 +59,12 @@ class PostExchangeOperation: GroupOperation {
       //init with operations
       super.init(operations: [saveOp, uploadOp, finishOp])
   }
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+    if errors.first != nil {
+      print("PostExchangeOperation finished with the following first error: ")
+      print(errors.first!)
+    }
+  }
 }
 
 class SaveExchangeToLocalStorageOperation: Operation {
@@ -137,7 +143,7 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
     
     //set DateExchanged
     if let exchangeDate = localExchange.valueForKey("date") as? NSDate {
-      exchangeRecord.setObject(exchangeDate, forKey: "ExchangeStatus")
+      exchangeRecord.setObject(exchangeDate, forKey: "DateExchanged")
     }
     
     //set ExchangeStatus

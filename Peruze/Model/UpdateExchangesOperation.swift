@@ -101,3 +101,15 @@ class UpdateAllExchangesOperation: Operation {
     database.addOperation(fetchUpdatedExchanges)
   }
 }
+/**
+Overrides the value of the current
+*/
+class UpdateExchangeWithIncrementalData: Operation {
+  //TODO: Finish this
+  init(context: NSManagedObjectContext) {
+    super.init()
+  }
+  override func execute() {
+    
+  }
+}

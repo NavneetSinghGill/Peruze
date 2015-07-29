@@ -10,6 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
 import MagicalRecord
+import CloudKit
 
 class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
   private struct Constants {
@@ -113,7 +114,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   private func exchangeInitiated() {
     //TODO: create an exchange and pass it to the data model
-    
+    let postExchange = PostExchangeOperation(
+      date: NSDate(timeIntervalSinceNow: 0),
+      status: ExchangeStatus.Pending,
+      itemOfferedRecordIDName: itemChosenToExchange!.valueForKey("recordIDName") as! String,
+      itemRequestedRecordIDName: itemToForwardToExchange!.valueForKey("recordIDName") as! String,
+      database: CKContainer.defaultContainer().publicCloudDatabase,
+      context: managedConcurrentObjectContext) {
+        print("************* EXCHANGE SUCCESSFULLY UPLOADED **************")
+    }
+    OperationQueue().addOperation(postExchange)
   }
   
   func segueToProfile(ownerID: String) {
