@@ -39,17 +39,17 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     refreshControl.endRefreshing()
   }
   private func checkForEmptyData(animated: Bool) {
-    if dataSource.reviews.count == 0 && tableView.visibleCells.count == 0 {
-      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-        self.titleLabel.alpha = 1.0
-        self.tableView.alpha = 0.0
-      }
-    } else {
-      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-        self.titleLabel.alpha = 0.0
-        self.tableView.alpha = 1.0
-      }
-    }
+//    if dataSource.reviews.count == 0 && tableView.visibleCells.count == 0 {
+//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//        self.titleLabel.alpha = 1.0
+//        self.tableView.alpha = 0.0
+//      }
+//    } else {
+//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//        self.titleLabel.alpha = 0.0
+//        self.tableView.alpha = 1.0
+//      }
+//    }
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return tallRowsIndexPaths.indexOf(indexPath) == nil ? Constants.TableViewCellHeight : UITableViewAutomaticDimension

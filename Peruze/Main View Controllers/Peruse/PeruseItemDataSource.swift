@@ -73,42 +73,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
     let item = fetchedResultsController.objectAtIndexPath(indexPath)
     
-    guard
-      let itemImageData = item.valueForKey("image") as? NSData,
-      let itemTitle = item.valueForKey("title") as? String,
-      let itemDetail = item.valueForKey("detail") as? String,
-      let itemRecordIDName = item.valueForKey("recordIDName") as? String
-      else {
-        cell.item = errorCell()
-        cell.setNeedsDisplay()
-        return cell
-    }
-    guard
-      let itemOwner = item.valueForKey("owner") as? NSManagedObject,
-      let ownerFirstName = itemOwner.valueForKey("firstName") as? String,
-      let ownerImageData = itemOwner.valueForKey("image") as? NSData,
-      let ownerRecordID = itemOwner.valueForKey("recordIDName") as? String
-      else {
-        print("issue with the owner of the item")
-        cell.item = errorCell()
-        cell.setNeedsDisplay()
-        return cell
-    }
-    
-    let localOwner = OwnerStruct(
-      image: UIImage(data: ownerImageData)!,
-      formattedName: ownerFirstName,
-      recordIDName: ownerRecordID
-    )
-    let localItem = ItemStruct(
-      image: UIImage(data: itemImageData)!,
-      title: itemTitle,
-      detail: itemDetail,
-      owner: localOwner,
-      recordIDName: itemRecordIDName
-    )
-    
-    cell.item = localItem
+    cell.item = item
     cell.delegate = itemDelegate
     cell.setNeedsDisplay()
     return cell

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MagicalRecord
 
 class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UIScrollViewDelegate {
   //TODO: There should only be a segue if the user lets go of the scroll view while content offset < 0
@@ -20,7 +21,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   }
   
   //MARK: - Variables
-  var item: ItemStruct? { didSet { updateUI() } }
+  var item: NSManagedObject? { didSet { updateUI() } }
   var delegate: PeruseItemCollectionViewCellDelegate?
   
   @IBOutlet weak var mutualFriendsLabel: UILabel!
@@ -120,7 +121,12 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     } else if scrollView.contentOffset != CGPointMake(0, 0) {
       scrollView.scrollRectToVisible(CGRectMake(0, 0, 10, 10), animated: true)
     } else if CGRectContainsPoint(ownerProfileImage.frame, sender.locationInView(contentView)) {
-      delegate?.segueToProfile(item!.owner)
+      if
+        let owner = item?.valueForKey("owner") as? NSManagedObject,
+        let recordID = owner.valueForKey("recordIDName") as? String
+      {
+        delegate?.segueToProfile(recordID)
+      }
     }
   }
   
@@ -131,14 +137,22 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //MARK: - Drawing and UI
   
   private func updateUI() {
-    if let item = item {
-//      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
-//      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
-      ownerNameLabel.text = item.owner.formattedName
-      ownerProfileImage.image = item.owner.image
-      itemImageView.image = item.image
-      itemNameLabel.text = item.title
-      itemDescriptionTextView.text = item.detail
+    if
+      let imageData = item?.valueForKey("image") as? NSData,
+      let title = item?.valueForKey("title") as? String,
+      let detail = item?.valueForKey("detail") as? String,
+      let owner = item?.valueForKey("owner") as? NSManagedObject,
+      let ownerName = owner.valueForKey("firstName") as? String,
+      let ownerImageData = owner.valueForKey("image") as? NSData
+    {
+      //      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
+      //      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
+      
+      ownerNameLabel.text = ownerName
+      ownerProfileImage.image = UIImage(data: ownerImageData)
+      itemImageView.image = UIImage(data: imageData)
+      itemNameLabel.text = title
+      itemDescriptionTextView.text = detail
     }
   }
   
@@ -327,7 +341,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
 
 //MARK: - Item Cell Delegate
 protocol PeruseItemCollectionViewCellDelegate {
-  func itemFavorited(item: ItemStruct, favorite: Bool)
-  func segueToProfile(owner: OwnerStruct)
-  func segueToExchange(item: ItemStruct)
+  func itemFavorited(item: NSManagedObject, favorite: Bool)
+  func segueToProfile(ownerID: String)
+  func segueToExchange(item: NSManagedObject)
 }

@@ -54,32 +54,8 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
     
     let item = NSManagedObject()
-    guard
-      //let item = fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject,
-      let itemImageData = item.valueForKey("image") as? NSData,
-      let itemTitle = item.valueForKey("title") as? String,
-      let itemDetail = item.valueForKey("detail") as? String//,
-      //      let itemOwner = item.valueForKey("owner") as? NSManagedObject,
-      //      let ownerFirstName = item.valueForKey("firstName") as? String,
-      //      let ownerLastName = item.valueForKey("lastName") as? String,
-      //      let ownerImageData = item.valueForKey("image") as? NSData
-      else {
-        return UICollectionViewCell()
-    }
-    let localOwner = OwnerStruct(
-      image: UIImage(data: itemImageData)!,
-      formattedName: "",
-      recordIDName: ""
-    )
-    let localItem = ItemStruct(
-      image: UIImage(data: itemImageData)!,
-      title: itemTitle,
-      detail: itemDetail,
-      owner: localOwner,
-      recordIDName: ""
-    )
     
-    cell.item = localItem
+    cell.item = item
     cell.delegate = itemDelegate
     cell.setNeedsDisplay()
     return cell

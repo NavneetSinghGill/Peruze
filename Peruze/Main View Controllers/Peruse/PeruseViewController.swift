@@ -19,10 +19,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   
   private var dataSource = PeruseItemDataSource()
-  private var itemToForwardToExchange: ItemStruct?
+  private var itemToForwardToExchange: NSManagedObject?
   
   //the item the user owns that he/she selected to exchange
-  var itemChosenToExchange: ItemStruct? {
+  var itemChosenToExchange: NSManagedObject? {
     didSet {
       if itemChosenToExchange != nil {
         let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
@@ -106,7 +106,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     collectionView.reloadData()
   }
   
-  func segueToExchange(item: ItemStruct) {
+  func segueToExchange(item: NSManagedObject) {
     itemToForwardToExchange = item
     performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
   }
@@ -115,16 +115,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //TODO: create an exchange and pass it to the data model
   }
   
-  func segueToProfile(owner: OwnerStruct) {
+  func segueToProfile(ownerID: String) {
     let profileNav = storyboard!.instantiateViewControllerWithIdentifier(Constants.ProfileNavigationControllerIdentifier) as? UINavigationController
     if profileNav == nil { assertionFailure("profile navigation view controller from storyboard is nil") }
     let profileVC = profileNav?.viewControllers[0] as? ProfileViewController
     if profileVC == nil { assertionFailure("profile view controller from storybaord is nil") }
-    profileVC!.personForProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: owner.recordIDName)
+    profileVC!.personForProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: ownerID)
     presentViewController(profileNav!, animated: true, completion: nil)
   }
   
-  func itemFavorited(item: ItemStruct, favorite: Bool) {
+  func itemFavorited(item: NSManagedObject, favorite: Bool) {
     //favorite data
     print("item favorited!")
   }
