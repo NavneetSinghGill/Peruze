@@ -203,6 +203,6 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
 }
 protocol ChatDeletionDelegate {
-  func cancelExchange(exchange: Exchange)
-  func completeExchange(exchange: Exchange)
+  func cancelExchange(exchange: NSManagedObject)
+  func completeExchange(exchange: NSManagedObject)
 }

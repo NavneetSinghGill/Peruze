@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 enum ExchangeStatus: Int {
-  case Pending = 0, Accepted, Denied, Completed, Canceled
+  case Pending = 0, Accepted, Denied, Completed, Cancelled
 }
 
 @objc(Exchange)

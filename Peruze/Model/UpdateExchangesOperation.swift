@@ -70,7 +70,7 @@ class UpdateAllExchangesOperation: Operation {
         
         //set exchange status
         if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int {
-          localExchange.status = NSNumber(integer: newExchangeStatus)//NSNumber(longLong: newExchangeStatus)
+          localExchange.status = NSNumber(integer: newExchangeStatus)
         } else {
           print("Exchange Status was not set!!!")
         }
@@ -105,11 +105,43 @@ class UpdateAllExchangesOperation: Operation {
 Overrides the value of the current
 */
 class UpdateExchangeWithIncrementalData: Operation {
-  //TODO: Finish this
-  init(context: NSManagedObjectContext) {
-    super.init()
+  let recordIDName: String
+  let exchangeStatus: ExchangeStatus?
+  let database: CKDatabase
+  let context: NSManagedObjectContext
+  
+  init(recordIDName: String,
+    exchangeStatus: ExchangeStatus?,
+    database: CKDatabase,
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+      self.recordIDName = recordIDName
+      self.exchangeStatus = exchangeStatus
+      self.database = database
+      self.context = context
+      super.init()
   }
   override func execute() {
+    let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: recordIDName, inContext: context)
+    let exchangeRecordID = CKRecordID(recordName: recordIDName)
+    let exchangeRecord = CKRecord(recordType: RecordTypes.Exchange, recordID: exchangeRecordID)
     
+    if exchangeStatus != nil {
+      localExchange.setValue(NSNumber(integer: exchangeStatus!.rawValue), forKey: "status")
+      exchangeRecord.setObject(NSNumber(integer: exchangeStatus!.rawValue), forKey: "ExchangeStatus")
+    }
+    
+    let cloudOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
+    cloudOp.savePolicy = CKRecordSavePolicy.ChangedKeys
+    cloudOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
+      if error != nil {
+        print("UpdateExchangeWithIncrementalData finished with error:")
+        print(error!)
+        self.finishWithError(error)
+      } else {
+        self.context.MR_saveToPersistentStoreAndWait()
+        self.finish()
+      }
+    }
+    database.addOperation(cloudOp)
   }
 }

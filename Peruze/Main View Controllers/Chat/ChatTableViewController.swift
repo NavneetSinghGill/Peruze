@@ -9,6 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 import CloudKit
+import MagicalRecord
 
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
   private struct Constants {
@@ -24,7 +25,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
+    refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
   }
   
@@ -66,28 +67,136 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-    let normal = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
-      //self.dataSource.chats.removeAtIndex(indexPath.item)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      //self.checkForEmptyData(true)
+    return [cancelEditAction(), completeEditAction()]
+  }
+  
+  private func cancelEditAction() -> UITableViewRowAction {
+    return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
+      
+      //get the recordIDName for the exchange at that index path
+      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
+        return
+      }
+      
+      //create the operation
+      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+      let operation = UpdateExchangeWithIncrementalData(
+        recordIDName: idName,
+        exchangeStatus: ExchangeStatus.Cancelled,
+        database: publicDB,
+        context: managedConcurrentObjectContext)
+      
+      //add completion
+      operation.completionBlock = {
+        dispatch_async(dispatch_get_main_queue()) {
+          do{
+            try self.dataSource.fetchedResultsController.performFetch()
+            self.tableView.reloadData()
+          } catch {
+            print("Fetch threw an error. Not updating")
+            print(error)
+          }
+        }
+      }
+      
+      
+      //add operation to the queue
+      OperationQueue().addOperation(operation)
     }
-    normal.backgroundColor = .greenColor()
-    let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
-      //self.dataSource.chats.removeAtIndex(indexPath.item)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      //self.checkForEmptyData(true)
+  }
+  
+  private func completeEditAction() -> UITableViewRowAction {
+    let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
+      
+      //get the recordIDName for the exchange at that index path
+      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
+        return
+      }
+      
+      //create the operation
+      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+      let operation = UpdateExchangeWithIncrementalData(
+        recordIDName: idName,
+        exchangeStatus: ExchangeStatus.Completed,
+        database: publicDB,
+        context: managedConcurrentObjectContext)
+      
+      //add completion
+      operation.completionBlock = {
+        dispatch_async(dispatch_get_main_queue()) {
+          do{
+            try self.dataSource.fetchedResultsController.performFetch()
+            self.tableView.reloadData()
+          } catch {
+            print("Fetch threw an error. Not updating")
+            print(error)
+          }
+        }
+      }
+      
+      //add operation to the queue
+      OperationQueue().addOperation(operation)
     }
-    return [normal, defaultAction]
+    accept.backgroundColor = .greenColor()
+    return accept
   }
   
   //MARK: - ChatDeletionDelgate Methods
-  func cancelExchange(exchange: Exchange) {
-    //TODO: Complete this
+  func cancelExchange(exchange: NSManagedObject) {
+    //get the recordIDName for the exchange at that index path
+    guard let idName = exchange.valueForKey("recordIDName") as? String else {
+      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+      return
+    }
+    
+    //create the operation
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let operation = UpdateExchangeWithIncrementalData(
+      recordIDName: idName,
+      exchangeStatus: ExchangeStatus.Cancelled,
+      database: publicDB,
+      context: managedConcurrentObjectContext)
+    
+    //add completion
+    operation.completionBlock = {
+      dispatch_async(dispatch_get_main_queue()) {
+        self.tableView.reloadData()
+      }
+    }
+    
+    //add operation to the queue
+    OperationQueue().addOperation(operation)
+    
   }
   
-  func completeExchange(exchange: Exchange) {
-    //TODO: Complete This
+  func completeExchange(exchange: NSManagedObject) {
+    //get the recordIDName for the exchange at that index path
+    guard let idName = exchange.valueForKey("recordIDName") as? String else {
+      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+      return
+    }
+    
+    //create the operation
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let operation = UpdateExchangeWithIncrementalData(
+      recordIDName: idName,
+      exchangeStatus: ExchangeStatus.Completed,
+      database: publicDB,
+      context: managedConcurrentObjectContext)
+    
+    //add completion
+    operation.completionBlock = {
+      dispatch_async(dispatch_get_main_queue()) {
+        self.tableView.reloadData()
+      }
+    }
+    
+    //add operation to the queue
+    OperationQueue().addOperation(operation)
   }
+  
   private func checkForEmptyData(animated: Bool) {
     //        if tableView.visibleCells.count == 0 {
     //            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
@@ -97,6 +206,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     //            }
     //        }
   }
+  
   //MARK: - Navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard

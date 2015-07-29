@@ -48,15 +48,15 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
     let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
     updateExchanges.completionBlock = {
-        do {
-          try self.dataSource.fetchedResultsController.performFetch()
-          dispatch_async(dispatch_get_main_queue()){
-            self.tableView.reloadData()
-          }
-        } catch {
-          print(error)
-          //TODO: Actually handle this error
+      do {
+        try self.dataSource.fetchedResultsController.performFetch()
+        dispatch_async(dispatch_get_main_queue()){
+          self.tableView.reloadData()
         }
+      } catch {
+        print(error)
+        //TODO: Actually handle this error
+      }
       dispatch_async(dispatch_get_main_queue()){
         self.refreshControl?.endRefreshing()
       }
@@ -94,32 +94,76 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-    let actionCompletion = { (reloadedRequests: [Exchange]?, error: NSError?) -> Void in
-      if error != nil {
-        let alert = ErrorAlertFactory.alertFromError(error!, dismissCompletion: nil)
-        self.presentViewController(alert, animated: true, completion: nil)
-        return
-      }
-      self.tableView.reloadData()
-      self.checkForEmptyData(true)
-    }
-    
-    let deny = denyEditActionWithCompletion(actionCompletion)
-    let accept = acceptEditActionWithCompletion(actionCompletion)
+    let deny = denyEditAction()
+    let accept = acceptEditAction()
     return [deny, accept]
   }
-  private func denyEditActionWithCompletion(actionCompletion: ([Exchange]?, NSError?) -> Void) -> UITableViewRowAction {
+  
+  private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
-      let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
-      self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-      //Model.sharedInstance().denyExchangeRequest(deletedRequest, completion: actionCompletion)
+      
+      //get the recordIDName for the exchange at that index path
+      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+        return
+      }
+      
+      //create the operation
+      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+      let operation = UpdateExchangeWithIncrementalData(
+        recordIDName: idName,
+        exchangeStatus: ExchangeStatus.Denied,
+        database: publicDB,
+        context: managedConcurrentObjectContext)
+      //add completion
+      operation.completionBlock = {
+        dispatch_async(dispatch_get_main_queue()) {
+          do{
+            try self.dataSource.fetchedResultsController.performFetch()
+            self.tableView.reloadData()
+          } catch {
+            print("Fetch threw an error. Not updating")
+            print(error)
+          }
+        }
+      }
+      
+      //add operation to the queue
+      OperationQueue().addOperation(operation)
     }
   }
-  private func acceptEditActionWithCompletion(actionCompletion: ([Exchange]?, NSError?) -> Void) -> UITableViewRowAction {
+  private func acceptEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
-      let deletedRequest = self.dataSource.deleteItemAtIndex(indexPath.row)
-      self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-      //Model.sharedInstance().acceptExchangeRequest(deletedRequest, completion: actionCompletion)
+      
+      //get the recordIDName for the exchange at that index path
+      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+        return
+      }
+      
+      //create the operation
+      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+      let operation = UpdateExchangeWithIncrementalData(
+        recordIDName: idName,
+        exchangeStatus: ExchangeStatus.Accepted,
+        database: publicDB,
+        context: managedConcurrentObjectContext)
+      
+      //add completion
+      operation.completionBlock = {
+        dispatch_async(dispatch_get_main_queue()) {
+          do{
+            try self.dataSource.fetchedResultsController.performFetch()
+            self.tableView.reloadData()
+          } catch {
+            print("Fetch threw an error. Not updating")
+            print(error)
+          }
+        }
+      }
+      
+      //add operation to the queue
+      OperationQueue().addOperation(operation)
     }
     accept.backgroundColor = .greenColor()
     return accept
