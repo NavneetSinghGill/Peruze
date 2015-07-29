@@ -160,6 +160,7 @@
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
 		9D9E21911B5C68D400C166C8 /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9E21901B5C68D400C166C8 /* AlertOperation.swift */; };
 		9DDC5E371B65B2E600A9EC22 /* PostMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */; };
+		9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */; };
 		9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96DE1B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -358,6 +359,7 @@
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
 		9D9E21901B5C68D400C166C8 /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
 		9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostMessageOperation.swift; sourceTree = "<group>"; };
+		9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostExchangeOperation.swift; sourceTree = "<group>"; };
 		9DEB96DF1B5B56DA00273677 /* PeruzeDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeruzeDataModel.xcdatamodel; sourceTree = "<group>"; };
 		DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Peruze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -733,6 +735,7 @@
 			isa = PBXGroup;
 			children = (
 				9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */,
+				9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */,
 				9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */,
 			);
 			name = Post;
@@ -1169,6 +1172,7 @@
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
+				9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */,
 				9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
 				9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */,

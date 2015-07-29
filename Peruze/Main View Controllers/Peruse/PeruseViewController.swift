@@ -113,6 +113,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   private func exchangeInitiated() {
     //TODO: create an exchange and pass it to the data model
+    
   }
   
   func segueToProfile(ownerID: String) {
