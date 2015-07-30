@@ -13,6 +13,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   private struct Constants {
     static let ReuseIdentifier = "ProfileExchange"
     static let NibName = "ProfileExchangesTableViewCell"
+    static let EmptyReuseIdentifier = "EmptyCell"
   }
   var tableView: UITableView!
   var fetchedResultsController: NSFetchedResultsController!
@@ -31,8 +32,12 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
+    let emptyNib = UINib(nibName: Constants.EmptyReuseIdentifier, bundle: NSBundle.mainBundle())
+    
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
+    tableView.registerNib(emptyNib, forCellReuseIdentifier: Constants.EmptyReuseIdentifier)
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
       forIndexPath: indexPath) as! ProfileExchangesTableViewCell
@@ -66,8 +71,8 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
       let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as? NSData,
       let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as? String
       else {
-        assertionFailure("There was not enough data for this exchange to populate the table")
-        return cell
+        print("There was not enough data for this exchange to populate the table")
+        return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
     }
     
     //set the values from above

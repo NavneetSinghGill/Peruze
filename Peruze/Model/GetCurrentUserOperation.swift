@@ -45,34 +45,34 @@ class GetCurrentUserOperation: Operation {
       }
       
       //save the records to the local DB
-        let recordID = recordsByID!.keys.first!
-        let person = Person.MR_findFirstOrCreateByAttribute("me",
-          withValue: true,
-          inContext: self.context) as Person!
-        
-        //set the returned properties
-        person.recordIDName = recordID.recordName
-        person.firstName  = person.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
-        person.lastName   = person.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
-        person.facebookID = person.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
-        
-        //check for image property and set the data
-        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-          person.image = person.image ?? NSData(contentsOfURL: imageAsset.fileURL)
-        }
-        
-        //check for favorites
-        if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {
-          let favorites = favoriteReferences.map {
-            Item.MR_findFirstOrCreateByAttribute("recordIDName",
-              withValue: $0.recordID.recordName , inContext: self.context)
-          }
-          person.favorites = NSSet(array: favorites)
-          
-          //save the context
-          self.context.MR_saveToPersistentStoreAndWait()
-        
+      let recordID = recordsByID!.keys.first!
+      let person = Person.MR_findFirstOrCreateByAttribute("me",
+        withValue: true,
+        inContext: self.context)
+      
+      //set the returned properties
+      person.recordIDName = recordID.recordName
+      person.firstName  = (person.valueForKey("firstName") as? String) ?? (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
+      person.lastName   = (person.valueForKey("lastName") as? String) ?? (recordsByID![recordID]!.objectForKey("LastName")   as? String)
+      person.facebookID = (person.valueForKey("facebookID")  as? String) ?? (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
+      
+      //check for image property and set the data
+      if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
+        person.image = person.image ?? NSData(contentsOfURL: imageAsset.fileURL)
       }
+      
+      //check for favorites
+      if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {
+        let favorites = favoriteReferences.map {
+          Item.MR_findFirstOrCreateByAttribute("recordIDName",
+            withValue: $0.recordID.recordName , inContext: self.context)
+        }
+        person.favorites = NSSet(array: favorites)
+      }
+      
+      //save the context
+      self.context.MR_saveToPersistentStoreAndWait()
+      
       self.finish()
     }
     

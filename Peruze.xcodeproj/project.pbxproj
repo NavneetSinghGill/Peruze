@@ -162,6 +162,7 @@
 		9DDC5E371B65B2E600A9EC22 /* PostMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */; };
 		9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */; };
 		9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96DE1B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld */; };
+		9DF505A21B69D6AE00404BD4 /* EmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9DF505A11B69D6AE00404BD4 /* EmptyCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -361,6 +362,7 @@
 		9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostMessageOperation.swift; sourceTree = "<group>"; };
 		9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostExchangeOperation.swift; sourceTree = "<group>"; };
 		9DEB96DF1B5B56DA00273677 /* PeruzeDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeruzeDataModel.xcdatamodel; sourceTree = "<group>"; };
+		9DF505A11B69D6AE00404BD4 /* EmptyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyCell.xib; sourceTree = "<group>"; };
 		DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Peruze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -439,6 +441,7 @@
 				9D177B061B54DDC3009CB9FA /* Profile */,
 				9D177B191B54DDC3009CB9FA /* Requests */,
 				9D177B201B54DDC3009CB9FA /* Upload */,
+				9DF505A11B69D6AE00404BD4 /* EmptyCell.xib */,
 			);
 			path = "Main View Controllers";
 			sourceTree = "<group>";
@@ -977,6 +980,9 @@
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = BN4ZCA3FW4;
 						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -1023,6 +1029,7 @@
 				9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */,
 				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
 				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
+				9DF505A21B69D6AE00404BD4 /* EmptyCell.xib in Resources */,
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
 				9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */,
 				9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */,
