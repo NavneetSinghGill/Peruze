@@ -31,10 +31,6 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.reloadData()
-    checkForEmptyData(true)
-  }
-  func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    checkForEmptyData(true)
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
@@ -51,20 +47,8 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
       self.tableView.reloadData()
     }
   }
+  
   //MARK: Editing
-  private func checkForEmptyData(animated: Bool) {
-//    if dataSource.items.count == 0 {
-//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-//        self.titleLabel.alpha = 1.0
-//        self.tableView.alpha = 0.0
-//      }
-//    } else {
-//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-//        self.titleLabel.alpha = 0.0
-//        self.tableView.alpha = 1.0
-//      }
-//    }
-  }
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete
   }
@@ -77,7 +61,6 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { (rowAction, indexPath) -> Void in
 //      self.dataSource.items.removeAtIndex(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.checkForEmptyData(true)
     }
     return [defaultAction]
   }

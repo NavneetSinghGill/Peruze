@@ -29,24 +29,6 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
   }
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    checkForEmptyData(true)
-  }
-  private func checkForEmptyData(animated: Bool) {
-//    if dataSource.exchanges.count == 0 {
-//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-//        self.titleLabel.alpha = 1.0
-//        self.tableView.alpha = 0.0
-//      }
-//    } else {
-//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-//        self.titleLabel.alpha = 0.0
-//        self.tableView.alpha = 1.0
-//      }
-//    }
-  }
-  
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
   }

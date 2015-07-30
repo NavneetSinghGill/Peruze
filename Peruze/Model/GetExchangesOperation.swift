@@ -58,9 +58,9 @@ class GetAllParticipatingExchangesOperation: GetExchangesOperation {
     //2
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     //3
-    let participantPredicate = NSPredicate(value: true)// NSCompoundPredicate(orPredicateWithSubpredicates: [personIsCreator, personIsBeingRequestedFrom])
+    let participantPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [personIsCreator, personIsBeingRequestedFrom])
     //4
-    let statusPredicate = NSPredicate(value: true)//status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
+    let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
     
     //5
     let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, participantPredicate])
@@ -79,26 +79,11 @@ class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
     guard let uploads = person.uploads where uploads.count != 0 else {
       return NSPredicate(value: false)
     }
-    
-    //gather a list of references to send to the cloud kit server
-    let uploadRecordIDNames = uploads.map({ ($0 as? Item)?.recordIDName })
-    var uploadRecordReferences = [CKReference]()
-    for recordIDName in uploadRecordIDNames {
-      if let recordIDName = recordIDName {
-        let tempRecordID = CKRecordID(recordName: recordIDName)
-        uploadRecordReferences.append(CKReference(recordID: tempRecordID, action: .None))
-      }
-    }
-    
-    //check for items
-    if uploadRecordReferences.count == 0 {
-      return NSPredicate(value: false)
-    }
-    
+
     //create predicate
-    let uploadInRequestedItem = NSPredicate(format: "RequestedItem IN %@", uploadRecordReferences)
+    let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, uploadInRequestedItem])
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
     
     return compoundPredicate
   }

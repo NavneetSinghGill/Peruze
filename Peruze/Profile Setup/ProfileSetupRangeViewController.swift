@@ -200,7 +200,6 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   var userWarnedAboutLimitedFunction = false
   
   @IBAction func done(sender: UIButton) {
-    print("done")
     //check location authorizations
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
       print("authorization status not determined")
@@ -247,7 +246,6 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
       assertionFailure("authorization status and friends slider do not correspond")
     }
-    print("passed all things and ready to set/dismiss!")
 
     //set all values and dismiss
     NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)

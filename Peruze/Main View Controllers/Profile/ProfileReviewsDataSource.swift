@@ -63,7 +63,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     
   }
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return writeReviewEnabled ? (section == 0 ? 1 : (fetchedResultsController?.sections?[section].numberOfObjects ?? 0)) : (fetchedResultsController?.sections?[section].numberOfObjects ?? 0)
+    return writeReviewEnabled ? (section == 0 ? 1 : (fetchedResultsController?.sections?[0].numberOfObjects ?? 0)) : (fetchedResultsController?.sections?[section].numberOfObjects ?? 0)
   }
   func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return writeReviewEnabled ? 2 : 1

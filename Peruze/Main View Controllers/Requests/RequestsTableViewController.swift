@@ -39,10 +39,11 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     //reload the data
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-    let fetchExchanges = GetAllParticipatingExchangesOperation(
+    let fetchExchanges = GetOnlyRequestedExchangesOperation(
       personRecordIDName: me.recordIDName!,
       status: ExchangeStatus.Pending,
-      database: publicDB
+      database: publicDB,
+      context: managedConcurrentObjectContext
     )
     let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
     let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)

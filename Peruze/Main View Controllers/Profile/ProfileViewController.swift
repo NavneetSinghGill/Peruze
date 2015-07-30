@@ -67,7 +67,6 @@ class ProfileViewController: UIViewController {
     //TODO: set #ofStars
     
     //get the updated information for the profile
-    
     let completePerson = GetFullProfileOperation(personRecordID: CKRecordID(recordName: personForProfile!.recordIDName!)) {
       dispatch_async(dispatch_get_main_queue()) {
         let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)

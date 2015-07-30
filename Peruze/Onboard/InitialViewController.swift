@@ -63,13 +63,12 @@ class InitialViewController: UIViewController {
     } else {
       let getMyProfileOp = GetCurrentUserOperation(database: CKContainer.defaultContainer().publicCloudDatabase)
       getMyProfileOp.completionBlock = {
-        print("Finished")
         let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
         self.spinner.stopAnimating()
         
-        if myPerson?.valueForKey("firstName") as? String == nil { self.setupAndSegueToSetupProfileVC(); return }
-        if myPerson?.valueForKey("lastName") as? String == nil { self.setupAndSegueToSetupProfileVC(); return }
-        if myPerson?.valueForKey("image") as? NSData == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if (myPerson?.valueForKey("firstName") as? String) == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if (myPerson?.valueForKey("lastName") as? String) == nil { self.setupAndSegueToSetupProfileVC(); return }
+        if (myPerson?.valueForKey("image") as? NSData) == nil { self.setupAndSegueToSetupProfileVC(); return }
 
         //if there isn't anything wrong with my profile, segue to tab bar
         self.setupAndSegueToTabBarVC()
