@@ -67,7 +67,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
     UIApplication.sharedApplication().registerForRemoteNotifications()
     
-    
     NSNotificationCenter.defaultCenter().addObserver(self,
       selector: "receivedNotification:",
       name: NSManagedObjectContextObjectsDidChangeNotification,
@@ -78,7 +77,35 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey]
     let deletedObjects = notification.userInfo?[NSDeletedObjectsKey]
     let insertedObjects = notification.userInfo?[NSInsertedObjectsKey]
-    collectionView.reloadData()
+    if let managedObj = (insertedObjects as? NSSet)?.allObjects {
+      print("first let finished")
+      if managedObj.first!.entity.name == "Item" {
+        print("second let finished")
+        
+        dispatch_async(dispatch_get_main_queue()) {
+          do {
+            try self.dataSource.fetchedResultsController.performFetch()
+          } catch {
+            print("fetchedResultsController could not perform fetch")
+            print(error)
+          }
+        }
+        
+      }
+    }
+    if let managedObj = (updatedObjects as? NSSet)?.allObjects {
+      if managedObj.first!.entity.name == "Item" {
+        dispatch_async(dispatch_get_main_queue()) {
+          do {
+            try self.dataSource.fetchedResultsController.performFetch()
+          } catch {
+            print("fetchedResultsController could not perform fetch")
+            print(error)
+          }
+        }
+        
+      }
+    }
     print("- - - - - updated objects - - - - -")
     print(updatedObjects)
     print("- - - - - deleted objects - - - - -")
@@ -120,9 +147,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       itemOfferedRecordIDName: itemChosenToExchange!.valueForKey("recordIDName") as! String,
       itemRequestedRecordIDName: itemToForwardToExchange!.valueForKey("recordIDName") as! String,
       database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedConcurrentObjectContext) {
-        print("************* EXCHANGE SUCCESSFULLY UPLOADED **************")
-    }
+      context: managedConcurrentObjectContext) { /* Completion */ }
     OperationQueue().addOperation(postExchange)
   }
   

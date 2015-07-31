@@ -37,12 +37,12 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myID = me.valueForKey("recordIDName") as! String
     fetchRequest.predicate = NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "image", ascending: true)]
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
     fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName"]
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
     do {
       try fetchedResultsController.performFetch()
     } catch {
