@@ -17,7 +17,7 @@ class GetFullProfileOperation: GroupOperation {
   let fetchPersonOperation:    GetPersonOperation
   let fetchReviewsOperation:   GetReviewsOperation
   let fetchUploadsOperation:   GetUploadsOperation
-  let fetchExchangesOperation: GetExchangesOperation
+  let fetchExchangesOperation: GetAllParticipatingExchangesOperation
   
   private var hasProducedAlert = false
   

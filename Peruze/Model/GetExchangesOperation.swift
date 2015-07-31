@@ -45,30 +45,50 @@ If the specified user does not have any uploads, this will finish without retrie
 any objects. Make sure to use the GetUploadsOperation before you call this operation.
 For PROFILE section
 */
-class GetAllParticipatingExchangesOperation: GetExchangesOperation {
+class GetAllParticipatingExchangesOperation: GroupOperation {
+  
+  init(personRecordIDName: String,
+    status: ExchangeStatus? = nil,
+    database: CKDatabase,
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+      let personIsCreator = PersonIsCreator (
+        personRecordIDName: personRecordIDName,
+        status: status,
+        database: database,
+        context: context
+      )
+      let personIsRequestedFrom = PersonIsRequestedFrom (
+        personRecordIDName: personRecordIDName,
+        status: status,
+        database: database,
+        context: context
+      )
+      super.init(operations: [personIsCreator, personIsRequestedFrom])
+  }
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+    if errors.first != nil {
+      print("GetAllParticipatingExchangesOperation finished with error:")
+      print(errors.first!)
+    }
+  }
+
+}
+
+private class PersonIsCreator: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
-    /* Creating the Predicate
-    1. Check if the person created the exchange
-    2. Check if the person is being requested from
-    3. Participant = 1. OR 2.
-    4. Check the status to make sure it equals the given status O(n)
-    5. Final query predicate = 5. AND 4. */
-    //1
     let personIsCreator = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personRecordIDName))
-    //2
-    let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
-    //3
-    let participantPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [personIsCreator, personIsBeingRequestedFrom])
-    //4
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    
-    //5
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, participantPredicate])
-    
-    return compoundPredicate
+    return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
   }
 }
 
+private class PersonIsRequestedFrom: GetExchangesOperation {
+  override func getPredicate() -> NSPredicate {
+    let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
+    let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
+    return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
+  }
+}
 
 /**
 Fetches only exchanges that are requested from you with the given exchange status

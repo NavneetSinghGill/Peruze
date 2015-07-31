@@ -23,8 +23,13 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   override init() {
     super.init()
-    let statusPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
-    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate])
+    let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    guard let myRecordID = myPerson.valueForKey("recordIDName") as? String else {
+      return
+    }
+    let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
+    let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
+    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
@@ -74,7 +79,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
       let theirItemImage = theirItem.valueForKey("image") as? NSData,
       let myItemImage = myItem.valueForKey("image") as? NSData
-    //let exchangeStatus = exchange.valueForKey("status") as? NSNumber
       else {
         return errorCell()
     }
@@ -116,7 +120,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   }
   
   //MARK: - NSFetchedResultsControllerDelegate
-
+  
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
     tableView.beginUpdates()
   }
@@ -137,13 +141,14 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
-      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Delete:
-      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Update:
-      tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Move:
       tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
