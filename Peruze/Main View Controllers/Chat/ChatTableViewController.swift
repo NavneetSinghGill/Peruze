@@ -16,9 +16,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     static let SegueIdentifier = "toChat"
   }
   
-  private let dataSource = ChatTableViewDataSource()
+  private lazy var dataSource = ChatTableViewDataSource()
   private var refreshControl: UIRefreshControl!
-  @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var tableView: UITableView! {
+    didSet {
+      dataSource.tableView = tableView
+    }
+  }
   @IBOutlet weak var noChatsLabel: UILabel!
   
   //MARK: - Lifecycle Methods
