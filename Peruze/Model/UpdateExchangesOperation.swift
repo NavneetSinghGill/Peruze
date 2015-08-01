@@ -17,6 +17,7 @@ class UpdateAllExchangesOperation: Operation {
     self.database = database
     self.context = context
     super.init()
+    addObserver(NetworkObserver())
   }
   override func execute() {
     

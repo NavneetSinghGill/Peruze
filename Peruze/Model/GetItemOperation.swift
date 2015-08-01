@@ -48,7 +48,9 @@ class GetItemOperation: Operation {
     self.context = context
     super.init()
   }
-  
+  override func finished(errors: [NSError]) {
+    NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+  }
   override func execute() {
     print("Hit " + __FUNCTION__ + " in " + __FILE__)
     defer {

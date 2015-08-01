@@ -131,7 +131,11 @@ class DownloadImagesForURLs: AsyncOperation {
   }
 }
 
-///Fetches the currently logged in facebook user's profile
+/**
+Fetches the currently logged in facebook user's profile and saves the information to disk
+Produces an operation that saves the
+
+*/
 class FetchFacebookUserProfile: Operation {
   
   private struct Constants {
@@ -139,8 +143,10 @@ class FetchFacebookUserProfile: Operation {
   }
   
   let context: NSManagedObjectContext
+  let presentationContext: UIViewController
   
-  init(context: NSManagedObjectContext) {
+  init(presentationContext: UIViewController, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    self.presentationContext = presentationContext
     self.context = context
     super.init()
   }
@@ -154,17 +160,30 @@ class FetchFacebookUserProfile: Operation {
           return
         }
         if let result = result as? [String: AnyObject] {
-            let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
-            localMe.firstName = result["first_name"] as? String
-            localMe.lastName = result["last_name"] as? String
-            localMe.facebookID = result["id"] as? String
-            self.context.MR_saveToPersistentStoreAndWait()
-          
+          let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
+          localMe.firstName = result["first_name"] as? String
+          localMe.lastName = result["last_name"] as? String
+          localMe.facebookID = result["id"] as? String
+          self.context.MR_saveToPersistentStoreAndWait()
+        } else {
+          let error = NSError(code: OperationErrorCode.ExecutionFailed)
+          self.finishWithError(error)
+          return
         }
         self.finish()
       }
     }
   }
+  
+  override func finished(errors: [NSError]) {
+    if errors.first != nil {
+      let alert = AlertOperation(presentationContext: presentationContext)
+      alert.title = "Error Accessing Facebook"
+      alert.message = "There was a problem accessing your general facebook information."
+      produceOperation(alert)
+    }
+  }
+  
 }
 
 ///Fetches the currently logged in facebook user's profile

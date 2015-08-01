@@ -10,20 +10,28 @@ import Foundation
 import CloudKit
 import MagicalRecord
 
+private enum OperationErrors: ErrorType {
+  case One
+}
+
 class GetCurrentUserOperation: Operation {
-  let context: NSManagedObjectContext
-  let database: CKDatabase
-  init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+  
+  private let context: NSManagedObjectContext
+  private let database: CKDatabase
+  private let presentationContext: UIViewController
+  
+  init(presentationContext: UIViewController, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    
+    self.presentationContext = presentationContext
     self.database = database
     self.context = context
-    print("init operation")
     super.init()
+    
+    addObserver(NetworkObserver())
+    addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
+    
   }
   override func execute() {
-    
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     print("execute of Get Current User Operation")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
@@ -40,7 +48,8 @@ class GetCurrentUserOperation: Operation {
       
       //make sure there were records
       if recordsByID == nil {
-        self.finish()
+        let error = NSError(code: OperationErrorCode.ExecutionFailed)
+        self.finishWithError(error)
         return
       }
       
@@ -49,6 +58,7 @@ class GetCurrentUserOperation: Operation {
       let person = Person.MR_findFirstOrCreateByAttribute("me",
         withValue: true,
         inContext: self.context)
+      
       
       //set the returned properties
       person.recordIDName = recordID.recordName
@@ -72,11 +82,18 @@ class GetCurrentUserOperation: Operation {
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
-      
       self.finish()
     }
     
     //add operation to the cloud kit database
     database.addOperation(fetchUser)
+  }
+  override func finished(errors: [NSError]) {
+    if errors.first != nil {
+      let alert = AlertOperation(presentationContext: presentationContext)
+      alert.title = "iCloud Error"
+      alert.message = "There was an error getting your user from iCloud. Make sure you're logged into iCloud in Settings and iCloud Drive is turned on for Peruze."
+      produceOperation(alert)
+    }
   }
 }

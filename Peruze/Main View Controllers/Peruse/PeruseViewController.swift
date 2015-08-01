@@ -19,7 +19,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     static let ProfileNavigationControllerIdentifier = "ProfileNavigationController"
   }
   
-  private var dataSource = PeruseItemDataSource()
+  private lazy var dataSource = PeruseItemDataSource()
   private var itemToForwardToExchange: NSManagedObject?
   
   //the item the user owns that he/she selected to exchange

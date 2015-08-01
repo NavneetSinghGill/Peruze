@@ -142,56 +142,39 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   private let operationQueue = OperationQueue()
   @IBAction func next(sender: UIButton) {
     //setup next loading views and disable interaction
-    nextLoadingSetup()
     sender.userInteractionEnabled = false
+    nextLoadingSetup()
     
     //setup operation queue
     operationQueue.qualityOfService = .Utility
     
-    //check for iCloud availability
-    let iCloudFinishedSuccessfully = BlockOperation { }
-    let iCloudAccountStatus = BlockOperation {
-      CKContainer.defaultContainer().accountStatusWithCompletionHandler { (status, error) -> Void in
-        
-        self.handleError(error) {
-          self.nextLoadingTearDown()
-          sender.userInteractionEnabled = true
-        }
-        
-        switch status {
-        case .NoAccount:
-          let alert = ErrorAlertFactory.alertForiCloudSignIn()
-          NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.nextLoadingTearDown()
-            sender.userInteractionEnabled = true
-            self.presentViewController(alert, animated: true, completion: nil)
-          }
-          self.operationQueue.cancelAllOperations()
-          break
-        default :
-          self.operationQueue.addOperation(iCloudFinishedSuccessfully)
-        }
+    //upload facebook profile info and fetch user info from the cloud
+    let getFacebookProfileOp = FetchFacebookUserProfile(presentationContext: self)
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let postFacebookInfoToServer = PostUserOperation(presentationContext: self, database: publicDB)
+    
+    //saves the user's image to the local database
+    let saveImageOp = NSBlockOperation {
+      let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+      let imageData = UIImagePNGRepresentation(self.center.image!)
+      me.setValue(imageData, forKey: "image")
+      managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+    }
+    
+    //operation that performs the segue to the next VC
+    let performSegueOp = NSBlockOperation {
+      dispatch_async(dispatch_get_main_queue()) {
+        self.nextLoadingTearDown()
+        sender.userInteractionEnabled = true
+        self.performSegueWithIdentifier(Constants.SegueIdentifier, sender: self)
       }
     }
     
-    //upload facebook profile info and fetch user info from the cloud
-    let getFacebookProfileOp = FetchFacebookUserProfile(context: managedConcurrentObjectContext)
-    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-    let getCurrentUserOp = GetCurrentUserOperation(database: publicDB, context: managedConcurrentObjectContext)
-    
-    //operation that performs the segue to the next VC
-    let performSegueOp = NSBlockOperation(block: {
-      self.nextLoadingTearDown()
-      sender.userInteractionEnabled = true
-      self.performSegueWithIdentifier(Constants.SegueIdentifier, sender: self)
-    })
-    
     //add dependencies
-    getFacebookProfileOp.addDependency(iCloudFinishedSuccessfully)
-    getCurrentUserOp.addDependency(getFacebookProfileOp)
-    performSegueOp.addDependencies([iCloudFinishedSuccessfully, getFacebookProfileOp, getCurrentUserOp])
+    postFacebookInfoToServer.addDependencies([getFacebookProfileOp, saveImageOp])
+    performSegueOp.addDependencies([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp])
     
-    operationQueue.addOperations([iCloudAccountStatus, performSegueOp, getFacebookProfileOp, getCurrentUserOp], waitUntilFinished: false)
+    operationQueue.addOperations([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp, performSegueOp], waitUntilFinished: false)
   }
   
   

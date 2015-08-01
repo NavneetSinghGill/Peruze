@@ -59,8 +59,7 @@ class PostMessageOperation: GroupOperation {
 }
 
 /**
-Saves the message with the given temporary ID to the local database and then replaces the
-temporary ID from the message with the actual ID from the server.
+Saves the message with the given temporary ID to the local database.
 */
 class SaveMessageWithTempRecordIDOperation: Operation {
   let tempID: String
@@ -118,6 +117,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
       self.database = database
       self.context = context
       super.init()
+      addObserver(NetworkObserver())
   }
   
   override func execute() {

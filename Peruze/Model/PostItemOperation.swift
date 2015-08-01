@@ -64,11 +64,13 @@ class PostItemOperation: GroupOperation {
         }
         
       }
-      let saveItemOp = SaveItemInfoToLocalStorageOperation(title: title,
+      let saveItemOp = SaveItemInfoToLocalStorageOperation(
+        title: title,
         detail: detail,
         image: itemImageData,
         objectID: item.objectID,
-        context: context)
+        context: context
+      )
       let uploadItemOp = UploadItemFromLocalStorageToCloudOperation(objectID: item.objectID, database: database, context: context)
       let finishOp = NSBlockOperation(block: completionHandler)
       
@@ -137,6 +139,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
     self.context = context
     self.objectID = objectID
     super.init()
+    addObserver(NetworkObserver())
   }
   
   override func execute() {
@@ -178,7 +181,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       }
       
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
-      saveItemRecordOp.modifyRecordsCompletionBlock = { (_, _, error) -> Void in
+      saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
         //print any returned errors
         if error != nil { print("UploadItem returned error: \(error)") }
         
@@ -189,11 +192,16 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
           print("file deletion returned error: \(error)")
         }
         
-        self.finishWithError(error)
+        if savedRecords?.first != nil {
+          itemToSave.setValue(savedRecords!.first!.recordID.recordName, forKey: "recordIDName")
+        }
         
+        self.context.MR_saveToPersistentStoreAndWait()
+        self.finishWithError(error)
       }
-      database.addOperation(saveItemRecordOp)
       
+      database.addOperation(saveItemRecordOp)
+
     } catch {
       print("Fetching object with ID threw error: \(error)")
     }

@@ -36,23 +36,34 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myID = me.valueForKey("recordIDName") as! String
-    fetchRequest.predicate = NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
+    fetchRequest.predicate = NSPredicate(value: true)//NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
     fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName"]
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
+    fetchedResultsController.delegate = self
+    
     do {
       try fetchedResultsController.performFetch()
     } catch {
       print(error)
     }
-    //NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemsUpdated", name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+    
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "performFetch", name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
-  func itemsUpdated() {
-    print("items updated")
-    collectionView?.reloadData()
+  
+  func performFetch() {
+    print("Perform Fetch")
+    dispatch_async(dispatch_get_main_queue()) {
+      do {
+        try self.fetchedResultsController.performFetch()
+        self.collectionView.reloadData()
+      } catch {
+        print(error)
+      }
+    }
   }
   
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
