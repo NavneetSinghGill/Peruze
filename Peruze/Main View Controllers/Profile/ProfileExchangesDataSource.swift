@@ -45,35 +45,47 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     let exchange = fetchedResultsController.objectAtIndexPath(indexPath)
     
     //check for all the data needed to populate the cell
-    guard
-      let itemOffered = exchange.valueForKey("itemOffered") as? NSManagedObject,
-      let itemRequested = exchange.valueForKey("itemRequested") as? NSManagedObject
-      else {
-        print("could not get item Offered or item Requested")
-        return cell
-    }
-    guard
-      let itemOfferedTitle = itemOffered.valueForKey("title") as? String,
-      let itemRequestedTitle = itemRequested.valueForKey("title") as? String
-      else {
-        print("could not get itemOfferedTitle or itemRequestedTitle")
-        return cell
-    }
-    guard
-      let itemOfferedImage = itemOffered.valueForKey("image") as? NSData,
-      let itemRequestedImage = itemRequested.valueForKey("image") as? NSData
-      else {
-        print("could not get itemOfferedImage or itemRequestedImage")
-        return cell
-    }
-    guard
-      let itemOfferedOwner = itemOffered.valueForKey("owner") as? NSManagedObject,
-      let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as? NSData,
-      let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as? String
-      else {
-        print("There was not enough data for this exchange to populate the table")
-        return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
-    }
+    
+    // Swift 2.0
+    //    guard
+    //    let itemOffered = exchange.valueForKey("itemOffered") as? NSManagedObject,
+    //    let itemRequested = exchange.valueForKey("itemRequested") as? NSManagedObject
+    //    else {
+    //      print("could not get item Offered or item Requested")
+    //      return cell
+    //    }
+    //    guard
+    //    let itemOfferedTitle = itemOffered.valueForKey("title") as? String,
+    //    let itemRequestedTitle = itemRequested.valueForKey("title") as? String
+    //    else {
+    //      print("could not get itemOfferedTitle or itemRequestedTitle")
+    //      return cell
+    //    }
+    //    guard
+    //    let itemOfferedImage = itemOffered.valueForKey("image") as? NSData,
+    //    let itemRequestedImage = itemRequested.valueForKey("image") as? NSData
+    //    else {
+    //      print("could not get itemOfferedImage or itemRequestedImage")
+    //      return cell
+    //    }
+    //    guard
+    //    let itemOfferedOwner = itemOffered.valueForKey("owner") as? NSManagedObject,
+    //    let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as? NSData,
+    //    let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as? String
+    //    else {
+    //      print("There was not enough data for this exchange to populate the table")
+    //      return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
+    //    }
+    
+    let itemOffered = exchange.valueForKey("itemOffered") as! NSManagedObject
+    let itemRequested = exchange.valueForKey("itemRequested") as! NSManagedObject
+    let itemOfferedTitle = itemOffered.valueForKey("title") as! String
+    let itemRequestedTitle = itemRequested.valueForKey("title") as! String
+    let itemOfferedImage = itemOffered.valueForKey("image") as! NSData
+    let itemRequestedImage = itemRequested.valueForKey("image") as! NSData
+    let itemOfferedOwner = itemOffered.valueForKey("owner") as! NSManagedObject
+    let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as! NSData
+    let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as! String
     
     //set the values from above
     cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
@@ -116,7 +128,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     }
   }
   
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
       tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -132,7 +144,27 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
       tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     }
+    
   }
+  
+  // Swift 2.0
+  //  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  //    switch type {
+  //    case .Insert:
+  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Delete:
+  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Update:
+  //      tableView.reloadRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Move:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    }
+  //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()

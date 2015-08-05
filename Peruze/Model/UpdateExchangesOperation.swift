@@ -20,7 +20,7 @@ class UpdateAllExchangesOperation: Operation {
     addObserver(NetworkObserver())
   }
   override func execute() {
-    
+    /* Swift 2.0
     defer {
       context.MR_saveToPersistentStoreAndWait()
     }
@@ -29,26 +29,40 @@ class UpdateAllExchangesOperation: Operation {
       finish()
       return
     }
-    
+    */
+    let allExchanges = Exchange.MR_findAll() as! [NSManagedObject]
     let allExchangesRecordIDNames = allExchanges.map { $0.valueForKey("recordIDName") as? String }
     
     var allExchangesRecordIDs = [CKRecordID]()
-    for recordIDName in allExchangesRecordIDNames where recordIDName != nil {
-      allExchangesRecordIDs.append(CKRecordID(recordName: recordIDName!))
+    //Swift 2.0
+    for recordIDName in allExchangesRecordIDNames /* where recordIDName != nil */{
+      if recordIDName != nil {
+        allExchangesRecordIDs.append(CKRecordID(recordName: recordIDName!))
+      }
     }
     
     let fetchUpdatedExchanges = CKFetchRecordsOperation(recordIDs: allExchangesRecordIDs)
     fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      guard let recordsByID = recordsByID else {
+      
+      //Swift 2.0
+//      guard let recordsByID = recordsByID else {
+//        self.finishWithError(error)
+//        return
+//      }
+      if recordsByID == nil {
         self.finishWithError(error)
         return
       }
       
       for recordID in recordsByID.keys {
-        guard let record = recordsByID[recordID] else {
-          self.finishWithError(error)
-          return
-        }
+        
+        //Swift 2.0
+//        guard let record = recordsByID[recordID] else {
+//          self.finishWithError(error)
+//          return
+//        }
+        let recordID = recordID as! CKRecordID
+        let record = recordsByID![recordID] as! CKRecord
         
         //find or create the record
         let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",

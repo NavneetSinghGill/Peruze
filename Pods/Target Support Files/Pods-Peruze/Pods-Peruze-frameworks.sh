@@ -53,6 +53,8 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Peruze/AsyncOpKit.framework'
+  install_framework 'Pods-Peruze/Bolts.framework'
+  install_framework 'Pods-Peruze/FBSDKCoreKit.framework'
   install_framework 'Pods-Peruze/JSQMessagesViewController.framework'
   install_framework 'Pods-Peruze/JSQSystemSoundPlayer.framework'
   install_framework 'Pods-Peruze/MagicalRecord.framework'
@@ -60,6 +62,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Peruze/AsyncOpKit.framework'
+  install_framework 'Pods-Peruze/Bolts.framework'
+  install_framework 'Pods-Peruze/FBSDKCoreKit.framework'
   install_framework 'Pods-Peruze/JSQMessagesViewController.framework'
   install_framework 'Pods-Peruze/JSQSystemSoundPlayer.framework'
   install_framework 'Pods-Peruze/MagicalRecord.framework'

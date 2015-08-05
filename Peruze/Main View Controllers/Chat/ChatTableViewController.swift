@@ -69,19 +69,24 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     return true
   }
-  
-  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
     return [cancelEditAction(), completeEditAction()]
   }
+  //Swift 2.0
+  //  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+  //    return [cancelEditAction(), completeEditAction()]
+  //  }
   
   private func cancelEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
       
+      //Swift 2.0
       //get the recordIDName for the exchange at that index path
-      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
-        return
-      }
+      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+      //        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
+      //        return
+      //      }
+      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
       let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -92,13 +97,20 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         context: managedConcurrentObjectContext)
       
       //add completion
-      operation.completionBlock = {
+      operation.completionBlock = { () -> Void in
         dispatch_async(dispatch_get_main_queue()) {
-          do{
-            try self.dataSource.fetchedResultsController.performFetch()
-            self.tableView.reloadData()
-          } catch {
-            print("Fetch threw an error. Not updating")
+          //Swift 2.0
+          //          do{
+          //            try self.dataSource.fetchedResultsController.performFetch()
+          //            self.tableView.reloadData()
+          //          } catch {
+          //            print("Fetch threw an error. Not updating")
+          //            print(error)
+          //          }
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
+          self.tableView.reloadData()
+          if error != nil {
             print(error)
           }
         }
@@ -114,10 +126,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
       
       //get the recordIDName for the exchange at that index path
-      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
-        return
-      }
+      //Swift 2.0
+      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+      //        assertionFailure("fetched results controller did not return an object with a 'recordIDName'")
+      //        return
+      //      }
+      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
       let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -130,11 +144,17 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       //add completion
       operation.completionBlock = {
         dispatch_async(dispatch_get_main_queue()) {
-          do{
-            try self.dataSource.fetchedResultsController.performFetch()
-            self.tableView.reloadData()
-          } catch {
-            print("Fetch threw an error. Not updating")
+          //          do{
+          //          try self.dataSource.fetchedResultsController.performFetch()
+          //          self.tableView.reloadData()
+          //          } catch {
+          //            print("Fetch threw an error. Not updating")
+          //            print(error)
+          //          }
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
+          self.tableView.reloadData()
+          if error != nil {
             print(error)
           }
         }
@@ -150,10 +170,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   //MARK: - ChatDeletionDelgate Methods
   func cancelExchange(exchange: NSManagedObject) {
     //get the recordIDName for the exchange at that index path
-    guard let idName = exchange.valueForKey("recordIDName") as? String else {
-      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-      return
-    }
+    //Swift 2.0
+    //    guard let idName = exchange.valueForKey("recordIDName") as? String else {
+    //      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+    //      return
+    //    }
+    let idName = exchange.valueForKey("recordIDName") as! String
     
     //create the operation
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -177,10 +199,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   func completeExchange(exchange: NSManagedObject) {
     //get the recordIDName for the exchange at that index path
-    guard let idName = exchange.valueForKey("recordIDName") as? String else {
-      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-      return
-    }
+    //Swift 2.0
+    //    guard let idName = exchange.valueForKey("recordIDName") as? String else {
+    //      assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+    //      return
+    //    }
+    let idName = exchange.valueForKey("recordIDName") as! String
     
     //create the operation
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -213,12 +237,17 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   //MARK: - Navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    guard
-      let cell = sender as? ChatTableViewCell,
-      let destVC = segue.destinationViewController as? ChatCollectionViewController
-      else {
-        return
-    }
+    // Swift 2.0
+    //    guard
+    //    let cell = sender as? ChatTableViewCell,
+    //    let destVC = segue.destinationViewController as? ChatCollectionViewController
+    //    else {
+    //      return
+    //    }
+    
+    let cell = sender as! ChatTableViewCell
+    let destVC = segue.destinationViewController as! ChatCollectionViewController
+    
     destVC.title = cell.theirItemNameLabel.text
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     destVC.exchange = cell.data

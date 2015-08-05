@@ -83,12 +83,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         print("second let finished")
         
         dispatch_async(dispatch_get_main_queue()) {
-          do {
-            try self.dataSource.fetchedResultsController.performFetch()
-          } catch {
-            print("fetchedResultsController could not perform fetch")
-            print(error)
-          }
+//          do {
+//            try self.dataSource.fetchedResultsController.performFetch()
+//          } catch {
+//            print("fetchedResultsController could not perform fetch")
+//            print(error)
+//          }
+          var error: NSErrorPointer
+          self.dataSource.fetchedResultsController.performFetch(error)
+          print(error)
         }
         
       }
@@ -96,12 +99,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     if let managedObj = (updatedObjects as? NSSet)?.allObjects {
       if managedObj.first!.entity.name == "Item" {
         dispatch_async(dispatch_get_main_queue()) {
-          do {
-            try self.dataSource.fetchedResultsController.performFetch()
-          } catch {
-            print("fetchedResultsController could not perform fetch")
-            print(error)
-          }
+//          do {
+//            try self.dataSource.fetchedResultsController.performFetch()
+//          } catch {
+//            print("fetchedResultsController could not perform fetch")
+//            print(error)
+//          }
+          var error: NSErrorPointer
+          self.dataSource.fetchedResultsController.performFetch(error)
+          print(error)
         }
         
       }

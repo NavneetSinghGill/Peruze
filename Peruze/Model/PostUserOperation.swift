@@ -27,22 +27,29 @@ class PostUserOperation: Operation {
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
-    guard
-      let firstName = myPerson.valueForKey("firstName") as? String,
-      let lastName = myPerson.valueForKey("lastName") as? String,
-      let imageData = myPerson.valueForKey("image") as? NSData,
-      let facebookID = myPerson.valueForKey("facebookID") as? String,
-      let myRecordIDName = myPerson.valueForKey("recordIDName") as? String
-      else {
-        let error = NSError(code: OperationErrorCode.ExecutionFailed)
-        self.finishWithError(error)
-        return
-    }
+    //Swift 2.0
+    //    guard
+    //    let firstName = myPerson.valueForKey("firstName") as? String,
+    //    let lastName = myPerson.valueForKey("lastName") as? String,
+    //    let imageData = myPerson.valueForKey("image") as? NSData,
+    //    let facebookID = myPerson.valueForKey("facebookID") as? String,
+    //    let myRecordIDName = myPerson.valueForKey("recordIDName") as? String
+    //    else {
+    //      let error = NSError(code: OperationErrorCode.ExecutionFailed)
+    //      self.finishWithError(error)
+    //      return
+    //    }
+    
+    let firstName = myPerson.valueForKey("firstName") as! String
+    let lastName = myPerson.valueForKey("lastName") as! String
+    let imageData = myPerson.valueForKey("image") as! NSData
+    let facebookID = myPerson.valueForKey("facebookID") as! String
+    let myRecordIDName = myPerson.valueForKey("recordIDName") as! String
     
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
-    if !imageData.writeToURL(imageURL, atomically: true) {
+    if !imageData.writeToURL(imageURL!, atomically: true) {
       let error = NSError(code: OperationErrorCode.ExecutionFailed)
       self.finishWithError(error)
       return
@@ -64,17 +71,29 @@ class PostUserOperation: Operation {
     saveOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
       
-      do {
-        try NSFileManager.defaultManager().removeItemAtURL(imageURL)
-      } catch {
-        print(error)
-      }
+      //Swift 2.0
+      //      do {
+      //        try NSFileManager.defaultManager().removeItemAtURL(imageURL)
+      //      } catch {
+      //        print(error)
+      //      }
       
-      guard let savedRecords = savedRecords where savedRecords.first != nil else {
+      //      guard let savedRecords = savedRecords where savedRecords.first != nil else {
+      //        let error = NSError(code: OperationErrorCode.ExecutionFailed)
+      //        self.finishWithError(error)
+      //        return
+      //      }
+      
+      var error: NSError?
+      NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &error)
+      print(error)
+      
+      if savedRecords.first == nil {
         let error = NSError(code: OperationErrorCode.ExecutionFailed)
         self.finishWithError(error)
         return
       }
+      
       
       self.finishWithError(operationError)
     }
@@ -93,7 +112,7 @@ class PostUserOperation: Operation {
   
   private func cachePathForFileName(name: String) -> String {
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
-    let cachePath = paths.first! as String
+    let cachePath = paths.first! as! String
     return cachePath.stringByAppendingPathComponent(name)
   }
   

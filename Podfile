@@ -7,4 +7,5 @@ target 'Peruze' do
   pod 'JSQMessagesViewController', '~> 7.0'
   pod 'Reachability'
   pod 'MagicalRecord'
+  pod 'FBSDKCoreKit'
 end

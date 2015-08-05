@@ -28,9 +28,12 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
   override init() {
     super.init()
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-    guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
-      return
-    }
+    
+    //Swift 2.0
+    //    guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
+    //      return
+    //    }
+    let personRecordID = myPerson.valueForKey("recordIDName") as! String
     let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
     fetchedResultsController = Item.MR_fetchAllSortedBy("title",
       ascending: true,
@@ -38,15 +41,26 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
       groupBy: nil,
       delegate: self,
       inContext: managedConcurrentObjectContext)
-    do {
-      try fetchedResultsController.performFetch()
-      guard let objects = fetchedResultsController.fetchedObjects else {
-        return
-      }
-      exchangeItems = objects
-    } catch {
+    
+    //Swift 2.0
+    //do {
+    //      try fetchedResultsController.performFetch()
+    //      guard let objects = fetchedResultsController.fetchedObjects else {
+    //        return
+    //      }
+    //      exchangeItems = objects
+    //    } catch {
+    //      print(error)
+    //    }
+    
+    var error: NSError?
+    fetchedResultsController.performFetch(&error)
+    if error != nil {
       print(error)
+    } else {
+      exchangeItems = fetchedResultsController.fetchedObjects as! [NSManagedObject]
     }
+    
   }
   
   func deleteItemsAtIndexPaths(paths: [NSIndexPath]) -> [NSManagedObject] {
@@ -78,12 +92,16 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     
     if indexPath.item < exchangeItems.count {
       let item = exchangeItems[indexPath.item]
-      guard
-        let title = item.valueForKey("title") as? String,
-        let imageData = item.valueForKey("image") as? NSData
-        else {
-          return cell
-      }
+      
+      //      guard
+      //      let title = item.valueForKey("title") as? String,
+      //      let imageData = item.valueForKey("image") as? NSData
+      //      else {
+      //        return cell
+      //      }
+      
+      let title = item.valueForKey("title") as! String
+      let imageData = item.valueForKey("image") as! NSData
       cell.itemNameLabel.text = title
       cell.imageView.image = UIImage(data: imageData)
     } else if indexPath.item == exchangeItems.count {

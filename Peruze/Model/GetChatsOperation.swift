@@ -67,22 +67,35 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     
     //Get all accepted exchanges from the database
     let exchangesPredicate = NSPredicate(format: "status = %@"/*" && recordIDName != nil"*/, NSNumber(integer: ExchangeStatus.Accepted.rawValue))
-    guard let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
+    
+    //Swift 2.0
+    //    guard let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
+    //      ascending: true,
+    //      withPredicate: exchangesPredicate,
+    //      inContext: context) as? [NSManagedObject] else {
+    //        print("Error: Accepted Exchanges were not [NSManagedObject]")
+    //        self.finish()
+    //        return
+    //    }
+    
+    let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
       ascending: true,
       withPredicate: exchangesPredicate,
-      inContext: context) as? [NSManagedObject] else {
-        print("Error: Accepted Exchanges were not [NSManagedObject]")
-        self.finish()
-        return
-    }
+      inContext: context) as! [NSManagedObject]
+    
     
     //Create CKReferences for all accepted exchanges
     let exchangeIDs = acceptedExchanges.map { $0.valueForKey("recordIDName") as? String }
     var exchangeReferences = [CKReference]()
-    for id in exchangeIDs where id != nil {
-      let recordID = CKRecordID(recordName: id!)
-      let recordRef = CKReference(recordID: recordID, action: .None)
-      exchangeReferences.append(recordRef)
+    
+    //Swift 2.0
+    //for id in exchangeIDs where id != nil {
+    for id in exchangeIDs {
+      if id != nil {
+        let recordID = CKRecordID(recordName: id!)
+        let recordRef = CKReference(recordID: recordID, action: .None)
+        exchangeReferences.append(recordRef)
+      }
     }
     
     if exchangeReferences.count == 0 {

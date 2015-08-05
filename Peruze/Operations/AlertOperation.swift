@@ -65,7 +65,7 @@ class AlertOperation: Operation {
   }
   
   override func execute() {
-    guard let presentationContext = presentationContext else {
+    if presentationContext == nil {
       finish()
       
       return
@@ -76,7 +76,7 @@ class AlertOperation: Operation {
         self.addAction("OK")
       }
       
-      presentationContext.presentViewController(self.alertController, animated: true, completion: nil)
+      self.presentationContext!.presentViewController(self.alertController, animated: true, completion: nil)
     }
   }
 }

@@ -71,14 +71,16 @@ class GetAllParticipatingExchangesOperation: GroupOperation {
       print(errors.first!)
     }
   }
-
+  
 }
 
 private class PersonIsCreator: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsCreator = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personRecordIDName))
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
+    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsCreator])
+    //Swift 2.0
+    //return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
   }
 }
 
@@ -86,7 +88,9 @@ private class PersonIsRequestedFrom: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
+    //Swift 2.0
+    //return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
+    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
   }
 }
 
@@ -96,16 +100,22 @@ Fetches only exchanges that are requested from you with the given exchange statu
 class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let person = Person.MR_findFirstByAttribute("recordIDName", withValue: personRecordIDName, inContext: context)
-    guard let uploads = person.uploads where uploads.count != 0 else {
+    //Swift 2.0
+    //    guard let uploads = person.uploads where uploads.count != 0 else {
+    //      return NSPredicate(value: false)
+    //    }
+    
+    if person.uploads?.count == 0 {
       return NSPredicate(value: false)
     }
-
+    
     //create predicate
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
-    
-    return compoundPredicate
+    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
+    //Swift 2.0
+    //let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
+    //return compoundPredicate
   }
 }
 
@@ -139,9 +149,6 @@ class GetExchangesOperation: Operation {
   
   override func execute() {
     print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     //make sure the predicate is valid
     if getPredicate() == NSPredicate(value: false) {

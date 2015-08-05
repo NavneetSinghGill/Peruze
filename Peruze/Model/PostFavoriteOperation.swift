@@ -43,19 +43,23 @@ class PostFavoriteOperation: Operation {
     }
     
     //add to cloud
-    guard let allFavorites = myPerson.valueForKey("favorites") as? NSSet else {
-      print("Error: There was an issue in PostFavoriteOperation. MyProfile.Favorites are not an NSSet.")
-      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-      finishWithError(error)
-      return
-    }
-    guard let myRecordIDName = myPerson.valueForKey("recordIDName") as? String else {
-      print("Error: myRecordIDName was not a String")
-      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-      finishWithError(error)
-      return
-    }
     
+    //Swift 2.0
+//    guard let allFavorites = myPerson.valueForKey("favorites") as? NSSet else {
+//      print("Error: There was an issue in PostFavoriteOperation. MyProfile.Favorites are not an NSSet.")
+//      let error = NSError(code: OperationErrorCode.ExecutionFailed)
+//      finishWithError(error)
+//      return
+//    }
+//    guard let myRecordIDName = myPerson.valueForKey("recordIDName") as? String else {
+//      print("Error: myRecordIDName was not a String")
+//      let error = NSError(code: OperationErrorCode.ExecutionFailed)
+//      finishWithError(error)
+//      return
+//    }
+    let allFavorites = myPerson.valueForKey("favorites") as! NSSet
+    let myRecordIDName = myPerson.valueForKey("recordIDName") as! String
+
     var allReferences = [CKReference]()
     
     for favoriteItem in allFavorites.allObjects {

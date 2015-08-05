@@ -181,10 +181,12 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
     let uploadOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
     uploadOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       
-      guard let uploadedRecord = savedRecords?.first else {
-        self.finishWithError(error)
-        return
-      }
+      //Swift 2.0
+      //      guard let uploadedRecord = savedRecords?.first else {
+      //        self.finishWithError(error)
+      //        return
+      //      }
+      let uploadedRecord = savedRecords?.first as! CKRecord
       
       localExchange.recordIDName = uploadedRecord.recordID.recordName
       self.context.MR_saveToPersistentStoreAndWait()

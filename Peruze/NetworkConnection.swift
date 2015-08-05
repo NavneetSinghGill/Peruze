@@ -27,10 +27,16 @@ class NetworkConnection: NSObject {
     var zeroAddress = sockaddr_in()
     zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
     zeroAddress.sin_family = sa_family_t(AF_INET)
-    
-    guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
+    //Swift 2.0
+    //    guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
+    //      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+    //    }) else {
+    //      return false
+    //    }
+    let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
       SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-    }) else {
+    })
+    if defaultRouteReachability == nil {
       return false
     }
     

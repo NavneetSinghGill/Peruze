@@ -27,12 +27,20 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
       withPredicate: chatPredicate,
       groupBy: nil,
       delegate: self)
-    do {
-      try fetchedResultsController.performFetch()
-    } catch {
-      print("There was an error with the fetchedResultsController in the Chat Table View Data Source:")
+    
+    //Swift 2.0
+    //    do {
+    //      try fetchedResultsController.performFetch()
+    //    } catch {
+    //      print("There was an error with the fetchedResultsController in the Chat Table View Data Source:")
+    //      print(error)
+    //      //TODO: Actually handle this error
+    //    }
+    
+    var error: NSError?
+    fetchedResultsController.performFetch(&error)
+    if error != nil {
       print(error)
-      //TODO: Actually handle this error
     }
   }
   
@@ -42,7 +50,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
-    cell!.data = fetchedResultsController.objectAtIndexPath(indexPath)
+    cell!.data = (fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
     
     return cell!
   }
@@ -58,7 +66,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     /* keep this empty */
   }
-
+  
   //MARK: - NSFetchedResultsControllerDelegate
   
   private func errorCell() -> ChatTableViewCell {
@@ -66,7 +74,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     
     return returnCell
   }
-
+  
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
     tableView.beginUpdates()
   }
@@ -84,7 +92,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     }
   }
   
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
       tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -102,6 +110,26 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
       break
     }
   }
+  
+  //Swift 2.0
+  //  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  //    switch type {
+  //    case .Insert:
+  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Delete:
+  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Update:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Move:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    }
+  //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()

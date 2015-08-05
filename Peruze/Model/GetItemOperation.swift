@@ -53,9 +53,6 @@ class GetItemOperation: Operation {
   }
   override func execute() {
     print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     //create operation for fetching relevant records
     let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
@@ -131,22 +128,25 @@ class GetAllItemsWithMissingDataOperation: Operation {
   
   override func execute() {
     print("execute item fetch")
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")
-    guard let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as? [NSManagedObject] else {
-      print("Get Item Operation could not cast returned objects as [NSManagedObject]")
-      self.finish()
-      return
-    }
+    //Swift 2.0
+    //    guard let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as? [NSManagedObject] else {
+    //      print("Get Item Operation could not cast returned objects as [NSManagedObject]")
+    //      self.finish()
+    //      return
+    //    }
+    let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     
     let allRecordIDNames = allItems.map { $0.valueForKey("recordIDName") as? String }
     
     var itemRecordsToFetch = [CKRecordID]()
-    for itemRecordIDName in allRecordIDNames where itemRecordIDName != nil {
-      itemRecordsToFetch.append(CKRecordID(recordName: itemRecordIDName!))
+    //Swift 2.0
+    //for itemRecordIDName in allRecordIDNames where itemRecordIDName != nil {
+    for itemRecordIDName in allRecordIDNames{
+      if itemRecordIDName != nil {
+        itemRecordsToFetch.append(CKRecordID(recordName: itemRecordIDName!))
+      }
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
@@ -160,7 +160,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         
         //for each record that is returned
         for recordID in recordsByID.keys {
-          
+          let recordID = recordID as! CKRecordID
           //get a local copy of the item to save
           let localItem = Item.MR_findFirstOrCreateByAttribute("recordIDName",
             withValue: recordID.recordName,

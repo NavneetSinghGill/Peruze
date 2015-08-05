@@ -24,23 +24,33 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   override init() {
     super.init()
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-    guard let myRecordID = myPerson.valueForKey("recordIDName") as? String else {
-      return
-    }
+    //Swift 2.0
+    //    guard let myRecordID = myPerson.valueForKey("recordIDName") as? String else {
+    //      return
+    //    }
+    let myRecordID = myPerson.valueForKey("recordIDName") as! String
+    
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
+    //Swift 2.0
+    //let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
+    let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, myRequestedPredicate])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
       groupBy: nil,
       delegate: self)
-    do {
-      try fetchedResultsController.performFetch()
-    } catch {
-      print(error)
-      //TODO: Actually handle this error
-    }
+    var error: NSError?
+    fetchedResultsController.performFetch(&error)
+    if error != nil { print(error) }
+    
+    //    do {
+    //    try fetchedResultsController.performFetch()
+    //    } catch {
+    //      print(error)
+    //      //TODO: Actually handle this error
+    //    }
+    
   }
   
   //MARK: - UICollectionView Data Source
@@ -69,19 +79,31 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     let exchange = fetchedResultsController.objectAtIndexPath(indexPath)
     
     //make sure that all the values are present
-    guard
-      let myItem = exchange.valueForKey("itemRequested") as? NSManagedObject,
-      let myItemTitle = myItem.valueForKey("title") as? String,
-      let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
-      let theirItemTitle = theirItem.valueForKey("title") as? String,
-      let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
-      let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
-      let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
-      let theirItemImage = theirItem.valueForKey("image") as? NSData,
-      let myItemImage = myItem.valueForKey("image") as? NSData
-      else {
-        return errorCell()
-    }
+    //Swift 2.0
+    //    guard
+    //    let myItem = exchange.valueForKey("itemRequested") as? NSManagedObject,
+    //    let myItemTitle = myItem.valueForKey("title") as? String,
+    //    let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
+    //    let theirItemTitle = theirItem.valueForKey("title") as? String,
+    //    let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
+    //    let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
+    //    let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
+    //    let theirItemImage = theirItem.valueForKey("image") as? NSData,
+    //    let myItemImage = myItem.valueForKey("image") as? NSData
+    //    else {
+    //      return errorCell()
+    //    }
+    
+    let myItem = exchange.valueForKey("itemRequested") as! NSManagedObject
+    let myItemTitle = myItem.valueForKey("title") as! String
+    let theirItem = exchange.valueForKey("itemOffered") as! NSManagedObject
+    let theirItemTitle = theirItem.valueForKey("title") as! String
+    let theirOwner = theirItem.valueForKey("owner") as! NSManagedObject
+    let theirProfileImageData = theirOwner.valueForKey("image") as! NSData
+    let theirOwnerFirstName = theirOwner.valueForKey("firstName") as! String
+    let theirItemImage = theirItem.valueForKey("image") as! NSData
+    let myItemImage = myItem.valueForKey("image") as! NSData
+    
     cell.itemSubtitle.text = "for your \(myItemTitle)"
     cell.itemLabel.text = theirItemTitle
     cell.profileImageView.image = UIImage(data: theirProfileImageData)
@@ -137,8 +159,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       break
     }
   }
-  
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
       tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -156,6 +177,25 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       break
     }
   }
+  //Swift 2.0
+  //  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  //    switch type {
+  //    case .Insert:
+  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Delete:
+  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Update:
+  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Move:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    }
+  //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
@@ -163,20 +203,24 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   //MARK: - Editing Data
   func deleteItemAtIndex(index: Int) -> Exchange {
-    guard let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as? Exchange  else {
-      assertionFailure("The item returned at the given index was not an exchange")
-      abort()
-    }
+    //Swift 2.0
+    //    guard let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as? Exchange  else {
+    //      assertionFailure("The item returned at the given index was not an exchange")
+    //      abort()
+    //    }
+    let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as! Exchange
     retValue.status = ExchangeStatus.Denied.rawValue
     return retValue
   }
   
   func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
     let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
-    guard let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as? Exchange  else {
-      assertionFailure("The item returned at the given index was not an exchange")
-      abort()
-    }
+    //Swift 2.0
+    //    guard let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as? Exchange  else {
+    //      assertionFailure("The item returned at the given index was not an exchange")
+    //      abort()
+    //    }
+    let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! Exchange
     retValue.status = ExchangeStatus.Denied.rawValue
     return retIndexPath!
   }

@@ -101,9 +101,6 @@
 		9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B731B54DDC3009CB9FA /* TGPhotoViewController.xib */; };
 		9D177BDA1B54DDC4009CB9FA /* TGCameraViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B761B54DDC3009CB9FA /* TGCameraViewController.bundle */; };
 		9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */; };
-		9D177BDF1B54DE92009CB9FA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */; };
-		9D177BE01B54DE92009CB9FA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */; };
-		9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
@@ -378,9 +375,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */,
-				9D177BDF1B54DE92009CB9FA /* FBSDKCoreKit.framework in Frameworks */,
-				9D177BE11B54DE92009CB9FA /* FBSDKShareKit.framework in Frameworks */,
-				9D177BE01B54DE92009CB9FA /* FBSDKLoginKit.framework in Frameworks */,
 				7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1408,6 +1402,7 @@
 					/Users/philliptrent/Developer/FacebookSDK,
 				);
 				INFOPLIST_FILE = Peruze/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1432,6 +1427,7 @@
 					/Users/philliptrent/Developer/FacebookSDK,
 				);
 				INFOPLIST_FILE = Peruze/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

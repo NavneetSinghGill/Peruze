@@ -46,11 +46,14 @@ class RemoveFileAtPath: AsyncOperation {
     super.init()
   }
   override func main() {
-    do {
-      try NSFileManager.defaultManager().removeItemAtPath(path)
-    } catch let error1 as NSError {
-      error = error1
-    }
+//    do {
+//      try NSFileManager.defaultManager().removeItemAtPath(path)
+//    } catch let error1 as NSError {
+//      error = error1
+//    }
+    var error: NSError?
+    NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
+    if error != nil { print(error) }
     finish()
   }
 }

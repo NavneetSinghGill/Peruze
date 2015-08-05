@@ -53,12 +53,12 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   
   //Setting up the labels around the bubble
   func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath))
+    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
     return NSAttributedString(string: message.senderDisplayName)
   }
   
   func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath))
+    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
     
     return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
   }
@@ -74,7 +74,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   }
   
   func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath))
+    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
     if message.senderId == senderId() {
       return JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(Constants.OutgoingBubble.bubbleColor)
     } else {
@@ -84,14 +84,14 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   
   //Getting the actual data for the bubble
   func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-    return JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath))
+    return JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
   }
   
   //MARK: - UICollectionViewDataSource Methods
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     
     let cell = delegate?.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as? JSQMessagesCollectionViewCell
-    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath))
+    let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
     
     cell?.textView?.textColor = message.senderId == senderId() ? Constants.OutgoingBubble.textColor : Constants.IncomingBubble.textColor
     cell?.textView?.text = message.text
@@ -118,16 +118,21 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   }
   
   private func JSQMessageFromMessage(message: NSManagedObject) -> JSQMessage {
+    //Swift 2.0
+    //    guard
+    //      let date = message.valueForKey("date") as? NSDate,
+    //      let sender = message.valueForKey("sender") as? NSManagedObject,
+    //      let senderId = sender.valueForKey("recordIDName") as? String,
+    //      let senderDisplayName = sender.valueForKey("firstName") as? String
+    //      else {
+    //        print("Error: Vital message information was nil.")
+    //        return JSQMessage()
+    //    }
     
-    guard
-      let date = message.valueForKey("date") as? NSDate,
-      let sender = message.valueForKey("sender") as? NSManagedObject,
-      let senderId = sender.valueForKey("recordIDName") as? String,
-      let senderDisplayName = sender.valueForKey("firstName") as? String
-      else {
-        print("Error: Vital message information was nil.")
-        return JSQMessage()
-    }
+    let date = message.valueForKey("date") as! NSDate
+    let sender = message.valueForKey("sender") as! NSManagedObject
+    let senderId = sender.valueForKey("recordIDName") as! String
+    let senderDisplayName = sender.valueForKey("firstName") as! String
     
     if let imageData = message.valueForKey("image") as? NSData {
       let media = JSQPhotoMediaItem(image: UIImage(data: imageData))

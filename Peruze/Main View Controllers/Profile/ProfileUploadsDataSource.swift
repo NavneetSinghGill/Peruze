@@ -31,9 +31,12 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
   override init() {
     super.init()
-    guard let personRecordID = personRecordID else {
+    if personRecordID == nil {
       return
     }
+    //    guard let personRecordID = personRecordID else {
+    //      return
+    //    }
     let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
     fetchedResultsController = Item.MR_fetchAllSortedBy("title",
       ascending: true,
@@ -50,7 +53,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
       forIndexPath: indexPath) as! ProfileUploadsTableViewCell
     
-    let item = fetchedResultsController.objectAtIndexPath(indexPath)
+    let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
     
     cell.titleTextLabel.text = (item.valueForKey("title") as! String)
     cell.subtitleTextLabel.text = ""
@@ -91,7 +94,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     }
   }
   
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
       tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -109,11 +112,26 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     }
   }
   
+  //Swift 2.0
+  //  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  //    switch type {
+  //    case .Insert:
+  //      tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Delete:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Update:
+  //      tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    case .Move:
+  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+  //      break
+  //    }
+  //  }
+  
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
   }
-  
-  
-  
-  
 }

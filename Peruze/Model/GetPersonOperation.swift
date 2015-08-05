@@ -41,9 +41,6 @@ class GetPersonOperation: Operation {
   
   override func execute() {
     print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     //figure out what keys need to be fetched
     let person = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: personID.recordName, inContext: context)
@@ -69,7 +66,7 @@ class GetPersonOperation: Operation {
       } else {
         //add person to the database
         for recordID in recordsByID!.keys {
-          
+          let recordID = recordID as! CKRecordID
           //fetch each person with the returned ID
           var localPerson = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
           localPerson = localPerson ?? Person.MR_findFirstOrCreateByAttribute("me",
@@ -112,22 +109,22 @@ class GetAllPersonsWithMissingData: Operation {
   override func execute() {
     print("execute person fetch")
     
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
-    
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
-    guard let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as? [NSManagedObject] else {
-      print("Get All Persons With Missing Data Finished Prematurely")
-      self.finish()
-      return
-    }
+//    guard let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as? [NSManagedObject] else {
+//      print("Get All Persons With Missing Data Finished Prematurely")
+//      self.finish()
+//      return
+//    }
+    let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as! [NSManagedObject]
     let allMissingPersonsRecordNameID = allMissingPersons.map { $0.valueForKey("recordIDName") as? String }
     let desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
     var missingPersonsRecordIDs = [CKRecordID]()
-    for recordIDName in allMissingPersonsRecordNameID where recordIDName != nil {
+    //for recordIDName in allMissingPersonsRecordNameID where recordIDName != nil {
+    for recordIDName in allMissingPersonsRecordNameID {
+      if recordIDName != nil {
       missingPersonsRecordIDs.append(CKRecordID(recordName: recordIDName!))
+      }
     }
     
     if missingPersonsRecordIDs.count == 0 {
@@ -147,6 +144,7 @@ class GetAllPersonsWithMissingData: Operation {
         //add person to the database
         
         //fetch each person with the returned ID
+        let recordID = recordID as! CKRecordID
         var localPerson: Person!
         if recordID.recordName == "__defaultOwner__" {
           localPerson = Person.MR_findFirstOrCreateByAttribute("me",

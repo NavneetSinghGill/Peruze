@@ -222,14 +222,17 @@ class FetchFacebookFriends: AsyncOperation {
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
       var jsonData: AnyObject?
-      do {
-        jsonData = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
-      } catch let error as NSError {
-        jsonError = error
-        jsonData = nil
-      } catch {
-        fatalError()
-      }
+//      Swift 2.0
+//      do {
+//        jsonData = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
+//      } catch let error as NSError {
+//        jsonError = error
+//        jsonData = nil
+//      } catch {
+//        fatalError()
+//      }
+      jsonData = NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments, error: &jsonError)
+      
       if jsonData == nil { self.finish(); return }
       if resultError != nil {
         self.error = resultError

@@ -45,11 +45,14 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
     fetchedResultsController.delegate = self
     
-    do {
-      try fetchedResultsController.performFetch()
-    } catch {
-      print(error)
-    }
+    //Swift 2.0
+    //    do {
+    //      try fetchedResultsController.performFetch()
+    //    } catch {
+    //      print(error)
+    //    }
+    var error: NSError?
+    fetchedResultsController.performFetch(&error)
     
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "performFetch", name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
@@ -57,11 +60,20 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   func performFetch() {
     print("Perform Fetch")
     dispatch_async(dispatch_get_main_queue()) {
-      do {
-        try self.fetchedResultsController.performFetch()
-        self.collectionView.reloadData()
-      } catch {
+      //Swift 2.0
+      //      do {
+      //        try self.fetchedResultsController.performFetch()
+      //        self.collectionView.reloadData()
+      //      } catch {
+      //        print(error)
+      //      }
+      var error: NSError?
+      self.fetchedResultsController.performFetch(&error)
+      if error != nil {
         print(error)
+      } else {
+        self.collectionView.reloadData()
+        
       }
     }
   }
@@ -70,9 +82,13 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     print("Will Change Context")
   }
   
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     print("Did Change Object")
   }
+  
+//  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+//    print("Did Change Object")
+//  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     print("Did Change Context")
@@ -82,7 +98,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
-    let item = fetchedResultsController.objectAtIndexPath(indexPath)
+    let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
     
     cell.item = item
     cell.delegate = itemDelegate

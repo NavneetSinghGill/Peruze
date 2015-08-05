@@ -49,16 +49,19 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
     let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
     updateExchanges.completionBlock = {
-      do {
-        try self.dataSource.fetchedResultsController.performFetch()
-        dispatch_async(dispatch_get_main_queue()){
-          self.tableView.reloadData()
-        }
-      } catch {
-        print(error)
-        //TODO: Actually handle this error
-      }
+      //Swift 2.0
+      //      do {
+      //        try self.dataSource.fetchedResultsController.performFetch()
+      //        dispatch_async(dispatch_get_main_queue()){
+      //          self.tableView.reloadData()
+      //        }
+      //      } catch {
+      //        print(error)
+      //      }
+      var error: NSErrorPointer
+      self.dataSource.fetchedResultsController.performFetch(error)
       dispatch_async(dispatch_get_main_queue()){
+        self.tableView.reloadData()
         self.refreshControl?.endRefreshing()
       }
     }
@@ -81,7 +84,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   private func checkForEmptyData(animated: Bool) {
-    if tableView.visibleCells.count == 0 {
+    if tableView.visibleCells().count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
         self.tableView.alpha = 0.0
@@ -94,20 +97,30 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
-  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
     let deny = denyEditAction()
     let accept = acceptEditAction()
     return [deny, accept]
   }
   
+  //  Swift 2.0
+  //  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+  //    let deny = denyEditAction()
+  //    let accept = acceptEditAction()
+  //    return [deny, accept]
+  //  }
+  
   private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       
       //get the recordIDName for the exchange at that index path
-      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-        return
-      }
+      
+      //      Swift 2.0
+      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+      //        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+      //        return
+      //      }
+      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
       let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -119,13 +132,18 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //add completion
       operation.completionBlock = {
         dispatch_async(dispatch_get_main_queue()) {
-          do{
-            try self.dataSource.fetchedResultsController.performFetch()
-            self.tableView.reloadData()
-          } catch {
-            print("Fetch threw an error. Not updating")
-            print(error)
-          }
+          // Swift 2.0
+          //          do{
+          //            try self.dataSource.fetchedResultsController.performFetch()
+          //            self.tableView.reloadData()
+          //          } catch {
+          //            print("Fetch threw an error. Not updating")
+          //            print(error)
+          //          }
+          var error: NSErrorPointer
+          self.dataSource.fetchedResultsController.performFetch(error)
+          self.tableView.reloadData()
+          print(error)
         }
       }
       
@@ -137,10 +155,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       
       //get the recordIDName for the exchange at that index path
-      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-        return
-      }
+      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
+      //        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
+      //        return
+      //      }
+      
+      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
       let publicDB = CKContainer.defaultContainer().publicCloudDatabase
@@ -151,15 +171,19 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         context: managedConcurrentObjectContext)
       
       //add completion
-      operation.completionBlock = {
+      operation.completionBlock = { () -> Void in
         dispatch_async(dispatch_get_main_queue()) {
-          do{
-            try self.dataSource.fetchedResultsController.performFetch()
-            self.tableView.reloadData()
-          } catch {
-            print("Fetch threw an error. Not updating")
-            print(error)
-          }
+          //          do{
+          //            try self.dataSource.fetchedResultsController.performFetch()
+          //            self.tableView.reloadData()
+          //          } catch {
+          //            print("Fetch threw an error. Not updating")
+          //            print(error)
+          //          }
+          var error: NSErrorPointer
+          self.dataSource.fetchedResultsController.performFetch(error)
+          self.tableView.reloadData()
+          print(error)
         }
       }
       

@@ -146,18 +146,24 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   private func exchangeCompleted() {
     if !NetworkConnection.connectedToNetwork() {
-      let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock({ self.exchangeCompleted() })
+      let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock { self.exchangeCompleted() }
       presentViewController(alert, animated: true, completion: nil)
       return
     }
     if itemInCircleView == nil {
       
       let owner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject
+      
+      /* Swift 2.0
       guard
         let ownerName = owner?.valueForKey("firstName") as? String,
         let itemTitle = itemSelectedForExchange.valueForKey("title") as? String else {
           return
-      }
+      } 
+      */
+      
+      let ownerName = owner!.valueForKey("firstName") as! String
+      let itemTitle = itemSelectedForExchange.valueForKey("title") as! String
       
       let alert = UIAlertView(title: Constants.NoItemAlert.title,
         message: "\(ownerName) is our really good friend! Surely you don't want to offer nothing in return for \(itemTitle).",
