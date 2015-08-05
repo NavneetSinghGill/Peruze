@@ -98,7 +98,7 @@ struct OperationConditionEvaluator {
       
       //Swift 2.0
       //var failures = results.flatMap { $0?.error }
-      var failures = results.map { $0!.error }
+      var failures = results.map { $0!.error! }
       
       /*
       If any of the conditions caused this operation to be cancelled,
@@ -107,7 +107,6 @@ struct OperationConditionEvaluator {
       if operation.cancelled {
         failures.append(NSError(code: .ConditionFailed))
       }
-      
       completion(failures)
     }
   }

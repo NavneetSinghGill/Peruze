@@ -14,10 +14,14 @@ extension UIUserNotificationSettings {
     /// Check to see if one Settings object is a superset of another Settings object.
     func contains(settings: UIUserNotificationSettings) -> Bool {
         // our types must contain all of the other types
-        if !types.contains(settings.types) {
-            return false
-        }
-        
+      //Swift 2.0
+//        if !types.contains(settings.types) {
+//            return false
+//        }
+      if types != settings.types {
+        return false
+      }
+      
         let otherCategories = settings.categories ?? []
         let myCategories = categories ?? []
         
@@ -29,13 +33,15 @@ extension UIUserNotificationSettings {
         the same identifier are considered equal.
     */
     func settingsByMerging(settings: UIUserNotificationSettings) -> UIUserNotificationSettings {
-        let mergedTypes = types.union(settings.types)
-        
+      //Swift 2.0
+      //let mergedTypes = types.union(settings.types)
+        let mergedTypes = types | settings.types
+      
         let myCategories = categories ?? []
-        var existingCategoriesByIdentifier = Dictionary(sequence: myCategories) { $0.identifier }
+        var existingCategoriesByIdentifier = Dictionary(sequence: myCategories as! Set<UIUserNotificationCategory>) { $0.identifier }
         
         let newCategories = settings.categories ?? []
-        let newCategoriesByIdentifier = Dictionary(sequence: newCategories) { $0.identifier }
+        let newCategoriesByIdentifier = Dictionary(sequence: newCategories as! Set<UIUserNotificationCategory>) { $0.identifier }
         
         for (newIdentifier, newCategory) in newCategoriesByIdentifier {
             existingCategoriesByIdentifier[newIdentifier] = newCategory

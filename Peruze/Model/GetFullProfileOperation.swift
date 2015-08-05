@@ -89,8 +89,7 @@ class GetFullProfileOperation: GroupOperation {
     if hasProducedAlert { return }
     
     let alert = AlertOperation()
-    
-    let errorReason = (error.domain, error.code, error.userInfo[OperationConditionKey] as? String)
+    let errorReason = (error.domain, error.code, (error.userInfo?[OperationConditionKey] as? String))
     
     // These are examples of errors for which we might choose to display an error to the user
     // TODO: Add to these when you get time
@@ -101,7 +100,7 @@ class GetFullProfileOperation: GroupOperation {
     switch errorReason {
     case failedReachability:
       // We failed because the network isn't reachable.
-      let host = error.userInfo[ReachabilityCondition.hostKey] as! String
+      let host = error.userInfo?[ReachabilityCondition.hostKey] as! String
       
       alert.title = "Unable to Connect"
       alert.message = "Cannot connect to \(host). Make sure your device is connected to the internet and try again."

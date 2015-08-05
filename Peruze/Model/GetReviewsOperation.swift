@@ -34,9 +34,6 @@ class GetReviewsOperation: Operation {
   
   override func execute() {
     print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    defer {
-      self.context.MR_saveToPersistentStoreAndWait()
-    }
     
     //create operation for fetching relevant records
     let personReference = CKReference(recordID: personID, action: .None)

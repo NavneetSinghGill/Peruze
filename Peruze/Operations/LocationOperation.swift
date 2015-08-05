@@ -60,13 +60,21 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
   }
   
   // MARK: CLLocationManagerDelegate
-  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let location = locations.last where location.horizontalAccuracy <= accuracy {
+  func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    if let location = locations.last as? CLLocation where location.horizontalAccuracy <= accuracy {
       stopLocationUpdates()
       handler(location)
       finish()
     }
   }
+  //Swift 2.0
+//  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//    if let location = locations.last where location.horizontalAccuracy <= accuracy {
+//      stopLocationUpdates()
+//      handler(location)
+//      finish()
+//    }
+//  }
   
   func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
     stopLocationUpdates()

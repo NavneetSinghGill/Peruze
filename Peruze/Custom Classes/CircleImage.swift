@@ -28,11 +28,16 @@ public class CircleImage: UIView {
         super.init(frame: frame)
         backgroundColor = .clearColor()
     }
-    
-    public required init?(coder aDecoder: NSCoder) {
+
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+  
+//    Swift 2.0
+//    public required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
+  
     //MARK: - Drawing
     public override func drawRect(rect: CGRect) {
         super.drawRect(rect)

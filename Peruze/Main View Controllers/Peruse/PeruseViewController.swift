@@ -89,8 +89,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
 //            print("fetchedResultsController could not perform fetch")
 //            print(error)
 //          }
-          var error: NSErrorPointer
-          self.dataSource.fetchedResultsController.performFetch(error)
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
           print(error)
         }
         
@@ -105,8 +105,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
 //            print("fetchedResultsController could not perform fetch")
 //            print(error)
 //          }
-          var error: NSErrorPointer
-          self.dataSource.fetchedResultsController.performFetch(error)
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
           print(error)
         }
         

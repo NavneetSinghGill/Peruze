@@ -156,7 +156,8 @@ class Operation: NSOperation {
             }
             else {
                 self.state = .Cancelled
-                self.finish(failures)
+              self.finish(errors: failures)
+              //self.finish(failures)
             }
         }
     }
@@ -246,7 +247,7 @@ class Operation: NSOperation {
     */
     final func finishWithError(error: NSError?) {
         if let error = error {
-            finish([error])
+          finish(errors: [error])
         }
         else {
             finish()

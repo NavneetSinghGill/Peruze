@@ -30,20 +30,23 @@ class StarView: UIView {
     }
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    starOne = UIImageView()
-    starTwo = UIImageView()
-    starThree = UIImageView()
-    starFour = UIImageView()
-    starFive = UIImageView()
-    starOne.contentMode = .ScaleAspectFit
-    starTwo.contentMode = .ScaleAspectFit
-    starThree.contentMode = .ScaleAspectFit
-    starFour.contentMode = .ScaleAspectFit
-    starFive.contentMode = .ScaleAspectFit
-    super.init(coder: aDecoder)
-  }
-  
+
+
+//Swift 2.0
+//  required init?(coder aDecoder: NSCoder) {
+//    starOne = UIImageView()
+//    starTwo = UIImageView()
+//    starThree = UIImageView()
+//    starFour = UIImageView()
+//    starFive = UIImageView()
+//    starOne.contentMode = .ScaleAspectFit
+//    starTwo.contentMode = .ScaleAspectFit
+//    starThree.contentMode = .ScaleAspectFit
+//    starFour.contentMode = .ScaleAspectFit
+//    starFive.contentMode = .ScaleAspectFit
+//    super.init(coder: aDecoder)
+//  }
+
   override func drawRect(rect: CGRect) {
     let sideLength = min(frame.height, frame.width / 5 - 4 * Constants.BufferSize)
     

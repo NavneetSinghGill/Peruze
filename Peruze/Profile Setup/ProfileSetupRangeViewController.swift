@@ -40,12 +40,18 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   override func viewDidLoad() {
     super.viewDidLoad()
     //distance
-    distanceValues.sortInPlace(<)
+    
+    //Swift 2.0
+    //distanceValues.sortInPlace(<)
+    distanceValues.sort(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
     distanceSlider.setValue(distanceSlider.maximumValue, animated: false)
     //friends
-    friendsValues.sortInPlace(<)
+    
+    //Swift 2.0
+    //friendsValues.sortInPlace(<)
+    friendsValues.sort(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
     friendsSlider.setValue(friendsSlider.maximumValue, animated: false)
@@ -125,7 +131,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     pulseCircleView!.frame = CGRectMake(view.bounds.width / 2, view.bounds.height / 2, 0, 0)
     pulseCircleView!.layer.removeAllAnimations()
     UIView.transitionWithView(pulseCircleView!, duration: Constants.PulseCircleAnimationDuration,
-      options: [.Repeat, .CurveEaseInOut], animations: {
+      options: .Repeat | .CurveEaseInOut, animations: {
         self.pulseCircleView!.frame = destinationRect
         self.pulseCircleView!.setNeedsDisplay()
       }, completion: nil)
@@ -184,11 +190,11 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
       locationManager.requestAlwaysAuthorization()
     } else if CLLocationManager.authorizationStatus() != .AuthorizedAlways {
-      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert({
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert {
         self.userWarnedAboutLimitedFunction = true
         self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
         self.updateCircleView(self.distanceSlider.value)
-      })
+      }
       presentViewController(alert, animated: true, completion: nil)
     }
   }
@@ -208,11 +214,12 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     }
     if CLLocationManager.authorizationStatus() != .AuthorizedAlways && !userWarnedAboutLimitedFunction {
       print("User hasn't been warned")
-      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert({
+      let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert {
         self.userWarnedAboutLimitedFunction = true
         self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
         self.updateCircleView(self.distanceSlider.value)
-      })
+      }
+      
       presentViewController(alert, animated: true, completion: nil)
       return
     }
@@ -246,7 +253,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
       assertionFailure("authorization status and friends slider do not correspond")
     }
-
+    
     //set all values and dismiss
     NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
     NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)

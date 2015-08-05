@@ -66,7 +66,7 @@ class OnboardPageItemViewController: UIViewController {
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     if movieName != nil {
-      UIView.animateWithDuration(1, delay: 0.1, options: [],
+      UIView.animateWithDuration(1, delay: 0.1, options: nil,
         animations: { self.playerView.alpha = 1.0 }, completion: nil)
     }
   }

@@ -98,7 +98,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
         if let userInfo = sender.userInfo {
             if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
                 let top = navigationController?.navigationBar.frame.maxY ?? 0
-                let bottom = keyboardFrame.height
+                let bottom = keyboardFrame().height
                 let insets = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
                 scrollView.contentInset = insets
                 scrollView.scrollIndicatorInsets = insets

@@ -64,7 +64,7 @@ struct UserNotificationCondition: OperationCondition {
         let current = application.currentUserNotificationSettings()
 
         switch (current, settings)  {
-            case (let current?, let settings) where current.contains(settings):
+            case (let current!, let settings) where current.contains(settings):
                 result = .Satisfied
 
             default:
@@ -107,7 +107,7 @@ private class UserNotificationPermissionOperation: Operation {
             let settingsToRegister: UIUserNotificationSettings
             
             switch (current, self.behavior) {
-                case (let currentSettings?, .Merge):
+                case (let currentSettings, .Merge):
                     settingsToRegister = currentSettings.settingsByMerging(self.settings)
 
                 default:

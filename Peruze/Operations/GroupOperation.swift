@@ -90,7 +90,9 @@ extension GroupOperation: OperationQueueDelegate {
         
         if operation === finishingOperation {
             internalQueue.suspended = true
-            finish(aggregatedErrors)
+          finish(errors: aggregatedErrors)
+          //Swift 2.0
+          //finish(aggregatedErrors)
         }
         else {
             operationDidFinish(operation, withErrors: errors)

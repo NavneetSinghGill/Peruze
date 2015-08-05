@@ -51,14 +51,17 @@ class OperationQueue: NSOperationQueue {
       op.addObserver(delegate)
       
       // Extract any dependencies needed by this operation.
-      let dependencies = op.conditions.flatMap {
-        $0.dependencyForOperation(op)
-      }
+      let dependencies = op.conditions.map {  $0.dependencyForOperation(op) }
+      
+      //Swift 2.0
+      //      let dependencies = op.conditions.flatMap {
+      //        $0.dependencyForOperation(op)
+      //      }
       
       for dependency in dependencies {
-        op.addDependency(dependency)
+        op.addDependency(dependency!)
         
-        self.addOperation(dependency)
+        self.addOperation(dependency!)
       }
       
       /*

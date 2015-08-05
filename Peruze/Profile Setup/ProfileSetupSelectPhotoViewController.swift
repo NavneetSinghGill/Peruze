@@ -256,7 +256,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
       }
     }
   }
-  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+  override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
     if center.image == nil || loadingCircle != nil {
       let hitNextWithoutImageAlertView = UIAlertView(title: Constants.HitNextWithoutImageTitle, message: Constants.HitNextWithoutImageMessage, delegate: nil, cancelButtonTitle: Constants.HitNextWithoutImageCancelButton)
       hitNextWithoutImageAlertView.show()
@@ -264,4 +264,15 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     }
     return true
   }
+  
+  //Swift 2.0
+  //  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+  //    if center.image == nil || loadingCircle != nil {
+  //      let hitNextWithoutImageAlertView = UIAlertView(title: Constants.HitNextWithoutImageTitle, message: Constants.HitNextWithoutImageMessage, delegate: nil, cancelButtonTitle: Constants.HitNextWithoutImageCancelButton)
+  //      hitNextWithoutImageAlertView.show()
+  //      return false
+  //    }
+  //    return true
+  //  }
+  
 }

@@ -28,7 +28,7 @@ struct NoCancelledDependencies: OperationCondition {
     
     func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
         // Verify that all of the dependencies executed.
-        let cancelled = operation.dependencies.filter { $0.cancelled }
+        let cancelled = operation.dependencies.filter { ($0 as! NSOperation).cancelled }
 
         if !cancelled.isEmpty {
             // At least one dependency was cancelled; the condition was not satisfied.
