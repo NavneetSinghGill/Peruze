@@ -61,6 +61,8 @@ private class ReachabilityController {
         
         if ref == nil {
           let hostString = host as NSString
+          ref = SCNetworkReachabilityRef
+          ref
           ref = SCNetworkReachabilityCreateWithName(nil, hostString.UTF8String)
         }
         
@@ -68,7 +70,7 @@ private class ReachabilityController {
           self.reachabilityRefs[host] = ref
           
           var reachable = false
-          var flags: SCNetworkReachabilityFlags = []
+          var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags.allZeros
           if SCNetworkReachabilityGetFlags(ref, &flags) != 0 {
             /*
             Note that this is a very basic "is reachable" check.
@@ -76,7 +78,7 @@ private class ReachabilityController {
             such as whether or not the connection would require
             VPN, a cellular connection, etc.
             */
-            reachable = flags.contains(.Reachable)
+            reachable = (flags == SCNetworkReachabilityFlags.Reachable)
           }
           completionHandler(reachable)
         }

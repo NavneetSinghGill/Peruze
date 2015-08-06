@@ -68,8 +68,9 @@ class OperationQueue: NSOperationQueue {
       With condition dependencies added, we can now see if this needs
       dependencies to enforce mutual exclusivity.
       */
-      let concurrencyCategories: [String] = op.conditions.flatMap { condition in
-        if !condition.dynamicType.isMutuallyExclusive { return nil }
+      
+      let concurrencyCategories: [String] = op.conditions.map { condition in
+        if !condition.dynamicType.isMutuallyExclusive { return "" }
         
         return "\(condition.dynamicType)"
       }
@@ -130,6 +131,7 @@ class OperationQueue: NSOperationQueue {
     }
     
   }
+  //Swift 2.0
   //    override func addOperations(operations: [NSOperation], waitUntilFinished wait: Bool) {
   //        /*
   //            The base implementation of this method does not call `addOperation()`,
