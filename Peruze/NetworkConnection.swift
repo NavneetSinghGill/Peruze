@@ -33,20 +33,23 @@ class NetworkConnection: NSObject {
     //    }) else {
     //      return false
     //    }
-    let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
+
+    let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
       SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-    })
+    }
+    
     if defaultRouteReachability == nil {
       return false
     }
     
-    var flags : SCNetworkReachabilityFlags = []
-    if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == 0 {
-      return false
-    }
+    var flags : SCNetworkReachabilityFlags = SCNetworkReachabilityFlags.allZeros
+//    if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+//      return false
+//    }
     
-    let isReachable = flags.contains(.Reachable)
-    let needsConnection = flags.contains(.ConnectionRequired)
+    
+    let isReachable = (flags == SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsReachable))
+    let needsConnection = (flags == SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsConnectionRequired))
     return (isReachable && !needsConnection)
   }
   

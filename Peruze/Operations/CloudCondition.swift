@@ -31,7 +31,7 @@ struct CloudContainerCondition: OperationCondition {
             container. This parameter has a default value of `[]`, which would get
             you anonymized read/write access.
     */
-    init(container: CKContainer, permission: CKApplicationPermissions = []) {
+    init(container: CKContainer, permission: CKApplicationPermissions = CKApplicationPermissions.allZeros) {
         self.container = container
         self.permission = permission
     }
@@ -71,7 +71,7 @@ private class CloudKitPermissionOperation: Operation {
         self.permission = permission
         super.init()
         
-        if permission != [] {
+        if permission != CKApplicationPermissions.allZeros {
             /*
                 Requesting non-zero permissions means that this potentially presents
                 an alert, so it should not run at the same time as anything else

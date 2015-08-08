@@ -68,7 +68,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     return true
   }
   
-  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Unfavorite") { (rowAction, indexPath) -> Void in
       self.dataSource.favorites.removeAtIndex(indexPath.item)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -76,4 +76,15 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     }
     return [defaultAction]
   }
+  
+  /* Swift 2.0
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Unfavorite") { (rowAction, indexPath) -> Void in
+      self.dataSource.favorites.removeAtIndex(indexPath.item)
+      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+      self.checkForEmptyData(true)
+    }
+    return [defaultAction]
+  }*/
+  
 }

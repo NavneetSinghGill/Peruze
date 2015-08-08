@@ -42,7 +42,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
       forIndexPath: indexPath) as! ProfileExchangesTableViewCell
     
-    let exchange = fetchedResultsController.objectAtIndexPath(indexPath)
+    let exchange: AnyObject = fetchedResultsController.objectAtIndexPath(indexPath)
     
     //check for all the data needed to populate the cell
     

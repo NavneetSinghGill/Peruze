@@ -137,7 +137,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     let saveRecordsOp = CKModifyRecordsOperation(recordsToSave: [messageRecord], recordIDsToDelete: nil)
     
     saveRecordsOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-      localMessage.setValue(savedRecords?.first?.recordID.recordName, forKey: "recordIDName")
+      localMessage.setValue(savedRecords?.first?.recordID?.recordName, forKey: "recordIDName")
       self.context.MR_saveToPersistentStoreAndWait()
       self.finishWithError(operationError)
     }

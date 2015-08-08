@@ -62,11 +62,8 @@ enum OperationConditionResult {
     switch self {
     case .Failed(let error) :
       return error
-      break
     default: return nil
-      break
     }
-    return nil
   }
 }
 

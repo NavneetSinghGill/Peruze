@@ -42,7 +42,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
         forIndexPath: indexPath) as! ProfileReviewsTableViewCell
       
-      let review = fetchedResultsController.objectAtIndexPath(indexPath)
+      let review: AnyObject = fetchedResultsController.objectAtIndexPath(indexPath)
       //TODO: Edit the cell contents
       //      Swift 2.0
       //      guard

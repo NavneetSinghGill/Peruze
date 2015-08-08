@@ -93,14 +93,14 @@ class GetFullProfileOperation: GroupOperation {
     
     // These are examples of errors for which we might choose to display an error to the user
     // TODO: Add to these when you get time
-    let failedReachability = (OperationErrorDomain, OperationErrorCode.ConditionFailed, ReachabilityCondition.name)
+    let failedReachability = (OperationErrorDomain, OperationErrorCode.ConditionFailed.rawValue, nil as String?)
     
     let failedJSON = (NSCocoaErrorDomain, NSPropertyListReadCorruptError, nil as String?)
     
     switch errorReason {
     case failedReachability:
       // We failed because the network isn't reachable.
-      let host = error.userInfo?[ReachabilityCondition.hostKey] as! String
+      let host = "" //error.userInfo?[] as! String
       
       alert.title = "Unable to Connect"
       alert.message = "Cannot connect to \(host). Make sure your device is connected to the internet and try again."

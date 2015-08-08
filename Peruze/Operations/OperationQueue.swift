@@ -70,8 +70,7 @@ class OperationQueue: NSOperationQueue {
       */
       
       let concurrencyCategories: [String] = op.conditions.map { condition in
-        if !condition.dynamicType.isMutuallyExclusive { return "" }
-        
+        //if !(condition.dynamicType as OperationCondition.Type).isMutuallyExclusive { return "" }
         return "\(condition.dynamicType)"
       }
       

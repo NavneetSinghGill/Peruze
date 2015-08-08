@@ -86,7 +86,7 @@ class InitialViewController: UIViewController {
   private func setupAndSegueToOnboardVC() {
     FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
     if presentedViewController == onboardVC && onboardVC != nil { print("pVC = onboard"); return }
-    onboardVC = storyboard!.instantiateViewControllerWithIdentifier(Constants.OnboardVCIdentifier) as! UIViewController
+    onboardVC = (storyboard!.instantiateViewControllerWithIdentifier(Constants.OnboardVCIdentifier) as! UIViewController)
     if onboardVC == nil { assertionFailure("VC Pulled out of storyboard is not a UIViewController") }
     presentViewController(onboardVC!, animated: true, completion: nil)
   }

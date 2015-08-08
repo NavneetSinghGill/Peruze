@@ -9,10 +9,12 @@
 import Foundation
 import CloudKit
 import MagicalRecord
+
 /**
 Retrieves the reviews of the specified person and stores them in the `reviews` property for that
 `Person` object
 */
+
 class GetReviewsOperation: Operation {
   let personID: CKRecordID
   let database: CKDatabase

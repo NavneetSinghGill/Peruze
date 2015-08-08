@@ -37,15 +37,21 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return tallRowsIndexPaths.indexOf(indexPath) == nil ? Constants.TableViewCellHeight : UITableViewAutomaticDimension
+    return tallRowsIndexPaths.filter{$0 == indexPath}.count == 0 ? Constants.TableViewCellHeight : UITableViewAutomaticDimension
   }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
-      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
+      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier) as? UIViewController
       print("segue to write review")
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {
-      let foundMatch = tallRowsIndexPaths.indexOf(indexPath)
+      var foundMatch: Int? = nil
+      for index in 0..<tallRowsIndexPaths.count {
+        if indexPath == tallRowsIndexPaths[index] {
+          foundMatch = index
+          break
+        }
+      }
       if foundMatch != nil {
         tallRowsIndexPaths.removeAtIndex(foundMatch!)
       } else {

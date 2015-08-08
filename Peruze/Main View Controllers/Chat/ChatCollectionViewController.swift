@@ -194,13 +194,25 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
   
   //MARK: - Camera Data Methods
+  func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    picker.dismissViewControllerAnimated(true, completion: nil)
+  }
+  /* Swift 2.0
   func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
     picker.dismissViewControllerAnimated(true, completion: nil)
     
-  }
-  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+  } */
+  
+  
+  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
     picker.dismissViewControllerAnimated(true, completion: nil)
   }
+  
+  /* Swift 2.0
+  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    picker.dismissViewControllerAnimated(true, completion: nil)
+  } */
+  
 }
 protocol ChatDeletionDelegate {
   func cancelExchange(exchange: NSManagedObject)

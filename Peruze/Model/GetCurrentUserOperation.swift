@@ -10,10 +10,6 @@ import Foundation
 import CloudKit
 import MagicalRecord
 
-private enum OperationErrors: ErrorType {
-  case One
-}
-
 class GetCurrentUserOperation: Operation {
   
   private let context: NSManagedObjectContext
@@ -61,7 +57,7 @@ class GetCurrentUserOperation: Operation {
       
       
       //set the returned properties
-      person.recordIDName = recordID.recordName
+      person.recordIDName = (recordID as! CKRecordID).recordName
       person.firstName  = (person.valueForKey("firstName") as? String) ?? (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
       person.lastName   = (person.valueForKey("lastName") as? String) ?? (recordsByID![recordID]!.objectForKey("LastName")   as? String)
       person.facebookID = (person.valueForKey("facebookID")  as? String) ?? (recordsByID![recordID]!.objectForKey("FacebookID") as? String)

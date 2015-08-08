@@ -74,9 +74,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   
   func receivedNotification(notification: NSNotification) {
-    let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey]
-    let deletedObjects = notification.userInfo?[NSDeletedObjectsKey]
-    let insertedObjects = notification.userInfo?[NSInsertedObjectsKey]
+    let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
+    let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
+    let insertedObjects: AnyObject? = notification.userInfo?[NSInsertedObjectsKey]
     if let managedObj = (insertedObjects as? NSSet)?.allObjects {
       print("first let finished")
       if managedObj.first!.entity.name == "Item" {
