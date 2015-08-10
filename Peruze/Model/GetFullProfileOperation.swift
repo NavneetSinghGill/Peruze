@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MagicalRecord
 import CloudKit
 
 ///A group operation to fetch all aspects of a user's profile

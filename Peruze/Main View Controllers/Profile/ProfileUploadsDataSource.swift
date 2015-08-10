@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {

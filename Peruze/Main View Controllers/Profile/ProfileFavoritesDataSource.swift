@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource {
   private struct Constants {

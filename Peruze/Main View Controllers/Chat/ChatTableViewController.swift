@@ -7,9 +7,7 @@
 //
 
 import UIKit
-import JSQMessagesViewController
 import CloudKit
-import MagicalRecord
 
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
   private struct Constants {

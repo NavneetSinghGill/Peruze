@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import AsyncOpKit
 import FBSDKCoreKit
-import MagicalRecord
 
 //MARK: - Download Profile Photo
 
@@ -26,7 +24,6 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   
   ///resulting array of image URLs
   var imageURLs = [NSURL]()
-  
   override func main() {
     if cancelled { finish(); return }
     //create the request from above graph path

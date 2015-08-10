@@ -58,8 +58,8 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //      } catch {
       //        print(error)
       //      }
-      var error: NSErrorPointer
-      self.dataSource.fetchedResultsController.performFetch(error)
+      var error: NSError?
+      self.dataSource.fetchedResultsController.performFetch(&error)
       dispatch_async(dispatch_get_main_queue()){
         self.tableView.reloadData()
         self.refreshControl?.endRefreshing()

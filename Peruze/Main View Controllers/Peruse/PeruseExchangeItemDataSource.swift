@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
   

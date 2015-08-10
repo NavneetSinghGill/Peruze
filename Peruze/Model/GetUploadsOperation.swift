@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 /**
 Retrieves the uploads of the specified person and stores them in the `uploads` property for that
 `Person` object

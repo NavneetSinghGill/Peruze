@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import MagicalRecord
 
 class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {

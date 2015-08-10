@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 struct ItemStruct {
   var image: UIImage

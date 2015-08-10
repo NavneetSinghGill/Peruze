@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UIScrollViewDelegate {
   //TODO: There should only be a segue if the user lets go of the scroll view while content offset < 0

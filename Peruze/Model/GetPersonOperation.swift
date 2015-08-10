@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 
 class GetPersonOperation: Operation {
   let personID: CKRecordID

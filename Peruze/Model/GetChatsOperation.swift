@@ -8,7 +8,7 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
+
 ///Retrieves all of the chats and their subsequent messages for the loggen in user
 class GetChatsOperation: GroupOperation {
   let getExchangesOp: GetAllParticipatingExchangesOperation

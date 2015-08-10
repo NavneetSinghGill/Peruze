@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 /**
 Saves an exchange with the given informaiton to the local server and then to the cloudkit
 database. This also sets the creator of the exchange to the

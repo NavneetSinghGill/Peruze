@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, UIGestureRecognizerDelegate {
   //MARK: - Constants
@@ -406,21 +405,23 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
         view.setNeedsDisplay()
       }, completion: completion)
   }
+  
   //MARK: Information Handling
   private func setupLeftViewWithItemInfo(item: Item?) {
-    if item == nil {
-      UIView.animateWithDuration(0.3) {
+    if let item = item {
+      leftCircleImageView.image = UIImage(data: item.valueForKey("image") as! NSData)
+      itemYoureExchangingLabel.text = item.valueForKey("title") as? String
+      UIView.animateWithDuration(0.3, animations: { () -> Void in
+        self.itemYoureExchangingLabel.alpha = 1.0
+      })
+    } else {
+      UIView.animateWithDuration(0.3, animations: { () -> Void in
         self.leftCircleImageView.alpha = 0.0
         self.itemYoureExchangingLabel.alpha = 0.0
-      }
-    } else {
-      leftCircleImageView.image = UIImage(data: item!.image!)
-      itemYoureExchangingLabel.text = item!.title
-      UIView.animateWithDuration(0.3) {
-        self.itemYoureExchangingLabel.alpha = 1.0
-      }
+      })
     }
   }
+  
   //MARK: - Collection View Delegate Methods
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     cellPickedUpFromCollectionViewWithIndex(indexPath)

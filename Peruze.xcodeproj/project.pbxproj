@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
 		9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */; };
@@ -159,6 +159,9 @@
 		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
+		9D5C24C01B792552009E988E /* AsyncClosuresOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */; };
+		9D5C24C11B792552009E988E /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BD1B792552009E988E /* AsyncOperation.swift */; };
+		9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BF1B792552009E988E /* AsyncOpKit.swift */; };
 		9DDC5E371B65B2E600A9EC22 /* PostMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */; };
 		9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */; };
 		9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96DE1B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld */; };
@@ -362,11 +365,15 @@
 		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
+		9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncClosuresOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncClosuresOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D5C24BD1B792552009E988E /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncOperation.swift; sourceTree = SOURCE_ROOT; };
+		9D5C24BE1B792552009E988E /* AsyncOpKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncOpKit.h; path = Peruze/Model/AsyncOpKit/AsyncOpKit.h; sourceTree = SOURCE_ROOT; };
+		9D5C24BF1B792552009E988E /* AsyncOpKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOpKit.swift; path = Peruze/Model/AsyncOpKit/AsyncOpKit.swift; sourceTree = SOURCE_ROOT; };
 		9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostMessageOperation.swift; sourceTree = "<group>"; };
 		9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostExchangeOperation.swift; sourceTree = "<group>"; };
 		9DEB96DF1B5B56DA00273677 /* PeruzeDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeruzeDataModel.xcdatamodel; sourceTree = "<group>"; };
 		9DF505A11B69D6AE00404BD4 /* EmptyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyCell.xib; sourceTree = "<group>"; };
-		DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Peruze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Peruze.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,7 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */,
-				7334763C95AE8DDC80CA2DC6 /* Pods_Peruze.framework in Frameworks */,
+				5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,7 +412,7 @@
 				9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */,
 				9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */,
 				9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */,
-				DEB029C9FDC7A15036C9A5CF /* Pods_Peruze.framework */,
+				FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -843,9 +850,21 @@
 			name = CloudKitOperations;
 			sourceTree = "<group>";
 		};
+		9D5C24BB1B7924FA009E988E /* AsyncOpKit */ = {
+			isa = PBXGroup;
+			children = (
+				9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */,
+				9D5C24BD1B792552009E988E /* AsyncOperation.swift */,
+				9D5C24BE1B792552009E988E /* AsyncOpKit.h */,
+				9D5C24BF1B792552009E988E /* AsyncOpKit.swift */,
+			);
+			name = AsyncOpKit;
+			sourceTree = "<group>";
+		};
 		9DE8B4F01B5B51B7002D993E /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				9D5C24BB1B7924FA009E988E /* AsyncOpKit */,
 				9DEB969C1B5B51D600273677 /* Operation Queue */,
 				9DEB96A31B5B51D600273677 /* Operations */,
 				9DEB96A71B5B51D600273677 /* Observers */,
@@ -938,7 +957,6 @@
 				9D449C821B54D9F9005C7CC0 /* Sources */,
 				9D449C831B54D9F9005C7CC0 /* Frameworks */,
 				9D449C841B54D9F9005C7CC0 /* Resources */,
-				17DEF8DD14D95609C6F1FD1F /* Embed Pods Frameworks */,
 				A47F96391088B6E97B84CEAB /* Copy Pods Resources */,
 			);
 			buildRules = (
@@ -1052,21 +1070,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		17DEF8DD14D95609C6F1FD1F /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Peruze/Pods-Peruze-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A47F96391088B6E97B84CEAB /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1134,6 +1137,7 @@
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
 				9D3EA1F71B5DFAC1005D63AC /* Item+CoreDataProperties.swift in Sources */,
+				9D5C24C11B792552009E988E /* AsyncOperation.swift in Sources */,
 				9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */,
 				9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */,
 				9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */,
@@ -1176,6 +1180,7 @@
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
 				9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */,
 				9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */,
+				9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */,
 				9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */,
 				9D3EA1CD1B5DA68D005D63AC /* PassbookCondition.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
@@ -1231,6 +1236,7 @@
 				9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */,
 				9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */,
 				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
+				9D5C24C01B792552009E988E /* AsyncClosuresOperation.swift in Sources */,
 				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
 				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,

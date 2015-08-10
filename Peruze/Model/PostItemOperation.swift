@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 
 class PostItemOperation: GroupOperation {
   private struct Constants {

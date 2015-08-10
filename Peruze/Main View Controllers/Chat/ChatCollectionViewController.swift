@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import JSQMessagesViewController
-import MagicalRecord
 
 class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TGCameraDelegate {
   private struct Constants {

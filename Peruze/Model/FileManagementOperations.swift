@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AsyncOpKit
 
 let WriteFileErrorDomain = "Error Writing File"
 let ReadFileErrorDomain = "Error Reading File"

@@ -9,7 +9,6 @@
 import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
-import MagicalRecord
 import CloudKit
 
 class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {

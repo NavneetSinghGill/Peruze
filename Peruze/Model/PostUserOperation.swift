@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 
 class PostUserOperation: Operation {
   let presentationContext: UIViewController

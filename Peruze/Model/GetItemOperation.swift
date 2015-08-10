@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MagicalRecord
 import CloudKit
 
 class GetItemInRangeOperation: GetItemOperation {

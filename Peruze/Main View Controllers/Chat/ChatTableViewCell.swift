@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class ChatTableViewCell: UITableViewCell {
   var data: NSManagedObject? {

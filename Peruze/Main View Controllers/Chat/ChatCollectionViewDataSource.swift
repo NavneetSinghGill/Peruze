@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import JSQMessagesViewController
-import MagicalRecord
 import CloudKit
 
 class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSource, NSFetchedResultsControllerDelegate {

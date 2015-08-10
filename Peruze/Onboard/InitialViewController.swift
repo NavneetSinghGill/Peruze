@@ -10,7 +10,6 @@ import UIKit
 import SystemConfiguration
 import FBSDKLoginKit
 import CloudKit
-import MagicalRecord
 
 class InitialViewController: UIViewController {
   

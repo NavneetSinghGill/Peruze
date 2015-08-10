@@ -3,4 +3,6 @@
 //
 #import "TGCameraViewController.h"
 #import "TGCameraColor.h"
+#import <MagicalRecord/MagicalRecord.h>
+#import <JSQMessagesViewController/JSQMessages.h>
 #define MR_SHORTHAND

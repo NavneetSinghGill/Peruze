@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import MagicalRecord
 
 /**
 Retrieves the reviews of the specified person and stores them in the `reviews` property for that
@@ -35,27 +34,31 @@ class GetReviewsOperation: Operation {
   }
   
   override func execute() {
-    print("Hit " + __FUNCTION__ + " in " + __FILE__)
     
     //create operation for fetching relevant records
-    let personReference = CKReference(recordID: personID, action: .None)
+    let personReference = CKReference(recordID: personID, action: CKReferenceAction.None)
     let getUploadsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
     let getUploadsQuery = CKQuery(recordType: RecordTypes.Review, predicate: getUploadsPredicate)
     let getUploadsOperation = CKQueryOperation(query: getUploadsQuery)
     
     getUploadsOperation.recordFetchedBlock = { (record) -> Void in
       
-      let localUpload = Item.findFirstOrCreateByAttribute("recordIDName",
+      let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
       
-      if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
-        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("me",
-          withValue: true,
-          inContext: self.context)
-      } else {
-        localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: record.creatorUserRecordID?.recordName,
-          inContext: self.context)
+      if let creator = record.creatorUserRecordID.recordName {
+        if creator == "__defaultOwner__" {
+          let localOwner = Person.MR_findFirstOrCreateByAttribute("me",
+            withValue: true,
+            inContext: self.context)
+          localUpload.setValue(localOwner, forKey: "owner")
+        } else {
+          let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+            withValue: record.creatorUserRecordID?.recordName,
+            inContext: self.context)
+          localUpload.setValue(localOwner, forKey: "owner")
+          
+        }
       }
       
       if let title = record.objectForKey("Title") as? String {

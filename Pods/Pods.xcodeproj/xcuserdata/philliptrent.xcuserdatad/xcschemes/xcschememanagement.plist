@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AsyncOpKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -39,50 +34,35 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Reachability.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>363E84DDBBC84733565871B7B8EBA229</key>
+		<key>3DB295A16F7709EA24867782AB668BDC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5689E320FC8ED516420516F1AE52A074</key>
+		<key>433066A4D4D20F56ED9BECA0D8FB3136</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D0189A9D9164FE5AE8D00213BAC8EF4</key>
+		<key>4D6FFD233FC2C5316545C11CE4722FBB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>614040F8838DA8495E656A77CB8DFFA9</key>
+		<key>A3F7B4D3FEB4B1DAAB641FC000CBF797</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8190B8920BBC7D05D635B60034FDAEB3</key>
+		<key>DE7293F29D970B3D4960096F2CBC92D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6441737A6859078785368A078238DCC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E6BB5899C6622B5C1BBCE7C478138F7B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F9CB06286E1B1E05646950A7DB5A39BB</key>
+		<key>F2C7CACA8C991BDC2EFAFEE4A11E9F1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

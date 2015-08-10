@@ -12,7 +12,6 @@ import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
 import CloudKit
-import MagicalRecord
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

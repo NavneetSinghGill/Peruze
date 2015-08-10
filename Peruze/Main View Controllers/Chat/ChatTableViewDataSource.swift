@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MagicalRecord
 
 class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
