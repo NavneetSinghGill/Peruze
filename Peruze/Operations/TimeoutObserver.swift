@@ -41,7 +41,7 @@ struct TimeoutObserver: OperationObserver {
           self.dynamicType.timeoutKey: self.timeout
           ])
         
-        operation.cancelWithError(error: error)
+        operation.cancelWithError(error)
       }
     }
   }

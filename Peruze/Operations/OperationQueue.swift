@@ -130,20 +130,4 @@ class OperationQueue: NSOperationQueue {
     }
     
   }
-  //Swift 2.0
-  //    override func addOperations(operations: [NSOperation], waitUntilFinished wait: Bool) {
-  //        /*
-  //            The base implementation of this method does not call `addOperation()`,
-  //            so we'll call it ourselves.
-  //        */
-  //        for operation in operations {
-  //            addOperation(operation)
-  //        }
-  //
-  //        if wait {
-  //            for operation in operations {
-  //              operation.waitUntilFinished()
-  //            }
-  //        }
-  //    }
 }
