@@ -103,6 +103,7 @@
 		9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
+		9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
 		9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */; };
 		9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */; };
@@ -154,7 +155,6 @@
 		9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2241B5B5D8A00D555F3 /* Message.swift */; };
 		9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2251B5B5D8A00D555F3 /* Review.swift */; };
 		9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */; };
-		9D45D2321B5B6BAC00D555F3 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */; };
 		9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */; };
 		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
@@ -304,6 +304,7 @@
 		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
 		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
 		9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemOperation.swift; sourceTree = "<group>"; };
 		9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateItemOperation.swift; sourceTree = "<group>"; };
@@ -360,7 +361,6 @@
 		9D45D2241B5B5D8A00D555F3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = NSManagedObjects/Message.swift; sourceTree = "<group>"; };
 		9D45D2251B5B5D8A00D555F3 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Review.swift; path = NSManagedObjects/Review.swift; sourceTree = "<group>"; };
 		9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFullProfileOperation.swift; sourceTree = "<group>"; };
-		9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
 		9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUploadsOperation.swift; sourceTree = "<group>"; };
 		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
@@ -719,8 +719,8 @@
 		9D3B34AC1B60182900EBFB87 /* Get */ = {
 			isa = PBXGroup;
 			children = (
+				9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */,
 				9D45D22F1B5B6B9100D555F3 /* GetFullProfileOperation.swift */,
-				9D45D2311B5B6BAC00D555F3 /* GetReviewsOperation.swift */,
 				9D45D2331B5B6BB900D555F3 /* GetUploadsOperation.swift */,
 				9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */,
 				9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */,
@@ -1113,7 +1113,6 @@
 				9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */,
 				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
 				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
-				9D45D2321B5B6BAC00D555F3 /* GetReviewsOperation.swift in Sources */,
 				9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */,
 				9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */,
 				9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */,
@@ -1126,6 +1125,7 @@
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
 				9D3EA1CE1B5DA68D005D63AC /* PhotosCondition.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
+				9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
 				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,

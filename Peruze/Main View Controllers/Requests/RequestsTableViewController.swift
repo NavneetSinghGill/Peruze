@@ -39,37 +39,28 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     //reload the data
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-    let fetchExchanges = GetOnlyRequestedExchangesOperation(
-      personRecordIDName: me.recordIDName!,
-      status: ExchangeStatus.Pending,
-      database: publicDB,
-      context: managedConcurrentObjectContext
-    )
-    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
-    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
-    let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
-    updateExchanges.completionBlock = {
-      //Swift 2.0
-      //      do {
-      //        try self.dataSource.fetchedResultsController.performFetch()
-      //        dispatch_async(dispatch_get_main_queue()){
-      //          self.tableView.reloadData()
-      //        }
-      //      } catch {
-      //        print(error)
-      //      }
-      var error: NSError?
-      self.dataSource.fetchedResultsController.performFetch(&error)
-      dispatch_async(dispatch_get_main_queue()){
-        self.tableView.reloadData()
-        self.refreshControl?.endRefreshing()
-      }
-    }
-    
-    fetchMissingItems.addDependency(fetchExchanges)
-    fetchMissingPeople.addDependency(fetchMissingItems)
-    updateExchanges.addDependency(fetchMissingPeople)
-    OperationQueue().addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
+//    let fetchExchanges = GetOnlyRequestedExchangesOperation(
+//      personRecordIDName: me.recordIDName!,
+//      status: ExchangeStatus.Pending,
+//      database: publicDB,
+//      context: managedConcurrentObjectContext
+//    )
+//    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
+//    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
+//    let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
+//    updateExchanges.completionBlock = {
+//      var error: NSError?
+//      self.dataSource.fetchedResultsController.performFetch(&error)
+//      dispatch_async(dispatch_get_main_queue()){
+//        self.tableView.reloadData()
+//        self.refreshControl?.endRefreshing()
+//      }
+//    }
+//    
+//    fetchMissingItems.addDependency(fetchExchanges)
+//    fetchMissingPeople.addDependency(fetchMissingItems)
+//    updateExchanges.addDependency(fetchMissingPeople)
+//    OperationQueue().addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
     
   }
   override func viewDidLayoutSubviews() {
@@ -103,23 +94,10 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     return [deny, accept]
   }
   
-  //  Swift 2.0
-  //  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-  //    let deny = denyEditAction()
-  //    let accept = acceptEditAction()
-  //    return [deny, accept]
-  //  }
-  
   private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       
       //get the recordIDName for the exchange at that index path
-      
-      //      Swift 2.0
-      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-      //        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-      //        return
-      //      }
       let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
@@ -132,16 +110,8 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //add completion
       operation.completionBlock = {
         dispatch_async(dispatch_get_main_queue()) {
-          // Swift 2.0
-          //          do{
-          //            try self.dataSource.fetchedResultsController.performFetch()
-          //            self.tableView.reloadData()
-          //          } catch {
-          //            print("Fetch threw an error. Not updating")
-          //            print(error)
-          //          }
-          var error: NSErrorPointer
-          self.dataSource.fetchedResultsController.performFetch(error)
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
           self.tableView.reloadData()
           print(error)
         }
@@ -151,15 +121,11 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       OperationQueue().addOperation(operation)
     }
   }
+  
   private func acceptEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       
       //get the recordIDName for the exchange at that index path
-      //      guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
-      //        assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
-      //        return
-      //      }
-      
       let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
       //create the operation
@@ -173,15 +139,8 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //add completion
       operation.completionBlock = { () -> Void in
         dispatch_async(dispatch_get_main_queue()) {
-          //          do{
-          //            try self.dataSource.fetchedResultsController.performFetch()
-          //            self.tableView.reloadData()
-          //          } catch {
-          //            print("Fetch threw an error. Not updating")
-          //            print(error)
-          //          }
-          var error: NSErrorPointer
-          self.dataSource.fetchedResultsController.performFetch(error)
+          var error: NSError?
+          self.dataSource.fetchedResultsController.performFetch(&error)
           self.tableView.reloadData()
           print(error)
         }
@@ -204,6 +163,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   func requestDenied(request: Exchange) {
     dataSource.deleteItemAtIndex(0)
   }
+  
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if let indexPath = sender as? NSIndexPath {
       if let destVC = segue.destinationViewController as? RequestsViewController {

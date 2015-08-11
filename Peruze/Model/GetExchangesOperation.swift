@@ -78,8 +78,6 @@ private class PersonIsCreator: GetExchangesOperation {
     let personIsCreator = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personRecordIDName))
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
     return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsCreator])
-    //Swift 2.0
-    //return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
   }
 }
 
@@ -87,8 +85,6 @@ private class PersonIsRequestedFrom: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    //Swift 2.0
-    //return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
     return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
   }
 }
@@ -99,12 +95,8 @@ Fetches only exchanges that are requested from you with the given exchange statu
 class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let person = Person.MR_findFirstByAttribute("recordIDName", withValue: personRecordIDName, inContext: context)
-    //Swift 2.0
-    //    guard let uploads = person.uploads where uploads.count != 0 else {
-    //      return NSPredicate(value: false)
-    //    }
     
-    if person.uploads?.count == 0 {
+    if person!.uploads!.count == 0 {
       return NSPredicate(value: false)
     }
     
@@ -112,9 +104,6 @@ class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
     return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
-    //Swift 2.0
-    //let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsBeingRequestedFrom])
-    //return compoundPredicate
   }
 }
 

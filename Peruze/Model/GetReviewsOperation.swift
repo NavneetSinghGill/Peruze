@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import CoreData
 
 /**
 Retrieves the reviews of the specified person and stores them in the `reviews` property for that
@@ -33,16 +34,17 @@ class GetReviewsOperation: Operation {
       super.init()
   }
   
+
+  
   override func execute() {
     
     //create operation for fetching relevant records
-    let personReference = CKReference(recordID: personID, action: CKReferenceAction.None)
+    let personReference     = CKReference(recordID: personID, action: CKReferenceAction.None)
     let getUploadsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
-    let getUploadsQuery = CKQuery(recordType: RecordTypes.Review, predicate: getUploadsPredicate)
+    let getUploadsQuery     = CKQuery(recordType: RecordTypes.Review, predicate: getUploadsPredicate)
     let getUploadsOperation = CKQueryOperation(query: getUploadsQuery)
-    
-    getUploadsOperation.recordFetchedBlock = { (record) -> Void in
-      
+
+    getUploadsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
       
@@ -53,11 +55,10 @@ class GetReviewsOperation: Operation {
             inContext: self.context)
           localUpload.setValue(localOwner, forKey: "owner")
         } else {
-          let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          let elseLocalOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
             withValue: record.creatorUserRecordID?.recordName,
             inContext: self.context)
-          localUpload.setValue(localOwner, forKey: "owner")
-          
+          localUpload.setValue(elseLocalOwner, forKey: "owner")
         }
       }
       
@@ -78,9 +79,9 @@ class GetReviewsOperation: Operation {
       }
       
       //save the context
-      self.context.MR_saveToPersistentStoreAndWait()
-      
+      //self.context.MR_saveToPersistentStoreAndWait()
     }
+    
     getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in
       self.finishWithError(error)
     }
