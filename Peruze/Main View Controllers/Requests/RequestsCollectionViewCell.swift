@@ -23,8 +23,8 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   //their item
   var exchange: Exchange? {
     didSet {
-      itemOfferedToUser = exchange?.itemOffered
-      itemRequestedFromUser = exchange?.itemRequested
+      itemOfferedToUser = exchange?.valueForKey("itemOffered") as? Item
+      itemRequestedFromUser = exchange?.valueForKey("itemRequested") as? Item
     }
   }
   private var itemOfferedToUser: Item? {
@@ -83,6 +83,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   @IBOutlet weak var confirmRequestImageView: UIImageView!
   private var cancelCircleView: CircleView?
   private var confirmCircleView: CircleView?
+  
   //bottom center
   @IBOutlet weak var aboutTheirItemLabel: UILabel!
   @IBOutlet weak var downArrowImageView: UIImageView!

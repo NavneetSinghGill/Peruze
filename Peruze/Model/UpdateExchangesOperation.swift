@@ -40,80 +40,72 @@ class UpdateAllExchangesOperation: Operation {
       }
     }
     
+    
     let fetchUpdatedExchanges = CKFetchRecordsOperation(recordIDs: allExchangesRecordIDs)
-    fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+    fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
       
-      //Swift 2.0
-//      guard let recordsByID = recordsByID else {
-//        self.finishWithError(error)
-//        return
-//      }
       if recordsByID == nil {
         self.finishWithError(error)
         return
       }
-      
-      for recordID in recordsByID.keys {
-        
-        //Swift 2.0
-//        guard let record = recordsByID[recordID] else {
-//          self.finishWithError(error)
-//          return
-//        }
-        let recordID = recordID as! CKRecordID
-        let record = recordsByID![recordID] as! CKRecord
-        
-        //find or create the record
-        let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
-          withValue: recordID.recordName,
-          inContext: self.context)
-        
-        //set creator
-        if let creatorIDName = record.creatorUserRecordID?.recordName {
-          if creatorIDName == "__defaultOwner__" {
-            localExchange.creator = Person.MR_findFirstOrCreateByAttribute("me",
-              withValue: true,
-              inContext: self.context)
-          } else {
-            localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-              withValue: creatorIDName,
-              inContext: self.context)
-          }
-        }
-        
-        
-        //set exchange status
-        if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int {
-          localExchange.status = NSNumber(integer: newExchangeStatus)
-        } else {
-          print("Exchange Status was not set!!!")
-        }
-        
-        //set date
-        if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
-          localExchange.date = localExchange.date ?? newDate
-        }
-        
-        //set item offered
-        if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
-          localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: itemOfferedReference.recordID.recordName,
-            inContext: self.context)
-        }
-        
-        //set item requested
-        if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
-          localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: itemRequestedReference.recordID.recordName,
-            inContext: self.context)
-        }
-        
-        self.context.MR_saveToPersistentStoreAndWait()
-      }
+      self.cycleThroughDictionary(recordsByID)
       self.finishWithError(error)
     }
     database.addOperation(fetchUpdatedExchanges)
   }
+  
+  private func cycleThroughDictionary(recordsByID: [NSObject: AnyObject]) {
+    for key in recordsByID.keys.array {
+
+      let recordID = key as! CKRecordID
+      let record = recordsByID[recordID] as! CKRecord
+      
+      //find or create the record
+      let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+        withValue: recordID.recordName,
+        inContext: self.context)
+
+      //set creator
+      if let creatorIDName = record.creatorUserRecordID?.recordName {
+        let defaultOwnerName = "__defaultOwner__"
+        if creatorIDName == defaultOwnerName {
+          let me = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
+          localExchange.setValue(me, forKey: "creator")
+        } else {
+          let creator = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: creatorIDName, inContext: self.context)
+          localExchange.setValue(creator, forKey: "creator")
+        }
+      }
+
+      //set exchange status
+      if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int {
+        localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
+      } else {
+        print("Exchange Status was not set!!!")
+      }
+
+      //set date
+      if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
+        localExchange.setValue(((localExchange.valueForKey("date") as? NSDate) ?? newDate), forKey: "date")
+      }
+  
+      //set item offered
+      if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
+        let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: itemOfferedReference.recordID.recordName, inContext: self.context)
+        localExchange.setValue(itemOffered, forKey: "itemOffered")
+      }
+      
+      //set item requested
+      if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
+        let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: itemRequestedReference, inContext: self.context)
+        localExchange.setValue(itemRequested, forKey: "itemRequested")
+      }
+      
+      self.context.MR_saveToPersistentStoreAndWait()
+
+    }
+  }
+  
 }
 /**
 Overrides the value of the current

@@ -121,7 +121,6 @@
 		9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */; };
 		9D3EA1BF1B5DA68D005D63AC /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */; };
 		9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */; };
-		9D3EA1C11B5DA68D005D63AC /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */; };
 		9D3EA1C21B5DA68D005D63AC /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */; };
 		9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */; };
 		9D3EA1C41B5DA68D005D63AC /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */; };
@@ -133,9 +132,6 @@
 		9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */; };
 		9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */; };
 		9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */; };
-		9D3EA1CD1B5DA68D005D63AC /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */; };
-		9D3EA1CE1B5DA68D005D63AC /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */; };
-		9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */; };
 		9D3EA1D01B5DA68D005D63AC /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */; };
 		9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */; };
 		9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */; };
@@ -322,7 +318,6 @@
 		9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Operations.swift"; path = "Peruze/Operations/Dictionary+Operations.swift"; sourceTree = SOURCE_ROOT; };
 		9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExclusivityController.swift; path = Peruze/Operations/ExclusivityController.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupOperation.swift; path = Peruze/Operations/GroupOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthCondition.swift; path = Peruze/Operations/HealthCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCondition.swift; path = Peruze/Operations/LocationCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationOperation.swift; path = Peruze/Operations/LocationOperation.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutuallyExclusive.swift; path = Peruze/Operations/MutuallyExclusive.swift; sourceTree = SOURCE_ROOT; };
@@ -334,9 +329,6 @@
 		9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationErrors.swift; path = Peruze/Operations/OperationErrors.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationObserver.swift; path = Peruze/Operations/OperationObserver.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationQueue.swift; path = Peruze/Operations/OperationQueue.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PassbookCondition.swift; path = Peruze/Operations/PassbookCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosCondition.swift; path = Peruze/Operations/PhotosCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReachabilityCondition.swift; path = Peruze/Operations/ReachabilityCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteNotificationCondition.swift; path = Peruze/Operations/RemoteNotificationCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SilentCondition.swift; path = Peruze/Operations/SilentCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Peruze/Operations/TimeoutObserver.swift; sourceTree = SOURCE_ROOT; };
@@ -916,16 +908,12 @@
 			children = (
 				9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */,
 				9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */,
-				9D3EA1A31B5DA68D005D63AC /* HealthCondition.swift */,
 				9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */,
 				9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */,
 				9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */,
 				9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */,
 				9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */,
 				9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */,
-				9D3EA1AF1B5DA68D005D63AC /* PassbookCondition.swift */,
-				9D3EA1B01B5DA68D005D63AC /* PhotosCondition.swift */,
-				9D3EA1B11B5DA68D005D63AC /* ReachabilityCondition.swift */,
 				9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */,
 				9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */,
 				9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */,
@@ -1123,7 +1111,6 @@
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
 				9D3EA1BD1B5DA68D005D63AC /* DelayOperation.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
-				9D3EA1CE1B5DA68D005D63AC /* PhotosCondition.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
 				9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
@@ -1150,7 +1137,6 @@
 				9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */,
 				9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */,
 				9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */,
-				9D3EA1C11B5DA68D005D63AC /* HealthCondition.swift in Sources */,
 				9D3EA1F81B5DFAC1005D63AC /* Review+CoreDataProperties.swift in Sources */,
 				9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */,
 				9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */,
@@ -1182,7 +1168,6 @@
 				9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */,
 				9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */,
 				9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */,
-				9D3EA1CD1B5DA68D005D63AC /* PassbookCondition.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
 				9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */,
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
@@ -1190,7 +1175,6 @@
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
 				9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */,
-				9D3EA1CF1B5DA68D005D63AC /* ReachabilityCondition.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
 				9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */,
 				9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */,

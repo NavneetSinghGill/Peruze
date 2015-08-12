@@ -4,16 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Bolts.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FBSDKCoreKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>JSQMessagesViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,32 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0AF44BE1D36F994D9028845B4EC48530</key>
+		<key>24952D6FF15C0796C33C987AE6BE0C54</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3DB295A16F7709EA24867782AB668BDC</key>
+		<key>285C7DB3FD5A769D214EC3AC3DC24DB0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4B6BD02B9718932FAE937FFA440BC8F7</key>
+		<key>33354F1D2E78ECE0575FF05FEBF14303</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5C15FD8763C2F0FEE21D08FE49F4906E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>947825B0DBCF2A3F963F712D3EBFA3AE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A2E73919A6B1213A4394093CFC18F86F</key>
+		<key>6AB81FEDA6A10256B2407ADDD22BB3CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

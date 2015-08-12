@@ -62,28 +62,33 @@ class ProfileViewController: UIViewController {
       personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
     }
     //setup the known information about the person
-    profileImageView.image = UIImage(data: personForProfile!.image!)
+    profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
     profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
     //TODO: set #ofStars
     
     //get the updated information for the profile
-    let completePerson = GetFullProfileOperation(personRecordID: CKRecordID(recordName: personForProfile!.recordIDName!)) {
-      dispatch_async(dispatch_get_main_queue()) {
-        let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.recordIDName!)
-        self.personForProfile = completeProfile
-        self.containerSpinner.stopAnimating()
-        UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (_) -> Void in
-          self.updateChildViewControllers()
+    let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
+    let completePersonRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
+    let completePerson = GetFullProfileOperation(
+      personRecordID: completePersonRecordID,
+      context: managedConcurrentObjectContext,
+      database: CKContainer.defaultContainer().publicCloudDatabase,
+      completionHandler: {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+          let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfileRecordID)
+          self.personForProfile = completeProfile
+          self.containerSpinner.stopAnimating()
+          UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
+            self.updateChildViewControllers()
+          })
         })
-      }
-    }
+    })
     OperationQueue().addOperation(completePerson)
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
-      done.tintColor = .redColor()
+      done.tintColor = UIColor.redColor()
       navigationItem.rightBarButtonItem = done
     }
-    
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
     reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
