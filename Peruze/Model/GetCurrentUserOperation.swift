@@ -31,7 +31,8 @@ class GetCurrentUserOperation: Operation {
     print("execute of Get Current User Operation")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     
-    fetchUser.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+    
+    fetchUser.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
       
       //make sure there were no errors
       if error != nil {
@@ -49,21 +50,29 @@ class GetCurrentUserOperation: Operation {
       }
       
       //save the records to the local DB
-      let recordID = recordsByID!.keys.first!
+      let recordID = recordsByID!.keys.array.first as! CKRecordID
       let person = Person.MR_findFirstOrCreateByAttribute("me",
         withValue: true,
         inContext: self.context)
       
       
       //set the returned properties
-      person.recordIDName = (recordID as! CKRecordID).recordName
-      person.firstName  = (person.valueForKey("firstName") as? String) ?? (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
-      person.lastName   = (person.valueForKey("lastName") as? String) ?? (recordsByID![recordID]!.objectForKey("LastName")   as? String)
-      person.facebookID = (person.valueForKey("facebookID")  as? String) ?? (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
+      let recordIDName = recordID.recordName
+      let firstName  = (person.valueForKey("firstName") as? String) ?? (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
+      let lastName   = (person.valueForKey("lastName") as? String) ?? (recordsByID![recordID]!.objectForKey("LastName")   as? String)
+      let facebookID = (person.valueForKey("facebookID")  as? String) ?? (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
+      
+      person.setValue(recordIDName, forKey: "recordIDName")
+      person.setValue(firstName, forKey: "firstName")
+      person.setValue(lastName, forKey: "lastName")
+      person.setValue(facebookID, forKey: "facebookID")
       
       //check for image property and set the data
-      if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-        person.image = person.image ?? NSData(contentsOfURL: imageAsset.fileURL)
+      if person.valueForKey("image") as? NSData != nil {
+        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
+          let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+          person.setValue(imageData, forKey: "image")
+        }
       }
       
       //check for favorites
@@ -72,13 +81,15 @@ class GetCurrentUserOperation: Operation {
           Item.MR_findFirstOrCreateByAttribute("recordIDName",
             withValue: $0.recordID.recordName , inContext: self.context)
         }
-        person.favorites = NSSet(array: favorites)
+        let favoritesSet = NSSet(array: favorites)
+        person.setValue(favoritesSet, forKey: "favorites")
       }
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
       self.finish()
     }
+    
     
     //add operation to the cloud kit database
     database.addOperation(fetchUser)

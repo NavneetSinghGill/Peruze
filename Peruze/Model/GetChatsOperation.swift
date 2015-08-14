@@ -68,16 +68,6 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     //Get all accepted exchanges from the database
     let exchangesPredicate = NSPredicate(format: "status = %@"/*" && recordIDName != nil"*/, NSNumber(integer: ExchangeStatus.Accepted.rawValue))
     
-    //Swift 2.0
-    //    guard let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
-    //      ascending: true,
-    //      withPredicate: exchangesPredicate,
-    //      inContext: context) as? [NSManagedObject] else {
-    //        print("Error: Accepted Exchanges were not [NSManagedObject]")
-    //        self.finish()
-    //        return
-    //    }
-    
     let acceptedExchanges = Exchange.MR_findAllSortedBy("recordIDName",
       ascending: true,
       withPredicate: exchangesPredicate,
@@ -110,43 +100,45 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     
     
     //Add the messages to the database and save the context
-    messagesQueryOp.recordFetchedBlock = { (record) -> Void in
+    messagesQueryOp.recordFetchedBlock = { (record: CKRecord!) -> Void in
       
       let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
       
       if let messageText = record.objectForKey("Text") as? String {
-        localMessage.text = messageText
+        localMessage.setValue(messageText, forKey: "text")
       }
       
       if let messageImage = record.objectForKey("Image") as? CKAsset {
-        localMessage.image = NSData(contentsOfURL: messageImage.fileURL)
+        localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
       }
       
-      localMessage.date = record.objectForKey("Date") as? NSDate
+      localMessage.setValue(record.objectForKey("Date") as? NSDate, forKey: "date")
       
       if let exchange = record.objectForKey("Exchange") as? CKReference {
         let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: exchange.recordID.recordName,
           inContext: self.context)
-        localMessage.exchange = messageExchange
+        localMessage.setValue(messageExchange, forKey: "exchange")
       }
       
       if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
-        localMessage.sender = Person.MR_findFirstOrCreateByAttribute("me",
+        let sender = Person.MR_findFirstOrCreateByAttribute("me",
           withValue: true,
           inContext: self.context)
+        localMessage.setValue(sender, forKey: "sender")
       } else {
-        localMessage.sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+        let sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: record.creatorUserRecordID?.recordName,
           inContext: self.context)
+        localMessage.setValue(sender, forKey: "sender")
       }
       
       self.context.MR_saveToPersistentStoreAndWait()
     }
     
     //Finish this operation
-    messagesQueryOp.queryCompletionBlock = { (cursor, error) -> Void in
+    messagesQueryOp.queryCompletionBlock = { (cursor: CKQueryCursor!, error: NSError!) -> Void in
       if error != nil {
         print("Get Chats For Accepted Exchanges Operation Finished with error: ")
         print(error)

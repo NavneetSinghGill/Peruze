@@ -8,7 +8,6 @@
 
 import UIKit
 import SystemConfiguration
-import FBSDKLoginKit
 import CloudKit
 
 class InitialViewController: UIViewController {

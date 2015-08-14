@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
-import FBSDKCoreKit
 
 class OnboardViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, FBSDKLoginButtonDelegate {
     

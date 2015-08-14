@@ -8,9 +8,6 @@
 //
 
 import UIKit
-import FBSDKCoreKit
-import FBSDKShareKit
-import FBSDKLoginKit
 import CloudKit
 
 @UIApplicationMain

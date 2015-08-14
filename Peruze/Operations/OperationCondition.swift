@@ -53,11 +53,6 @@ enum OperationConditionResult {
   case Satisfied
   case Failed(NSError)
   
-  //Swift 2.0
-  //    if case .Failed(let error) = self {
-  //    return error
-  //    }
-  
   var error: NSError? {
     switch self {
     case .Failed(let error) :
@@ -78,8 +73,6 @@ struct OperationConditionEvaluator {
     
     // Ask each condition to evaluate and store its result in the "results" array.
     
-    //Swift 2.0
-    //for (index, condition) in conditions/*.enumerate() */{
     for index in 0..<conditions.count {
       let condition = conditions[index]
       dispatch_group_enter(conditionGroup)
@@ -92,11 +85,12 @@ struct OperationConditionEvaluator {
     // After all the conditions have evaluated, this block will execute.
     dispatch_group_notify(conditionGroup, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
       // Aggregate the errors that occurred, in order.
-      
-      //Swift 2.0
-      //var failures = results.flatMap { $0?.error }
-      var failures = results.map { $0!.error! }
-      
+      var failures = [NSError]()
+      for result in results {
+        if let resultError =  result?.error{
+          failures.append(resultError)
+        }
+      }
       /*
       If any of the conditions caused this operation to be cancelled,
       check for that.

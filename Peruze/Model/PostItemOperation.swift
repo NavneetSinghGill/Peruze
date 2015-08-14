@@ -27,14 +27,15 @@ class PostItemOperation: GroupOperation {
       //create the record if it doesn't exist
       let itemImageData = UIImagePNGRepresentation(image)
       let tempItem = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: recordIDName, inContext: context)
-      tempItem.image = itemImageData
-      tempItem.title = title
-      tempItem.detail = detail
-      tempItem.recordIDName = recordIDName ?? "tempID"
+      tempItem.setValue(itemImageData, forKey: "image")
+      tempItem.setValue(title, forKey: "title")
+      tempItem.setValue(detail, forKey: "detail")
+      tempItem.setValue((recordIDName ?? "tempID"), forKey: "recordIDName")
+
       context.MR_saveToPersistentStoreAndWait()
       
       let item = Item.MR_findFirstByAttribute("recordIDName", withValue: recordIDName ?? "tempID", inContext: context)
-      item.recordIDName = recordIDName
+      item.setValue(recordIDName, forKey: "recordIDName")
       
       /*
       This operation is made of four child operations:
@@ -47,10 +48,7 @@ class PostItemOperation: GroupOperation {
       let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy) { (location) -> Void in
         //save latitude and longitude to item and self
         
-        //Swift 2.0
-        //do {
-        //let localItem = try context.existingObjectWithID(item.objectID)
-        
+      
         var error: NSError?
         let localItem: NSManagedObject! = context.existingObjectWithID(item.objectID, error: &error)
         if error != nil {
@@ -63,10 +61,7 @@ class PostItemOperation: GroupOperation {
         localMe.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
         localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
         context.MR_saveToPersistentStoreAndWait()
-        //        } catch {
-        //          print("There was an error in getLocationOp completion: \(error)")
-        //        }
-        
+
       }
       let saveItemOp = SaveItemInfoToLocalStorageOperation(
         title: title,
@@ -153,29 +148,32 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   override func execute() {
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
-    //Swift 2.0
-    //do {
-    let error: NSError?
+    
+    var error: NSError?
     let itemToSave: NSManagedObject! = context.existingObjectWithID(objectID, error: &error)
-    //let itemToSave = try context.existingObjectWithID(objectID)
     
     if error != nil {
+      finishWithError(error)
       return
     }
     
     
     //update server storage
     let recordIDName = itemToSave.valueForKey("recordIDName") as? String
-    let itemRecord = recordIDName == nil ? CKRecord(recordType: RecordTypes.Item) :
-      CKRecord(recordType: RecordTypes.Item, recordID: CKRecordID(recordName: recordIDName!))
-    
+    var itemRecord: CKRecord
+    if recordIDName == nil {
+      itemRecord = CKRecord(recordType: RecordTypes.Item)
+    } else {
+      itemRecord = CKRecord(recordType: RecordTypes.Item, recordID: CKRecordID(recordName: recordIDName!))
+    }
+
     //set immediately available keys
     let itemTitle = itemToSave.valueForKey("title") as? String
     let itemDetail = itemToSave.valueForKey("detail") as? String
     
     itemRecord.setObject(itemTitle, forKey: "Title")
     itemRecord.setObject(itemDetail, forKey: "Description")
-    itemRecord.setObject(me.facebookID, forKey: "OwnerFacebookID")
+    itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
     
     //retrieve location
     if let itemLat = itemToSave.valueForKey("latitude") as? NSNumber,
@@ -201,20 +199,13 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       //print any returned errors
       if error != nil { print("UploadItem returned error: \(error)") }
       
-      //delete the temporary image file
-      //        do {
-      //          try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
-      //        } catch {
-      //          print("file deletion returned error: \(error)")
-      //        }
-      
       var deletionError: NSError?
       NSFileManager.defaultManager().removeItemAtPath(imageURL!.path!, error: &deletionError)
       if deletionError != nil {
         print(deletionError)
         return
       }
-      
+
       if let first = savedRecords?.first as? CKRecord {
         itemToSave.setValue(first.recordID.recordName, forKey: "recordIDName")
       }
@@ -222,12 +213,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       self.context.MR_saveToPersistentStoreAndWait()
       self.finishWithError(error)
     }
-    
     database.addOperation(saveItemRecordOp)
-    
-    //    } catch {
-    //      print("Fetching object with ID threw error: \(error)")
-    //    }
   }
   
   private func cachePathForFileName(name: String) -> String {

@@ -29,18 +29,26 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   }
   private var itemOfferedToUser: Item? {
     didSet {
-      if let item = itemOfferedToUser {
-        profilePicture.image = UIImage(data: item.owner!.image!)
-        profileName.text = item.owner!.formattedName
-        theirItemImageView.image = UIImage(data: item.image!)
-        forTheirLabel.text = "for \(item.owner!.firstName)'s"
-        aboutTheirItemLabel.text = "About \(item.title)"
-        theirItemNameLabel.text = item.title
+      if
+        let item = itemOfferedToUser,
+        let owner = item.valueForKey("owner") as? NSManagedObject,
+        let ownerImageData = owner.valueForKey("image") as? NSData,
+        let itemImageData = item.valueForKey("image") as? NSData,
+        let ownerName = owner.valueForKey("firstName") as? String,
+        let itemTitle = item.valueForKey("title") as? String,
+      let itemDescription = item.valueForKey("detail") as? String
+      {
+        profilePicture.image = UIImage(data: ownerImageData)
+        profileName.text = ownerName
+        theirItemImageView.image = UIImage(data: itemImageData)
+        forTheirLabel.text = "for \(ownerName)'s"
+        aboutTheirItemLabel.text = "About \(itemTitle)"
+        theirItemNameLabel.text = itemTitle
         theirItemDescription.numberOfLines = 0
         theirItemDescription.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-        theirItemDescription.text = item.description
-        theirSquareItemImageView.contentMode =  .ScaleAspectFill
-        theirSquareItemImageView.image = UIImage(data: item.image!)
+        theirItemDescription.text = itemDescription
+        theirSquareItemImageView.contentMode =  UIViewContentMode.ScaleAspectFill
+        theirSquareItemImageView.image = UIImage(data: itemImageData)
         setNeedsDisplay()
       }
     }
@@ -50,9 +58,12 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   private var itemRequestedFromUser: Item? {
     didSet {
       if let item = itemRequestedFromUser {
-        yourItemImageView.image = UIImage(data: item.image!)
-        yourItemNameLabel.text = item.title
+        if let imageData = item.valueForKey("image") as? NSData {
+          yourItemImageView.image = UIImage(data: imageData)
+        }
+        yourItemNameLabel.text = item.valueForKey("title") as? String
         setNeedsDisplay()
+        
       }
     }
   }

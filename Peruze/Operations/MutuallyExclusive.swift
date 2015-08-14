@@ -9,7 +9,7 @@ This file shows an example of implementing the OperationCondition protocol.
 import Foundation
 
 /// A generic condition for describing kinds of operations that may not execute concurrently.
-struct MutuallyExclusive<T>: OperationCondition {
+struct MutuallyExclusive <T>: OperationCondition {
     static var name: String { 
         return "MutuallyExclusive<\(T.self)>"
     }

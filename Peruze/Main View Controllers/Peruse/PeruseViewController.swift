@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
-import FBSDKCoreKit
 import CloudKit
 
 class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {

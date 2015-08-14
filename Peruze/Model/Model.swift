@@ -8,7 +8,6 @@
 
 import UIKit
 import CloudKit
-import FBSDKLoginKit
 
 struct NotificationCenterKeys {
   static let PeruzeItemsDidFinishUpdate = "PeruseItemsDidFinishUpdate"

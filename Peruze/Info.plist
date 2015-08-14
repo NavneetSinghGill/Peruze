@@ -32,11 +32,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0</string>
+	<string>3</string>
 	<key>FacebookAppID</key>
 	<string>779996698766247</string>
 	<key>FacebookDisplayName</key>
 	<string>Peruze</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbauth</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -58,9 +62,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbauth</string>
-  </array>
 </dict>
 </plist>

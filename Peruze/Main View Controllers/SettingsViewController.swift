@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
 import CoreLocation
 
 class SettingsViewController: UITableViewController, FacebookProfilePictureRetrievalDelegate {

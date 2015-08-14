@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
-import FBSDKCoreKit
 
 protocol FacebookProfilePictureRetrievalDelegate {
   var profileImages: [UIImage]? { get set }

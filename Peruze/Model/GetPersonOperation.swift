@@ -13,16 +13,9 @@ class GetPersonOperation: Operation {
   let personID: CKRecordID
   let database: CKDatabase
   let context: NSManagedObjectContext
-  
-  init(recordID: CKRecordID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    self.personID = recordID
-    self.database = database
-    self.context = context
-    super.init()
-  }
   /**
-  - parameter itemIDName: A valid recordIDName whose owner corresponds to the person
-  that you wish to fetch
+  - parameter recordID: A valid recordIDName that corresponds to the person
+  whom you wish to fetch
   - parameter database: The database to place the fetch request on
   - parameter context: The `NSManagedObjectContext` that will be used as the
   basis for importing data. The operation will internally
@@ -30,25 +23,35 @@ class GetPersonOperation: Operation {
   to the same `NSPersistentStoreCoordinator` as the
   passed-in context.
   */
-  init(itemIDName: String, database: CKDatabase, context: NSManagedObjectContext? = managedConcurrentObjectContext) {
+  init(recordID: CKRecordID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    self.personID = recordID
     self.database = database
-    self.context = context!
-    let item = Item.MR_findFirstByAttribute("recordIDName", withValue: itemIDName)
-    personID = CKRecordID(recordName: item.owner!.recordIDName!)
+    self.context = context
     super.init()
   }
   
   override func execute() {
-    print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    
     //figure out what keys need to be fetched
     let person = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: personID.recordName, inContext: context)
-    var desiredKeys = [String]()
-    desiredKeys += (person.firstName  == nil ? ["FirstName"]  : [])
-    desiredKeys += (person.lastName   == nil ? ["LastName"]   : [])
-    desiredKeys += (person.image      == nil ? ["Image"]      : [])
-    desiredKeys += (person.facebookID == nil ? ["FacebookID"] : [])
-    desiredKeys += ["FavoriteItems"]
+    var desiredKeys: [String] = []
+    
+    if (person.valueForKey("firstName") as? String) == nil {
+      desiredKeys.append("FirstName")
+    }
+    
+    if (person.valueForKey("lastName") as? String) == nil {
+      desiredKeys.append("LastName")
+    }
+    
+    if (person.valueForKey("image") as? NSData) == nil {
+      desiredKeys.append("Image")
+    }
+    
+    if (person.valueForKey("facebookID") as? String) == nil {
+      desiredKeys.append("FacebookID")
+    }
+    
+    desiredKeys.append("FavoriteItems")
     
     //if the person is complete, finish and return
     if desiredKeys.count == 0 {
@@ -59,35 +62,44 @@ class GetPersonOperation: Operation {
     //create operation for fetching relevant records
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: [personID])
     getPersonOperation.desiredKeys = desiredKeys
-    getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      if error != nil {
-        self.finishWithError(error)
-      } else {
-        //add person to the database
-        for recordID in recordsByID!.keys {
-          let recordID = recordID as! CKRecordID
+    getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, opError: NSError!) -> Void in
+      
+      //add person to the database
+      let keysArray = recordsByID.keys.array
+      for key in keysArray {
+        
+        if let recordID = key as? CKRecordID {
+          
           //fetch each person with the returned ID
           var localPerson = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
-          localPerson = localPerson ?? Person.MR_findFirstOrCreateByAttribute("me",
-            withValue: true,
-            inContext: self.context)
+          if localPerson == nil {
+            localPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: self.context)
+          }
           
           //set the returned properties
-          localPerson.recordIDName = recordID.recordName
-          localPerson.firstName  = localPerson.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
-          localPerson.lastName   = localPerson.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
-          localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
-          
-          //check for image property and set the data
-          if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-            localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
+          localPerson.setValue(recordID.recordName, forKey: "recordIDName")
+          /*
+          if (localPerson.valueForKey("firstName") as? String) == nil {
+            localPerson.firstName = recordsByID[recordID]!.objectForKey("FirstName") as? String
           }
+          if (localPerson.valueForKey("lastName") as? String) == nil {
+            localPerson.firstName = recordsByID[recordID]!.objectForKey("LastName") as? String
+          }
+          if (localPerson.valueForKey("facebookID") as? String) == nil {
+            localPerson.firstName = recordsByID[recordID]!.objectForKey("FacebookID") as? String
+          }
+          //check for image property and set the data
+          if let imageAsset = recordsByID[recordID]?.objectForKey("Image") as? CKAsset {
+            localPerson.image = NSData(contentsOfURL: imageAsset.fileURL)
+          }
+          */
           self.context.MR_saveToPersistentStoreAndWait()
+
         }
-        
-        //because the operations inside of the block wait, we can call finish outside of the block
-        self.finish()
+
       }
+      //because the operations inside of the block wait, we can call finish outside of the block
+      self.finishWithError(opError)
     }
     
     //add that operation to the operationQueue of self.database
@@ -110,19 +122,14 @@ class GetAllPersonsWithMissingData: Operation {
     
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
-//    guard let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as? [NSManagedObject] else {
-//      print("Get All Persons With Missing Data Finished Prematurely")
-//      self.finish()
-//      return
-//    }
+    
     let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as! [NSManagedObject]
     let allMissingPersonsRecordNameID = allMissingPersons.map { $0.valueForKey("recordIDName") as? String }
     let desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
     var missingPersonsRecordIDs = [CKRecordID]()
-    //for recordIDName in allMissingPersonsRecordNameID where recordIDName != nil {
     for recordIDName in allMissingPersonsRecordNameID {
       if recordIDName != nil {
-      missingPersonsRecordIDs.append(CKRecordID(recordName: recordIDName!))
+        missingPersonsRecordIDs.append(CKRecordID(recordName: recordIDName!))
       }
     }
     
@@ -130,54 +137,55 @@ class GetAllPersonsWithMissingData: Operation {
       self.finish()
       return
     }
-    
+    /*
     //create operation for fetching relevant records
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: missingPersonsRecordIDs)
     getPersonOperation.desiredKeys = desiredKeys
     getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      if error != nil {
-        print("Get All Persons With Missing Data Finished With Error: \(error!)")
-        
-      }
-      for recordID in recordsByID!.keys {
-        //add person to the database
-        
-        //fetch each person with the returned ID
-        let recordID = recordID as! CKRecordID
-        var localPerson: Person!
-        if recordID.recordName == "__defaultOwner__" {
-          localPerson = Person.MR_findFirstOrCreateByAttribute("me",
-            withValue: true,
-            inContext: self.context)
-        } else {
-          localPerson = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: recordID.recordName,
-            inContext: self.context)
-        }
-        
-        //set the returned properties
-        localPerson.firstName  = localPerson.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
-        localPerson.lastName   = localPerson.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
-        localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
-        
-        //check for image property and set the data
-        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-          localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
-        }
-        print("Person recordIDName: \(localPerson.recordIDName)")
-        print("Person firstName: \(localPerson.firstName)")
-        print("Person lastName: \(localPerson.lastName)")
-        print("Person facebookID: \(localPerson.facebookID)")
-        
-        self.context.MR_saveToPersistentStoreAndWait()
-      }
-      
-      //because the operations inside of the block wait, we can call finish outside of the block
-      self.finishWithError(error)
-      
+    if error != nil {
+    print("Get All Persons With Missing Data Finished With Error: \(error!)")
+    
+    }
+    for recordID in recordsByID!.keys {
+    //add person to the database
+    
+    //fetch each person with the returned ID
+    let recordID = recordID as! CKRecordID
+    var localPerson: Person!
+    if recordID.recordName == "__defaultOwner__" {
+    localPerson = Person.MR_findFirstOrCreateByAttribute("me",
+    withValue: true,
+    inContext: self.context)
+    } else {
+    localPerson = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+    withValue: recordID.recordName,
+    inContext: self.context)
+    }
+    
+    //set the returned properties
+    localPerson.firstName  = localPerson.firstName  ?? recordsByID![recordID]!.objectForKey("FirstName")  as? String
+    localPerson.lastName   = localPerson.lastName   ?? recordsByID![recordID]!.objectForKey("LastName")   as? String
+    localPerson.facebookID = localPerson.facebookID ?? recordsByID![recordID]!.objectForKey("FacebookID") as? String
+    
+    //check for image property and set the data
+    if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
+    localPerson.image = localPerson.image ?? NSData(contentsOfURL: imageAsset.fileURL)
+    }
+    print("Person recordIDName: \(localPerson.recordIDName)")
+    print("Person firstName: \(localPerson.firstName)")
+    print("Person lastName: \(localPerson.lastName)")
+    print("Person facebookID: \(localPerson.facebookID)")
+    
+    self.context.MR_saveToPersistentStoreAndWait()
+    }
+    
+    //because the operations inside of the block wait, we can call finish outside of the block
+    self.finishWithError(error)
+    
     }
     
     //add that operation to the operationQueue of self.database
     self.database.addOperation(getPersonOperation)
+    */
   }
 }

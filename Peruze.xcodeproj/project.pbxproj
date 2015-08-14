@@ -132,12 +132,10 @@
 		9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */; };
 		9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */; };
 		9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */; };
-		9D3EA1D01B5DA68D005D63AC /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */; };
 		9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */; };
 		9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */; };
 		9D3EA1D31B5DA68D005D63AC /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */; };
 		9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */; };
-		9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */; };
 		9D3EA1F41B5DFAC1005D63AC /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1EE1B5DFAC1005D63AC /* Message+CoreDataProperties.swift */; };
 		9D3EA1F51B5DFAC1005D63AC /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1EF1B5DFAC1005D63AC /* Person+CoreDataProperties.swift */; };
 		9D3EA1F61B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1F01B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift */; };
@@ -155,6 +153,7 @@
 		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
+		9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D58BF431B7BD7F2006C40FC /* CoreData.framework */; };
 		9D5C24C01B792552009E988E /* AsyncClosuresOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */; };
 		9D5C24C11B792552009E988E /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BD1B792552009E988E /* AsyncOperation.swift */; };
 		9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BF1B792552009E988E /* AsyncOpKit.swift */; };
@@ -295,9 +294,6 @@
 		9D177B741B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TGPhotoViewController.xib; sourceTree = "<group>"; };
 		9D177B761B54DDC3009CB9FA /* TGCameraViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TGCameraViewController.bundle; sourceTree = "<group>"; };
 		9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TGCameraViewController.xcassets; sourceTree = "<group>"; };
-		9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
@@ -329,12 +325,10 @@
 		9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationErrors.swift; path = Peruze/Operations/OperationErrors.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationObserver.swift; path = Peruze/Operations/OperationObserver.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationQueue.swift; path = Peruze/Operations/OperationQueue.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteNotificationCondition.swift; path = Peruze/Operations/RemoteNotificationCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SilentCondition.swift; path = Peruze/Operations/SilentCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Peruze/Operations/TimeoutObserver.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIUserNotifications+Operations.swift"; path = "Peruze/Operations/UIUserNotifications+Operations.swift"; sourceTree = SOURCE_ROOT; };
 		9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionTaskOperation.swift; path = Peruze/Operations/URLSessionTaskOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserNotificationCondition.swift; path = Peruze/Operations/UserNotificationCondition.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1EE1B5DFAC1005D63AC /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "NSManagedObjects/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D3EA1EF1B5DFAC1005D63AC /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Person+CoreDataProperties.swift"; path = "NSManagedObjects/Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D3EA1F01B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataProperties.swift"; path = "NSManagedObjects/Exchange+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -357,6 +351,7 @@
 		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
+		9D58BF431B7BD7F2006C40FC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncClosuresOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncClosuresOperation.swift; sourceTree = SOURCE_ROOT; };
 		9D5C24BD1B792552009E988E /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncOperation.swift; sourceTree = SOURCE_ROOT; };
 		9D5C24BE1B792552009E988E /* AsyncOpKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncOpKit.h; path = Peruze/Model/AsyncOpKit/AsyncOpKit.h; sourceTree = SOURCE_ROOT; };
@@ -373,6 +368,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */,
 				9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */,
 				5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */,
 			);
@@ -400,9 +396,7 @@
 		09319F61AB54682857F4A9F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9D177BDC1B54DE92009CB9FA /* FBSDKCoreKit.framework */,
-				9D177BDD1B54DE92009CB9FA /* FBSDKLoginKit.framework */,
-				9D177BDE1B54DE92009CB9FA /* FBSDKShareKit.framework */,
+				9D58BF431B7BD7F2006C40FC /* CoreData.framework */,
 				9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */,
 				FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */,
 			);
@@ -914,9 +908,7 @@
 				9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */,
 				9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */,
 				9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */,
-				9D3EA1B21B5DA68D005D63AC /* RemoteNotificationCondition.swift */,
 				9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */,
-				9D3EA1B71B5DA68D005D63AC /* UserNotificationCondition.swift */,
 			);
 			name = Conditions;
 			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
@@ -1118,7 +1110,6 @@
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
 				9D3EA1C71B5DA68D005D63AC /* NSOperation+Operations.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
-				9D3EA1D01B5DA68D005D63AC /* RemoteNotificationCondition.swift in Sources */,
 				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
 				9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
@@ -1165,7 +1156,6 @@
 				9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
 				9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */,
-				9D3EA1D51B5DA68D005D63AC /* UserNotificationCondition.swift in Sources */,
 				9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */,
 				9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,

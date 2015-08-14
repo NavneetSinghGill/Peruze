@@ -23,16 +23,10 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   override init() {
     super.init()
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-    //Swift 2.0
-    //    guard let myRecordID = myPerson.valueForKey("recordIDName") as? String else {
-    //      return
-    //    }
     let myRecordID = myPerson.valueForKey("recordIDName") as! String
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    //Swift 2.0
-    //let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
     let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, myRequestedPredicate])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
@@ -42,13 +36,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     var error: NSError?
     fetchedResultsController.performFetch(&error)
     if error != nil { print(error) }
-    
-    //    do {
-    //    try fetchedResultsController.performFetch()
-    //    } catch {
-    //      print(error)
-    //      //TODO: Actually handle this error
-    //    }
     
   }
   
@@ -75,23 +62,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.TableViewReuseIdentifier, forIndexPath: indexPath) as! ProfileExchangesTableViewCell
     
     //get exchange
-    let exchange = fetchedResultsController.objectAtIndexPath(indexPath)
-    
-    //make sure that all the values are present
-    //Swift 2.0
-    //    guard
-    //    let myItem = exchange.valueForKey("itemRequested") as? NSManagedObject,
-    //    let myItemTitle = myItem.valueForKey("title") as? String,
-    //    let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
-    //    let theirItemTitle = theirItem.valueForKey("title") as? String,
-    //    let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
-    //    let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
-    //    let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
-    //    let theirItemImage = theirItem.valueForKey("image") as? NSData,
-    //    let myItemImage = myItem.valueForKey("image") as? NSData
-    //    else {
-    //      return errorCell()
-    //    }
+    let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
     
     let myItem = exchange.valueForKey("itemRequested") as! NSManagedObject
     let myItemTitle = myItem.valueForKey("title") as! String
@@ -176,25 +147,6 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       break
     }
   }
-  //Swift 2.0
-  //  func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-  //    switch type {
-  //    case .Insert:
-  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      break
-  //    case .Delete:
-  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      break
-  //    case .Update:
-  //      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      break
-  //    case .Move:
-  //      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-  //      break
-  //    }
-  //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
@@ -202,25 +154,16 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   //MARK: - Editing Data
   func deleteItemAtIndex(index: Int) -> Exchange {
-    //Swift 2.0
-    //    guard let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as? Exchange  else {
-    //      assertionFailure("The item returned at the given index was not an exchange")
-    //      abort()
-    //    }
-    let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as! Exchange
-    retValue.status = ExchangeStatus.Denied.rawValue
-    return retValue
+    let retValue = fetchedResultsController.objectAtIndexPath(NSIndexPath(forItem: index, inSection: 0)) as! NSManagedObject
+    retValue.setValue(NSNumber(integer: ExchangeStatus.Denied.rawValue), forKey: "status")
+    let exchangeVal = retValue as! Exchange
+    return exchangeVal
   }
   
   func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
     let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
-    //Swift 2.0
-    //    guard let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as? Exchange  else {
-    //      assertionFailure("The item returned at the given index was not an exchange")
-    //      abort()
-    //    }
-    let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! Exchange
-    retValue.status = ExchangeStatus.Denied.rawValue
+    let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! NSManagedObject
+    retValue.setValue(NSNumber(integer: ExchangeStatus.Denied.rawValue), forKey: "status")
     return retIndexPath!
   }
 }

@@ -90,12 +90,12 @@ class SaveMessageWithTempRecordIDOperation: Operation {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     let newMessage = Message.MR_createEntityInContext(managedConcurrentObjectContext)
     let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName, inContext: context)
-    newMessage.date = date
-    newMessage.text = text
-    newMessage.sender = me
-    newMessage.recordIDName = tempID
-    newMessage.exchange = exchange
-    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+    newMessage.setValue(date, forKey: "date")
+    newMessage.setValue(text, forKey: "text")
+    newMessage.setValue(me, forKey: "sender")
+    newMessage.setValue(tempID, forKey: "recordIDName")
+    newMessage.setValue(exchange, forKey: "exchange")
+    context.MR_saveToPersistentStoreAndWait()
     finish()
   }
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import CoreData
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float?
@@ -23,16 +24,17 @@ class GetItemInRangeOperation: GetItemOperation {
     
     //create predicates
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: me.recordIDName!))
+    let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
+    let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
     let everywhereLocation = NSPredicate(value: true)
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
       location,
-      range ?? 0)
+      (range ?? 0))
     
     //choose and concatenate predicates
-    let locationPredicate = range == nil ? everywhereLocation : specificLocation
-    let othersInRange = NSCompoundPredicate(type: .AndPredicateType, subpredicates: [locationPredicate, notMyItemsPredicate])
+    let locationPredicate = ((range == nil) ? everywhereLocation : specificLocation)
+    let othersInRange = NSCompoundPredicate.andPredicateWithSubpredicates([locationPredicate, notMyItemsPredicate])
     return othersInRange
   }
 }
@@ -50,52 +52,51 @@ class GetItemOperation: Operation {
   override func finished(errors: [NSError]) {
     NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
-  override func execute() {
-    print("Hit " + __FUNCTION__ + " in " + __FILE__)
-    
+  override func execute() {    
     //create operation for fetching relevant records
     let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
     let getItemsOperation = CKQueryOperation(query: getItemQuery)
     
-    getItemsOperation.recordFetchedBlock = { (record) -> Void in
-      print(record)
-      
+    getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
-      localUpload.recordIDName = record.recordID.recordName
+      localUpload.setValue(record.recordID.recordName, forKey: "recordIDName")
       
-      if let ownerRecordIDName = record.creatorUserRecordID?.recordName {
-        
-        if ownerRecordIDName == "__defaultOwner__" {
-          localUpload.owner = Person.MR_findFirstOrCreateByAttribute("me",
-            withValue: true,
-            inContext: self.context)
-        } else {
-          localUpload.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: ownerRecordIDName,
-            inContext: self.context)
-        }
-        
-        if let title = record.objectForKey("Title") as? String {
-          localUpload.title = title
-        }
-        
-        if let detail = record.objectForKey("Description") as? String {
-          localUpload.detail = detail
-        }
-        
-        if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
-          localUpload.ownerFacebookID = ownerFacebookID
-        }
-        
-        if let imageAsset = record.objectForKey("Image") as? CKAsset {
-          localUpload.image = NSData(contentsOfURL: imageAsset.fileURL)
-        }
-        
-        //save the context
-        self.context.MR_saveToPersistentStoreAndWait()
+      let ownerRecordIDName = record.creatorUserRecordID.recordName
+      
+      if ownerRecordIDName == "__defaultOwner__" {
+        let owner = Person.MR_findFirstOrCreateByAttribute("me",
+          withValue: true,
+          inContext: self.context)
+        localUpload.setValue(owner, forKey: "owner")
+      } else {
+        let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: ownerRecordIDName,
+          inContext: self.context)
+        localUpload.setValue(owner, forKey: "owner")
       }
+      
+      if let title = record.objectForKey("Title") as? String {
+        localUpload.setValue(title, forKey: "title")
+      }
+      
+      if let detail = record.objectForKey("Description") as? String {
+        localUpload.setValue(detail, forKey: "detail")
+      }
+      
+      if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
+        localUpload.setValue(ownerFacebookID, forKey: "ownerFacebookID")
+      }
+      
+      if let imageAsset = record.objectForKey("Image") as? CKAsset {
+        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+        localUpload.setValue(imageData, forKey: "image")
+      }
+      
+      //save the context
+      self.context.MR_saveToPersistentStoreAndWait()
+      
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
@@ -129,19 +130,13 @@ class GetAllItemsWithMissingDataOperation: Operation {
     print("execute item fetch")
     
     let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")
-    //Swift 2.0
-    //    guard let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as? [NSManagedObject] else {
-    //      print("Get Item Operation could not cast returned objects as [NSManagedObject]")
-    //      self.finish()
-    //      return
-    //    }
+    
     let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     
     let allRecordIDNames = allItems.map { $0.valueForKey("recordIDName") as? String }
     
     var itemRecordsToFetch = [CKRecordID]()
-    //Swift 2.0
-    //for itemRecordIDName in allRecordIDNames where itemRecordIDName != nil {
+    
     for itemRecordIDName in allRecordIDNames{
       if itemRecordIDName != nil {
         itemRecordsToFetch.append(CKRecordID(recordName: itemRecordIDName!))
@@ -149,62 +144,54 @@ class GetAllItemsWithMissingDataOperation: Operation {
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
-    fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      if error != nil {
-        print("FETCH ALL ITEMS RETURNED ERROR: \(error)")
-      }
-      //make sure the recordsByID are not nil
-      if let recordsByID = recordsByID {
+    fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
+      
+      //for each record that is returned
+      for recordID in recordsByID.keys.array {
+        let recordID = recordID as! CKRecordID
+        let record = recordsByID[recordID] as! CKRecord
+        //get a local copy of the item to save
+        let localItem = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: recordID.recordName,
+          inContext: self.context)
         
-        
-        //for each record that is returned
-        for recordID in recordsByID.keys {
-          let recordID = recordID as! CKRecordID
-          //get a local copy of the item to save
-          let localItem = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-            withValue: recordID.recordName,
-            inContext: self.context)
-          
-          //get image
-          if let image = recordsByID[recordID]!.valueForKey("Image") as? CKAsset {
-            localItem.image = NSData(contentsOfURL: image.fileURL)
-          } else {
-            print("Image is not a CKAsset")
-          }
-          
-          //get title
-          if let title = recordsByID[recordID]!.valueForKey("Title") as? String {
-            localItem.setValue(title, forKey: "title")
-          } else {
-            print("Title is not a String")
-          }
-          
-          
-          //get detail
-          if let description = recordsByID[recordID]!.valueForKey("Description") as? String {
-            localItem.detail = description
-          } else {
-            print("Description is not a String")
-          }
-          
-          
-          //fill in creator details
-          if let creator = recordsByID[recordID]!.creatorUserRecordID {
-            localItem.owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-              withValue: creator.recordName,
-              inContext: self.context)
-            if let facebookID = recordsByID[recordID]!.valueForKey("OwnerFacebookID") as? String {
-              localItem.owner!.facebookID = facebookID
-            } else {
-              print("OwnerFacebookID is not a String")
-            }
-            
-          } else {
-            print("creator is nil")
-          }
-          self.context.MR_saveToPersistentStoreAndWait()
+        //get image
+        if let image = record.valueForKey("Image") as? CKAsset {
+          let imageData = NSData(contentsOfURL: image.fileURL)
+          localItem.setValue(imageData, forKey: "image")
+        } else {
+          print("Image is not a CKAsset")
         }
         
+        //get title
+        if let title = record.valueForKey("Title") as? String {
+          localItem.setValue(title, forKey: "title")
+        } else {
+          print("Title is not a String")
+        }
+        
+        
+        //get detail
+        if let detail = record.valueForKey("Description") as? String {
+          localItem.setValue(detail, forKey: "detail")
+        } else {
+          print("Description is not a String")
+        }
+        
+        
+        //fill in creator details
+        let creatorIDName = record.creatorUserRecordID.recordName
+        
+        let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+          withValue: creatorIDName,
+          inContext: self.context)
+        localItem.setValue(localOwner, forKey: "owner")
+        
+        if let facebookID = record.valueForKey("OwnerFacebookID") as? String {
+          localOwner.setValue(facebookID, forKey: "facebookID")
+        }
+        
+        self.context.MR_saveToPersistentStoreAndWait()
       }
       self.finishWithError(error)
     }

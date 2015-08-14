@@ -24,33 +24,24 @@ class NetworkConnection: NSObject {
   
   class func connectedToNetwork() -> Bool {
     
-    var zeroAddress = sockaddr_in()
-    zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
-    zeroAddress.sin_family = sa_family_t(AF_INET)
-    //Swift 2.0
-    //    guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
-    //      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-    //    }) else {
-    //      return false
-    //    }
-
-    let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
-      SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+    var status = false
+    let url = NSURL(string: "http://google.com/")
+    let request = NSMutableURLRequest(URL: url!)
+    request.HTTPMethod = "HEAD"
+    request.cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData
+    request.timeoutInterval = 10.0
+    
+    var response: NSURLResponse?
+    
+    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: nil) as NSData?
+    
+    if let httpResponse = response as? NSHTTPURLResponse {
+      if httpResponse.statusCode == 200 {
+        status = true
+      }
     }
-    
-    if defaultRouteReachability == nil {
-      return false
-    }
-    
-    var flags : SCNetworkReachabilityFlags = SCNetworkReachabilityFlags.allZeros
-//    if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
-//      return false
-//    }
-    
-    
-    let isReachable = (flags == SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsReachable))
-    let needsConnection = (flags == SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsConnectionRequired))
-    return (isReachable && !needsConnection)
+    print(status)
+    return status
   }
   
 }

@@ -73,7 +73,7 @@ class GetAllParticipatingExchangesOperation: GroupOperation {
   
 }
 
-private class PersonIsCreator: GetExchangesOperation {
+class PersonIsCreator: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsCreator = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personRecordIDName))
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
@@ -81,7 +81,7 @@ private class PersonIsCreator: GetExchangesOperation {
   }
 }
 
-private class PersonIsRequestedFrom: GetExchangesOperation {
+class PersonIsRequestedFrom: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
@@ -95,10 +95,6 @@ Fetches only exchanges that are requested from you with the given exchange statu
 class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let person = Person.MR_findFirstByAttribute("recordIDName", withValue: personRecordIDName, inContext: context)
-    
-    if person!.uploads!.count == 0 {
-      return NSPredicate(value: false)
-    }
     
     //create predicate
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
@@ -150,7 +146,7 @@ class GetExchangesOperation: Operation {
     let getExchangesOperation = CKQueryOperation(query: getExchangesQuery)
     
     //handle returned objects
-    getExchangesOperation.recordFetchedBlock = { (record) -> Void in
+    getExchangesOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
       
       //find or create the record
       let requestingPerson = Person.MR_findFirstByAttribute("recordIDName",
@@ -161,42 +157,48 @@ class GetExchangesOperation: Operation {
         inContext: self.context)
       
       //set creator
-      if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
-        localExchange.creator = Person.MR_findFirstOrCreateByAttribute("me",
+      if record.creatorUserRecordID.recordName == "__defaultOwner__" {
+        let creator = Person.MR_findFirstOrCreateByAttribute("me",
           withValue: true,
           inContext: self.context)
+        localExchange.setValue(creator, forKey: "creator")
       } else {
-        localExchange.creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+        let creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: record.creatorUserRecordID?.recordName,
           inContext: self.context)
+        localExchange.setValue(creator, forKey: "creator")
       }
       
       //set exchange status
       if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int64 {
-        localExchange.status = NSNumber(longLong: newExchangeStatus)
+        localExchange.setValue(NSNumber(longLong: newExchangeStatus), forKey: "status")
       }
       
       //set date
       if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
-        localExchange.date = localExchange.date ?? newDate
+        let date = localExchange.valueForKey("date") as? NSDate
+        localExchange.setValue((date ?? newDate), forKey: "date")
       }
       
       //set item offered
       if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {
-        localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+        let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemOfferedReference.recordID.recordName,
           inContext: self.context)
+        localExchange.setValue(itemOffered, forKey: "itemOffered")
       }
       
       //set item requested
       if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
-        localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+        let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemRequestedReference.recordID.recordName,
           inContext: self.context)
+        localExchange.setValue(itemRequested, forKey: "itemRequested")
       }
       
       //add this exchange to the requesting user's exchanges
-      requestingPerson?.exchanges = requestingPerson?.exchanges?.setByAddingObject(localExchange)
+      let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
+      requestingPerson.setValue(currentExchanges.setByAddingObject(localExchange), forKey: "exchanges")
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()

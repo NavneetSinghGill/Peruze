@@ -95,21 +95,28 @@ class SaveExchangeToLocalStorageOperation: Operation {
   
   override func execute() {
     let localExchange = Exchange.MR_createEntityInContext(context)
-    localExchange.recordIDName = temporaryID
-    localExchange.date = date
-    localExchange.status = NSNumber(integer: status.rawValue)
-    localExchange.itemOffered = Item.MR_findFirstOrCreateByAttribute(
+    localExchange.setValue(temporaryID, forKey: "recordIDName")
+    localExchange.setValue(date, forKey: "date")
+    localExchange.setValue(NSNumber(integer: status.rawValue), forKey: "status")
+    
+    let itemOffered = Item.MR_findFirstOrCreateByAttribute(
       "recordIDName",
       withValue: itemOfferedRecordIDName,
       inContext: context)
-    localExchange.itemRequested = Item.MR_findFirstOrCreateByAttribute(
+    localExchange.setValue(itemOffered, forKey: "itemOffered")
+    
+    let itemRequested = Item.MR_findFirstOrCreateByAttribute(
       "recordIDName",
       withValue: itemRequestedRecordIDName,
       inContext: context)
-    localExchange.creator = Person.MR_findFirstByAttribute(
+    localExchange.setValue(itemRequested, forKey: "itemRequested")
+    
+    let creator = Person.MR_findFirstByAttribute(
       "me",
       withValue: true,
       inContext: context)
+    localExchange.setValue(creator, forKey: "creator")
+    
     context.MR_saveToPersistentStoreAndWait()
     finish()
   }
@@ -180,14 +187,10 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
     let uploadOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
     uploadOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       
-      //Swift 2.0
-      //      guard let uploadedRecord = savedRecords?.first else {
-      //        self.finishWithError(error)
-      //        return
-      //      }
       let uploadedRecord = savedRecords?.first as! CKRecord
       
-      localExchange.recordIDName = uploadedRecord.recordID.recordName
+      localExchange.setValue(uploadedRecord.recordID.recordName, forKey: "recordIDName")
+      
       self.context.MR_saveToPersistentStoreAndWait()
       self.finishWithError(error)
       

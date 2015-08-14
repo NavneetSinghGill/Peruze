@@ -13,14 +13,14 @@ import Foundation
 import CoreData
 
 extension Item {
-
-    @NSManaged var detail: String?
-    @NSManaged var image: NSData?
-    @NSManaged var latitude: NSNumber?
-    @NSManaged var longitude: NSNumber?
-    @NSManaged var ownerFacebookID: String?
-    @NSManaged var recordIDName: String?
-    @NSManaged var title: String?
-    @NSManaged var owner: Person?
-
+  
+  @NSManaged var detail: String?
+  @NSManaged var image: NSData?
+  @NSManaged var latitude: NSNumber?
+  @NSManaged var longitude: NSNumber?
+  @NSManaged var ownerFacebookID: String?
+  @NSManaged var recordIDName: String?
+  @NSManaged var title: String?
+  @NSManaged var owner: Person?
+  
 }

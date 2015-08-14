@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
-import FBSDKCoreKit
 import CloudKit
 
 class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePictureRetrievalDelegate {

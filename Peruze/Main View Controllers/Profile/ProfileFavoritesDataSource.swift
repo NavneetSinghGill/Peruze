@@ -21,21 +21,34 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
   var editableCells = true
   //MARK: - UITableViewDataSource methods
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifiers.TableViewCell)
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifiers.TableViewCell,
       forIndexPath: indexPath) as! ProfileUploadsTableViewCell
     if favorites.count > indexPath.row {
-      cell.titleTextLabel.text = favorites[indexPath.row].title
-      cell.subtitleTextLabel.text = "by \(favorites[indexPath.row].owner!.firstName)"
-      cell.descriptionTextLabel.text = favorites[indexPath.row].description
-      cell.circleImageView.image = UIImage(data: favorites[indexPath.row].image!)
+      let item = favorites[indexPath.row]
+      if
+        let title = item.valueForKey("title") as? String,
+        let owner = item.valueForKey("owner") as? NSManagedObject,
+        let ownerName = owner.valueForKey("firstName") as? String,
+        let detail = item.valueForKey("detail") as? String,
+        let imageData = item.valueForKey("image") as? NSData
+      {
+        cell.titleTextLabel.text = title
+        cell.subtitleTextLabel.text = "by \(ownerName)"
+        cell.descriptionTextLabel.text = detail
+        cell.circleImageView.image = UIImage(data: imageData)
+      } else {
+        print("There was not enough non-nil data for the favorite item")
+      }
     } else {
       print("There is no cell for NSIndexPath: \(indexPath)")
     }
     return cell
   }
+  
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return favorites.count
   }

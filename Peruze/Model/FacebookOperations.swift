@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import FBSDKCoreKit
 
 //MARK: - Download Profile Photo
 
@@ -28,13 +27,16 @@ class DownloadProfilePhotoURLs: AsyncOperation {
     if cancelled { finish(); return }
     //create the request from above graph path
     let request = FBSDKGraphRequest(graphPath:Constants.GraphPath, parameters: nil, HTTPMethod:"GET")
-    request.startWithCompletionHandler {[unowned self] (connection, result, error) -> Void in
+    request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
       //set error and return
-      self.error = error
-      if error != nil { self.finish(); return }
+      if error != nil {
+        self.error = error
+        self.finish()
+        return
+      }
       self.imageURLs = self.parseImageURLsFromResult(result)
       self.finish()
-    }
+    })
   }
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
@@ -150,17 +152,17 @@ class FetchFacebookUserProfile: Operation {
   
   override func execute() {
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
-    dispatch_async(dispatch_get_main_queue()) {
-      request.startWithCompletionHandler {(connection, result, error) -> Void in
+    dispatch_async(dispatch_get_main_queue(), {
+      request.startWithCompletionHandler ({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
         if error != nil {
           self.finishWithError(error)
           return
         }
         if let result = result as? [String: AnyObject] {
           let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
-          localMe.firstName = result["first_name"] as? String
-          localMe.lastName = result["last_name"] as? String
-          localMe.facebookID = result["id"] as? String
+          localMe.setValue(result["first_name"] as? String, forKey: "firstName")
+          localMe.setValue(result["last_name"] as? String, forKey: "lastName")
+          localMe.setValue(result["id"] as? String, forKey: "facebookID")
           self.context.MR_saveToPersistentStoreAndWait()
         } else {
           let error = NSError(code: OperationErrorCode.ExecutionFailed)
@@ -168,8 +170,8 @@ class FetchFacebookUserProfile: Operation {
           return
         }
         self.finish()
-      }
-    }
+      })
+    })
   }
   
   override func finished(errors: [NSError]) {
@@ -219,15 +221,6 @@ class FetchFacebookFriends: AsyncOperation {
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
       var jsonData: AnyObject?
-//      Swift 2.0
-//      do {
-//        jsonData = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
-//      } catch let error as NSError {
-//        jsonError = error
-//        jsonData = nil
-//      } catch {
-//        fatalError()
-//      }
       jsonData = NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments, error: &jsonError)
       
       if jsonData == nil { self.finish(); return }
