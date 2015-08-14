@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8166.2" systemVersion="14F6a" minimumToolsVersion="Xcode 7.0">
-    <entity name="Exchange" representedClassName=".Exchange" syncable="YES">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="15A235d" minimumToolsVersion="Xcode 7.0">
+    <entity name="Exchange" representedClassName="Exchange" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -9,7 +9,7 @@
         <relationship name="itemRequested" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="exchange" inverseEntity="Message" syncable="YES"/>
     </entity>
-    <entity name="Item" representedClassName="Peruze.Item" syncable="YES">
+    <entity name="Item" representedClassName="Item" syncable="YES">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -19,7 +19,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="uploads" inverseEntity="Person" syncable="YES"/>
     </entity>
-    <entity name="Message" representedClassName=".Message" syncable="YES">
+    <entity name="Message" representedClassName="Message" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
@@ -27,7 +27,7 @@
         <relationship name="exchange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exchange" inverseName="messages" inverseEntity="Exchange" syncable="YES"/>
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" syncable="YES"/>
     </entity>
-    <entity name="Person" representedClassName=".Person" syncable="YES">
+    <entity name="Person" representedClassName="Person" syncable="YES">
         <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -41,7 +41,7 @@
         <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Review" inverseName="userBeingReviewed" inverseEntity="Review" syncable="YES"/>
         <relationship name="uploads" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="owner" inverseEntity="Item" syncable="YES"/>
     </entity>
-    <entity name="Review" representedClassName=".Review" syncable="YES">
+    <entity name="Review" representedClassName="Review" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
@@ -51,9 +51,9 @@
         <relationship name="userBeingReviewed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="reviews" inverseEntity="Person" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exchange" positionX="97" positionY="-804" width="128" height="148"/>
+        <element name="Exchange" positionX="97" positionY="-804" width="128" height="150"/>
         <element name="Item" positionX="-9" positionY="-495" width="128" height="165"/>
-        <element name="Message" positionX="-164" positionY="-762" width="128" height="133"/>
+        <element name="Message" positionX="-164" positionY="-762" width="128" height="135"/>
         <element name="Person" positionX="252" positionY="-594" width="128" height="225"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>
     </elements>

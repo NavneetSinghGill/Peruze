@@ -137,14 +137,14 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   }
   
   private var nextBlurView: UIVisualEffectView!
-  private let operationQueue = OperationQueue()
+  private let operationQueue = NSOperationQueue()
   @IBAction func next(sender: UIButton) {
     //setup next loading views and disable interaction
     sender.userInteractionEnabled = false
     nextLoadingSetup()
     
     //setup operation queue
-    operationQueue.qualityOfService = .Utility
+    operationQueue.qualityOfService = NSQualityOfService.UserInteractive
     
     //upload facebook profile info and fetch user info from the cloud
     let getFacebookProfileOp = FetchFacebookUserProfile(presentationContext: self)
@@ -171,8 +171,8 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     //add dependencies
     postFacebookInfoToServer.addDependencies([getFacebookProfileOp, saveImageOp])
     performSegueOp.addDependencies([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp])
-    
     operationQueue.addOperations([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp, performSegueOp], waitUntilFinished: false)
+    operationQueue.suspended = false
   }
   
   

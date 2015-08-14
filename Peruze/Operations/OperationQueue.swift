@@ -53,10 +53,6 @@ class OperationQueue: NSOperationQueue {
       // Extract any dependencies needed by this operation.
       let dependencies = op.conditions.map {  $0.dependencyForOperation(op) }
       
-      //Swift 2.0
-      //      let dependencies = op.conditions.flatMap {
-      //        $0.dependencyForOperation(op)
-      //      }
       
       for dependency in dependencies {
         op.addDependency(dependency!)
@@ -70,8 +66,12 @@ class OperationQueue: NSOperationQueue {
       */
       
       let concurrencyCategories: [String] = op.conditions.map { condition in
+        //Swift 2.0 (needs to be fixed with exclusivity controller
         //if !(condition.dynamicType as OperationCondition.Type).isMutuallyExclusive { return "" }
-        return "\(condition.dynamicType)"
+        //return "\(condition.dynamicType)"
+        
+        //For now assume that everything is not mutually exclusive
+        return ""
       }
       
       if !concurrencyCategories.isEmpty {

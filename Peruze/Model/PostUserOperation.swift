@@ -26,19 +26,6 @@ class PostUserOperation: Operation {
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
-    //Swift 2.0
-    //    guard
-    //    let firstName = myPerson.valueForKey("firstName") as? String,
-    //    let lastName = myPerson.valueForKey("lastName") as? String,
-    //    let imageData = myPerson.valueForKey("image") as? NSData,
-    //    let facebookID = myPerson.valueForKey("facebookID") as? String,
-    //    let myRecordIDName = myPerson.valueForKey("recordIDName") as? String
-    //    else {
-    //      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-    //      self.finishWithError(error)
-    //      return
-    //    }
-    
     let firstName = myPerson.valueForKey("firstName") as! String
     let lastName = myPerson.valueForKey("lastName") as! String
     let imageData = myPerson.valueForKey("image") as! NSData
