@@ -49,9 +49,11 @@ class GetItemOperation: Operation {
     self.context = context
     super.init()
   }
-  override func finished(errors: [NSError]) {
+  
+  override func finished(errors: [ErrorType]) {
     NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
+  
   override func execute() {    
     //create operation for fetching relevant records
     let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
@@ -101,7 +103,7 @@ class GetItemOperation: Operation {
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
       if error != nil { print("Get Uploads Finished With Error: \(error)") }
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     
     //add that operation to the operationQueue of self.database
@@ -193,7 +195,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         
         self.context.MR_saveToPersistentStoreAndWait()
       }
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     database.addOperation(fetchAllItemsOperation)
   }

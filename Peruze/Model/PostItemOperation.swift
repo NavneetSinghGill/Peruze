@@ -11,7 +11,7 @@ import CloudKit
 
 class PostItemOperation: GroupOperation {
   private struct Constants {
-    static let locationAccuracy: Double = 500 //meters
+    static let locationAccuracy: CLLocationAccuracy = 500 //meters
   }
   
   let operationQueue = OperationQueue()
@@ -31,7 +31,7 @@ class PostItemOperation: GroupOperation {
       tempItem.setValue(title, forKey: "title")
       tempItem.setValue(detail, forKey: "detail")
       tempItem.setValue((recordIDName ?? "tempID"), forKey: "recordIDName")
-
+      
       context.MR_saveToPersistentStoreAndWait()
       
       let item = Item.MR_findFirstByAttribute("recordIDName", withValue: recordIDName ?? "tempID", inContext: context)
@@ -45,24 +45,24 @@ class PostItemOperation: GroupOperation {
       4. finishing operation that calls the completion handler
       */
       
-      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy) { (location) -> Void in
-        //save latitude and longitude to item and self
+      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: nil, handler: { (location: CLLocation) -> Void in
         
-      
+        //save latitude and longitude to item and self
         var error: NSError?
-        let localItem: NSManagedObject! = context.existingObjectWithID(item.objectID, error: &error)
+        let objectID = item.valueForKey("objectID") as! NSManagedObjectID
+        let localItem = context.existingObjectWithID(objectID, error: &error)!
         if error != nil {
           print(error)
-          return
+        } else {
+          let localMe = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
+          localItem.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
+          localItem.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
+          localMe.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
+          localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
+          context.MR_saveToPersistentStoreAndWait()
         }
-        let localMe = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
-        localItem.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
-        localItem.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
-        localMe.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
-        localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
-        context.MR_saveToPersistentStoreAndWait()
-
-      }
+      })
+      
       let saveItemOp = SaveItemInfoToLocalStorageOperation(
         title: title,
         detail: detail,
@@ -153,7 +153,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
     let itemToSave: NSManagedObject! = context.existingObjectWithID(objectID, error: &error)
     
     if error != nil {
-      finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
       return
     }
     
@@ -166,7 +166,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
     } else {
       itemRecord = CKRecord(recordType: RecordTypes.Item, recordID: CKRecordID(recordName: recordIDName!))
     }
-
+    
     //set immediately available keys
     let itemTitle = itemToSave.valueForKey("title") as? String
     let itemDetail = itemToSave.valueForKey("detail") as? String
@@ -205,13 +205,13 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         print(deletionError)
         return
       }
-
+      
       if let first = savedRecords?.first as? CKRecord {
         itemToSave.setValue(first.recordID.recordName, forKey: "recordIDName")
       }
       
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     database.addOperation(saveItemRecordOp)
   }

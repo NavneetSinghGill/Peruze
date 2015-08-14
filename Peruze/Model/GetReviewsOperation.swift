@@ -81,9 +81,8 @@ class GetReviewsOperation: Operation {
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
     }
-    
-    getUploadsOperation.queryCompletionBlock = { (cursor, error) -> Void in
-      self.finishWithError(error)
+    getUploadsOperation.queryCompletionBlock = { (cursor: CKQueryCursor!, error: NSError!) -> Void in
+      self.finish(GenericError.ExecutionFailed)
     }
     
     //add that operation to the operationQueue of self.database

@@ -42,14 +42,12 @@ class GetChatsOperation: GroupOperation {
     
     super.init(operations: [getExchangesOp, getMessagesOp, finishingOp])
   }
-  
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
     if let firstError = errors.first where
       ( operation === getExchangesOp || operation === getMessagesOp ) {
         print("GetChatsOperation Failed With Error: \(firstError)")
     }
   }
-  
 }
 
 class GetMessagesForAcceptedExchangesOperation: Operation {
@@ -143,7 +141,7 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
         print("Get Chats For Accepted Exchanges Operation Finished with error: ")
         print(error)
       }
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     
     //add the operation to the database

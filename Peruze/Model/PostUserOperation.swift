@@ -36,8 +36,7 @@ class PostUserOperation: Operation {
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
     if !imageData.writeToURL(imageURL!, atomically: true) {
-      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
       return
     }
     
@@ -75,21 +74,19 @@ class PostUserOperation: Operation {
       print(error)
       
       if savedRecords.first == nil {
-        let error = NSError(code: OperationErrorCode.ExecutionFailed)
-        self.finishWithError(error)
+        self.finish(GenericError.ExecutionFailed)
         return
       }
       
       
-      self.finishWithError(operationError)
+      self.finish(GenericError.ExecutionFailed)
     }
     
     database.addOperation(saveOp)
   }
-  
-  override func finished(errors: [NSError]) {
+  override func finished(errors: [ErrorType]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentationContext: presentationContext)
+      let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Upload User Information Error"
       alert.message = "There was a problem uploading your information to the iCloud server."
       produceOperation(alert)

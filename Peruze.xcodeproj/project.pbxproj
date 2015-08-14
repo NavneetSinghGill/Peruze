@@ -108,34 +108,8 @@
 		9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */; };
 		9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */; };
 		9D3CEF111B6C19C00024B2BF /* PostFavoriteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3CEF101B6C19C00024B2BF /* PostFavoriteOperation.swift */; };
-		9D3CEF151B6C31840024B2BF /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3CEF141B6C31840024B2BF /* NetworkObserver.swift */; };
-		9D3CEF171B6C444C0024B2BF /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3CEF161B6C444C0024B2BF /* AlertOperation.swift */; };
 		9D3CEF191B6CAF610024B2BF /* PostUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3CEF181B6CAF610024B2BF /* PostUserOperation.swift */; };
 		9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */; };
-		9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */; };
-		9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */; };
-		9D3EA1BA1B5DA68D005D63AC /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */; };
-		9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */; };
-		9D3EA1BC1B5DA68D005D63AC /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */; };
-		9D3EA1BD1B5DA68D005D63AC /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */; };
-		9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */; };
-		9D3EA1BF1B5DA68D005D63AC /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */; };
-		9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */; };
-		9D3EA1C21B5DA68D005D63AC /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */; };
-		9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */; };
-		9D3EA1C41B5DA68D005D63AC /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */; };
-		9D3EA1C51B5DA68D005D63AC /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */; };
-		9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */; };
-		9D3EA1C71B5DA68D005D63AC /* NSOperation+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */; };
-		9D3EA1C81B5DA68D005D63AC /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AA1B5DA68D005D63AC /* Operation.swift */; };
-		9D3EA1C91B5DA68D005D63AC /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */; };
-		9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */; };
-		9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */; };
-		9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */; };
-		9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */; };
-		9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */; };
-		9D3EA1D31B5DA68D005D63AC /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */; };
-		9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */; };
 		9D3EA1F41B5DFAC1005D63AC /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1EE1B5DFAC1005D63AC /* Message+CoreDataProperties.swift */; };
 		9D3EA1F51B5DFAC1005D63AC /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1EF1B5DFAC1005D63AC /* Person+CoreDataProperties.swift */; };
 		9D3EA1F61B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1F01B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift */; };
@@ -154,9 +128,46 @@
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
 		9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D58BF431B7BD7F2006C40FC /* CoreData.framework */; };
-		9D5C24C01B792552009E988E /* AsyncClosuresOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */; };
-		9D5C24C11B792552009E988E /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BD1B792552009E988E /* AsyncOperation.swift */; };
-		9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C24BF1B792552009E988E /* AsyncOpKit.swift */; };
+		9DAE78491B7DBE9F0053B13B /* BlockCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */; };
+		9DAE784A1B7DBE9F0053B13B /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78211B7DBE9F0053B13B /* MutuallyExclusive.swift */; };
+		9DAE784B1B7DBE9F0053B13B /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */; };
+		9DAE784C1B7DBE9F0053B13B /* NoCancelledCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78231B7DBE9F0053B13B /* NoCancelledCondition.swift */; };
+		9DAE784D1B7DBE9F0053B13B /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78241B7DBE9F0053B13B /* OperationCondition.swift */; };
+		9DAE784E1B7DBE9F0053B13B /* AddressBookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */; };
+		9DAE784F1B7DBE9F0053B13B /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */; };
+		9DAE78501B7DBE9F0053B13B /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */; };
+		9DAE78511B7DBE9F0053B13B /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */; };
+		9DAE78521B7DBE9F0053B13B /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782A1B7DBE9F0053B13B /* LocationCondition.swift */; };
+		9DAE78531B7DBE9F0053B13B /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782B1B7DBE9F0053B13B /* PassbookCondition.swift */; };
+		9DAE78541B7DBE9F0053B13B /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782C1B7DBE9F0053B13B /* PhotosCondition.swift */; };
+		9DAE78551B7DBE9F0053B13B /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782D1B7DBE9F0053B13B /* ReachabilityCondition.swift */; };
+		9DAE78561B7DBE9F0053B13B /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782E1B7DBE9F0053B13B /* RemoteNotificationCondition.swift */; };
+		9DAE78571B7DBE9F0053B13B /* SlientCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE782F1B7DBE9F0053B13B /* SlientCondition.swift */; };
+		9DAE78581B7DBE9F0053B13B /* UserConfirmationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78301B7DBE9F0053B13B /* UserConfirmationCondition.swift */; };
+		9DAE78591B7DBE9F0053B13B /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78311B7DBE9F0053B13B /* UserNotificationCondition.swift */; };
+		9DAE785A1B7DBE9F0053B13B /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78331B7DBE9F0053B13B /* BackgroundObserver.swift */; };
+		9DAE785B1B7DBE9F0053B13B /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78341B7DBE9F0053B13B /* BlockObserver.swift */; };
+		9DAE785C1B7DBE9F0053B13B /* LoggingObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78351B7DBE9F0053B13B /* LoggingObserver.swift */; };
+		9DAE785D1B7DBE9F0053B13B /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78361B7DBE9F0053B13B /* NetworkObserver.swift */; };
+		9DAE785E1B7DBE9F0053B13B /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78371B7DBE9F0053B13B /* OperationObserver.swift */; };
+		9DAE785F1B7DBE9F0053B13B /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78381B7DBE9F0053B13B /* TimeoutObserver.swift */; };
+		9DAE78601B7DBE9F0053B13B /* AddressBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */; };
+		9DAE78611B7DBE9F0053B13B /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */; };
+		9DAE78621B7DBE9F0053B13B /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */; };
+		9DAE78631B7DBE9F0053B13B /* CloudKitOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */; };
+		9DAE78641B7DBE9F0053B13B /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783E1B7DBE9F0053B13B /* DelayOperation.swift */; };
+		9DAE78651B7DBE9F0053B13B /* GatedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783F1B7DBE9F0053B13B /* GatedOperation.swift */; };
+		9DAE78661B7DBE9F0053B13B /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78401B7DBE9F0053B13B /* GroupOperation.swift */; };
+		9DAE78671B7DBE9F0053B13B /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78411B7DBE9F0053B13B /* LocationOperation.swift */; };
+		9DAE78681B7DBE9F0053B13B /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78421B7DBE9F0053B13B /* Operation.swift */; };
+		9DAE78691B7DBE9F0053B13B /* ReachableOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78431B7DBE9F0053B13B /* ReachableOperation.swift */; };
+		9DAE786A1B7DBE9F0053B13B /* ExclusivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78451B7DBE9F0053B13B /* ExclusivityManager.swift */; };
+		9DAE786B1B7DBE9F0053B13B /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78461B7DBE9F0053B13B /* OperationQueue.swift */; };
+		9DAE786C1B7DBE9F0053B13B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78471B7DBE9F0053B13B /* Reachability.swift */; };
+		9DAE786D1B7DBE9F0053B13B /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78481B7DBE9F0053B13B /* Support.swift */; };
+		9DAE78721B7DC0050053B13B /* AsyncClosuresOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE786F1B7DC0050053B13B /* AsyncClosuresOperation.swift */; };
+		9DAE78731B7DC0050053B13B /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78701B7DC0050053B13B /* AsyncOperation.swift */; };
+		9DAE78741B7DC0050053B13B /* AsyncOpKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78711B7DC0050053B13B /* AsyncOpKit.swift */; };
 		9DDC5E371B65B2E600A9EC22 /* PostMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */; };
 		9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */; };
 		9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96DE1B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld */; };
@@ -301,34 +312,8 @@
 		9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemOperation.swift; sourceTree = "<group>"; };
 		9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateItemOperation.swift; sourceTree = "<group>"; };
 		9D3CEF101B6C19C00024B2BF /* PostFavoriteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFavoriteOperation.swift; sourceTree = "<group>"; };
-		9D3CEF141B6C31840024B2BF /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Peruze/Operations/NetworkObserver.swift; sourceTree = SOURCE_ROOT; };
-		9D3CEF161B6C444C0024B2BF /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertOperation.swift; path = Peruze/Operations/AlertOperation.swift; sourceTree = SOURCE_ROOT; };
 		9D3CEF181B6CAF610024B2BF /* PostUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostUserOperation.swift; sourceTree = "<group>"; };
 		9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCurrentUserOperation.swift; sourceTree = "<group>"; };
-		9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockObserver.swift; path = Peruze/Operations/BlockObserver.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockOperation.swift; path = Peruze/Operations/BlockOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarCondition.swift; path = Peruze/Operations/CalendarCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CKContainer+Operations.swift"; path = "Peruze/Operations/CKContainer+Operations.swift"; sourceTree = SOURCE_ROOT; };
-		9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudCondition.swift; path = Peruze/Operations/CloudCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DelayOperation.swift; path = Peruze/Operations/DelayOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Operations.swift"; path = "Peruze/Operations/Dictionary+Operations.swift"; sourceTree = SOURCE_ROOT; };
-		9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExclusivityController.swift; path = Peruze/Operations/ExclusivityController.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupOperation.swift; path = Peruze/Operations/GroupOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCondition.swift; path = Peruze/Operations/LocationCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationOperation.swift; path = Peruze/Operations/LocationOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutuallyExclusive.swift; path = Peruze/Operations/MutuallyExclusive.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NegatedCondition.swift; path = Peruze/Operations/NegatedCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoCancelledDependencies.swift; path = Peruze/Operations/NoCancelledDependencies.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSOperation+Operations.swift"; path = "Peruze/Operations/NSOperation+Operations.swift"; sourceTree = SOURCE_ROOT; };
-		9D3EA1AA1B5DA68D005D63AC /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operation.swift; path = Peruze/Operations/Operation.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationCondition.swift; path = Peruze/Operations/OperationCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationErrors.swift; path = Peruze/Operations/OperationErrors.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationObserver.swift; path = Peruze/Operations/OperationObserver.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperationQueue.swift; path = Peruze/Operations/OperationQueue.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SilentCondition.swift; path = Peruze/Operations/SilentCondition.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeoutObserver.swift; path = Peruze/Operations/TimeoutObserver.swift; sourceTree = SOURCE_ROOT; };
-		9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIUserNotifications+Operations.swift"; path = "Peruze/Operations/UIUserNotifications+Operations.swift"; sourceTree = SOURCE_ROOT; };
-		9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionTaskOperation.swift; path = Peruze/Operations/URLSessionTaskOperation.swift; sourceTree = SOURCE_ROOT; };
 		9D3EA1EE1B5DFAC1005D63AC /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "NSManagedObjects/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D3EA1EF1B5DFAC1005D63AC /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Person+CoreDataProperties.swift"; path = "NSManagedObjects/Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D3EA1F01B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataProperties.swift"; path = "NSManagedObjects/Exchange+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -352,10 +337,46 @@
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
 		9D58BF431B7BD7F2006C40FC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncClosuresOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncClosuresOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D5C24BD1B792552009E988E /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOperation.swift; path = Peruze/Model/AsyncOpKit/AsyncOperation.swift; sourceTree = SOURCE_ROOT; };
-		9D5C24BE1B792552009E988E /* AsyncOpKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncOpKit.h; path = Peruze/Model/AsyncOpKit/AsyncOpKit.h; sourceTree = SOURCE_ROOT; };
-		9D5C24BF1B792552009E988E /* AsyncOpKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOpKit.swift; path = Peruze/Model/AsyncOpKit/AsyncOpKit.swift; sourceTree = SOURCE_ROOT; };
+		9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockCondition.swift; sourceTree = "<group>"; };
+		9DAE78211B7DBE9F0053B13B /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
+		9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegatedCondition.swift; sourceTree = "<group>"; };
+		9DAE78231B7DBE9F0053B13B /* NoCancelledCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCancelledCondition.swift; sourceTree = "<group>"; };
+		9DAE78241B7DBE9F0053B13B /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
+		9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookCondition.swift; sourceTree = "<group>"; };
+		9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCondition.swift; sourceTree = "<group>"; };
+		9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCondition.swift; sourceTree = "<group>"; };
+		9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCondition.swift; sourceTree = "<group>"; };
+		9DAE782A1B7DBE9F0053B13B /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCondition.swift; sourceTree = "<group>"; };
+		9DAE782B1B7DBE9F0053B13B /* PassbookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassbookCondition.swift; sourceTree = "<group>"; };
+		9DAE782C1B7DBE9F0053B13B /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCondition.swift; sourceTree = "<group>"; };
+		9DAE782D1B7DBE9F0053B13B /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		9DAE782E1B7DBE9F0053B13B /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationCondition.swift; sourceTree = "<group>"; };
+		9DAE782F1B7DBE9F0053B13B /* SlientCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlientCondition.swift; sourceTree = "<group>"; };
+		9DAE78301B7DBE9F0053B13B /* UserConfirmationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfirmationCondition.swift; sourceTree = "<group>"; };
+		9DAE78311B7DBE9F0053B13B /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
+		9DAE78331B7DBE9F0053B13B /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
+		9DAE78341B7DBE9F0053B13B /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
+		9DAE78351B7DBE9F0053B13B /* LoggingObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingObserver.swift; sourceTree = "<group>"; };
+		9DAE78361B7DBE9F0053B13B /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
+		9DAE78371B7DBE9F0053B13B /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationObserver.swift; sourceTree = "<group>"; };
+		9DAE78381B7DBE9F0053B13B /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
+		9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookOperation.swift; sourceTree = "<group>"; };
+		9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
+		9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
+		9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperation.swift; sourceTree = "<group>"; };
+		9DAE783E1B7DBE9F0053B13B /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };
+		9DAE783F1B7DBE9F0053B13B /* GatedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatedOperation.swift; sourceTree = "<group>"; };
+		9DAE78401B7DBE9F0053B13B /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
+		9DAE78411B7DBE9F0053B13B /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationOperation.swift; sourceTree = "<group>"; };
+		9DAE78421B7DBE9F0053B13B /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		9DAE78431B7DBE9F0053B13B /* ReachableOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachableOperation.swift; sourceTree = "<group>"; };
+		9DAE78451B7DBE9F0053B13B /* ExclusivityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityManager.swift; sourceTree = "<group>"; };
+		9DAE78461B7DBE9F0053B13B /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
+		9DAE78471B7DBE9F0053B13B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Peruze/Operations/Reachability.swift; sourceTree = SOURCE_ROOT; };
+		9DAE78481B7DBE9F0053B13B /* Support.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Support.swift; path = Peruze/Operations/Support.swift; sourceTree = SOURCE_ROOT; };
+		9DAE786F1B7DC0050053B13B /* AsyncClosuresOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncClosuresOperation.swift; path = Peruze/Operations/AsyncOpKit/AsyncClosuresOperation.swift; sourceTree = SOURCE_ROOT; };
+		9DAE78701B7DC0050053B13B /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOperation.swift; path = Peruze/Operations/AsyncOpKit/AsyncOperation.swift; sourceTree = SOURCE_ROOT; };
+		9DAE78711B7DC0050053B13B /* AsyncOpKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncOpKit.swift; path = Peruze/Operations/AsyncOpKit/AsyncOpKit.swift; sourceTree = SOURCE_ROOT; };
 		9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostMessageOperation.swift; sourceTree = "<group>"; };
 		9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostExchangeOperation.swift; sourceTree = "<group>"; };
 		9DEB96DF1B5B56DA00273677 /* PeruzeDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeruzeDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -836,13 +857,87 @@
 			name = CloudKitOperations;
 			sourceTree = "<group>";
 		};
-		9D5C24BB1B7924FA009E988E /* AsyncOpKit */ = {
+		9DAE781F1B7DBE9F0053B13B /* Conditions */ = {
 			isa = PBXGroup;
 			children = (
-				9D5C24BC1B792552009E988E /* AsyncClosuresOperation.swift */,
-				9D5C24BD1B792552009E988E /* AsyncOperation.swift */,
-				9D5C24BE1B792552009E988E /* AsyncOpKit.h */,
-				9D5C24BF1B792552009E988E /* AsyncOpKit.swift */,
+				9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */,
+				9DAE78211B7DBE9F0053B13B /* MutuallyExclusive.swift */,
+				9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */,
+				9DAE78231B7DBE9F0053B13B /* NoCancelledCondition.swift */,
+				9DAE78241B7DBE9F0053B13B /* OperationCondition.swift */,
+				9DAE78251B7DBE9F0053B13B /* Permissions */,
+				9DAE782D1B7DBE9F0053B13B /* ReachabilityCondition.swift */,
+				9DAE782E1B7DBE9F0053B13B /* RemoteNotificationCondition.swift */,
+				9DAE782F1B7DBE9F0053B13B /* SlientCondition.swift */,
+				9DAE78301B7DBE9F0053B13B /* UserConfirmationCondition.swift */,
+				9DAE78311B7DBE9F0053B13B /* UserNotificationCondition.swift */,
+			);
+			name = Conditions;
+			path = Peruze/Operations/Conditions;
+			sourceTree = SOURCE_ROOT;
+		};
+		9DAE78251B7DBE9F0053B13B /* Permissions */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */,
+				9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */,
+				9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */,
+				9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */,
+				9DAE782A1B7DBE9F0053B13B /* LocationCondition.swift */,
+				9DAE782B1B7DBE9F0053B13B /* PassbookCondition.swift */,
+				9DAE782C1B7DBE9F0053B13B /* PhotosCondition.swift */,
+			);
+			path = Permissions;
+			sourceTree = "<group>";
+		};
+		9DAE78321B7DBE9F0053B13B /* Observers */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE78331B7DBE9F0053B13B /* BackgroundObserver.swift */,
+				9DAE78341B7DBE9F0053B13B /* BlockObserver.swift */,
+				9DAE78351B7DBE9F0053B13B /* LoggingObserver.swift */,
+				9DAE78361B7DBE9F0053B13B /* NetworkObserver.swift */,
+				9DAE78371B7DBE9F0053B13B /* OperationObserver.swift */,
+				9DAE78381B7DBE9F0053B13B /* TimeoutObserver.swift */,
+			);
+			name = Observers;
+			path = Peruze/Operations/Observers;
+			sourceTree = SOURCE_ROOT;
+		};
+		9DAE78391B7DBE9F0053B13B /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */,
+				9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */,
+				9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */,
+				9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */,
+				9DAE783E1B7DBE9F0053B13B /* DelayOperation.swift */,
+				9DAE783F1B7DBE9F0053B13B /* GatedOperation.swift */,
+				9DAE78401B7DBE9F0053B13B /* GroupOperation.swift */,
+				9DAE78411B7DBE9F0053B13B /* LocationOperation.swift */,
+				9DAE78421B7DBE9F0053B13B /* Operation.swift */,
+				9DAE78431B7DBE9F0053B13B /* ReachableOperation.swift */,
+			);
+			name = Operations;
+			path = Peruze/Operations/Operations;
+			sourceTree = SOURCE_ROOT;
+		};
+		9DAE78441B7DBE9F0053B13B /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE78451B7DBE9F0053B13B /* ExclusivityManager.swift */,
+				9DAE78461B7DBE9F0053B13B /* OperationQueue.swift */,
+			);
+			name = Queue;
+			path = Peruze/Operations/Queue;
+			sourceTree = SOURCE_ROOT;
+		};
+		9DAE786E1B7DBFF70053B13B /* AsyncOpKit */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE786F1B7DC0050053B13B /* AsyncClosuresOperation.swift */,
+				9DAE78701B7DC0050053B13B /* AsyncOperation.swift */,
+				9DAE78711B7DC0050053B13B /* AsyncOpKit.swift */,
 			);
 			name = AsyncOpKit;
 			sourceTree = "<group>";
@@ -850,80 +945,15 @@
 		9DE8B4F01B5B51B7002D993E /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				9D5C24BB1B7924FA009E988E /* AsyncOpKit */,
-				9DEB969C1B5B51D600273677 /* Operation Queue */,
-				9DEB96A31B5B51D600273677 /* Operations */,
-				9DEB96A71B5B51D600273677 /* Observers */,
-				9DEB96B71B5B51D600273677 /* Conditions */,
-				9DEB96BC1B5B51D600273677 /* Convenience Extensions */,
+				9DAE786E1B7DBFF70053B13B /* AsyncOpKit */,
+				9DAE781F1B7DBE9F0053B13B /* Conditions */,
+				9DAE78321B7DBE9F0053B13B /* Observers */,
+				9DAE78391B7DBE9F0053B13B /* Operations */,
+				9DAE78441B7DBE9F0053B13B /* Queue */,
+				9DAE78471B7DBE9F0053B13B /* Reachability.swift */,
+				9DAE78481B7DBE9F0053B13B /* Support.swift */,
 			);
 			path = Operations;
-			sourceTree = "<group>";
-		};
-		9DEB969C1B5B51D600273677 /* Operation Queue */ = {
-			isa = PBXGroup;
-			children = (
-				9D3EA1A11B5DA68D005D63AC /* ExclusivityController.swift */,
-				9D3EA1AE1B5DA68D005D63AC /* OperationQueue.swift */,
-			);
-			name = "Operation Queue";
-			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
-			sourceTree = "<group>";
-		};
-		9DEB96A31B5B51D600273677 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				9D3EA19B1B5DA68D005D63AC /* BlockOperation.swift */,
-				9D3EA19F1B5DA68D005D63AC /* DelayOperation.swift */,
-				9D3EA1A21B5DA68D005D63AC /* GroupOperation.swift */,
-				9D3EA1A51B5DA68D005D63AC /* LocationOperation.swift */,
-				9D3EA1AA1B5DA68D005D63AC /* Operation.swift */,
-				9D3EA1B61B5DA68D005D63AC /* URLSessionTaskOperation.swift */,
-				9D3CEF161B6C444C0024B2BF /* AlertOperation.swift */,
-			);
-			name = Operations;
-			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
-			sourceTree = "<group>";
-		};
-		9DEB96A71B5B51D600273677 /* Observers */ = {
-			isa = PBXGroup;
-			children = (
-				9D3EA19A1B5DA68D005D63AC /* BlockObserver.swift */,
-				9D3EA1AD1B5DA68D005D63AC /* OperationObserver.swift */,
-				9D3EA1B41B5DA68D005D63AC /* TimeoutObserver.swift */,
-				9D3CEF141B6C31840024B2BF /* NetworkObserver.swift */,
-			);
-			name = Observers;
-			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
-			sourceTree = "<group>";
-		};
-		9DEB96B71B5B51D600273677 /* Conditions */ = {
-			isa = PBXGroup;
-			children = (
-				9D3EA19C1B5DA68D005D63AC /* CalendarCondition.swift */,
-				9D3EA19E1B5DA68D005D63AC /* CloudCondition.swift */,
-				9D3EA1A41B5DA68D005D63AC /* LocationCondition.swift */,
-				9D3EA1A61B5DA68D005D63AC /* MutuallyExclusive.swift */,
-				9D3EA1A71B5DA68D005D63AC /* NegatedCondition.swift */,
-				9D3EA1A81B5DA68D005D63AC /* NoCancelledDependencies.swift */,
-				9D3EA1AB1B5DA68D005D63AC /* OperationCondition.swift */,
-				9D3EA1AC1B5DA68D005D63AC /* OperationErrors.swift */,
-				9D3EA1B31B5DA68D005D63AC /* SilentCondition.swift */,
-			);
-			name = Conditions;
-			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
-			sourceTree = "<group>";
-		};
-		9DEB96BC1B5B51D600273677 /* Convenience Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				9D3EA19D1B5DA68D005D63AC /* CKContainer+Operations.swift */,
-				9D3EA1A01B5DA68D005D63AC /* Dictionary+Operations.swift */,
-				9D3EA1A91B5DA68D005D63AC /* NSOperation+Operations.swift */,
-				9D3EA1B51B5DA68D005D63AC /* UIUserNotifications+Operations.swift */,
-			);
-			name = "Convenience Extensions";
-			path = "../../../../Practice:Tutorials/Advanced-NSOperations/Earthquakes/Operations";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1088,97 +1118,101 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D177BA11B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift in Sources */,
+				9DAE78601B7DBE9F0053B13B /* AddressBookOperation.swift in Sources */,
+				9DAE78721B7DC0050053B13B /* AsyncClosuresOperation.swift in Sources */,
 				9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */,
+				9DAE78521B7DBE9F0053B13B /* LocationCondition.swift in Sources */,
+				9DAE785A1B7DBE9F0053B13B /* BackgroundObserver.swift in Sources */,
 				9D177BBF1B54DDC3009CB9FA /* ProfileSetupSelectPhotoViewController.swift in Sources */,
-				9D3EA1D21B5DA68D005D63AC /* TimeoutObserver.swift in Sources */,
 				9D177BBA1B54DDC3009CB9FA /* OnboardPageItemViewController.swift in Sources */,
 				9D177BCE1B54DDC3009CB9FA /* TGAssetImageFile.m in Sources */,
 				9D177BCA1B54DDC3009CB9FA /* TGCameraFocus.m in Sources */,
 				9D177B7F1B54DDC3009CB9FA /* StarView.swift in Sources */,
 				9D177B8F1B54DDC3009CB9FA /* PeruseExchangeViewController.swift in Sources */,
-				9D3EA1C41B5DA68D005D63AC /* MutuallyExclusive.swift in Sources */,
+				9DAE78621B7DBE9F0053B13B /* BlockOperation.swift in Sources */,
 				9D177BB71B54DDC3009CB9FA /* InitialViewController.swift in Sources */,
 				9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */,
 				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
+				9DAE78541B7DBE9F0053B13B /* PhotosCondition.swift in Sources */,
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
-				9D3EA1BD1B5DA68D005D63AC /* DelayOperation.swift in Sources */,
+				9DAE78551B7DBE9F0053B13B /* ReachabilityCondition.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
+				9DAE785F1B7DBE9F0053B13B /* TimeoutObserver.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
 				9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
+				9DAE786A1B7DBE9F0053B13B /* ExclusivityManager.swift in Sources */,
 				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
-				9D3EA1C71B5DA68D005D63AC /* NSOperation+Operations.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
 				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
-				9D3EA1C31B5DA68D005D63AC /* LocationOperation.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
 				9D3EA1F71B5DFAC1005D63AC /* Item+CoreDataProperties.swift in Sources */,
-				9D5C24C11B792552009E988E /* AsyncOperation.swift in Sources */,
-				9D3EA1B81B5DA68D005D63AC /* BlockObserver.swift in Sources */,
 				9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */,
-				9D3EA1BB1B5DA68D005D63AC /* CKContainer+Operations.swift in Sources */,
 				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
 				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,
-				9D3CEF151B6C31840024B2BF /* NetworkObserver.swift in Sources */,
-				9D3EA1CA1B5DA68D005D63AC /* OperationErrors.swift in Sources */,
+				9DAE784C1B7DBE9F0053B13B /* NoCancelledCondition.swift in Sources */,
 				9D177BD31B54DDC4009CB9FA /* TGCameraSlideUpView.m in Sources */,
 				9D177B831B54DDC3009CB9FA /* JSON.swift in Sources */,
 				9D177B7D1B54DDC3009CB9FA /* DoubleCircleImage.swift in Sources */,
+				9DAE786C1B7DBE9F0053B13B /* Reachability.swift in Sources */,
 				9D177BAA1B54DDC3009CB9FA /* RequestsViewController.swift in Sources */,
-				9D3EA1C01B5DA68D005D63AC /* GroupOperation.swift in Sources */,
 				9D3EA1F81B5DFAC1005D63AC /* Review+CoreDataProperties.swift in Sources */,
 				9D177B811B54DDC3009CB9FA /* ErrorAlertFactory.swift in Sources */,
-				9D3EA1D41B5DA68D005D63AC /* URLSessionTaskOperation.swift in Sources */,
-				9D3EA1C51B5DA68D005D63AC /* NegatedCondition.swift in Sources */,
 				9D177B931B54DDC3009CB9FA /* PeruseViewController.swift in Sources */,
 				9D3EA1F51B5DFAC1005D63AC /* Person+CoreDataProperties.swift in Sources */,
+				9DAE78561B7DBE9F0053B13B /* RemoteNotificationCondition.swift in Sources */,
+				9DAE78741B7DC0050053B13B /* AsyncOpKit.swift in Sources */,
 				9D177BBD1B54DDC3009CB9FA /* ProfileSetupRangeInfoViewController.swift in Sources */,
 				9D177BC31B54DDC3009CB9FA /* TGCameraViewController.m in Sources */,
-				9D3CEF171B6C444C0024B2BF /* AlertOperation.swift in Sources */,
 				9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */,
 				9D177BC61B54DDC3009CB9FA /* TGAssetsLibrary.m in Sources */,
-				9D3EA1C81B5DA68D005D63AC /* Operation.swift in Sources */,
 				9D177BD01B54DDC4009CB9FA /* TGCameraFocusView.m in Sources */,
+				9DAE784B1B7DBE9F0053B13B /* NegatedCondition.swift in Sources */,
+				9DAE78661B7DBE9F0053B13B /* GroupOperation.swift in Sources */,
+				9DAE78571B7DBE9F0053B13B /* SlientCondition.swift in Sources */,
 				9D3EA1F41B5DFAC1005D63AC /* Message+CoreDataProperties.swift in Sources */,
-				9D3EA1C91B5DA68D005D63AC /* OperationCondition.swift in Sources */,
 				9D177BCB1B54DDC3009CB9FA /* TGCameraGrid.m in Sources */,
 				9D177BCC1B54DDC3009CB9FA /* TGCameraShot.m in Sources */,
-				9D3EA1D31B5DA68D005D63AC /* UIUserNotifications+Operations.swift in Sources */,
+				9DAE786B1B7DBE9F0053B13B /* OperationQueue.swift in Sources */,
+				9DAE78611B7DBE9F0053B13B /* AlertOperation.swift in Sources */,
 				9D177B801B54DDC3009CB9FA /* UploadingEyesView.swift in Sources */,
+				9DAE785E1B7DBE9F0053B13B /* OperationObserver.swift in Sources */,
 				9D3CEF111B6C19C00024B2BF /* PostFavoriteOperation.swift in Sources */,
 				9D177BA61B54DDC3009CB9FA /* RequestsCollectionViewCell.swift in Sources */,
 				9D177BA51B54DDC3009CB9FA /* WriteReviewViewController.swift in Sources */,
 				9D45D22B1B5B5D8B00D555F3 /* Review.swift in Sources */,
-				9D3EA1C21B5DA68D005D63AC /* LocationCondition.swift in Sources */,
 				9D3EA1F61B5DFAC1005D63AC /* Exchange+CoreDataProperties.swift in Sources */,
 				9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
-				9D3EA1C61B5DA68D005D63AC /* NoCancelledDependencies.swift in Sources */,
-				9D5C24C21B792552009E988E /* AsyncOpKit.swift in Sources */,
-				9D3EA1CC1B5DA68D005D63AC /* OperationQueue.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
-				9D3EA1D11B5DA68D005D63AC /* SilentCondition.swift in Sources */,
+				9DAE78691B7DBE9F0053B13B /* ReachableOperation.swift in Sources */,
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
+				9DAE78631B7DBE9F0053B13B /* CloudKitOperation.swift in Sources */,
+				9DAE78531B7DBE9F0053B13B /* PassbookCondition.swift in Sources */,
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
+				9DAE78491B7DBE9F0053B13B /* BlockCondition.swift in Sources */,
 				9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,
-				9D3EA1BE1B5DA68D005D63AC /* Dictionary+Operations.swift in Sources */,
+				9DAE78511B7DBE9F0053B13B /* HealthCondition.swift in Sources */,
 				9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */,
 				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
+				9DAE784D1B7DBE9F0053B13B /* OperationCondition.swift in Sources */,
 				9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */,
 				9D177B7E1B54DDC3009CB9FA /* LoadingCircleView.swift in Sources */,
 				9D177B981B54DDC3009CB9FA /* ProfileExchangesViewController.swift in Sources */,
 				9D177BD51B54DDC4009CB9FA /* TGTintedButton.m in Sources */,
+				9DAE785C1B7DBE9F0053B13B /* LoggingObserver.swift in Sources */,
+				9DAE78681B7DBE9F0053B13B /* Operation.swift in Sources */,
 				9D3EA1991B5D97AB005D63AC /* GetCurrentUserOperation.swift in Sources */,
 				9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */,
-				9D3EA1B91B5DA68D005D63AC /* BlockOperation.swift in Sources */,
 				9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */,
 				9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */,
 				9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */,
+				9DAE78671B7DBE9F0053B13B /* LocationOperation.swift in Sources */,
 				9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */,
 				9D177B7B1B54DDC3009CB9FA /* CircleImage.swift in Sources */,
 				9D177BD61B54DDC4009CB9FA /* TGTintedLabel.m in Sources */,
@@ -1186,34 +1220,41 @@
 				9D177B851B54DDC3009CB9FA /* ChatCollectionViewController.swift in Sources */,
 				9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */,
 				9D177B921B54DDC3009CB9FA /* PeruseItemDataSource.swift in Sources */,
+				9DAE785B1B7DBE9F0053B13B /* BlockObserver.swift in Sources */,
 				9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */,
 				9D177B991B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift in Sources */,
+				9DAE78641B7DBE9F0053B13B /* DelayOperation.swift in Sources */,
 				9D177B901B54DDC3009CB9FA /* PeruseItemCollectionViewCell.swift in Sources */,
+				9DAE78591B7DBE9F0053B13B /* UserNotificationCondition.swift in Sources */,
+				9DAE784A1B7DBE9F0053B13B /* MutuallyExclusive.swift in Sources */,
 				9D177B8E1B54DDC3009CB9FA /* PeruseExchangeItemDataSource.swift in Sources */,
 				9D177B9F1B54DDC3009CB9FA /* ProfileReviewsViewController.swift in Sources */,
 				9DDC5E371B65B2E600A9EC22 /* PostMessageOperation.swift in Sources */,
 				9D177BC71B54DDC3009CB9FA /* TGCamera.m in Sources */,
 				9D3CEF191B6CAF610024B2BF /* PostUserOperation.swift in Sources */,
-				9D3EA1BF1B5DA68D005D63AC /* ExclusivityController.swift in Sources */,
 				9D177BA81B54DDC3009CB9FA /* RequestsDataSource.swift in Sources */,
+				9DAE786D1B7DBE9F0053B13B /* Support.swift in Sources */,
 				9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */,
 				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
 				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
+				9DAE78581B7DBE9F0053B13B /* UserConfirmationCondition.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
-				9D3EA1CB1B5DA68D005D63AC /* OperationObserver.swift in Sources */,
+				9DAE784E1B7DBE9F0053B13B /* AddressBookCondition.swift in Sources */,
+				9DAE784F1B7DBE9F0053B13B /* CalendarCondition.swift in Sources */,
+				9DAE78501B7DBE9F0053B13B /* CloudCondition.swift in Sources */,
 				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,
 				9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */,
 				9D177B891B54DDC3009CB9FA /* ChatTableViewController.swift in Sources */,
-				9D3EA1BC1B5DA68D005D63AC /* CloudCondition.swift in Sources */,
-				9D3EA1BA1B5DA68D005D63AC /* CalendarCondition.swift in Sources */,
+				9DAE78731B7DC0050053B13B /* AsyncOperation.swift in Sources */,
 				9D177BBB1B54DDC3009CB9FA /* OnboardViewController.swift in Sources */,
 				9D45D22A1B5B5D8B00D555F3 /* Message.swift in Sources */,
 				9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */,
 				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
-				9D5C24C01B792552009E988E /* AsyncClosuresOperation.swift in Sources */,
 				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
 				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
+				9DAE78651B7DBE9F0053B13B /* GatedOperation.swift in Sources */,
+				9DAE785D1B7DBE9F0053B13B /* NetworkObserver.swift in Sources */,
 				9D177BC51B54DDC3009CB9FA /* TGAlbum.m in Sources */,
 				9D177B9B1B54DDC3009CB9FA /* ProfileFavoritesViewController.swift in Sources */,
 				9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */,

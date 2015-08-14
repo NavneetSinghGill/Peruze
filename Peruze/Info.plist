@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>779996698766247</string>
 	<key>FacebookDisplayName</key>
@@ -40,6 +40,7 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbauth</string>
+		<string>fbauth2</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

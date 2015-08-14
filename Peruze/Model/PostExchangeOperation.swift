@@ -58,7 +58,7 @@ class PostExchangeOperation: GroupOperation {
       //init with operations
       super.init(operations: [saveOp, uploadOp, finishOp])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
     if errors.first != nil {
       print("PostExchangeOperation finished with the following first error: ")
       print(errors.first!)
@@ -192,7 +192,7 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
       localExchange.setValue(uploadedRecord.recordID.recordName, forKey: "recordIDName")
       
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
       
     }
     database.addOperation(uploadOp)

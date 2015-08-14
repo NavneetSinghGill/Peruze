@@ -45,11 +45,11 @@ class UpdateAllExchangesOperation: Operation {
     fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
       
       if recordsByID == nil {
-        self.finishWithError(error)
+        self.finish(GenericError.ExecutionFailed)
         return
       }
       self.cycleThroughDictionary(recordsByID)
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     database.addOperation(fetchUpdatedExchanges)
   }
@@ -142,7 +142,7 @@ class UpdateExchangeWithIncrementalData: Operation {
       if error != nil {
         print("UpdateExchangeWithIncrementalData finished with error:")
         print(error!)
-        self.finishWithError(error)
+        self.finish(GenericError.ExecutionFailed)
       } else {
         self.context.MR_saveToPersistentStoreAndWait()
         self.finish()

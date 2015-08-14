@@ -73,11 +73,10 @@ class GetFullProfileOperation: GroupOperation {
     
     name = "Get Full Profile"
   }
-  
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
     if let firstError = errors.first {
-          print("Get Full Profile Operation Failed With Error: \(firstError)")
-      produceAlert(firstError)
+      print("Get Full Profile Operation Failed With Error: \(firstError)")
+      //produceAlert(firstError)
     }
   }
   private func produceAlert(error: NSError) {
@@ -92,37 +91,11 @@ class GetFullProfileOperation: GroupOperation {
     
     // These are examples of errors for which we might choose to display an error to the user
     // TODO: Add to these when you get time
-    let failedReachability = (OperationErrorDomain, OperationErrorCode.ConditionFailed.rawValue, nil as String?)
     
     let failedJSON = (NSCocoaErrorDomain, NSPropertyListReadCorruptError, nil as String?)
-    
-    switch errorReason {
-    case failedReachability:
-      // We failed because the network isn't reachable.
-      let host = "" //error.userInfo?[] as! String
-      
-      alert.title = "Unable to Connect"
-      alert.message = "Cannot connect to \(host). Make sure your device is connected to the internet and try again."
-      
-    case failedJSON:
-      // We failed because the JSON was malformed.
-      alert.title = "Unable to Download"
-      alert.message = "Cannot download earthquake data. Try again later."
-      
-    default:
-      return
-    }
     
     produceOperation(alert)
     hasProducedAlert = true
   }
 }
 
-// Operators to use in the switch statement.
-private func ~=(lhs: (String, Int, String?), rhs: (String, Int, String?)) -> Bool {
-  return lhs.0 ~= rhs.0 && lhs.1 ~= rhs.1 && lhs.2 == rhs.2
-}
-
-private func ~=(lhs: (String, OperationErrorCode, String), rhs: (String, Int, String?)) -> Bool {
-  return lhs.0 ~= rhs.0 && lhs.1.rawValue ~= rhs.1 && lhs.2 == rhs.2
-}

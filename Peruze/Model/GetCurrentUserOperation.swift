@@ -38,14 +38,13 @@ class GetCurrentUserOperation: Operation {
       if error != nil {
         print("GetCurrentUserOperation failed with error:")
         print(error)
-        self.finishWithError(error)
+        self.finish(GenericError.ExecutionFailed)
         return
       }
       
       //make sure there were records
       if recordsByID == nil {
-        let error = NSError(code: OperationErrorCode.ExecutionFailed)
-        self.finishWithError(error)
+        self.finish(GenericError.ExecutionFailed)
         return
       }
       
@@ -94,9 +93,9 @@ class GetCurrentUserOperation: Operation {
     //add operation to the cloud kit database
     database.addOperation(fetchUser)
   }
-  override func finished(errors: [NSError]) {
+  override func finished(errors: [ErrorType]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentationContext: presentationContext)
+      let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "iCloud Error"
       alert.message = "There was an error getting your user from iCloud. Make sure you're logged into iCloud in Settings and iCloud Drive is turned on for Peruze."
       produceOperation(alert)

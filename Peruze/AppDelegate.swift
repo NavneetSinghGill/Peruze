@@ -32,11 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
   }
   
-  //Swift 2.0
-//  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-//    return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-//  }
-  
   func applicationWillResignActive(application: UIApplication) {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -64,15 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   //MARK: - Push Notifications
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-    print("app did receive remote notification")
+    print("app did receive remote notification\n")
     let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
     if let _ = cloudKitNotification as? CKQueryNotification {
-      print("app did receive remote notification")
+      print("app did receive remote notification\n")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
     }
   }
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("app did register for remote notification")
+    print("app did register for remote notification\n")
   }
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print(error.localizedDescription)

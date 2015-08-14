@@ -64,13 +64,12 @@ class GetAllParticipatingExchangesOperation: GroupOperation {
       )
       super.init(operations: [personIsCreator, personIsRequestedFrom])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
     if errors.first != nil {
       print("GetAllParticipatingExchangesOperation finished with error:")
       print(errors.first!)
     }
   }
-  
 }
 
 class PersonIsCreator: GetExchangesOperation {
@@ -206,7 +205,7 @@ class GetExchangesOperation: Operation {
     
     getExchangesOperation.queryCompletionBlock = { (cursor, error) -> Void in
       if error != nil { print("Get Exchanges Completed with Error: \(error)") }
-      self.finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     }
     
     //add that operation to the operationQueue of self.database

@@ -155,7 +155,7 @@ class FetchFacebookUserProfile: Operation {
     dispatch_async(dispatch_get_main_queue(), {
       request.startWithCompletionHandler ({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
         if error != nil {
-          self.finishWithError(error)
+          self.finish(GenericError.ExecutionFailed)
           return
         }
         if let result = result as? [String: AnyObject] {
@@ -165,24 +165,21 @@ class FetchFacebookUserProfile: Operation {
           localMe.setValue(result["id"] as? String, forKey: "facebookID")
           self.context.MR_saveToPersistentStoreAndWait()
         } else {
-          let error = NSError(code: OperationErrorCode.ExecutionFailed)
-          self.finishWithError(error)
+          self.finish(GenericError.ExecutionFailed)
           return
         }
         self.finish()
       })
     })
   }
-  
-  override func finished(errors: [NSError]) {
-    if errors.first != nil {
-      let alert = AlertOperation(presentationContext: presentationContext)
+  override func finished(errors: [ErrorType]) {
+   if errors.first != nil {
+      let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Error Accessing Facebook"
       alert.message = "There was a problem accessing your general facebook information."
       produceOperation(alert)
-    }
+    } 
   }
-  
 }
 
 ///Fetches the currently logged in facebook user's profile

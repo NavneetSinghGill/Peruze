@@ -9,6 +9,9 @@
 import Foundation
 import CloudKit
 
+enum GenericError: ErrorType {
+  case ExecutionFailed
+}
 
 class PostFavoriteOperation: Operation {
   let presentationContext: UIViewController
@@ -43,19 +46,6 @@ class PostFavoriteOperation: Operation {
     
     //add to cloud
     
-    //Swift 2.0
-//    guard let allFavorites = myPerson.valueForKey("favorites") as? NSSet else {
-//      print("Error: There was an issue in PostFavoriteOperation. MyProfile.Favorites are not an NSSet.")
-//      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-//      finishWithError(error)
-//      return
-//    }
-//    guard let myRecordIDName = myPerson.valueForKey("recordIDName") as? String else {
-//      print("Error: myRecordIDName was not a String")
-//      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-//      finishWithError(error)
-//      return
-//    }
     let allFavorites = myPerson.valueForKey("favorites") as! NSSet
     let myRecordIDName = myPerson.valueForKey("recordIDName") as! String
 
@@ -69,15 +59,14 @@ class PostFavoriteOperation: Operation {
         allReferences.append(newRef)
       } else {
         print("Error: Favorite Item was not NSManagedObject")
-        let error = NSError(code: OperationErrorCode.ExecutionFailed)
-        finishWithError(error)
+        let error = GenericError.ExecutionFailed
+        finish(GenericError.ExecutionFailed)
       }
     }
     
     if allReferences.count == 0 {
       print("Error: All references were 0")
-      let error = NSError(code: OperationErrorCode.ExecutionFailed)
-      finishWithError(error)
+      finish(GenericError.ExecutionFailed)
       return
     }
     
@@ -99,14 +88,14 @@ class PostFavoriteOperation: Operation {
       }
       
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finishWithError(operationError)
+      self.finish(GenericError.ExecutionFailed)
     }
     database.addOperation(saveMeOp)
     
   }
-  override func finished(errors: [NSError]) {
+  override func finished(errors: [ErrorType]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentationContext: presentationContext)
+      let alert = AlertOperation(presentFromController: presentationContext)
       self.produceOperation(alert)
     }
   }

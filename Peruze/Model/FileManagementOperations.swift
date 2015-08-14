@@ -31,7 +31,7 @@ class WritePNGImageToPath: Operation {
           NSLocalizedRecoverySuggestionErrorKey: "Close and reopen the application. "
         ]
       )
-      finishWithError(error)
+      self.finish(GenericError.ExecutionFailed)
     } else {
       finish()
     }

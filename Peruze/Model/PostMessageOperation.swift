@@ -47,14 +47,12 @@ class PostMessageOperation: GroupOperation {
       finishOp.addDependencies([saveOp, uploadOp])
       super.init(operations: [uploadOp, saveOp, finishOp])
   }
-  
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
     if errors.count != 0 {
       print("PostMessageOperation finished with errors:")
       print(errors)
     }
   }
-  
 }
 
 /**
@@ -138,7 +136,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     saveRecordsOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
       localMessage.setValue(savedRecords?.first?.recordID?.recordName, forKey: "recordIDName")
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finishWithError(operationError)
+      self.finish(GenericError.ExecutionFailed)
     }
     
     database.addOperation(saveRecordsOp)
