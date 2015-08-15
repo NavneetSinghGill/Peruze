@@ -145,6 +145,7 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     }
     
     //add the operation to the database
+    messagesQueryOp.qualityOfService = NSQualityOfService.Utility
     database.addOperation(messagesQueryOp)
   }
 }

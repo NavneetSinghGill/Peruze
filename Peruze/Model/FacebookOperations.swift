@@ -149,8 +149,8 @@ class FetchFacebookUserProfile: Operation {
     self.context = context
     super.init()
   }
-  
   override func execute() {
+    
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue(), {
       request.startWithCompletionHandler ({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
@@ -172,14 +172,16 @@ class FetchFacebookUserProfile: Operation {
       })
     })
   }
+  
   override func finished(errors: [ErrorType]) {
-   if errors.first != nil {
+    if errors.first != nil {
       let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Error Accessing Facebook"
       alert.message = "There was a problem accessing your general facebook information."
       produceOperation(alert)
-    } 
+    }
   }
+  
 }
 
 ///Fetches the currently logged in facebook user's profile

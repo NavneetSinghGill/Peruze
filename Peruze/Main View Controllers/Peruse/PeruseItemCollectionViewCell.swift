@@ -136,23 +136,35 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //MARK: - Drawing and UI
   
   private func updateUI() {
-    if
-      let imageData = item?.valueForKey("image") as? NSData,
-      let title = item?.valueForKey("title") as? String,
-      let detail = item?.valueForKey("detail") as? String,
-      let owner = item?.valueForKey("owner") as? NSManagedObject,
-      let ownerName = owner.valueForKey("firstName") as? String,
-      let ownerImageData = owner.valueForKey("image") as? NSData
-    {
-      //      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
-      //      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
-      
-      ownerNameLabel.text = ownerName
-      ownerProfileImage.image = UIImage(data: ownerImageData)
+    if let imageData = item?.valueForKey("image") as? NSData {
       itemImageView.image = UIImage(data: imageData)
-      itemNameLabel.text = title
-      itemDescriptionTextView.text = detail
+    } else {
+      itemImageView.image = UIImage()
     }
+    if let title = item?.valueForKey("title") as? String {
+      itemNameLabel.text = title
+    } else {
+      itemNameLabel.text = "Error"
+    }
+    if let detail = item?.valueForKey("detail") as? String {
+      itemDescriptionTextView.text = detail
+    } else {
+      itemDescriptionTextView.text = "Error"
+    }
+    if let owner = item?.valueForKey("owner") as? NSManagedObject {
+      if let ownerName = owner.valueForKey("firstName") as? String {
+        ownerNameLabel.text = ownerName
+      } else {
+        ownerNameLabel.text = "Error"
+      }
+      if let ownerImageData = owner.valueForKey("image") as? NSData {
+        ownerProfileImage.image = UIImage(data: ownerImageData)
+      } else {
+        ownerProfileImage.image = UIImage()
+      }
+    }
+    //      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
+    //      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
   }
   
   private func heartFlash() {

@@ -81,7 +81,7 @@ class PostUserOperation: Operation {
       
       self.finish(GenericError.ExecutionFailed)
     }
-    
+    saveOp.qualityOfService = NSQualityOfService.Utility
     database.addOperation(saveOp)
   }
   override func finished(errors: [ErrorType]) {

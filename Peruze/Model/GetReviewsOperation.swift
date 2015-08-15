@@ -86,6 +86,7 @@ class GetReviewsOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
+    getUploadsOperation.qualityOfService = NSQualityOfService.Utility
     self.database.addOperation(getUploadsOperation)
   }
 }

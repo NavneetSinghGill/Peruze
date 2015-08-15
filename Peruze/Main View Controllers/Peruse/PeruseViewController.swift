@@ -78,14 +78,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       print("first let finished")
       if managedObj.first!.entity.name == "Item" {
         print("second let finished")
-        
         dispatch_async(dispatch_get_main_queue()) {
-//          do {
-//            try self.dataSource.fetchedResultsController.performFetch()
-//          } catch {
-//            print("fetchedResultsController could not perform fetch")
-//            print(error)
-//          }
           var error: NSError?
           self.dataSource.fetchedResultsController.performFetch(&error)
           print(error)
@@ -96,12 +89,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     if let managedObj = (updatedObjects as? NSSet)?.allObjects {
       if managedObj.first!.entity.name == "Item" {
         dispatch_async(dispatch_get_main_queue()) {
-//          do {
-//            try self.dataSource.fetchedResultsController.performFetch()
-//          } catch {
-//            print("fetchedResultsController could not perform fetch")
-//            print(error)
-//          }
           var error: NSError?
           self.dataSource.fetchedResultsController.performFetch(&error)
           print(error)
@@ -109,13 +96,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
       }
     }
-    print("- - - - - updated objects - - - - -")
+    print("- - - - - updated objects - - - - -\n")
     print(updatedObjects)
-    print("- - - - - deleted objects - - - - -")
+    print("- - - - - deleted objects - - - - -\n")
     print(deletedObjects)
-    print("- - - - - inserted objects - - - - -")
+    print("- - - - - inserted objects - - - - -\n")
     print(insertedObjects)
-    
   }
   
   //store top and bottom for when navigation controller is animating pop and is nil

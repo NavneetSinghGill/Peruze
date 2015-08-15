@@ -51,6 +51,7 @@ class UpdateAllExchangesOperation: Operation {
       self.cycleThroughDictionary(recordsByID)
       self.finish(GenericError.ExecutionFailed)
     }
+    fetchUpdatedExchanges.qualityOfService = NSQualityOfService.Utility
     database.addOperation(fetchUpdatedExchanges)
   }
   
@@ -148,6 +149,7 @@ class UpdateExchangeWithIncrementalData: Operation {
         self.finish()
       }
     }
+    cloudOp.qualityOfService = NSQualityOfService.Utility
     database.addOperation(cloudOp)
   }
 }

@@ -172,7 +172,6 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     postFacebookInfoToServer.addDependencies([getFacebookProfileOp, saveImageOp])
     performSegueOp.addDependencies([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp])
     operationQueue.addOperations([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp, performSegueOp], waitUntilFinished: false)
-    operationQueue.suspended = false
   }
   
   

@@ -209,6 +209,7 @@ class GetExchangesOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
+    getExchangesOperation.qualityOfService = NSQualityOfService.Utility
     self.database.addOperation(getExchangesOperation)
   }
   

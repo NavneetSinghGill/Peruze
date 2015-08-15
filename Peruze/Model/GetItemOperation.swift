@@ -17,7 +17,14 @@ class GetItemInRangeOperation: GetItemOperation {
   init(range: Float? = nil, location: CLLocation, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.range = range
     self.location = location
+    
     super.init(database: database, context: context)
+    
+    let locationCondition = LocationCondition(usage: LocationCondition.Usage.Always, manager: nil)
+    addCondition(locationCondition)
+    
+    let networkObserver = NetworkObserver()
+    addObserver(networkObserver)
   }
   
   override func getPredicate() -> NSPredicate {
@@ -68,7 +75,7 @@ class GetItemOperation: Operation {
       let ownerRecordIDName = record.creatorUserRecordID.recordName
       
       if ownerRecordIDName == "__defaultOwner__" {
-        let owner = Person.MR_findFirstOrCreateByAttribute("me",
+        let owner = Person.MR_findFirstByAttribute("me",
           withValue: true,
           inContext: self.context)
         localUpload.setValue(owner, forKey: "owner")
@@ -107,6 +114,7 @@ class GetItemOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
+    getItemsOperation.qualityOfService = NSQualityOfService.Utility
     self.database.addOperation(getItemsOperation)
   }
   
@@ -139,7 +147,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     var itemRecordsToFetch = [CKRecordID]()
     
-    for itemRecordIDName in allRecordIDNames{
+    for itemRecordIDName in allRecordIDNames {
       if itemRecordIDName != nil {
         itemRecordsToFetch.append(CKRecordID(recordName: itemRecordIDName!))
       }
@@ -197,6 +205,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
       }
       self.finish(GenericError.ExecutionFailed)
     }
+    fetchAllItemsOperation.qualityOfService = NSQualityOfService.Utility
     database.addOperation(fetchAllItemsOperation)
   }
 }
