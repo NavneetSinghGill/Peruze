@@ -21,6 +21,13 @@ class MainTabBarViewController: UITabBarController {
       location: CLLocation(),
       database: CKContainer.defaultContainer().publicCloudDatabase,
       context: managedConcurrentObjectContext)
-    OperationQueue().addOperation(getItemsOperation)
+    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
+    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
+    fetchMissingItems.addDependency(getItemsOperation)
+    fetchMissingPeople.addDependency(fetchMissingItems)
+    let operationQueue = OperationQueue()
+    operationQueue.qualityOfService = NSQualityOfService.Utility
+    operationQueue.addOperations([getItemsOperation, fetchMissingItems, fetchMissingPeople], waitUntilFinished: false)
   }
 }

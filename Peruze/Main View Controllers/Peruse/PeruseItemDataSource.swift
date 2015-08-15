@@ -35,7 +35,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myID = me.valueForKey("recordIDName") as! String
-    fetchRequest.predicate = NSPredicate(value: true)//NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
+    fetchRequest.predicate = NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
@@ -72,7 +72,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   }
   
   func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-    collectionView.reloadData()
     print("Did Change Object")
   }
   

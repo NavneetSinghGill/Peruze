@@ -39,30 +39,34 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     //reload the data
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-//    let fetchExchanges = GetOnlyRequestedExchangesOperation(
-//      personRecordIDName: me.recordIDName!,
-//      status: ExchangeStatus.Pending,
-//      database: publicDB,
-//      context: managedConcurrentObjectContext
-//    )
-//    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
-//    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
-//    let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
-//    updateExchanges.completionBlock = {
-//      var error: NSError?
-//      self.dataSource.fetchedResultsController.performFetch(&error)
-//      dispatch_async(dispatch_get_main_queue()){
-//        self.tableView.reloadData()
-//        self.refreshControl?.endRefreshing()
-//      }
-//    }
-//    
-//    fetchMissingItems.addDependency(fetchExchanges)
-//    fetchMissingPeople.addDependency(fetchMissingItems)
-//    updateExchanges.addDependency(fetchMissingPeople)
-//    OperationQueue().addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
+    let myRecordIDName = me.valueForKey("recordIDName") as! String
+    let fetchExchanges = GetOnlyRequestedExchangesOperation(
+      personRecordIDName: myRecordIDName,
+      status: ExchangeStatus.Pending,
+      database: publicDB,
+      context: managedConcurrentObjectContext
+    )
+    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
+    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
+    let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
+    updateExchanges.completionBlock = {
+      var error: NSError?
+      self.dataSource.fetchedResultsController.performFetch(&error)
+      dispatch_async(dispatch_get_main_queue()){
+        self.tableView.reloadData()
+        self.refreshControl?.endRefreshing()
+      }
+    }
+
+    fetchMissingItems.addDependency(fetchExchanges)
+    fetchMissingPeople.addDependency(fetchMissingItems)
+    updateExchanges.addDependency(fetchMissingPeople)
     
+    let operationQueue = OperationQueue()
+    operationQueue.qualityOfService = NSQualityOfService.Utility
+    operationQueue.addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
   }
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     titleLabel.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)

@@ -19,22 +19,12 @@ class UpdateAllExchangesOperation: Operation {
     addObserver(NetworkObserver())
   }
   override func execute() {
-    /* Swift 2.0
-    defer {
-      context.MR_saveToPersistentStoreAndWait()
-    }
-    
-    guard let allExchanges = Exchange.MR_findAll() as? [NSManagedObject] else {
-      finish()
-      return
-    }
-    */
+
     let allExchanges = Exchange.MR_findAll() as! [NSManagedObject]
     let allExchangesRecordIDNames = allExchanges.map { $0.valueForKey("recordIDName") as? String }
     
     var allExchangesRecordIDs = [CKRecordID]()
-    //Swift 2.0
-    for recordIDName in allExchangesRecordIDNames /* where recordIDName != nil */{
+    for recordIDName in allExchangesRecordIDNames {
       if recordIDName != nil {
         allExchangesRecordIDs.append(CKRecordID(recordName: recordIDName!))
       }
