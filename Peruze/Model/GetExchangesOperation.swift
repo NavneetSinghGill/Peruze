@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 
+private let logging = true
 /*
 
 
@@ -131,7 +132,7 @@ class GetExchangesOperation: Operation {
   }
   
   override func execute() {
-    print("Hit " + __FUNCTION__ + " in " + __FILE__)
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     //make sure the predicate is valid
     if getPredicate() == NSPredicate(value: false) {
@@ -209,7 +210,7 @@ class GetExchangesOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
-    getExchangesOperation.qualityOfService = NSQualityOfService.Utility
+    getExchangesOperation.qualityOfService = qualityOfService
     self.database.addOperation(getExchangesOperation)
   }
   

@@ -9,6 +9,8 @@
 import Foundation
 import CloudKit
 
+private let logging = true
+
 class PostUserOperation: Operation {
   let presentationContext: UIViewController
   let database: CKDatabase
@@ -23,6 +25,7 @@ class PostUserOperation: Operation {
   }
   
   override func execute() {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -55,7 +58,7 @@ class PostUserOperation: Operation {
     let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
     saveOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-      
+      print("\n saveOp.modifyRecordsCompletionBlock called. \n")
       //Swift 2.0
       //      do {
       //        try NSFileManager.defaultManager().removeItemAtURL(imageURL)
@@ -71,20 +74,26 @@ class PostUserOperation: Operation {
       
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &error)
-      print(error)
+      if error != nil {
+        print("\n")
+        print(error)
+        print("\n")
+        self.finish(GenericError.ExecutionFailed)
+      }
       
       if savedRecords.first == nil {
         self.finish(GenericError.ExecutionFailed)
         return
       }
       
-      
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
     }
-    saveOp.qualityOfService = NSQualityOfService.Utility
+    saveOp.qualityOfService = qualityOfService
     database.addOperation(saveOp)
   }
   override func finished(errors: [ErrorType]) {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     if errors.first != nil {
       let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Upload User Information Error"
@@ -94,6 +103,8 @@ class PostUserOperation: Operation {
   }
   
   private func cachePathForFileName(name: String) -> String {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
     let cachePath = paths.first! as! String
     return cachePath.stringByAppendingPathComponent(name)

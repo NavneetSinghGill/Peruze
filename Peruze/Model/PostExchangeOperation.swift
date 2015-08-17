@@ -195,7 +195,7 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
       self.finish(GenericError.ExecutionFailed)
       
     }
-    uploadOp.qualityOfService = NSQualityOfService.Utility
+    uploadOp.qualityOfService = qualityOfService
     database.addOperation(uploadOp)
   }
   

@@ -8,6 +8,18 @@
 
 import Foundation
 
+private let logging = true
+
+private enum FacebookOperationsError: ErrorType {
+  case RequestFailedWithError(error: NSError)
+}
+
+private enum NetworkError: ErrorType {
+  case DownloadFailed
+}
+
+
+
 //MARK: - Download Profile Photo
 
 /**
@@ -24,6 +36,8 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   ///resulting array of image URLs
   var imageURLs = [NSURL]()
   override func main() {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
     if cancelled { finish(); return }
     //create the request from above graph path
     let request = FBSDKGraphRequest(graphPath:Constants.GraphPath, parameters: nil, HTTPMethod:"GET")
@@ -40,6 +54,9 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   }
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
     var returnURLs = [NSURL]()
     
     if cancelled { finish(); return [] }
@@ -98,7 +115,10 @@ class DownloadImagesForURLs: AsyncOperation {
   var images = [UIImage]()
   
   override func main() {
-    
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
+
     //get image URLs from dependencies
     for dependency in self.dependencies {
       if let downloadURLDependency = dependency as? DownloadProfilePhotoURLs {
@@ -119,7 +139,10 @@ class DownloadImagesForURLs: AsyncOperation {
     
     //populate the image array with images from the data
     for imgData in data {
-      if cancelled { finish(); return }
+      if cancelled {
+        finish()
+        return
+      }
       if let image = UIImage(data: imgData) {
         images.append(image)
       } else {
@@ -133,7 +156,6 @@ class DownloadImagesForURLs: AsyncOperation {
 /**
 Fetches the currently logged in facebook user's profile and saves the information to disk
 Produces an operation that saves the
-
 */
 class FetchFacebookUserProfile: Operation {
   
@@ -145,17 +167,23 @@ class FetchFacebookUserProfile: Operation {
   let presentationContext: UIViewController
   
   init(presentationContext: UIViewController, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
     self.presentationContext = presentationContext
     self.context = context
     super.init()
   }
   override func execute() {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
     
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue(), {
       request.startWithCompletionHandler ({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
         if error != nil {
-          self.finish(GenericError.ExecutionFailed)
+          self.finish(FacebookOperationsError.RequestFailedWithError(error: error))
           return
         }
         if let result = result as? [String: AnyObject] {
@@ -174,14 +202,16 @@ class FetchFacebookUserProfile: Operation {
   }
   
   override func finished(errors: [ErrorType]) {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
     if errors.first != nil {
+      if logging { print("\n There was an error in " + __FILE__ + " \n") }
       let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Error Accessing Facebook"
       alert.message = "There was a problem accessing your general facebook information."
       produceOperation(alert)
     }
   }
-  
 }
 
 ///Fetches the currently logged in facebook user's profile
@@ -193,6 +223,8 @@ class FetchFacebookFriends: AsyncOperation {
   var facebookIDs = [String]()
   
   override func main() {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue()) {
@@ -217,6 +249,10 @@ class FetchFacebookFriends: AsyncOperation {
   }
   
   private func recursivelyPageDataFromURL(url: NSURL) {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
+    
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
       var jsonData: AnyObject?
@@ -246,6 +282,10 @@ class FetchFacebookFriends: AsyncOperation {
   }
   
   private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {
+    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+
+
+
     if array == nil { return [] }
     var returnArray = [String]()
     for obj in array! {

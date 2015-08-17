@@ -91,7 +91,7 @@ class GetCurrentUserOperation: Operation {
     
     
     //add operation to the cloud kit database
-    fetchUser.qualityOfService = NSQualityOfService.Utility
+    fetchUser.qualityOfService = qualityOfService
     database.addOperation(fetchUser)
   }
   override func finished(errors: [ErrorType]) {

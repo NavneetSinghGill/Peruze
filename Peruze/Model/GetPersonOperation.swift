@@ -103,7 +103,7 @@ class GetPersonOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
-    getPersonOperation.qualityOfService = NSQualityOfService.Utility
+    getPersonOperation.qualityOfService = qualityOfService
     self.database.addOperation(getPersonOperation)
   }
 }
@@ -192,7 +192,7 @@ class GetAllPersonsWithMissingData: Operation {
     }
     
     //add that operation to the operationQueue of self.database
-    getPersonOperation.qualityOfService = NSQualityOfService.Utility
+    getPersonOperation.qualityOfService = qualityOfService
     self.database.addOperation(getPersonOperation)
     
   }

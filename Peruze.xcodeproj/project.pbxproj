@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
+		9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */; };
 		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
 		9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */; };
 		9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE71B54DDC3009CB9FA /* Main.storyboard */; };
@@ -188,6 +189,7 @@
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetItemOperation.swift; sourceTree = "<group>"; };
+		9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPeruzeItemOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
 		9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D177AE61B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -734,6 +736,7 @@
 				9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */,
 				9D3EA1981B5D97AB005D63AC /* GetCurrentUserOperation.swift */,
 				9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */,
+				9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */,
 			);
 			name = Get;
 			sourceTree = "<group>";
@@ -1221,6 +1224,7 @@
 				9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */,
 				9D177B921B54DDC3009CB9FA /* PeruseItemDataSource.swift in Sources */,
 				9DAE785B1B7DBE9F0053B13B /* BlockObserver.swift in Sources */,
+				9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */,
 				9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */,
 				9D177B991B54DDC3009CB9FA /* ProfileFavoritesCollectionViewController.swift in Sources */,
 				9DAE78641B7DBE9F0053B13B /* DelayOperation.swift in Sources */,

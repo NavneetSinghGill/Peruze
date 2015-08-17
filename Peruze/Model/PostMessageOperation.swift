@@ -138,7 +138,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
       self.context.MR_saveToPersistentStoreAndWait()
       self.finish(GenericError.ExecutionFailed)
     }
-    saveRecordsOp.qualityOfService = NSQualityOfService.Utility
+    saveRecordsOp.qualityOfService = qualityOfService
     database.addOperation(saveRecordsOp)
   }
 }

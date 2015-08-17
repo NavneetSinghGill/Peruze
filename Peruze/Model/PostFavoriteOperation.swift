@@ -90,7 +90,7 @@ class PostFavoriteOperation: Operation {
       self.context.MR_saveToPersistentStoreAndWait()
       self.finish(GenericError.ExecutionFailed)
     }
-    saveMeOp.qualityOfService = NSQualityOfService.Utility
+    saveMeOp.qualityOfService = qualityOfService
     database.addOperation(saveMeOp)
     
   }

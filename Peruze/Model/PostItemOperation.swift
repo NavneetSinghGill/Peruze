@@ -213,7 +213,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       self.context.MR_saveToPersistentStoreAndWait()
       self.finish(GenericError.ExecutionFailed)
     }
-    saveItemRecordOp.qualityOfService = NSQualityOfService.Utility
+    saveItemRecordOp.qualityOfService = qualityOfService
     database.addOperation(saveItemRecordOp)
   }
   

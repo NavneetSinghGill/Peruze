@@ -58,11 +58,14 @@ class GetItemOperation: Operation {
   }
   
   override func finished(errors: [ErrorType]) {
-    NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+    if errors.first != nil {
+      println(errors.first)
+    }
   }
   
   override func execute() {    
     //create operation for fetching relevant records
+    var resultsLimit = 10
     let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
     let getItemsOperation = CKQueryOperation(query: getItemQuery)
     
@@ -114,7 +117,8 @@ class GetItemOperation: Operation {
     }
     
     //add that operation to the operationQueue of self.database
-    getItemsOperation.qualityOfService = NSQualityOfService.Utility
+    getItemsOperation.qualityOfService = qualityOfService
+    getItemsOperation.resultsLimit = resultsLimit
     self.database.addOperation(getItemsOperation)
   }
   
@@ -205,7 +209,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
       }
       self.finish(GenericError.ExecutionFailed)
     }
-    fetchAllItemsOperation.qualityOfService = NSQualityOfService.Utility
+    fetchAllItemsOperation.qualityOfService = qualityOfService
     database.addOperation(fetchAllItemsOperation)
   }
 }

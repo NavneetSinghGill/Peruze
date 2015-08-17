@@ -9,6 +9,9 @@
 import UIKit
 import CloudKit
 
+///whether or not verbose print statements should be called for each function
+private let logging = true
+
 class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePictureRetrievalDelegate {
   //MARK: - Variables
   private struct Constants {
@@ -153,6 +156,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //saves the user's image to the local database
     let saveImageOp = NSBlockOperation {
+      if logging { print("\n saveImageOp called. \n") }
       let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
       let imageData = UIImagePNGRepresentation(self.center.image!)
       me.setValue(imageData, forKey: "image")
@@ -161,6 +165,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation {
+      if logging { print("\n performSeugeOp called. \n") }
       dispatch_async(dispatch_get_main_queue()) {
         self.nextLoadingTearDown()
         sender.userInteractionEnabled = true
