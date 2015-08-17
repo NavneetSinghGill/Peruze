@@ -37,23 +37,10 @@ struct RecordTypes {
   static let Message = "Message"
 }
 class Model: NSObject, CLLocationManagerDelegate {
-  var myProfile: Person!
-  var locationManager: CLLocationManager!
   private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-  
+  private let locationAccuracy: CLLocationAccuracy = 200 //meters
   class func sharedInstance() -> Model {
     return modelSingletonGlobal
-  }
-  
-  override init() {
-    super.init()
-    locationManager = CLLocationManager()
-    locationManager.delegate = self
-    locationManager.distanceFilter = kCLDistanceFilterNone
-    locationManager.activityType = .Other
-    locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-    locationManager.startMonitoringSignificantLocationChanges()
-    
   }
   
   private func userPrivacySetting() -> FriendsPrivacy {
@@ -70,17 +57,39 @@ class Model: NSObject, CLLocationManagerDelegate {
       return .Everyone
     }
   }
-  private func userDistanceIsEverywhere() -> Bool {
-    return userDistanceSettingInMi() == 25
-  }
-  private func userDistanceSettingInMi() -> Int {
-    return NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Int ?? 25
-  }
-  private func userDistanceSettingInMeters() -> Float {
-    return convertToKilometers(userDistanceSettingInMi()) * 1000
-  }
-  private func convertToKilometers(miles: Int) -> Float {
-    return Float(miles) * 1.60934
+  
+  func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
+    let operationQueue = OperationQueue()
+    operationQueue.qualityOfService = .UserInitiated
+    
+    let getLocationOp = LocationOperation(accuracy: locationAccuracy, manager: nil) { (location) -> Void in
+      let getItems = GetPeruzeItemOperation(
+        presentationContext: presentationContext,
+        location: location,
+        context: managedConcurrentObjectContext,
+        database: self.publicDB
+      )
+      getItems.completionBlock = completion
+      operationQueue.addOperation(getItems)
+    }
+    let condition = LocationCondition(usage: .WhenInUse, manager: nil)
+    
+    OperationConditionEvaluator.evaluate([condition], operation: getLocationOp) {
+      (errors: [ErrorType]) -> Void in
+      if errors.first != nil {
+        println("There was an error getting the user's location. Will use Everywhere location preference.")
+        let getItems = GetPeruzeItemOperation(
+          presentationContext: presentationContext,
+          location: CLLocation(),
+          context: managedConcurrentObjectContext,
+          database: self.publicDB
+        )
+        getItems.completionBlock = completion
+        operationQueue.addOperation(getItems)
+      }
+    }
+    
+    operationQueue.addOperation(getLocationOp)
   }
   
   //MARK: - Profile Setup

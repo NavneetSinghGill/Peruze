@@ -33,9 +33,12 @@ class GetPeruzeItemOperation: GroupOperation {
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
       let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
       
+      //add dependencies
+      fillMissingPeopleData.addDependency(fillMissingItemData)
+      fillMissingItemData.addDependency(getItems)
+      
       super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
   }
-  
   
   //Convenience methods for retrieving the user's distance settings
   private class func userDistanceIsEverywhere() -> Bool {

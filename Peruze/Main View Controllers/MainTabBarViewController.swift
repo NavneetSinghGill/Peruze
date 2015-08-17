@@ -16,18 +16,9 @@ class MainTabBarViewController: UITabBarController {
     
   }
   override func viewDidAppear(animated: Bool) {
-    let getItemsOperation = GetItemInRangeOperation(
-      range: nil,
-      location: CLLocation(),
-      database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedConcurrentObjectContext)
-    let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-    let fetchMissingItems = GetAllItemsWithMissingDataOperation(database: publicDB)
-    let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
-    fetchMissingItems.addDependency(getItemsOperation)
-    fetchMissingPeople.addDependency(fetchMissingItems)
-    let operationQueue = OperationQueue()
-    operationQueue.qualityOfService = NSQualityOfService.Utility
-    operationQueue.addOperations([getItemsOperation, fetchMissingItems, fetchMissingPeople], waitUntilFinished: false)
+    Model.sharedInstance().getPeruzeItems(selectedViewController!, completion: {
+      println("GetPeruzeItems completed!")
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+    })
   }
 }
