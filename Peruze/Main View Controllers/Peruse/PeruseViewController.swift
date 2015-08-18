@@ -153,7 +153,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //favorite data
     print("item favorited!")
   }
-  
+  func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    if indexPath.section == 1 {
+      //this is about to display the loading cell
+      Model.sharedInstance().getPeruzeItems(self)
+    }
+  }
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
       if let destVC = segue.destinationViewController as? PeruseExchangeViewController {

@@ -129,6 +129,7 @@
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
 		9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D58BF431B7BD7F2006C40FC /* CoreData.framework */; };
+		9D5C3A721B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D5C3A711B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib */; };
 		9DAE78491B7DBE9F0053B13B /* BlockCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */; };
 		9DAE784A1B7DBE9F0053B13B /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78211B7DBE9F0053B13B /* MutuallyExclusive.swift */; };
 		9DAE784B1B7DBE9F0053B13B /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */; };
@@ -339,6 +340,7 @@
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
 		9D58BF431B7BD7F2006C40FC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9D5C3A711B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeruseLoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockCondition.swift; sourceTree = "<group>"; };
 		9DAE78211B7DBE9F0053B13B /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
 		9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegatedCondition.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				9D177B031B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib */,
 				9D177B041B54DDC3009CB9FA /* PeruseItemDataSource.swift */,
 				9D177B051B54DDC3009CB9FA /* PeruseViewController.swift */,
+				9D5C3A711B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib */,
 			);
 			path = Peruse;
 			sourceTree = "<group>";
@@ -1064,6 +1067,7 @@
 				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
 				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
 				9DF505A21B69D6AE00404BD4 /* EmptyCell.xib in Resources */,
+				9D5C3A721B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib in Resources */,
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
 				9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */,
 				9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */,

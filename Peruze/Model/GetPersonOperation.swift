@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 
+private let logging = true
 class GetPersonOperation: Operation {
   let personID: CKRecordID
   let database: CKDatabase
@@ -78,28 +79,32 @@ class GetPersonOperation: Operation {
           
           //set the returned properties
           localPerson.setValue(recordID.recordName, forKey: "recordIDName")
-          /*
+          
+          
           if (localPerson.valueForKey("firstName") as? String) == nil {
-          localPerson.firstName = recordsByID[recordID]!.objectForKey("FirstName") as? String
+            let firstName = recordsByID[recordID]?.objectForKey("FirstName") as? String
+            localPerson.setValue(firstName, forKey: "firstName")
           }
           if (localPerson.valueForKey("lastName") as? String) == nil {
-          localPerson.firstName = recordsByID[recordID]!.objectForKey("LastName") as? String
+            let lastName = recordsByID[recordID]?.objectForKey("LastName") as? String
+            localPerson.setValue(lastName, forKey: "lastName")
           }
           if (localPerson.valueForKey("facebookID") as? String) == nil {
-          localPerson.firstName = recordsByID[recordID]!.objectForKey("FacebookID") as? String
+            let facebookID = recordsByID[recordID]?.objectForKey("FacebookID") as? String
+            localPerson.setValue(facebookID, forKey: "facebookID")
           }
           //check for image property and set the data
           if let imageAsset = recordsByID[recordID]?.objectForKey("Image") as? CKAsset {
-          localPerson.image = NSData(contentsOfURL: imageAsset.fileURL)
+            let image = NSData(contentsOfURL: imageAsset.fileURL)
+            localPerson.setValue(image, forKey: "image")
           }
-          */
-          self.context.MR_saveToPersistentStoreAndWait()
           
+          self.context.MR_saveToPersistentStoreAndWait()
         }
         
       }
       //because the operations inside of the block wait, we can call finish outside of the block
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
     }
     
     //add that operation to the operationQueue of self.database
@@ -114,12 +119,13 @@ class GetAllPersonsWithMissingData: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     self.database = database
     self.context = context
     super.init()
   }
   override func execute() {
-    print("execute person fetch")
+    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
@@ -145,7 +151,8 @@ class GetAllPersonsWithMissingData: Operation {
     getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
       if error != nil {
         print("Get All Persons With Missing Data Finished With Error: \(error!)")
-        
+        self.finish(GenericError.ExecutionFailed)
+        return
       }
       for recordID in recordsByID!.keys {
         //add person to the database
@@ -187,7 +194,7 @@ class GetAllPersonsWithMissingData: Operation {
       }
       
       //because the operations inside of the block wait, we can call finish outside of the block
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
       
     }
     
@@ -195,5 +202,13 @@ class GetAllPersonsWithMissingData: Operation {
     getPersonOperation.qualityOfService = qualityOfService
     self.database.addOperation(getPersonOperation)
     
+  }
+
+  override func finished(errors: [ErrorType]) {
+    if errors.count != 0 {
+      print("GetAllPersonsWithMissingData finished with an error\n")
+    } else {
+      print("GetAllPersonsWithMissingData finished \n")
+    }
   }
 }

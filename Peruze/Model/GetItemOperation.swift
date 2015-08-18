@@ -10,24 +10,30 @@ import Foundation
 import CloudKit
 import CoreData
 
+private let logging = true
+
 class GetItemInRangeOperation: GetItemOperation {
-  let range: Float?
+  let range: Float
   let location: CLLocation
-  ///If range is nil, then will retrieve all items
-  init(range: Float? = nil, location: CLLocation, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    self.range = range
-    self.location = location
-    
-    super.init(database: database, context: context)
-    
-    let locationCondition = LocationCondition(usage: LocationCondition.Usage.Always, manager: nil)
-    addCondition(locationCondition)
-    
-    let networkObserver = NetworkObserver()
-    addObserver(networkObserver)
+  ///If range is 0, then will retrieve all items
+  init(range: Float,
+    location: CLLocation,
+    cursor: CKQueryCursor?,
+    database: CKDatabase,
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      
+      self.range = range
+      self.location = location
+      
+      super.init(cursor: cursor, database: database, context: context)
+      
+      let networkObserver = NetworkObserver()
+      addObserver(networkObserver)
   }
   
   override func getPredicate() -> NSPredicate {
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     //create predicates
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -37,10 +43,10 @@ class GetItemInRangeOperation: GetItemOperation {
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
       location,
-      (range ?? 0))
+      range)
     
     //choose and concatenate predicates
-    let locationPredicate = ((range == nil) ? everywhereLocation : specificLocation)
+    let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
     let othersInRange = NSCompoundPredicate.andPredicateWithSubpredicates([locationPredicate, notMyItemsPredicate])
     return othersInRange
   }
@@ -50,26 +56,41 @@ class GetItemOperation: Operation {
   
   let database: CKDatabase
   let context: NSManagedObjectContext
+  var cursor: CKQueryCursor?
   
-  init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    self.database = database
-    self.context = context
-    super.init()
+  init(cursor: CKQueryCursor? = nil,
+    database: CKDatabase,
+    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+      if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      self.cursor = cursor
+      self.database = database
+      self.context = context
+      super.init()
   }
   
   override func finished(errors: [ErrorType]) {
+    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     if errors.first != nil {
       println(errors.first)
     }
   }
   
-  override func execute() {    
+  override func execute() {
+    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     //create operation for fetching relevant records
-    var resultsLimit = 10
-    let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
-    let getItemsOperation = CKQueryOperation(query: getItemQuery)
+    var resultsLimit = 20
+    var getItemsOperation: CKQueryOperation
+    if cursor == nil {
+      let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
+      getItemsOperation = CKQueryOperation(query: getItemQuery)
+    } else {
+      getItemsOperation = CKQueryOperation(cursor: cursor)
+    }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
+      if logging { print("getItemsOperation.recordFetchedBlock\n") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
@@ -112,8 +133,13 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
-      if error != nil { print("Get Uploads Finished With Error: \(error)") }
-      self.finish(GenericError.ExecutionFailed)
+      if error != nil {
+        print("Get Uploads Finished With Error: \(error)\n")
+        self.finish(GenericError.ExecutionFailed)
+      } else {
+        self.cursor = cursor
+        self.finish()
+      }
     }
     
     //add that operation to the operationQueue of self.database
@@ -135,12 +161,16 @@ class GetAllItemsWithMissingDataOperation: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     self.database = database
     self.context = context
     super.init()
   }
   
   override func execute() {
+    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
     print("execute item fetch")
     
     let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")

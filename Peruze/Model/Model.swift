@@ -59,37 +59,36 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
-    let operationQueue = OperationQueue()
-    operationQueue.qualityOfService = .UserInitiated
     
+    //In most cases, we want to get the 
     let getLocationOp = LocationOperation(accuracy: locationAccuracy, manager: nil) { (location) -> Void in
-      let getItems = GetPeruzeItemOperation(
-        presentationContext: presentationContext,
-        location: location,
-        context: managedConcurrentObjectContext,
-        database: self.publicDB
-      )
-      getItems.completionBlock = completion
-      operationQueue.addOperation(getItems)
+      self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
     }
+    OperationQueue().addOperation(getLocationOp)
+
+    
     let condition = LocationCondition(usage: .WhenInUse, manager: nil)
     
     OperationConditionEvaluator.evaluate([condition], operation: getLocationOp) {
       (errors: [ErrorType]) -> Void in
       if errors.first != nil {
-        println("There was an error getting the user's location. Will use Everywhere location preference.")
-        let getItems = GetPeruzeItemOperation(
-          presentationContext: presentationContext,
-          location: CLLocation(),
-          context: managedConcurrentObjectContext,
-          database: self.publicDB
-        )
-        getItems.completionBlock = completion
-        operationQueue.addOperation(getItems)
+        println("There was an error getting the user's location.")
+        self.performItemOperationWithLocation(nil, presentationContext: presentationContext, completion: completion)
       }
     }
     
-    operationQueue.addOperation(getLocationOp)
+  }
+  //helper function for above function
+  private func performItemOperationWithLocation(location: CLLocation?, presentationContext: UIViewController, completion: (Void -> Void)) {
+    
+    let getItems = GetPeruzeItemOperation(
+      presentationContext: presentationContext,
+      location: location,
+      context: managedConcurrentObjectContext,
+      database: self.publicDB
+    )
+    getItems.completionBlock = completion
+    OperationQueue().addOperation(getItems)
   }
   
   //MARK: - Profile Setup

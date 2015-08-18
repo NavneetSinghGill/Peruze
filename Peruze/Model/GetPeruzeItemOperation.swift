@@ -9,27 +9,30 @@
 import Foundation
 import CloudKit
 
+private let logging = true
+
 private enum GetPeruzeItemOperationError: ErrorType {
   case defaultError
 }
 
 class GetPeruzeItemOperation: GroupOperation {
-  let context: NSManagedObjectContext
-  let database: CKDatabase
+  let presentationContext: UIViewController
+  let getItems: GetItemOperation
   var cursor: CKQueryCursor?
   
   init(presentationContext: UIViewController,
     location: CLLocation?,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
-      self.context = context
-      self.database = database
+      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      self.presentationContext = presentationContext
       var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
       if location == nil {
         range = 0 //makes sure that the location is not accessed
       }
       var location = location ?? CLLocation() //makes sure that location is not nil
-      let getItems = GetItemInRangeOperation(range: range, location: location, database: database, context: context)
+      
+      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
       let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
       
@@ -38,6 +41,16 @@ class GetPeruzeItemOperation: GroupOperation {
       fillMissingItemData.addDependency(getItems)
       
       super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
+  }
+  override func finished(errors: [ErrorType]) {
+    cursor = getItems.cursor
+    getItems.cursor = nil
+    if errors.first != nil {
+      let alert = AlertOperation(presentFromController: presentationContext)
+      alert.title = "Oops!"
+      alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."
+      produceOperation(alert)
+    }
   }
   
   //Convenience methods for retrieving the user's distance settings

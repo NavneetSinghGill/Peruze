@@ -18,7 +18,9 @@ class MainTabBarViewController: UITabBarController {
   override func viewDidAppear(animated: Bool) {
     Model.sharedInstance().getPeruzeItems(selectedViewController!, completion: {
       println("GetPeruzeItems completed!")
+      dispatch_async(dispatch_get_main_queue()) {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+      }
     })
   }
 }

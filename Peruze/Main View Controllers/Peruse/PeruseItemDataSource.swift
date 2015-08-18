@@ -25,6 +25,7 @@ struct OwnerStruct {
 class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
     static let ReuseIdentifier = "item"
+    static let LoadingReuseIdentifier = "loading"
   }
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var collectionView: UICollectionView!
@@ -35,7 +36,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myID = me.valueForKey("recordIDName") as! String
-    fetchRequest.predicate = NSPredicate(format: "owner.image != nil AND owner.recordIDName != %@", myID)
+    fetchRequest.predicate = NSPredicate(format: "owner.recordIDName != %@", myID)
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
@@ -80,21 +81,43 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
-    collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
-    let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
     
-    cell.item = item
-    cell.delegate = itemDelegate
-    cell.setNeedsDisplay()
+    let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: NSBundle.mainBundle())
+    let loadingNib = UINib(nibName: "PeruseLoadingCollectionViewCell", bundle: NSBundle.mainBundle())
+    
+    collectionView.registerNib(loadingNib, forCellWithReuseIdentifier: Constants.LoadingReuseIdentifier)
+    collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
+    var cell: UICollectionViewCell
+    if indexPath.section == 0 {
+      //normal item cell
+      let localCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+      
+      localCell.item = item
+      localCell.delegate = itemDelegate
+      localCell.setNeedsDisplay()
+      cell = localCell
+    } else {
+      //loading cell
+      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+    }
     return cell
   }
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return fetchedResultsController.sections?[section].numberOfObjects ?? 0
-    
+    var returnValue = 0
+    if section == 0 {
+      returnValue = fetchedResultsController.sections?[section].numberOfObjects ?? 0
+    } else {
+      returnValue = 1
+    }
+    return returnValue
   }
+  
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 2 //normal one and then one for the loading view
+  }
+  
   private func errorCell() -> ItemStruct {
     let localOwner = OwnerStruct(
       image: UIImage(),
