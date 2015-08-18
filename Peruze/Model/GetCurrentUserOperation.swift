@@ -57,9 +57,9 @@ class GetCurrentUserOperation: Operation {
       
       //set the returned properties
       let recordIDName = recordID.recordName
-      let firstName  = (person.valueForKey("firstName") as? String) ?? (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
-      let lastName   = (person.valueForKey("lastName") as? String) ?? (recordsByID![recordID]!.objectForKey("LastName")   as? String)
-      let facebookID = (person.valueForKey("facebookID")  as? String) ?? (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
+      let firstName  = (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
+      let lastName   = (recordsByID![recordID]!.objectForKey("LastName")   as? String)
+      let facebookID = (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
       
       person.setValue(recordIDName, forKey: "recordIDName")
       person.setValue(firstName, forKey: "firstName")
@@ -67,12 +67,11 @@ class GetCurrentUserOperation: Operation {
       person.setValue(facebookID, forKey: "facebookID")
       
       //check for image property and set the data
-      if person.valueForKey("image") as? NSData != nil {
-        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-          let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-          person.setValue(imageData, forKey: "image")
-        }
+      if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
+        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+        person.setValue(imageData, forKey: "image")
       }
+      
       
       //check for favorites
       if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {

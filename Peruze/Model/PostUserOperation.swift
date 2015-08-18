@@ -21,7 +21,6 @@ class PostUserOperation: Operation {
     self.database = database
     self.context = context
     super.init()
-    addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
   }
   
   override func execute() {
@@ -59,23 +58,10 @@ class PostUserOperation: Operation {
     saveOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
       print("\n saveOp.modifyRecordsCompletionBlock called. \n")
-      //Swift 2.0
-      //      do {
-      //        try NSFileManager.defaultManager().removeItemAtURL(imageURL)
-      //      } catch {
-      //        print(error)
-      //      }
-      
-      //      guard let savedRecords = savedRecords where savedRecords.first != nil else {
-      //        let error = NSError(code: OperationErrorCode.ExecutionFailed)
-      //        self.finishWithError(error)
-      //        return
-      //      }
       
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &error)
       if error != nil {
-        print("\n")
         print(error)
         print("\n")
         self.finish(GenericError.ExecutionFailed)

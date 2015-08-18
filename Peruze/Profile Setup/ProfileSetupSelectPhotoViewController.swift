@@ -162,6 +162,9 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
       me.setValue(imageData, forKey: "image")
       managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
+    saveImageOp.completionBlock = {
+      println("saveImageOp.completionBlock")
+    }
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation {
@@ -266,15 +269,5 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     }
     return true
   }
-  
-  //Swift 2.0
-  //  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-  //    if center.image == nil || loadingCircle != nil {
-  //      let hitNextWithoutImageAlertView = UIAlertView(title: Constants.HitNextWithoutImageTitle, message: Constants.HitNextWithoutImageMessage, delegate: nil, cancelButtonTitle: Constants.HitNextWithoutImageCancelButton)
-  //      hitNextWithoutImageAlertView.show()
-  //      return false
-  //    }
-  //    return true
-  //  }
   
 }
