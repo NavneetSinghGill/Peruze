@@ -151,7 +151,13 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   func itemFavorited(item: NSManagedObject, favorite: Bool) {
     //favorite data
-    print("item favorited!")
+    print("item started favorite!\n")
+    let itemRecordIDName = item.valueForKey("recordIDName") as! String
+    let favoriteOp = PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
+    favoriteOp.completionBlock = {
+      print("favorite completed successfully")
+    }
+    OperationQueue().addOperation(favoriteOp)
   }
   func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
     if indexPath.section == 1 {

@@ -13,6 +13,7 @@ enum GenericError: ErrorType {
   case ExecutionFailed
 }
 
+///Makes an item the favorite of the current user both in the local database and the cloud
 class PostFavoriteOperation: Operation {
   let presentationContext: UIViewController
   let recordIDName: String
@@ -22,7 +23,7 @@ class PostFavoriteOperation: Operation {
   init(
     presentationContext: UIViewController,
     itemRecordID: String,
-    database: CKDatabase,
+    database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.presentationContext = presentationContext
       self.recordIDName = itemRecordID
@@ -48,7 +49,7 @@ class PostFavoriteOperation: Operation {
     
     let allFavorites = myPerson.valueForKey("favorites") as! NSSet
     let myRecordIDName = myPerson.valueForKey("recordIDName") as! String
-
+    
     var allReferences = [CKReference]()
     
     for favoriteItem in allFavorites.allObjects {
@@ -65,7 +66,7 @@ class PostFavoriteOperation: Operation {
     }
     
     if allReferences.count == 0 {
-      print("Error: All references were 0")
+      print("Error: All references were 0\n")
       finish(GenericError.ExecutionFailed)
       return
     }
@@ -75,20 +76,32 @@ class PostFavoriteOperation: Operation {
     myNewRecord.setObject(allReferences, forKey: "FavoriteItems")
     
     let saveMeOp = CKModifyRecordsOperation(recordsToSave: [myNewRecord], recordIDsToDelete: nil)
+    saveMeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveMeOp.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, operationError) -> Void in
+      if operationError != nil {
+        println("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError)\n")
+        self.finish(GenericError.ExecutionFailed)
+        return
+      }
       
-      if let mySavedRecordFavorites = savedRecords?.first?.valueForKey("FavoriteItems") as? [CKReference] {
-        
-        let itemsFromRecordIDs = mySavedRecordFavorites.map {
-          Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: $0.recordID.recordName, inContext: self.context)
+      print("\n \n \n  Here is my saved records \n \n \n")
+      print(savedRecords?.first?.valueForKey("FavoriteItems"))
+      print("\n \n \n")
+      if let mySavedRecordFavorites = savedRecords?.first?.valueForKey("FavoriteItems") as? NSSet {
+        if let savedRecordArray = mySavedRecordFavorites.allObjects as? [CKReference] {
+          let itemsFromRecordIDs = savedRecordArray.map {
+            Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: $0.recordID.recordName, inContext: self.context)
+          }
+          myPerson.setValue( NSSet(array: itemsFromRecordIDs), forKey: "favorites")
+        } else {
+          print("mySavedRecords is not a [CKReference] \n")
         }
-        myPerson.setValue( NSSet(array: itemsFromRecordIDs), forKey: "favorites")
       } else {
-        print("mySavedRecord did not have a FavoriteItems array")
+        print("mySavedRecord is not an NSSet")
       }
       
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
     }
     saveMeOp.qualityOfService = qualityOfService
     database.addOperation(saveMeOp)
@@ -97,7 +110,9 @@ class PostFavoriteOperation: Operation {
   override func finished(errors: [ErrorType]) {
     if errors.first != nil {
       let alert = AlertOperation(presentFromController: presentationContext)
-      self.produceOperation(alert)
+      alert.title = "Oh no!"
+      alert.message = "There was an issue with favoriting an item. A recent favorite may not have been saved."
+      produceOperation(alert)
     }
   }
 }

@@ -140,14 +140,14 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   }
   
   private var nextBlurView: UIVisualEffectView!
-  private let operationQueue = NSOperationQueue()
+  private let operationQueue = OperationQueue()
   @IBAction func next(sender: UIButton) {
     //setup next loading views and disable interaction
     sender.userInteractionEnabled = false
     nextLoadingSetup()
     
     //setup operation queue
-    operationQueue.qualityOfService = NSQualityOfService.UserInteractive
+    //operationQueue.qualityOfService = NSQualityOfService.UserInteractive
     
     //upload facebook profile info and fetch user info from the cloud
     let getFacebookProfileOp = FetchFacebookUserProfile(presentationContext: self)
@@ -156,26 +156,25 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //saves the user's image to the local database
     let saveImageOp = NSBlockOperation {
-      if logging { print("\n saveImageOp called. \n") }
+      if logging { print("saveImageOp called. \n") }
       let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
       let imageData = UIImagePNGRepresentation(self.center.image!)
       me.setValue(imageData, forKey: "image")
       managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
     saveImageOp.completionBlock = {
-      println("saveImageOp.completionBlock")
+      println("saveImageOp.completionBlock\n")
     }
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation {
-      if logging { print("\n performSeugeOp called. \n") }
+      if logging { print("performSeugeOp called. \n") }
       dispatch_async(dispatch_get_main_queue()) {
         self.nextLoadingTearDown()
         sender.userInteractionEnabled = true
         self.performSegueWithIdentifier(Constants.SegueIdentifier, sender: self)
       }
     }
-    
     //add dependencies
     postFacebookInfoToServer.addDependencies([getFacebookProfileOp, saveImageOp])
     performSegueOp.addDependencies([getFacebookProfileOp, postFacebookInfoToServer, saveImageOp])

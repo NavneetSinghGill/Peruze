@@ -105,6 +105,7 @@
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */; };
+		9D38FA611B8394D600D15B28 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D38FA601B8394D600D15B28 /* CloudKit.framework */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
 		9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */; };
 		9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */; };
@@ -117,7 +118,6 @@
 		9D3EA1F71B5DFAC1005D63AC /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1F11B5DFAC1005D63AC /* Item+CoreDataProperties.swift */; };
 		9D3EA1F81B5DFAC1005D63AC /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA1F21B5DFAC1005D63AC /* Review+CoreDataProperties.swift */; };
 		9D449CA21B54D9F9005C7CC0 /* PeruzeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */; };
-		9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */; };
 		9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2201B5B5D8A00D555F3 /* Person.swift */; };
 		9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2221B5B5D8A00D555F3 /* Exchange.swift */; };
 		9D45D2291B5B5D8B00D555F3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2231B5B5D8A00D555F3 /* Item.swift */; };
@@ -128,6 +128,7 @@
 		9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */; };
 		9D45D2381B5B6C3100D555F3 /* GetExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */; };
 		9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */; };
+		9D45EA0A1B844573000CEF53 /* RemoveFavoriteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D45EA091B844573000CEF53 /* RemoveFavoriteOperation.swift */; };
 		9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D58BF431B7BD7F2006C40FC /* CoreData.framework */; };
 		9D5C3A721B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D5C3A711B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib */; };
 		9DAE78491B7DBE9F0053B13B /* BlockCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */; };
@@ -311,6 +312,7 @@
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
+		9D38FA601B8394D600D15B28 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
 		9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemOperation.swift; sourceTree = "<group>"; };
 		9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateItemOperation.swift; sourceTree = "<group>"; };
@@ -328,7 +330,6 @@
 		9D449CA01B54D9F9005C7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D449CA11B54D9F9005C7CC0 /* PeruzeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeruzeTests.swift; sourceTree = "<group>"; };
 		9D449CAB1B54DA13005C7CC0 /* Peruze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Peruze.entitlements; sourceTree = "<group>"; };
-		9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9D45D2201B5B5D8A00D555F3 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Person.swift; path = NSManagedObjects/Person.swift; sourceTree = "<group>"; };
 		9D45D2221B5B5D8A00D555F3 /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Exchange.swift; path = NSManagedObjects/Exchange.swift; sourceTree = "<group>"; };
 		9D45D2231B5B5D8A00D555F3 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = NSManagedObjects/Item.swift; sourceTree = "<group>"; };
@@ -339,6 +340,7 @@
 		9D45D2351B5B6BD300D555F3 /* GetPersonOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonOperation.swift; sourceTree = "<group>"; };
 		9D45D2371B5B6C3100D555F3 /* GetExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetExchangesOperation.swift; sourceTree = "<group>"; };
 		9D45D2391B5B6C4A00D555F3 /* GetChatsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetChatsOperation.swift; sourceTree = "<group>"; };
+		9D45EA091B844573000CEF53 /* RemoveFavoriteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveFavoriteOperation.swift; sourceTree = "<group>"; };
 		9D58BF431B7BD7F2006C40FC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9D5C3A711B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeruseLoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		9DAE78201B7DBE9F0053B13B /* BlockCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockCondition.swift; sourceTree = "<group>"; };
@@ -393,8 +395,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D38FA611B8394D600D15B28 /* CloudKit.framework in Frameworks */,
 				9D58BF441B7BD7F2006C40FC /* CoreData.framework in Frameworks */,
-				9D449CAD1B54DA1A005C7CC0 /* CloudKit.framework in Frameworks */,
 				5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,8 +423,8 @@
 		09319F61AB54682857F4A9F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D38FA601B8394D600D15B28 /* CloudKit.framework */,
 				9D58BF431B7BD7F2006C40FC /* CoreData.framework */,
-				9D449CAC1B54DA1A005C7CC0 /* CloudKit.framework */,
 				FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */,
 			);
 			name = Frameworks;
@@ -856,11 +858,20 @@
 		9D45D22E1B5B6B6E00D555F3 /* CloudKitOperations */ = {
 			isa = PBXGroup;
 			children = (
+				9D45EA081B84454F000CEF53 /* Remove */,
 				9D3B34AE1B60183200EBFB87 /* Post */,
 				9D3B34AD1B60182D00EBFB87 /* Update */,
 				9D3B34AC1B60182900EBFB87 /* Get */,
 			);
 			name = CloudKitOperations;
+			sourceTree = "<group>";
+		};
+		9D45EA081B84454F000CEF53 /* Remove */ = {
+			isa = PBXGroup;
+			children = (
+				9D45EA091B844573000CEF53 /* RemoveFavoriteOperation.swift */,
+			);
+			name = Remove;
 			sourceTree = "<group>";
 		};
 		9DAE781F1B7DBE9F0053B13B /* Conditions */ = {
@@ -1259,6 +1270,7 @@
 				9D45D23A1B5B6C4A00D555F3 /* GetChatsOperation.swift in Sources */,
 				9D177B941B54DDC3009CB9FA /* ProfileContainerViewController.swift in Sources */,
 				9D177BC91B54DDC3009CB9FA /* TGCameraFlash.m in Sources */,
+				9D45EA0A1B844573000CEF53 /* RemoveFavoriteOperation.swift in Sources */,
 				9D177BD41B54DDC4009CB9FA /* TGCameraSlideView.m in Sources */,
 				9D177BAC1B54DDC3009CB9FA /* UploadViewController.swift in Sources */,
 				9DAE78651B7DBE9F0053B13B /* GatedOperation.swift in Sources */,
@@ -1439,6 +1451,7 @@
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1463,6 +1476,7 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

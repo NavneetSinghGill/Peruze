@@ -50,7 +50,6 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       } else {
         favoriteImageView.image = UIImage(named: Constants.EmptyHeartName)
       }
-      delegate?.itemFavorited(item!, favorite: itemFavorited)
     }
   }
   
@@ -117,6 +116,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     let favoriteBuffer = CGRectMake(bufferX, bufferY, bufferWidth, bufferHeight)
     if CGRectContainsPoint(favoriteBuffer, sender.locationInView(scrollView)) {
       itemFavorited = !itemFavorited
+      delegate?.itemFavorited(item!, favorite: itemFavorited)
     } else if scrollView.contentOffset != CGPointMake(0, 0) {
       scrollView.scrollRectToVisible(CGRectMake(0, 0, 10, 10), animated: true)
     } else if CGRectContainsPoint(ownerProfileImage.frame, sender.locationInView(contentView)) {
@@ -131,6 +131,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   
   func doubleTap(sender: UITapGestureRecognizer) {
     itemFavorited = true
+    delegate?.itemFavorited(item!, favorite: itemFavorited)
   }
   
   //MARK: - Drawing and UI

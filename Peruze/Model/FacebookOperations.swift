@@ -36,7 +36,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   ///resulting array of image URLs
   var imageURLs = [NSURL]()
   override func main() {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
 
     if cancelled { finish(); return }
     //create the request from above graph path
@@ -54,7 +54,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   }
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
 
 
     var returnURLs = [NSURL]()
@@ -115,7 +115,7 @@ class DownloadImagesForURLs: AsyncOperation {
   var images = [UIImage]()
   
   override func main() {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadImagesForURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
 
 
 
@@ -155,7 +155,6 @@ class DownloadImagesForURLs: AsyncOperation {
 
 /**
 Fetches the currently logged in facebook user's profile and saves the information to disk
-Produces an operation that saves the
 */
 class FetchFacebookUserProfile: Operation {
   
@@ -167,14 +166,17 @@ class FetchFacebookUserProfile: Operation {
   let presentationContext: UIViewController
   
   init(presentationContext: UIViewController, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
 
     self.presentationContext = presentationContext
     self.context = context
+    
     super.init()
   }
+  
   override func execute() {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    
+    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue(), {
@@ -197,7 +199,7 @@ class FetchFacebookUserProfile: Operation {
       })
     })
   }
-  
+
   override func finished(errors: [ErrorType]) {
     if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
 
@@ -220,7 +222,7 @@ class FetchFacebookFriends: AsyncOperation {
   var facebookIDs = [String]()
   
   override func main() {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("FetchFacebookFriends " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
