@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource {
+class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
     static let NibName = "ProfileUploadsTableViewCell"
     struct ReuseIdentifiers {
@@ -16,9 +16,21 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       static let CollectionViewCell = "item"
     }
   }
-  var favorites = [Item]()
+  var favorites = [NSManagedObject]()
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var editableCells = true
+  func refresh() {
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    if let favorites = me.valueForKey("favorites") as? NSSet {
+      if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
+        self.favorites = favoriteObjs
+      } else {
+        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject]\n")
+      }
+    } else {
+      print("me.valueForKey('favorites') was not an NSSet\n")
+    }
+  }
   //MARK: - UITableViewDataSource methods
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     

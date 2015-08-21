@@ -50,9 +50,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Peruze uses your location to update the location of your items so people near you can see what you upload.</string>
+	<string>Peruze uses your location so that people near you can see what you upload.</string>
   <key>NSLocationWhenInUseUsageDescription</key>
-  <string>Peruze uses your location to update the location of your items so people near you can see what you upload.</string>
+  <string>Peruze uses your location so that people near you can see what you upload.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

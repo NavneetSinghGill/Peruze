@@ -25,6 +25,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   }
   override func viewDidLoad() {
     super.viewDidLoad()
+    dataSource.refresh()
     titleLabel.alpha = 0.0
   }
   override func viewDidLayoutSubviews() {
