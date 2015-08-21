@@ -23,7 +23,7 @@ public class LocationOperation: Operation {
     public enum Error: ErrorType, Equatable {
         case LocationManagerDidFail(NSError)
     }
-
+  
     private let accuracy: CLLocationAccuracy
     private var manager: LocationManager?
     private let handler: LocationResponseHandler

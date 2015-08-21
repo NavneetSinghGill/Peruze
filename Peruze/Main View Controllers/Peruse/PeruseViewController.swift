@@ -86,6 +86,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
       }
     }
+    
     if let managedObj = (updatedObjects as? NSSet)?.allObjects {
       if managedObj.first!.entity.name == "Item" {
         dispatch_async(dispatch_get_main_queue()) {
@@ -96,12 +97,18 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
       }
     }
-    print("- - - - - updated objects - - - - -\n")
-    print(updatedObjects)
-    print("- - - - - deleted objects - - - - -\n")
-    print(deletedObjects)
-    print("- - - - - inserted objects - - - - -\n")
-    print(insertedObjects)
+    if updatedObjects != nil {
+      print("- - - - - updated objects - - - - -\n")
+      print("\(updatedObjects!)\n" )
+    }
+    if deletedObjects != nil {
+      print("- - - - - deleted objects - - - - -\n")
+      print("\(deletedObjects)\n")
+    }
+    if insertedObjects != nil {
+      print("- - - - - inserted objects - - - - -\n")
+      print("\(insertedObjects)\n")
+    }
   }
   
   //store top and bottom for when navigation controller is animating pop and is nil
@@ -159,12 +166,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     OperationQueue().addOperation(favoriteOp)
   }
+  
   func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
     if indexPath.section == 1 {
       //this is about to display the loading cell
       Model.sharedInstance().getPeruzeItems(self)
     }
   }
+  
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
       if let destVC = segue.destinationViewController as? PeruseExchangeViewController {

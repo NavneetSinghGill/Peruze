@@ -161,6 +161,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
+      println("OperationQueue().addOperation(PostItemOperation)")
       OperationQueue().addOperation(
         PostItemOperation(
           image: mainImageView.image!,
@@ -170,7 +171,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
           database: CKContainer.defaultContainer().publicCloudDatabase
           ) {
             dispatch_async(dispatch_get_main_queue()) {
-              self.endUpload()  
+              self.endUpload()
             }
         }
       )

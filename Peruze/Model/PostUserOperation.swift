@@ -77,13 +77,14 @@ class PostUserOperation: Operation {
     saveOp.qualityOfService = qualityOfService
     database.addOperation(saveOp)
   }
+  
   override func finished(errors: [ErrorType]) {
     if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     if errors.first != nil {
       let alert = AlertOperation(presentFromController: presentationContext)
       alert.title = "Upload User Information Error"
-      alert.message = "There was a problem uploading your information to the iCloud server."
+      alert.message = "There was a problem uploading your information to the iCloud server. Error: \(errors.first!)."
       produceOperation(alert)
     }
   }

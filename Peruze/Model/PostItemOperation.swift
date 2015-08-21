@@ -9,6 +9,8 @@
 import Foundation
 import CloudKit
 
+private let logging = true
+
 class PostItemOperation: GroupOperation {
   private struct Constants {
     static let locationAccuracy: CLLocationAccuracy = 500 //meters
@@ -23,6 +25,7 @@ class PostItemOperation: GroupOperation {
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     completionHandler: (Void -> Void) = { }) {
+      if logging { print("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
       
       //create the record if it doesn't exist
       let itemImageData = UIImagePNGRepresentation(image)
@@ -46,7 +49,7 @@ class PostItemOperation: GroupOperation {
       */
       
       let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: nil, handler: { (location: CLLocation) -> Void in
-        
+        print("getLocationOp handler - - - - - - - \n")
         //save latitude and longitude to item and self
         var error: NSError?
         let objectID = item.valueForKey("objectID") as! NSManagedObjectID
@@ -80,6 +83,8 @@ class PostItemOperation: GroupOperation {
       //setup queue
       operationQueue.name = "Post Item Operation Queue"
       super.init(operations: [getLocationOp, saveItemOp, uploadItemOp, finishOp])
+      
+      addObserver(NetworkObserver())
   }
 }
 
@@ -97,6 +102,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
     image: NSData?,
     objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
+      if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
       self.title = title
       self.detail = detail
       self.image = image
@@ -106,11 +112,10 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   }
   
   override func execute() {
-    //Swift 2.0
-    //do {
+    if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
-    //let localItem = try context.existingObjectWithID(self.objectID)
     var error: NSError?
     let localItem: NSManagedObject! = context.existingObjectWithID(self.objectID, error: &error)
     if error != nil { print(error) }
@@ -121,9 +126,6 @@ class SaveItemInfoToLocalStorageOperation: Operation {
     localItem.setValue(self.detail, forKey: "detail")
     localItem.setValue(self.image, forKey: "image")
     localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
-    //    } catch {
-    //      print("Error in SaveItemInfoToLocalStorage: \(error)")
-    //    }
     
     context.MR_saveToPersistentStoreAndWait()
     finish()
@@ -138,6 +140,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   let objectID: NSManagedObjectID
   
   init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
     self.database = database
     self.context = context
     self.objectID = objectID
@@ -146,6 +149,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   }
   
   override func execute() {
+    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
