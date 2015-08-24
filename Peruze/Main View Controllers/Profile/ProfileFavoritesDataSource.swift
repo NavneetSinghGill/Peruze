@@ -16,9 +16,12 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       static let CollectionViewCell = "item"
     }
   }
+  ///current user's favorite objects, which should be of `Item` class
   var favorites = [NSManagedObject]()
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var editableCells = true
+  
+  ///fetch current user profile and set `favorites` to the favorites of my profile
   func refresh() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     if let favorites = me.valueForKey("favorites") as? NSSet {

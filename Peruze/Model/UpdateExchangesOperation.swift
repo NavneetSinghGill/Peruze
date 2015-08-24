@@ -88,7 +88,7 @@ class UpdateAllExchangesOperation: Operation {
       
       //set item requested
       if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
-        let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: itemRequestedReference, inContext: self.context)
+        let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: itemRequestedReference.recordID.recordName, inContext: self.context)
         localExchange.setValue(itemRequested, forKey: "itemRequested")
       }
       

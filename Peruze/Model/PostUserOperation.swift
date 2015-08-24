@@ -11,11 +11,20 @@ import CloudKit
 
 private let logging = true
 
+private enum PostUserOperationError : ErrorType {
+  case SaveImageFailed
+  case DeleteImageFailedWithError(NSError!)
+  case RecordNotSavedToServer
+  case CloudKitOperaitonFailedWithError(NSError!)
+  case FetchMyRecordFailedWithError(NSError!)
+  case CastFailed
+}
+
 class PostUserOperation: Operation {
   let presentationContext: UIViewController
   let database: CKDatabase
   let context: NSManagedObjectContext
-  
+
   init(presentationContext: UIViewController, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.presentationContext = presentationContext
     self.database = database
@@ -24,7 +33,7 @@ class PostUserOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -32,65 +41,113 @@ class PostUserOperation: Operation {
     let lastName = myPerson.valueForKey("lastName") as! String
     let imageData = myPerson.valueForKey("image") as! NSData
     let facebookID = myPerson.valueForKey("facebookID") as! String
-    let myRecordIDName = myPerson.valueForKey("recordIDName") as! String
     
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
     if !imageData.writeToURL(imageURL!, atomically: true) {
-      self.finish(GenericError.ExecutionFailed)
+      self.finish(PostUserOperationError.SaveImageFailed)
       return
     }
     
     let imageAsset = CKAsset(fileURL: imageURL)
     
     //create the record from the information
-    let myRecordID = CKRecordID(recordName: myRecordIDName)
-    let myRecord = CKRecord(recordType: RecordTypes.User, recordID: myRecordID)
+    //get my profile from the server
     
-    myRecord.setObject(firstName, forKey: "FirstName")
-    myRecord.setObject(lastName, forKey: "LastName")
-    myRecord.setObject(facebookID, forKey: "FacebookID")
-    myRecord.setObject(imageAsset, forKey: "Image")
-    
-    //create the operation
-    let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
-    saveOp.savePolicy = CKRecordSavePolicy.ChangedKeys
-    saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-      print("\n saveOp.modifyRecordsCompletionBlock called. \n")
+    let fetchMyRecord = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
+    fetchMyRecord.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
       
-      var error: NSError?
-      NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &error)
       if error != nil {
-        print(error)
-        print("\n")
-        self.finish(GenericError.ExecutionFailed)
-      }
-      
-      if savedRecords.first == nil {
-        self.finish(GenericError.ExecutionFailed)
+        self.finish(PostUserOperationError.FetchMyRecordFailedWithError(error))
         return
       }
       
-      self.finish()
+      if let myRecordID = recordsByID.keys.array.first as? CKRecordID {
+        if let myRecord = recordsByID[myRecordID] as? CKRecord {
+          myRecord.setObject(firstName, forKey: "FirstName")
+          myRecord.setObject(lastName, forKey: "LastName")
+          myRecord.setObject(facebookID, forKey: "FacebookID")
+          myRecord.setObject(imageAsset, forKey: "Image")
+          
+          let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
+          saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
+            print("saveOp.modifyRecordsCompletionBlock called. \n")
+            
+            if operationError != nil {
+              self.finish(PostUserOperationError.CloudKitOperaitonFailedWithError(operationError))
+            }
+            
+            var removeItemError: NSError?
+            NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &removeItemError)
+            if removeItemError != nil {
+              print(removeItemError)
+              print("\n")
+              self.finish(PostUserOperationError.DeleteImageFailedWithError(removeItemError))
+              return
+            }
+            
+            if savedRecords.first == nil {
+              self.finish(PostUserOperationError.RecordNotSavedToServer)
+              return
+            }
+            
+            self.finish()
+          }
+          
+          saveOp.qualityOfService = self.qualityOfService
+          self.database.addOperation(saveOp)
+          
+        } else {
+          //value failed to be a CKRecord
+          self.finish(PostUserOperationError.CastFailed)
+        }
+      } else {
+        //key failed to be a CKRecordID
+        self.finish(PostUserOperationError.CastFailed)
+      }
     }
-    saveOp.qualityOfService = qualityOfService
-    database.addOperation(saveOp)
+    self.database.addOperation(fetchMyRecord)
   }
   
   override func finished(errors: [ErrorType]) {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
-    if errors.first != nil {
-      let alert = AlertOperation(presentFromController: presentationContext)
-      alert.title = "Upload User Information Error"
-      alert.message = "There was a problem uploading your information to the iCloud server. Error: \(errors.first!)."
+    let alert = AlertOperation(presentFromController: presentationContext)
+    alert.title = "Oh No!"
+    
+    if let firstError = errors.first as? PostUserOperationError {
+      switch firstError {
+      case .CloudKitOperaitonFailedWithError(let error) :
+        alert.message = error.localizedDescription
+        break
+      case .DeleteImageFailedWithError(let error) :
+        alert.message = "Failure Reason: " + (error.localizedFailureReason ?? "") +
+          " Failure Description: " + error.localizedDescription +
+          " Recovery Suggestion: " + (error.localizedRecoverySuggestion ?? "None")
+        break
+      case .RecordNotSavedToServer :
+        alert.message = "Your user profile was not saved to our servers correctly. Sorry for the inconvenience!"
+        break
+      case .SaveImageFailed :
+        alert.message = "There was a problem saving your profile picture to your phone's storage. You'll probably have to go through setup again later. Sorry for the inconvenience!"
+        break
+      case .CastFailed :
+        alert.message = "The information returned from the server for your user was not correct. Please try again later."
+        break
+      case .FetchMyRecordFailedWithError(let error) :
+        alert.message = error.localizedDescription
+        break
+      }
+      produceOperation(alert)
+    } else if errors.first != nil {
+      alert.message = "There was a problem uploading your information to iCloud. You may have to go through profile setup again later. Sorry!"
       produceOperation(alert)
     }
   }
   
   private func cachePathForFileName(name: String) -> String {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
     let cachePath = paths.first! as! String

@@ -30,7 +30,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var collectionView: UICollectionView!
   var fetchedResultsController: NSFetchedResultsController!
-  private let model = Model.sharedInstance()
+  var favorites = [NSManagedObject]()
+  
   override init() {
     super.init()
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
@@ -55,16 +56,42 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
   
-  func performFetch() {
+  ///fetches the results from the fetchedResultsController
+  func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
     dispatch_async(dispatch_get_main_queue()) {
       var error: NSError?
       self.fetchedResultsController.performFetch(&error)
       if error != nil {
         print(error)
+        let alert = UIAlertController(
+          title: "Oops!",
+          message: ("There was an issue fetching results from your device. Error: " + error!.localizedDescription),
+          preferredStyle: .Alert
+        )
+        alert.addAction(
+          UIAlertAction(
+            title: "okay",
+            style: .Cancel) { (_) -> Void in
+          alert.dismissViewControllerAnimated(true, completion: nil)
+        })
+        presentationContext.presentViewController(alert, animated: true, completion: nil)
       } else {
         self.collectionView.reloadData()
       }
+    }
+  }
+  
+  private func getFavorites() {
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    if let favorites = me.valueForKey("favorites") as? NSSet {
+      if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
+        self.favorites = favoriteObjs
+      } else {
+        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject]\n")
+      }
+    } else {
+      print("me.valueForKey('favorites') was not an NSSet\n")
     }
   }
   
