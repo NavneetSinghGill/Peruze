@@ -162,22 +162,22 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
       println("OperationQueue().addOperation(PostItemOperation)")
+      let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
+      CLLocationManager.locationServicesEnabled()
       OperationQueue().addOperation(
         PostItemOperation(
           image: mainImageView.image!,
           title: titleTextField.text!,
           detail: descriptionTextView.text,
           recordIDName: nil,
-          database: CKContainer.defaultContainer().publicCloudDatabase
-          ) {
-            dispatch_async(dispatch_get_main_queue()) {
-              self.endUpload()
-            }
-        }
+          presentationContext: self,
+          completionHandler: allCompletionHandlers,
+          errorCompletionHandler: allCompletionHandlers
+        )
       )
     } else {
-      let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: UIAlertControllerStyle.Alert)
-      alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
+      let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
+      alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
       self.presentViewController(alert, animated: true, completion: nil)
     }
   }

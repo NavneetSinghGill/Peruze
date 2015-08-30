@@ -104,6 +104,7 @@
 		9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */; };
 		9D177BE51B54DF36009CB9FA /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177BE41B54DF36009CB9FA /* JSONTests.swift */; };
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
+		9D2890251B8CF309006B9626 /* PostReviewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2890241B8CF309006B9626 /* PostReviewOperation.swift */; };
 		9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */; };
 		9D38FA611B8394D600D15B28 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D38FA601B8394D600D15B28 /* CloudKit.framework */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
@@ -311,6 +312,7 @@
 		9D177B771B54DDC3009CB9FA /* TGCameraViewController.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TGCameraViewController.xcassets; sourceTree = "<group>"; };
 		9D177BE41B54DF36009CB9FA /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTests.swift; path = PeruzeTests/JSONTests.swift; sourceTree = SOURCE_ROOT; };
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D2890241B8CF309006B9626 /* PostReviewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostReviewOperation.swift; sourceTree = "<group>"; };
 		9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
 		9D38FA601B8394D600D15B28 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 		9D3B34AE1B60183200EBFB87 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				9D2890241B8CF309006B9626 /* PostReviewOperation.swift */,
 				9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */,
 				9DE423921B689C850086E2B0 /* PostExchangeOperation.swift */,
 				9DDC5E361B65B2E600A9EC22 /* PostMessageOperation.swift */,
@@ -1256,6 +1259,7 @@
 				9D177BD21B54DDC4009CB9FA /* TGCameraSlideDownView.m in Sources */,
 				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
 				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
+				9D2890251B8CF309006B9626 /* PostReviewOperation.swift in Sources */,
 				9DAE78581B7DBE9F0053B13B /* UserConfirmationCondition.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
 				9DAE784E1B7DBE9F0053B13B /* AddressBookCondition.swift in Sources */,

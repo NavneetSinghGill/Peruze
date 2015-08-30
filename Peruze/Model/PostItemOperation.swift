@@ -17,14 +17,18 @@ class PostItemOperation: GroupOperation {
   }
   
   let operationQueue = OperationQueue()
+  let presentationContext: UIViewController
+  let errorCompletionHandler: (Void -> Void)
   
   init(image: UIImage,
     title: String,
     detail: String,
     recordIDName: String? = nil,
-    database: CKDatabase,
+    presentationContext: UIViewController,
+    database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
-    completionHandler: (Void -> Void) = { }) {
+    completionHandler: (Void -> Void) = { },
+    errorCompletionHandler: (Void -> Void) = { }) {
       if logging { print("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
       
       //create the record if it doesn't exist
@@ -47,8 +51,7 @@ class PostItemOperation: GroupOperation {
       3. the operation to save the item to cloud kit key value storage
       4. finishing operation that calls the completion handler
       */
-      
-      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: nil, handler: { (location: CLLocation) -> Void in
+      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: CLLocationManager(), handler: { (location: CLLocation) -> Void in
         print("getLocationOp handler - - - - - - - \n")
         //save latitude and longitude to item and self
         var error: NSError?
@@ -73,19 +76,44 @@ class PostItemOperation: GroupOperation {
         objectID: item.objectID,
         context: context
       )
-      let uploadItemOp = UploadItemFromLocalStorageToCloudOperation(objectID: item.objectID, database: database, context: context)
+      
+      let uploadItemOp = UploadItemFromLocalStorageToCloudOperation(
+        objectID: item.objectID,
+        database: database,
+        context: context
+      )
+      
       let finishOp = NSBlockOperation(block: completionHandler)
       
       //add dependencies
-      uploadItemOp.addDependencies([getLocationOp, saveItemOp])
-      finishOp.addDependencies([getLocationOp, saveItemOp, uploadItemOp])
+      uploadItemOp.addDependency(getLocationOp)
+      uploadItemOp.addDependency(saveItemOp)
+      finishOp.addDependency(getLocationOp)
+      finishOp.addDependency(saveItemOp)
+      finishOp.addDependency(uploadItemOp)
       
-      //setup queue
+      //setup local vars
       operationQueue.name = "Post Item Operation Queue"
+      self.presentationContext = presentationContext
+      self.errorCompletionHandler = errorCompletionHandler
+      
+      //initialize
       super.init(operations: [getLocationOp, saveItemOp, uploadItemOp, finishOp])
       
+      //add observers
       addObserver(NetworkObserver())
   }
+  
+  override func finished(errors: [ErrorType]) {
+    if errors.first != nil {
+      let alert = AlertOperation(presentFromController: presentationContext)
+      alert.title = "Ouch :("
+      alert.message = "There was a problem uploading your item to the server."
+      produceOperation(alert)
+      errorCompletionHandler()
+    }
+  }
+  
 }
 
 /// Saves the given item to the local core data storage

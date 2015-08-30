@@ -64,6 +64,11 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
     UIApplication.sharedApplication().registerForRemoteNotifications()
     
+    //register data source for updates to model
+    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "performFetchWithPresentationContext:",
+      name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: self)
+    
+    //register self for updates notifications
     NSNotificationCenter.defaultCenter().addObserver(self,
       selector: "receivedNotification:",
       name: NSManagedObjectContextObjectsDidChangeNotification,
@@ -74,29 +79,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
     let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
     let insertedObjects: AnyObject? = notification.userInfo?[NSInsertedObjectsKey]
-    if let managedObj = (insertedObjects as? NSSet)?.allObjects {
-      print("first let finished")
-      if managedObj.first!.entity.name == "Item" {
-        print("second let finished")
-        dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
-          print(error)
-        }
-        
-      }
-    }
     
-    if let managedObj = (updatedObjects as? NSSet)?.allObjects {
-      if managedObj.first!.entity.name == "Item" {
-        dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
-          print(error)
-        }
-        
-      }
-    }
     if updatedObjects != nil {
       print("- - - - - updated objects - - - - -\n")
       print("\(updatedObjects!)\n" )
@@ -160,9 +143,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //favorite data
     print("item started favorite!\n")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
-    let favoriteOp = PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
+    let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
     favoriteOp.completionBlock = {
       print("favorite completed successfully")
+      self.dataSource.getFavorites()
     }
     OperationQueue().addOperation(favoriteOp)
   }

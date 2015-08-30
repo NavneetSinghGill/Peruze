@@ -42,7 +42,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   private var exchangeLabel = UILabel()
   private var exchangeArrow = UIImageView()
   private var blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
-  private var itemFavorited = false {
+  var itemFavorited = false {
     didSet {
       if itemFavorited {
         favoriteImageView.image = UIImage(named: Constants.FilledHeartName)
@@ -89,7 +89,6 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     exchangeArrow.contentMode = .ScaleAspectFit
     exchangeArrow.image = UIImage(named: Constants.DownArrowName)
     favoriteImageView.contentMode = .ScaleAspectFit
-    itemFavorited = false
   }
   
   override func drawRect(rect: CGRect) {
@@ -99,6 +98,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     setupScrollView()
     updateUI()
   }
+  
   override func prepareForReuse() {
     super.prepareForReuse()
     blurView.removeFromSuperview()
@@ -106,6 +106,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     itemNameLabel.removeFromSuperview()
     favoriteImageView.removeFromSuperview()
   }
+  
   //MARK: - Gesture Handling
   func singleTap(sender: UITapGestureRecognizer) {
     //favorite buffer is 3x the size of the favorite button
