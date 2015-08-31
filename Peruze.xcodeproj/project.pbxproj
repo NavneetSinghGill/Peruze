@@ -10,6 +10,7 @@
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */; };
+		9D12AF8F1B93AF9B0024E153 /* ComposedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D12AF8C1B93AF9B0024E153 /* ComposedOperation.swift */; };
 		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
 		9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE51B54DDC3009CB9FA /* LaunchScreen.xib */; };
 		9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D177AE71B54DDC3009CB9FA /* Main.storyboard */; };
@@ -137,7 +138,6 @@
 		9DAE784B1B7DBE9F0053B13B /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */; };
 		9DAE784C1B7DBE9F0053B13B /* NoCancelledCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78231B7DBE9F0053B13B /* NoCancelledCondition.swift */; };
 		9DAE784D1B7DBE9F0053B13B /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78241B7DBE9F0053B13B /* OperationCondition.swift */; };
-		9DAE784E1B7DBE9F0053B13B /* AddressBookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */; };
 		9DAE784F1B7DBE9F0053B13B /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */; };
 		9DAE78501B7DBE9F0053B13B /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */; };
 		9DAE78511B7DBE9F0053B13B /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */; };
@@ -155,7 +155,6 @@
 		9DAE785D1B7DBE9F0053B13B /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78361B7DBE9F0053B13B /* NetworkObserver.swift */; };
 		9DAE785E1B7DBE9F0053B13B /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78371B7DBE9F0053B13B /* OperationObserver.swift */; };
 		9DAE785F1B7DBE9F0053B13B /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE78381B7DBE9F0053B13B /* TimeoutObserver.swift */; };
-		9DAE78601B7DBE9F0053B13B /* AddressBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */; };
 		9DAE78611B7DBE9F0053B13B /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */; };
 		9DAE78621B7DBE9F0053B13B /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */; };
 		9DAE78631B7DBE9F0053B13B /* CloudKitOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */; };
@@ -193,6 +192,7 @@
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetItemOperation.swift; sourceTree = "<group>"; };
 		9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPeruzeItemOperation.swift; sourceTree = "<group>"; };
+		9D12AF8C1B93AF9B0024E153 /* ComposedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
 		9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D177AE61B54DDC3009CB9FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -350,7 +350,6 @@
 		9DAE78221B7DBE9F0053B13B /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegatedCondition.swift; sourceTree = "<group>"; };
 		9DAE78231B7DBE9F0053B13B /* NoCancelledCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCancelledCondition.swift; sourceTree = "<group>"; };
 		9DAE78241B7DBE9F0053B13B /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
-		9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookCondition.swift; sourceTree = "<group>"; };
 		9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCondition.swift; sourceTree = "<group>"; };
 		9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCondition.swift; sourceTree = "<group>"; };
 		9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCondition.swift; sourceTree = "<group>"; };
@@ -368,7 +367,6 @@
 		9DAE78361B7DBE9F0053B13B /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		9DAE78371B7DBE9F0053B13B /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationObserver.swift; sourceTree = "<group>"; };
 		9DAE78381B7DBE9F0053B13B /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
-		9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookOperation.swift; sourceTree = "<group>"; };
 		9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
 		9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
 		9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperation.swift; sourceTree = "<group>"; };
@@ -899,7 +897,6 @@
 		9DAE78251B7DBE9F0053B13B /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
-				9DAE78261B7DBE9F0053B13B /* AddressBookCondition.swift */,
 				9DAE78271B7DBE9F0053B13B /* CalendarCondition.swift */,
 				9DAE78281B7DBE9F0053B13B /* CloudCondition.swift */,
 				9DAE78291B7DBE9F0053B13B /* HealthCondition.swift */,
@@ -927,7 +924,7 @@
 		9DAE78391B7DBE9F0053B13B /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				9DAE783A1B7DBE9F0053B13B /* AddressBookOperation.swift */,
+				9D12AF8C1B93AF9B0024E153 /* ComposedOperation.swift */,
 				9DAE783B1B7DBE9F0053B13B /* AlertOperation.swift */,
 				9DAE783C1B7DBE9F0053B13B /* BlockOperation.swift */,
 				9DAE783D1B7DBE9F0053B13B /* CloudKitOperation.swift */,
@@ -1139,7 +1136,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D177BA11B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift in Sources */,
-				9DAE78601B7DBE9F0053B13B /* AddressBookOperation.swift in Sources */,
 				9DAE78721B7DC0050053B13B /* AsyncClosuresOperation.swift in Sources */,
 				9D177BC81B54DDC3009CB9FA /* TGCameraColor.m in Sources */,
 				9DAE78521B7DBE9F0053B13B /* LocationCondition.swift in Sources */,
@@ -1241,6 +1237,7 @@
 				9D177B851B54DDC3009CB9FA /* ChatCollectionViewController.swift in Sources */,
 				9D177BB01B54DDC3009CB9FA /* FacebookOperations.swift in Sources */,
 				9D177B921B54DDC3009CB9FA /* PeruseItemDataSource.swift in Sources */,
+				9D12AF8F1B93AF9B0024E153 /* ComposedOperation.swift in Sources */,
 				9DAE785B1B7DBE9F0053B13B /* BlockObserver.swift in Sources */,
 				9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */,
 				9D177BB31B54DDC3009CB9FA /* Model.swift in Sources */,
@@ -1262,7 +1259,6 @@
 				9D2890251B8CF309006B9626 /* PostReviewOperation.swift in Sources */,
 				9DAE78581B7DBE9F0053B13B /* UserConfirmationCondition.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
-				9DAE784E1B7DBE9F0053B13B /* AddressBookCondition.swift in Sources */,
 				9DAE784F1B7DBE9F0053B13B /* CalendarCondition.swift in Sources */,
 				9DAE78501B7DBE9F0053B13B /* CloudCondition.swift in Sources */,
 				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,

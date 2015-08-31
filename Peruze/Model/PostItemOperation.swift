@@ -51,6 +51,10 @@ class PostItemOperation: GroupOperation {
       3. the operation to save the item to cloud kit key value storage
       4. finishing operation that calls the completion handler
       */
+      
+      //ask the user for location permission
+      let locCondition = LocationCondition(usage: LocationCondition.Usage.WhenInUse, manager: nil)
+      
       let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: CLLocationManager(), handler: { (location: CLLocation) -> Void in
         print("getLocationOp handler - - - - - - - \n")
         //save latitude and longitude to item and self
@@ -83,7 +87,13 @@ class PostItemOperation: GroupOperation {
         context: context
       )
       
-      let finishOp = NSBlockOperation(block: completionHandler)
+      let finishOp = BlockOperation(block: { (continueWithError) -> Void in
+        completionHandler()
+      })
+      
+      let presentNoLocOperation = AlertOperation(presentFromController: presentationContext)
+      presentNoLocOperation.title = "No Location"
+      presentNoLocOperation.message = "We were unable to access your location. We need your location to be able to show your item to the most relevant people! Please navigate to your Settings and allow location services for Peruze to upload an item."
       
       //add dependencies
       uploadItemOp.addDependency(getLocationOp)
@@ -92,13 +102,25 @@ class PostItemOperation: GroupOperation {
       finishOp.addDependency(saveItemOp)
       finishOp.addDependency(uploadItemOp)
       
+      var operationsToInit = [Operation]()
+      locCondition.evaluateForOperation(getLocationOp) { (result: OperationConditionResult) -> Void in
+        if result.error != nil {
+          let finishWithErrorOp = BlockOperation(block: { (continueWithError) -> Void in
+            errorCompletionHandler()
+          })
+          operationsToInit = [presentNoLocOperation, finishWithErrorOp]
+        } else {
+          operationsToInit = [getLocationOp, saveItemOp, uploadItemOp, finishOp]
+        }
+      }
+      
       //setup local vars
       operationQueue.name = "Post Item Operation Queue"
       self.presentationContext = presentationContext
       self.errorCompletionHandler = errorCompletionHandler
       
       //initialize
-      super.init(operations: [getLocationOp, saveItemOp, uploadItemOp, finishOp])
+      super.init(operations: operationsToInit)
       
       //add observers
       addObserver(NetworkObserver())
