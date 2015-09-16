@@ -58,7 +58,7 @@ class PostExchangeOperation: GroupOperation {
       //init with operations
       super.init(operations: [saveOp, uploadOp, finishOp])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.first != nil {
       print("PostExchangeOperation finished with the following first error: ")
       print(errors.first!)
@@ -187,13 +187,12 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
     let uploadOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
     uploadOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       
-      let uploadedRecord = savedRecords?.first as! CKRecord
+      let uploadedRecord = savedRecords!.first!
       
       localExchange.setValue(uploadedRecord.recordID.recordName, forKey: "recordIDName")
       
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finish(GenericError.ExecutionFailed)
-      
+      self.finishWithError(error)      
     }
     uploadOp.qualityOfService = qualityOfService
     database.addOperation(uploadOp)

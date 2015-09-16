@@ -84,14 +84,14 @@ class InitialViewController: UIViewController {
   private func setupAndSegueToOnboardVC() {
     FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
     if presentedViewController == onboardVC && onboardVC != nil { print("pVC = onboard"); return }
-    onboardVC = (storyboard!.instantiateViewControllerWithIdentifier(Constants.OnboardVCIdentifier) as! UIViewController)
+    onboardVC = (storyboard!.instantiateViewControllerWithIdentifier(Constants.OnboardVCIdentifier) )
     if onboardVC == nil { assertionFailure("VC Pulled out of storyboard is not a UIViewController") }
     presentViewController(onboardVC!, animated: true, completion: nil)
   }
   
   //MARK: - Logged into facebook
   private func setupAndSegueToSetupProfileVC() {
-    profileSetupVC = profileSetupVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.ProfileVCIdentifier) as! UIViewController
+    profileSetupVC = profileSetupVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.ProfileVCIdentifier) 
     if profileSetupVC == nil { assertionFailure("VC Pulled out of storyboard is not a ProfileSetupSelectPhotoViewController")}
     presentViewController(profileSetupVC!, animated: true, completion: nil)
   }

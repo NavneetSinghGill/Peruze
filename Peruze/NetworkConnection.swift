@@ -32,9 +32,11 @@ class NetworkConnection: NSObject {
     request.timeoutInterval = 10.0
     
     var response: NSURLResponse?
-    
-    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: nil) as NSData?
-    
+    do {
+    let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) as? NSData
+    } catch {
+      print(error)
+    }
     if let httpResponse = response as? NSHTTPURLResponse {
       if httpResponse.statusCode == 200 {
         status = true

@@ -32,21 +32,22 @@ class UpdateAllExchangesOperation: Operation {
     
     
     let fetchUpdatedExchanges = CKFetchRecordsOperation(recordIDs: allExchangesRecordIDs)
-    fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
-      
-      if recordsByID == nil {
-        self.finish(GenericError.ExecutionFailed)
+    
+    fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+      guard let recordsByID = recordsByID else {
+        print("Update Exchanges Operation recordsByID == nil")
+        self.finish()
         return
       }
       self.cycleThroughDictionary(recordsByID)
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
     }
     fetchUpdatedExchanges.qualityOfService = qualityOfService
     database.addOperation(fetchUpdatedExchanges)
   }
   
   private func cycleThroughDictionary(recordsByID: [NSObject: AnyObject]) {
-    for key in recordsByID.keys.array {
+    for key in recordsByID.keys {
 
       let recordID = key as! CKRecordID
       let record = recordsByID[recordID] as! CKRecord
@@ -130,10 +131,10 @@ class UpdateExchangeWithIncrementalData: Operation {
     let cloudOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
     cloudOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     cloudOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
-      if error != nil {
+      if let error = error {
         print("UpdateExchangeWithIncrementalData finished with error:")
-        print(error!)
-        self.finish(GenericError.ExecutionFailed)
+        print(error)
+        self.finishWithError(error)
       } else {
         self.context.MR_saveToPersistentStoreAndWait()
         self.finish()

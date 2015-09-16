@@ -47,7 +47,8 @@ class GetItemInRangeOperation: GetItemOperation {
     
     //choose and concatenate predicates
     let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
-    let othersInRange = NSCompoundPredicate.andPredicateWithSubpredicates([locationPredicate, notMyItemsPredicate])
+    
+    let othersInRange = NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate])
     return othersInRange
   }
 }
@@ -67,12 +68,10 @@ class GetItemOperation: Operation {
       self.context = context
       super.init()
   }
-  
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
-    
     if errors.first != nil {
-      println(errors.first)
+      print(errors.first)
     }
   }
   
@@ -86,7 +85,7 @@ class GetItemOperation: Operation {
       let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     } else {
-      getItemsOperation = CKQueryOperation(cursor: cursor)
+      getItemsOperation = CKQueryOperation(cursor: cursor!)
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
@@ -96,7 +95,7 @@ class GetItemOperation: Operation {
         withValue: record.recordID.recordName, inContext: self.context)
       localUpload.setValue(record.recordID.recordName, forKey: "recordIDName")
       
-      let ownerRecordIDName = record.creatorUserRecordID.recordName
+      let ownerRecordIDName = record.creatorUserRecordID!.recordName
       
       if ownerRecordIDName == "__defaultOwner__" {
         let owner = Person.MR_findFirstByAttribute("me",
@@ -133,9 +132,9 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
-      if error != nil {
+      if let error = error {
         print("Get Uploads Finished With Error: \(error)\n")
-        self.finish(GenericError.ExecutionFailed)
+        self.finishWithError(error)
       } else {
         self.cursor = cursor
         self.finish()
@@ -188,12 +187,19 @@ class GetAllItemsWithMissingDataOperation: Operation {
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
-    fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
+    fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+      
+      guard let recordsByID = recordsByID else {
+        self.finishWithError(error)
+        return
+      }
       
       //for each record that is returned
-      for recordID in recordsByID.keys.array {
-        let recordID = recordID as! CKRecordID
-        let record = recordsByID[recordID] as! CKRecord
+      for recordID in recordsByID.keys {
+        guard let record = recordsByID[recordID] else {
+          print("A record in GetItemOperation was nil")
+          continue
+        }
         //get a local copy of the item to save
         let localItem = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: recordID.recordName,
@@ -224,7 +230,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         
         
         //fill in creator details
-        let creatorIDName = record.creatorUserRecordID.recordName
+        let creatorIDName = record.creatorUserRecordID!.recordName
         
         let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: creatorIDName,
@@ -237,7 +243,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         
         self.context.MR_saveToPersistentStoreAndWait()
       }
-      self.finish(GenericError.ExecutionFailed)
+      self.finish()
     }
     fetchAllItemsOperation.qualityOfService = qualityOfService
     database.addOperation(fetchAllItemsOperation)

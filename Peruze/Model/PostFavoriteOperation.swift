@@ -61,13 +61,13 @@ class PostFavoriteOperation: Operation {
       } else {
         print("Error: Favorite Item was not NSManagedObject")
         let error = GenericError.ExecutionFailed
-        finish(GenericError.ExecutionFailed)
+        finish()
       }
     }
     
     if allReferences.count == 0 {
       print("Error: All references were 0\n")
-      finish(GenericError.ExecutionFailed)
+      finish()
       return
     }
     
@@ -79,8 +79,8 @@ class PostFavoriteOperation: Operation {
     saveMeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveMeOp.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, operationError) -> Void in
       if operationError != nil {
-        println("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError)\n")
-        self.finish(GenericError.ExecutionFailed)
+        print("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError)\n")
+        self.finish()
         return
       }
       
@@ -107,9 +107,9 @@ class PostFavoriteOperation: Operation {
     database.addOperation(saveMeOp)
     
   }
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentFromController: presentationContext)
+      let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oh no!"
       alert.message = "There was an issue with favoriting an item. A recent favorite may not have been saved."
       produceOperation(alert)

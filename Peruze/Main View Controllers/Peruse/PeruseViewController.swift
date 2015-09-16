@@ -32,7 +32,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         let checkmark = UIImageView(frame: circle.frame)
         checkmark.image = UIImage(named: "Large_Check_Mark")
-        checkmark.frame.inset(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
+        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
         view.addSubview(checkmark)
         
         UIView.animateWithDuration(1, animations: { () -> Void in

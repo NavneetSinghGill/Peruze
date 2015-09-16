@@ -27,16 +27,17 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    let fetchedResultsPredicate = NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, myRequestedPredicate])
+    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
       groupBy: nil,
       delegate: self)
-    var error: NSError?
-    fetchedResultsController.performFetch(&error)
-    if error != nil { print(error) }
-    
+    do {
+      try self.fetchedResultsController.performFetch()
+    } catch {
+      print(error)
+    }
   }
   
   //MARK: - UICollectionView Data Source
@@ -63,16 +64,18 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     
     //get exchange
     let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-    
-    let myItem = exchange.valueForKey("itemRequested") as! NSManagedObject
-    let myItemTitle = myItem.valueForKey("title") as! String
-    let theirItem = exchange.valueForKey("itemOffered") as! NSManagedObject
-    let theirItemTitle = theirItem.valueForKey("title") as! String
-    let theirOwner = theirItem.valueForKey("owner") as! NSManagedObject
-    let theirProfileImageData = theirOwner.valueForKey("image") as! NSData
-    let theirOwnerFirstName = theirOwner.valueForKey("firstName") as! String
-    let theirItemImage = theirItem.valueForKey("image") as! NSData
-    let myItemImage = myItem.valueForKey("image") as! NSData
+    guard
+      let myItem = exchange.valueForKey("itemRequested") as? NSManagedObject,
+      let myItemTitle = myItem.valueForKey("title") as? String,
+      let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
+      let theirItemTitle = theirItem.valueForKey("title") as? String,
+      let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
+      let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
+      let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
+      let theirItemImage = theirItem.valueForKey("image") as? NSData,
+      let myItemImage = myItem.valueForKey("image") as? NSData else {
+        return cell
+    }
     
     cell.itemSubtitle.text = "for your \(myItemTitle)"
     cell.itemLabel.text = theirItemTitle

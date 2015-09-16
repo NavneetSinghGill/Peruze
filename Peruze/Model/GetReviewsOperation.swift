@@ -49,15 +49,15 @@ class GetReviewsOperation: Operation {
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
       
-      let creator = record.creatorUserRecordID.recordName
+      let creator = record.creatorUserRecordID?.recordName
       
-      if creator != nil {
+      if let creator = creator {
         let defaultCreatorString: String! = "__defaultOwner__"
         if creator == defaultCreatorString {
           let localOwner = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
           localUpload.setValue(localOwner, forKey: "owner")
         } else {
-          let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: record.creatorUserRecordID.recordName, inContext: self.context)
+          let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: record.creatorUserRecordID!.recordName, inContext: self.context)
           localUpload.setValue(localOwner, forKey: "owner")
         }
       }
@@ -81,8 +81,11 @@ class GetReviewsOperation: Operation {
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
     }
-    getUploadsOperation.queryCompletionBlock = { (cursor: CKQueryCursor!, error: NSError!) -> Void in
-      self.finish(GenericError.ExecutionFailed)
+    getUploadsOperation.queryCompletionBlock = { (cursor: CKQueryCursor?, error: NSError?) -> Void in
+      if error != nil {
+        print("getUploadsOperation.queryCompletionBlock finished with error")
+      }
+      self.finish()
     }
     
     //add that operation to the operationQueue of self.database

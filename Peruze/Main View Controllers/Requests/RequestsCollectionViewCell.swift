@@ -132,7 +132,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     //view in center of screen
     let view = CircleView(frame: CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.width))
     view.center = exchangeArrowImageView.center
-    view.frame.inset(dx: view.frame.width / 4, dy: view.frame.width / 4)
+    view.frame.insetInPlace(dx: view.frame.width / 4, dy: view.frame.width / 4)
     view.backgroundColor = .clearColor()
     
     //overlay for square image view

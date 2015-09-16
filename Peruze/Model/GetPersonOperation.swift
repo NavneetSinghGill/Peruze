@@ -63,10 +63,13 @@ class GetPersonOperation: Operation {
     //create operation for fetching relevant records
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: [personID])
     getPersonOperation.desiredKeys = desiredKeys
-    getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, opError: NSError!) -> Void in
-      
+    getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, opError) -> Void in
+      guard let recordsByID = recordsByID else {
+        self.finishWithError(opError)
+        return
+      }
       //add person to the database
-      let keysArray = recordsByID.keys.array
+      let keysArray = recordsByID.keys
       for key in keysArray {
         
         if let recordID = key as? CKRecordID {
@@ -149,16 +152,16 @@ class GetAllPersonsWithMissingData: Operation {
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: missingPersonsRecordIDs)
     getPersonOperation.desiredKeys = desiredKeys
     getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      if error != nil {
-        print("Get All Persons With Missing Data Finished With Error: \(error!)")
-        self.finish(GenericError.ExecutionFailed)
+      if let error = error {
+        print("Get All Persons With Missing Data Finished With Error: \(error)")
+        self.finishWithError(error)
         return
       }
       for recordID in recordsByID!.keys {
         //add person to the database
         
         //fetch each person with the returned ID
-        let recordID = recordID as! CKRecordID
+        let recordID = recordID 
         var localPerson: Person!
         if recordID.recordName == "__defaultOwner__" {
           localPerson = Person.MR_findFirstOrCreateByAttribute("me",
@@ -170,7 +173,7 @@ class GetAllPersonsWithMissingData: Operation {
             inContext: self.context)
         }
         
-        let record = recordsByID![recordID]! as! CKRecord
+        let record = recordsByID![recordID]! 
         
         //set the returned properties
         if localPerson.valueForKey("firstName") as? String == nil {
@@ -204,7 +207,7 @@ class GetAllPersonsWithMissingData: Operation {
     
   }
 
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if errors.count != 0 {
       print("GetAllPersonsWithMissingData finished with an error\n")
     } else {

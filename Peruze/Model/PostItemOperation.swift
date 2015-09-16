@@ -13,7 +13,7 @@ private let logging = true
 
 class PostItemOperation: GroupOperation {
   private struct Constants {
-    static let locationAccuracy: CLLocationAccuracy = 500 //meters
+    static let locationAccuracy: CLLocationAccuracy = 2000 //meters
   }
   
   let operationQueue = OperationQueue()
@@ -52,26 +52,24 @@ class PostItemOperation: GroupOperation {
       4. finishing operation that calls the completion handler
       */
       
-      //ask the user for location permission
-      let locCondition = LocationCondition(usage: LocationCondition.Usage.WhenInUse, manager: nil)
-      
-      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy, manager: CLLocationManager(), handler: { (location: CLLocation) -> Void in
+      //ask the user for location permissio
+      let locCondition = LocationCondition(usage: LocationCondition.Usage.WhenInUse)
+      let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy) { (location) -> Void in
         print("getLocationOp handler - - - - - - - \n")
         //save latitude and longitude to item and self
-        var error: NSError?
         let objectID = item.valueForKey("objectID") as! NSManagedObjectID
-        let localItem = context.existingObjectWithID(objectID, error: &error)!
-        if error != nil {
-          print(error)
-        } else {
+        do {
+          let localItem = try context.existingObjectWithID(objectID)
           let localMe = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
           localItem.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
           localItem.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
           localMe.setValue(NSNumber(double: location.coordinate.longitude), forKey: "longitude")
           localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
           context.MR_saveToPersistentStoreAndWait()
+        } catch {
+          print(error)
         }
-      })
+      }
       
       let saveItemOp = SaveItemInfoToLocalStorageOperation(
         title: title,
@@ -91,7 +89,7 @@ class PostItemOperation: GroupOperation {
         completionHandler()
       })
       
-      let presentNoLocOperation = AlertOperation(presentFromController: presentationContext)
+      let presentNoLocOperation = AlertOperation(presentationContext: presentationContext)
       presentNoLocOperation.title = "No Location"
       presentNoLocOperation.message = "We were unable to access your location. We need your location to be able to show your item to the most relevant people! Please navigate to your Settings and allow location services for Peruze to upload an item."
       
@@ -126,9 +124,9 @@ class PostItemOperation: GroupOperation {
       addObserver(NetworkObserver())
   }
   
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentFromController: presentationContext)
+      let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Ouch :("
       alert.message = "There was a problem uploading your item to the server."
       produceOperation(alert)
@@ -163,19 +161,21 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   
   override func execute() {
     if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
-
+    
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
-    var error: NSError?
-    let localItem: NSManagedObject! = context.existingObjectWithID(self.objectID, error: &error)
-    if error != nil { print(error) }
-    
-    localItem.objectID
-    localItem.setValue(me, forKey: "owner")
-    localItem.setValue(self.title, forKey: "title")
-    localItem.setValue(self.detail, forKey: "detail")
-    localItem.setValue(self.image, forKey: "image")
-    localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
+    do {
+      let localItem = try context.existingObjectWithID(self.objectID)
+      localItem.objectID
+      localItem.setValue(me, forKey: "owner")
+      localItem.setValue(self.title, forKey: "title")
+      localItem.setValue(self.detail, forKey: "detail")
+      localItem.setValue(self.image, forKey: "image")
+      localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
+      
+    } catch {
+      print(error)
+    }
     
     context.MR_saveToPersistentStoreAndWait()
     finish()
@@ -203,78 +203,76 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
-    var error: NSError?
-    let itemToSave: NSManagedObject! = context.existingObjectWithID(objectID, error: &error)
-    
-    if error != nil {
-      self.finish(GenericError.ExecutionFailed)
-      return
-    }
-    
-    
-    //update server storage
-    let recordIDName = itemToSave.valueForKey("recordIDName") as? String
-    var itemRecord: CKRecord
-    if recordIDName == nil {
-      itemRecord = CKRecord(recordType: RecordTypes.Item)
-    } else {
-      itemRecord = CKRecord(recordType: RecordTypes.Item, recordID: CKRecordID(recordName: recordIDName!))
-    }
-    
-    //set immediately available keys
-    let itemTitle = itemToSave.valueForKey("title") as? String
-    let itemDetail = itemToSave.valueForKey("detail") as? String
-    
-    itemRecord.setObject(itemTitle, forKey: "Title")
-    itemRecord.setObject(itemDetail, forKey: "Description")
-    itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
-    
-    //retrieve location
-    if let itemLat = itemToSave.valueForKey("latitude") as? NSNumber,
-      let itemLong = itemToSave.valueForKey("longitude") as? NSNumber {
-        let itemLocation = CLLocation(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
-        itemRecord.setObject(itemLocation, forKey: "Location")
-    }
-    
-    //get the imageURL
-    ///URL for item image
-    let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
-    let imageData = itemToSave.valueForKey("image") as? NSData
-    if imageData!.writeToURL(imageURL!, atomically: true) {
-      let imageAsset = CKAsset(fileURL: imageURL)
-      itemRecord.setObject(imageAsset, forKey: "Image")
-    } else {
-      finish()
-      return
-    }
-    
-    let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
-    saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
-      //print any returned errors
-      if error != nil { print("UploadItem returned error: \(error)") }
+    do {
+      let itemToSave = try context.existingObjectWithID(objectID)
       
-      var deletionError: NSError?
-      NSFileManager.defaultManager().removeItemAtPath(imageURL!.path!, error: &deletionError)
-      if deletionError != nil {
-        print(deletionError)
+      //update server storage
+      let recordIDName = itemToSave.valueForKey("recordIDName") as? String
+      var itemRecord: CKRecord
+      if let recordIDName = itemToSave.valueForKey("recordIDName") as? String {
+        itemRecord = CKRecord(recordType: RecordTypes.Item, recordID: CKRecordID(recordName: recordIDName))
+      } else {
+        itemRecord = CKRecord(recordType: RecordTypes.Item)
+      }
+      
+      //set immediately available keys
+      let itemTitle = itemToSave.valueForKey("title") as? String
+      let itemDetail = itemToSave.valueForKey("detail") as? String
+      
+      itemRecord.setObject(itemTitle, forKey: "Title")
+      itemRecord.setObject(itemDetail, forKey: "Description")
+      itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
+      
+      //retrieve location
+      if let itemLat = itemToSave.valueForKey("latitude") as? NSNumber,
+        let itemLong = itemToSave.valueForKey("longitude") as? NSNumber {
+          let itemLocation = CLLocation(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
+          itemRecord.setObject(itemLocation, forKey: "Location")
+      }
+      
+      //get the imageURL
+      ///URL for item image
+      let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
+      let imageData = itemToSave.valueForKey("image") as? NSData
+      if imageData!.writeToURL(imageURL, atomically: true) {
+        let imageAsset = CKAsset(fileURL: imageURL)
+        itemRecord.setObject(imageAsset, forKey: "Image")
+      } else {
+        finish()
         return
       }
       
-      if let first = savedRecords?.first as? CKRecord {
-        itemToSave.setValue(first.recordID.recordName, forKey: "recordIDName")
+      let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
+      saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
+        //print any returned errors
+        if error != nil { print("UploadItem returned error: \(error)") }
+        
+        do {
+          try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
+        } catch {
+          print(error)
+          return
+        }
+        
+        if let first = savedRecords?.first {
+          itemToSave.setValue(first.recordID.recordName, forKey: "recordIDName")
+        }
+        
+        self.context.MR_saveToPersistentStoreAndWait()
+        self.finish()
       }
-      
-      self.context.MR_saveToPersistentStoreAndWait()
-      self.finish(GenericError.ExecutionFailed)
+      saveItemRecordOp.qualityOfService = qualityOfService
+      database.addOperation(saveItemRecordOp)
+    } catch {
+      print(error)
+      self.finish()
     }
-    saveItemRecordOp.qualityOfService = qualityOfService
-    database.addOperation(saveItemRecordOp)
   }
   
   private func cachePathForFileName(name: String) -> String {
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
-    let cachePath = paths.first as! String
-    return cachePath.stringByAppendingPathComponent(name)
+    let cachePath = NSURL(string: paths.first!)!.URLByAppendingPathComponent(name)
+    return cachePath.path!
   }
   
 }

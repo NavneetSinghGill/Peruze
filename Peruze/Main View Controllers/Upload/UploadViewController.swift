@@ -161,7 +161,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
-      println("OperationQueue().addOperation(PostItemOperation)")
+      print("OperationQueue().addOperation(PostItemOperation)")
       let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
       CLLocationManager.locationServicesEnabled()
       OperationQueue().addOperation(
@@ -227,7 +227,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     if let userInfo = sender.userInfo {
       if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
         let top = navigationController?.navigationBar.frame.maxY ?? 0
-        let bottom = keyboardFrame().height
+        let bottom = keyboardFrame.height
         let insets = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
         scrollView.contentInset = insets
         scrollView.scrollIndicatorInsets = insets

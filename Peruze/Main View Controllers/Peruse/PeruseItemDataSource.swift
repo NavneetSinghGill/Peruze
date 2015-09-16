@@ -48,10 +48,9 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     fetchedResultsController.delegate = self
     
     getFavorites()
-    
-    var error: NSError?
-    fetchedResultsController.performFetch(&error)
-    if error != nil {
+    do {
+      try self.fetchedResultsController.performFetch()
+    } catch {
       print(error)
     }
   }
@@ -60,13 +59,14 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
     dispatch_async(dispatch_get_main_queue()) {
-      var error: NSError?
-      self.fetchedResultsController.performFetch(&error)
-      if error != nil {
+      do {
+        try self.fetchedResultsController.performFetch()
+      } catch {
+        
         print(error)
         let alert = UIAlertController(
           title: "Oops!",
-          message: ("There was an issue fetching results from your device. Error: " + error!.localizedDescription),
+          message: ("There was an issue fetching results from your device. Error: \(error)"),
           preferredStyle: .Alert
         )
         alert.addAction(
@@ -76,12 +76,12 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
               alert.dismissViewControllerAnimated(true, completion: nil)
           })
         presentationContext.presentViewController(alert, animated: true, completion: nil)
-      } else {
-        self.collectionView.reloadData()
-        self.getFavorites()
       }
+      self.collectionView.reloadData()
+      self.getFavorites()
     }
   }
+  
   
   func getFavorites() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
@@ -193,7 +193,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       cell = localCell
     } else {
       //loading cell
-      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath)
     }
     return cell
   }

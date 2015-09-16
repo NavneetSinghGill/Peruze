@@ -41,7 +41,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
-      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier) as? UIViewController
+      let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
       print("segue to write review")
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {

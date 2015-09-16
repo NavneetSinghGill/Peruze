@@ -35,7 +35,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
     if writeReviewEnabled && indexPath.section == 0 {
-      let cell = tableView.dequeueReusableCellWithIdentifier(Constants.WriteReviewReuse, forIndexPath: indexPath) as! UITableViewCell
+      let cell = tableView.dequeueReusableCellWithIdentifier(Constants.WriteReviewReuse, forIndexPath: indexPath) 
       return cell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,

@@ -65,7 +65,7 @@ class GetAllParticipatingExchangesOperation: GroupOperation {
       )
       super.init(operations: [personIsCreator, personIsRequestedFrom])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.first != nil {
       print("GetAllParticipatingExchangesOperation finished with error:")
       print(errors.first!)
@@ -77,7 +77,7 @@ class PersonIsCreator: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsCreator = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personRecordIDName))
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsCreator])
+    return NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, personIsCreator])
   }
 }
 
@@ -85,7 +85,7 @@ class PersonIsRequestedFrom: GetExchangesOperation {
   override func getPredicate() -> NSPredicate {
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = status == nil ? NSPredicate(value: true) : NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
+    return NSCompoundPredicate(andPredicateWithSubpredicates:[statusPredicate, personIsBeingRequestedFrom])
   }
 }
 
@@ -99,7 +99,7 @@ class GetOnlyRequestedExchangesOperation: GetExchangesOperation {
     //create predicate
     let personIsBeingRequestedFrom = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", personRecordIDName)
     let statusPredicate = NSPredicate(format: "ExchangeStatus == %i", status!.rawValue)
-    return NSCompoundPredicate.andPredicateWithSubpredicates([statusPredicate, personIsBeingRequestedFrom])
+    return NSCompoundPredicate(andPredicateWithSubpredicates:[statusPredicate, personIsBeingRequestedFrom])
   }
 }
 
@@ -157,7 +157,7 @@ class GetExchangesOperation: Operation {
         inContext: self.context)
       
       //set creator
-      if record.creatorUserRecordID.recordName == "__defaultOwner__" {
+      if record.creatorUserRecordID!.recordName == "__defaultOwner__" {
         let creator = Person.MR_findFirstOrCreateByAttribute("me",
           withValue: true,
           inContext: self.context)
@@ -206,7 +206,7 @@ class GetExchangesOperation: Operation {
     
     getExchangesOperation.queryCompletionBlock = { (cursor, error) -> Void in
       if error != nil { print("Get Exchanges Completed with Error: \(error)") }
-      self.finish(GenericError.ExecutionFailed)
+      self.finishWithError(error)
     }
     
     //add that operation to the operationQueue of self.database

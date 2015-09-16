@@ -60,22 +60,11 @@ class Model: NSObject, CLLocationManagerDelegate {
   
   func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
     
-    //In most cases, we want to get the 
-    let getLocationOp = LocationOperation(accuracy: locationAccuracy, manager: nil) { (location) -> Void in
+    //In most cases, we want to get the
+    let getLocationOp = LocationOperation(accuracy: locationAccuracy) { (location) -> Void in
       self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
     }
     OperationQueue().addOperation(getLocationOp)
-
-    
-    let condition = LocationCondition(usage: .WhenInUse, manager: nil)
-    
-    OperationConditionEvaluator.evaluate([condition], operation: getLocationOp) {
-      (errors: [ErrorType]) -> Void in
-      if errors.first != nil {
-        println("There was an error getting the user's location.")
-        self.performItemOperationWithLocation(nil, presentationContext: presentationContext, completion: completion)
-      }
-    }
     
   }
   //helper function for above function

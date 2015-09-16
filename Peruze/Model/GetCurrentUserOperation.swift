@@ -36,10 +36,15 @@ class GetCurrentUserOperation: Operation {
     fetchUser.perRecordCompletionBlock = { (record, recordID, error) -> Void in
       
       //make sure there were no errors
-      if error != nil {
+      if let error = error {
         print("GetCurrentUserOperation failed with error:")
         print(error)
-        self.finish(CurrentUserOperationError.CloudKitError(error))
+        self.finishWithError(error)
+        return
+      }
+      
+      guard let record = record else {
+        print("The record returned from the server was nil")
         return
       }
       
@@ -54,7 +59,7 @@ class GetCurrentUserOperation: Operation {
       let lastName   = (record.objectForKey("LastName")   as? String)
       let facebookID = (record.objectForKey("FacebookID") as? String)
 
-      person.setValue(recordID.recordName, forKey: "recordIDName")
+      person.setValue(recordID!.recordName, forKey: "recordIDName")
       person.setValue(firstName, forKey: "firstName")
       person.setValue(lastName, forKey: "lastName")
       person.setValue(facebookID, forKey: "facebookID")
@@ -141,10 +146,9 @@ class GetCurrentUserOperation: Operation {
     fetchUser.qualityOfService = qualityOfService
     database.addOperation(fetchUser)
   }
-  
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     
-    let alert = AlertOperation(presentFromController: presentationContext)
+    let alert = AlertOperation(presentationContext: presentationContext)
     alert.title = "iCloud Error"
     
     if let firstError = errors.first as? CurrentUserOperationError {

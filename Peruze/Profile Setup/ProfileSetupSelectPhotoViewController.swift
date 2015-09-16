@@ -163,7 +163,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
       managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
     saveImageOp.completionBlock = {
-      println("saveImageOp.completionBlock\n")
+      print("saveImageOp.completionBlock\n")
     }
     
     //operation that performs the segue to the next VC

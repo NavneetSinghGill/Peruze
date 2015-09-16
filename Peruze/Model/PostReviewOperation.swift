@@ -16,21 +16,20 @@ class PostReviewOperation: Operation {
   let database: CKDatabase
   
   init(presentationContext: UIViewController,
+    title: String,
+    review: String,
+    starRating: Int,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
       self.presentationContext = presentationContext
       self.context = context
       self.database = database
-      super.init()
+      
   }
   
-  override func execute() {
-    //do shit
-  }
-  
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if errors.first != nil {
-      let alert = AlertOperation(presentFromController: presentationContext)
+      let alert = AlertOperation(presentationContext: presentationContext)
       alert.message = ""
       alert.title = ""
     }
