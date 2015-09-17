@@ -9,6 +9,7 @@
 import UIKit
 import SystemConfiguration
 import CloudKit
+import CoreLocation
 
 class InitialViewController: UIViewController {
   

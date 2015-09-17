@@ -871,20 +871,11 @@
 		9DC3454D1BA9F20900B1CA2C /* Operation */ = {
 			isa = PBXGroup;
 			children = (
+				9DE038911BAA2949002DB506 /* Operation */,
 				9DC345981BAA084500B1CA2C /* Extensions */,
 				9DC345971BAA082000B1CA2C /* Conditions */,
 				9DC345961BAA07F200B1CA2C /* Observers */,
 				9DC3458E1BA9FBFF00B1CA2C /* AsyncOp */,
-				9DC3454E1BA9F22B00B1CA2C /* URLSessionTaskOperation.swift */,
-				9DC3454F1BA9F22B00B1CA2C /* LocationOperation.swift */,
-				9DC345501BA9F22B00B1CA2C /* Operation.swift */,
-				9DC345511BA9F22B00B1CA2C /* OperationQueue.swift */,
-				9DC345521BA9F22B00B1CA2C /* AlertOperation.swift */,
-				9DC345541BA9F22B00B1CA2C /* BlockOperation.swift */,
-				9DC345581BA9F22B00B1CA2C /* DelayOperation.swift */,
-				9DC3455A1BA9F22B00B1CA2C /* ExclusivityController.swift */,
-				9DC3455B1BA9F22B00B1CA2C /* GroupOperation.swift */,
-				9DC345641BA9F22B00B1CA2C /* OperationErrors.swift */,
 			);
 			name = Operation;
 			sourceTree = "<group>";
@@ -941,6 +932,23 @@
 				9DC3456C1BA9F22B00B1CA2C /* UIUserNotifications+Operations.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		9DE038911BAA2949002DB506 /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				9DC3454E1BA9F22B00B1CA2C /* URLSessionTaskOperation.swift */,
+				9DC3454F1BA9F22B00B1CA2C /* LocationOperation.swift */,
+				9DC345501BA9F22B00B1CA2C /* Operation.swift */,
+				9DC345511BA9F22B00B1CA2C /* OperationQueue.swift */,
+				9DC345521BA9F22B00B1CA2C /* AlertOperation.swift */,
+				9DC345541BA9F22B00B1CA2C /* BlockOperation.swift */,
+				9DC345581BA9F22B00B1CA2C /* DelayOperation.swift */,
+				9DC3455A1BA9F22B00B1CA2C /* ExclusivityController.swift */,
+				9DC3455B1BA9F22B00B1CA2C /* GroupOperation.swift */,
+				9DC345641BA9F22B00B1CA2C /* OperationErrors.swift */,
+			);
+			name = Operation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

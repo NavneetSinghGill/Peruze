@@ -59,8 +59,7 @@ class Model: NSObject, CLLocationManagerDelegate {
   }
   
   func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
-    
-    //In most cases, we want to get the
+    //In most cases, we want to get the location
     let getLocationOp = LocationOperation(accuracy: locationAccuracy) { (location) -> Void in
       self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
     }

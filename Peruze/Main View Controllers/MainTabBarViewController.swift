@@ -15,7 +15,9 @@ class MainTabBarViewController: UITabBarController {
     tabBar.tintColor = UIColor.redColor()
     
   }
+  let manager = CLLocationManager()
   override func viewDidAppear(animated: Bool) {
+    manager.requestWhenInUseAuthorization()
     Model.sharedInstance().getPeruzeItems(selectedViewController!, completion: {
       print("GetPeruzeItems completed!")
       dispatch_async(dispatch_get_main_queue()) {

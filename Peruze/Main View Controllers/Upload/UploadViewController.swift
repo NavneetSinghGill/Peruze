@@ -97,10 +97,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     titleTextField.text = itemTitle
     descriptionTextView.text = itemDescription
   }
-  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    
+        
     //Scroll view setup
     setupScrollView()
     let height = uploadButton.frame.maxY + Constants.BufferSize

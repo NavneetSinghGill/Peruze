@@ -74,7 +74,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
   }
-  
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
     let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
@@ -93,7 +92,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       print("\(insertedObjects)\n")
     }
   }
-  
   //store top and bottom for when navigation controller is animating pop and is nil
   private var storedTop: CGFloat = 0
   private var storedBottom: CGFloat = 0
