@@ -31,7 +31,7 @@ class WritePNGImageToPath: Operation {
           NSLocalizedRecoverySuggestionErrorKey: "Close and reopen the application. "
         ]
       )
-      self.finish(GenericError.ExecutionFailed)
+      self.finishWithError(error)
     } else {
       finish()
     }
@@ -45,14 +45,11 @@ class RemoveFileAtPath: AsyncOperation {
     super.init()
   }
   override func main() {
-//    do {
-//      try NSFileManager.defaultManager().removeItemAtPath(path)
-//    } catch let error1 as NSError {
-//      error = error1
-//    }
-    var error: NSError?
-    NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-    if error != nil { print(error) }
+    do {
+      try NSFileManager.defaultManager().removeItemAtPath(path)
+    } catch let error1 as NSError {
+      error = error1
+    }
     finish()
   }
 }

@@ -41,7 +41,7 @@ class StarView: UIView {
         starThree.contentMode = .ScaleAspectFit
         starFour.contentMode = .ScaleAspectFit
         starFive.contentMode = .ScaleAspectFit
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
   }
 
   override func drawRect(rect: CGRect) {

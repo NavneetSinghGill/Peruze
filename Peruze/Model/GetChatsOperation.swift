@@ -42,7 +42,7 @@ class GetChatsOperation: GroupOperation {
     
     super.init(operations: [getExchangesOp, getMessagesOp, finishingOp])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if let firstError = errors.first where
       ( operation === getExchangesOp || operation === getMessagesOp ) {
         print("GetChatsOperation Failed With Error: \(firstError)")
@@ -136,12 +136,12 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     }
     
     //Finish this operation
-    messagesQueryOp.queryCompletionBlock = { (cursor: CKQueryCursor!, error: NSError!) -> Void in
-      if error != nil {
+    messagesQueryOp.queryCompletionBlock = { (cursor, error) -> Void in
+      if let error = error {
         print("Get Chats For Accepted Exchanges Operation Finished with error: ")
         print(error)
       }
-      self.finish(GenericError.ExecutionFailed)
+      self.finishWithError(error)
     }
     
     //add the operation to the database

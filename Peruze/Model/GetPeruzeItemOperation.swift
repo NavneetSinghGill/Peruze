@@ -30,7 +30,7 @@ class GetPeruzeItemOperation: GroupOperation {
       if location == nil {
         range = 0 //makes sure that the location is not accessed
       }
-      var location = location ?? CLLocation() //makes sure that location is not nil
+      let location = location ?? CLLocation() //makes sure that location is not nil
       
       getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
@@ -42,11 +42,11 @@ class GetPeruzeItemOperation: GroupOperation {
       
       super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
   }
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     cursor = getItems.cursor
     getItems.cursor = nil
     if errors.first != nil {
-      let alert = AlertOperation(presentFromController: presentationContext)
+      let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oops!"
       alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."
       produceOperation(alert)

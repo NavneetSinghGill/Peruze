@@ -15,9 +15,11 @@ class MainTabBarViewController: UITabBarController {
     tabBar.tintColor = UIColor.redColor()
     
   }
+  let manager = CLLocationManager()
   override func viewDidAppear(animated: Bool) {
+    manager.requestWhenInUseAuthorization()
     Model.sharedInstance().getPeruzeItems(selectedViewController!, completion: {
-      println("GetPeruzeItems completed!")
+      print("GetPeruzeItems completed!")
       dispatch_async(dispatch_get_main_queue()) {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
       }

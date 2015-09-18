@@ -30,7 +30,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var collectionView: UICollectionView!
   var fetchedResultsController: NSFetchedResultsController!
-  var favorites = [NSManagedObject]()
+  ///the .recordIDName's of the favorite items
+  var favorites = [String]()
   
   override init() {
     super.init()
@@ -46,69 +47,134 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
     fetchedResultsController.delegate = self
     
-    var error: NSError?
-    fetchedResultsController.performFetch(&error)
-    if error != nil {
+    getFavorites()
+    do {
+      try self.fetchedResultsController.performFetch()
+    } catch {
       print(error)
     }
-    
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "performFetch",
-      name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
   }
   
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
     dispatch_async(dispatch_get_main_queue()) {
-      var error: NSError?
-      self.fetchedResultsController.performFetch(&error)
-      if error != nil {
+      do {
+        try self.fetchedResultsController.performFetch()
+      } catch {
+        
         print(error)
         let alert = UIAlertController(
           title: "Oops!",
-          message: ("There was an issue fetching results from your device. Error: " + error!.localizedDescription),
+          message: ("There was an issue fetching results from your device. Error: \(error)"),
           preferredStyle: .Alert
         )
         alert.addAction(
           UIAlertAction(
             title: "okay",
             style: .Cancel) { (_) -> Void in
-          alert.dismissViewControllerAnimated(true, completion: nil)
-        })
+              alert.dismissViewControllerAnimated(true, completion: nil)
+          })
         presentationContext.presentViewController(alert, animated: true, completion: nil)
-      } else {
-        self.collectionView.reloadData()
       }
+      self.collectionView.reloadData()
+      self.getFavorites()
     }
   }
   
-  private func getFavorites() {
+  
+  func getFavorites() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-    if let favorites = me.valueForKey("favorites") as? NSSet {
-      if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
-        self.favorites = favoriteObjs
-      } else {
-        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject]\n")
-      }
+    if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
+      self.favorites = favorites.map { $0.valueForKey("recordIDName") as! String }
     } else {
       print("me.valueForKey('favorites') was not an NSSet\n")
     }
   }
   
+  //MARK: - NSFetchedResultsController Delegate Methods
+  private var sectionChanges = [[NSFetchedResultsChangeType: Int]]()
+  private var itemChanges = [[NSFetchedResultsChangeType : AnyObject]]()
+  
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    print("Will Change Context")
+    sectionChanges = []
+    itemChanges = []
   }
   
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-    print("Did Change Object")
+  func controller(
+    controller: NSFetchedResultsController,
+    didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+    atIndex sectionIndex: Int,
+    forChangeType type: NSFetchedResultsChangeType) {
+      let change = [type : sectionIndex]
+      sectionChanges.append(change)
   }
   
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    print("Did Change Context")
+  func controller(controller: NSFetchedResultsController,
+    didChangeObject anObject: AnyObject,
+    atIndexPath indexPath: NSIndexPath?,
+    forChangeType type: NSFetchedResultsChangeType,
+    newIndexPath: NSIndexPath?) {
+      var change = [NSFetchedResultsChangeType : AnyObject]()
+      switch type {
+      case .Insert :
+        change[type] = newIndexPath!
+        break
+      case .Delete, .Update :
+        change[type] = indexPath!
+        break
+      case .Move :
+        change[type] = [indexPath!, newIndexPath!]
+        break
+      }
+      itemChanges.append(change)
   }
   
+  //  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+  //    collectionView.performBatchUpdates({
+  //      //section changes
+  //      for change in self.sectionChanges {
+  //        for key in change.keys.array {
+  //          switch key {
+  //          case .Insert :
+  //            let indexSet = NSIndexSet(index: change[key]!)
+  //            self.collectionView.insertSections(indexSet)
+  //            break
+  //          case .Delete :
+  //            let indexSet = NSIndexSet(index: change[key]!)
+  //            self.collectionView.deleteSections(indexSet)
+  //            break
+  //          default :
+  //            break
+  //          }
+  //        }
+  //      }
+  //      //item changes
+  //      for change in self.itemChanges {
+  //        for key in change.keys.array {
+  //          switch key {
+  //          case .Insert :
+  //            self.collectionView.insertItemsAtIndexPaths([change[key]!])
+  //            break
+  //          case .Delete :
+  //            self.collectionView.deleteItemsAtIndexPaths([change[key]!])
+  //            break
+  //          case .Update :
+  //            self.collectionView.reloadItemsAtIndexPaths([change[key]!])
+  //            break
+  //          case .Move :
+  //            let fromIndex = (change[key]! as! [NSIndexPath]).first!
+  //            let toIndex = (change[key]! as! [NSIndexPath]).last!
+  //            self.collectionView.moveItemAtIndexPath(fromIndex, toIndexPath: toIndex)
+  //            break
+  //          }
+  //        }
+  //      }
+  //      }, completion: nil)
+  //  }
+  
+  //MARK: - UICollectionView Delegate Methods
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    
     let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: NSBundle.mainBundle())
     let loadingNib = UINib(nibName: "PeruseLoadingCollectionViewCell", bundle: NSBundle.mainBundle())
     
@@ -121,12 +187,13 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
       
       localCell.item = item
+      localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
       localCell.delegate = itemDelegate
       localCell.setNeedsDisplay()
       cell = localCell
     } else {
       //loading cell
-      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath)
     }
     return cell
   }
@@ -142,22 +209,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   }
   
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return 2 //normal one and then one for the loading view
+    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
   }
-  
-  private func errorCell() -> ItemStruct {
-    let localOwner = OwnerStruct(
-      image: UIImage(),
-      formattedName: "",
-      recordIDName: ""
-    )
-    return ItemStruct(
-      image: UIImage(),
-      title: "Error Loading Item",
-      detail: "There was an error loading this item. Our apologies.",
-      owner: localOwner,
-      recordIDName: ""
-    )
-  }
-  
 }

@@ -97,10 +97,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     titleTextField.text = itemTitle
     descriptionTextView.text = itemDescription
   }
-  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    
+        
     //Scroll view setup
     setupScrollView()
     let height = uploadButton.frame.maxY + Constants.BufferSize
@@ -161,23 +160,23 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
-      println("OperationQueue().addOperation(PostItemOperation)")
+      print("OperationQueue().addOperation(PostItemOperation)")
+      let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
+      CLLocationManager.locationServicesEnabled()
       OperationQueue().addOperation(
         PostItemOperation(
           image: mainImageView.image!,
           title: titleTextField.text!,
           detail: descriptionTextView.text,
           recordIDName: nil,
-          database: CKContainer.defaultContainer().publicCloudDatabase
-          ) {
-            dispatch_async(dispatch_get_main_queue()) {
-              self.endUpload()
-            }
-        }
+          presentationContext: self,
+          completionHandler: allCompletionHandlers,
+          errorCompletionHandler: allCompletionHandlers
+        )
       )
     } else {
-      let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: UIAlertControllerStyle.Alert)
-      alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
+      let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
+      alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
       self.presentViewController(alert, animated: true, completion: nil)
     }
   }
@@ -227,7 +226,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     if let userInfo = sender.userInfo {
       if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
         let top = navigationController?.navigationBar.frame.maxY ?? 0
-        let bottom = keyboardFrame().height
+        let bottom = keyboardFrame.height
         let insets = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
         scrollView.contentInset = insets
         scrollView.scrollIndicatorInsets = insets

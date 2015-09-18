@@ -32,7 +32,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         let checkmark = UIImageView(frame: circle.frame)
         checkmark.image = UIImage(named: "Large_Check_Mark")
-        checkmark.frame.inset(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
+        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
         view.addSubview(checkmark)
         
         UIView.animateWithDuration(1, animations: { () -> Void in
@@ -64,39 +64,21 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
     UIApplication.sharedApplication().registerForRemoteNotifications()
     
+    //register data source for updates to model
+    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "performFetchWithPresentationContext:",
+      name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: self)
+    
+    //register self for updates notifications
     NSNotificationCenter.defaultCenter().addObserver(self,
       selector: "receivedNotification:",
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
   }
-  
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
     let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
     let insertedObjects: AnyObject? = notification.userInfo?[NSInsertedObjectsKey]
-    if let managedObj = (insertedObjects as? NSSet)?.allObjects {
-      print("first let finished")
-      if managedObj.first!.entity.name == "Item" {
-        print("second let finished")
-        dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
-          print(error)
-        }
-        
-      }
-    }
     
-    if let managedObj = (updatedObjects as? NSSet)?.allObjects {
-      if managedObj.first!.entity.name == "Item" {
-        dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
-          print(error)
-        }
-        
-      }
-    }
     if updatedObjects != nil {
       print("- - - - - updated objects - - - - -\n")
       print("\(updatedObjects!)\n" )
@@ -110,7 +92,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       print("\(insertedObjects)\n")
     }
   }
-  
   //store top and bottom for when navigation controller is animating pop and is nil
   private var storedTop: CGFloat = 0
   private var storedBottom: CGFloat = 0
@@ -160,9 +141,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //favorite data
     print("item started favorite!\n")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
-    let favoriteOp = PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
+    let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
     favoriteOp.completionBlock = {
       print("favorite completed successfully")
+      self.dataSource.getFavorites()
     }
     OperationQueue().addOperation(favoriteOp)
   }

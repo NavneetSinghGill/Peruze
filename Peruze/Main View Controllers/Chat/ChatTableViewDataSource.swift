@@ -27,18 +27,9 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
       groupBy: nil,
       delegate: self)
     
-    //Swift 2.0
-    //    do {
-    //      try fetchedResultsController.performFetch()
-    //    } catch {
-    //      print("There was an error with the fetchedResultsController in the Chat Table View Data Source:")
-    //      print(error)
-    //      //TODO: Actually handle this error
-    //    }
-    
-    var error: NSError?
-    fetchedResultsController.performFetch(&error)
-    if error != nil {
+    do {
+      try self.fetchedResultsController.performFetch()
+    } catch {
       print(error)
     }
   }

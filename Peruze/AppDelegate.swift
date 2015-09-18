@@ -24,11 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Setup CoreData with MagicalRecord
     
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
-    MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
+    //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }
-  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
     return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
   }
   

@@ -50,8 +50,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let fetchMissingPeople = GetAllPersonsWithMissingData(database: publicDB)
     let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
     updateExchanges.completionBlock = {
-      var error: NSError?
-      self.dataSource.fetchedResultsController.performFetch(&error)
+      do {
+        try self.dataSource.fetchedResultsController.performFetch()
+      } catch {
+           print(error)
+        
+      }
       dispatch_async(dispatch_get_main_queue()){
         self.tableView.reloadData()
         self.refreshControl?.endRefreshing()
@@ -79,7 +83,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   private func checkForEmptyData(animated: Bool) {
-    if tableView.visibleCells().count == 0 {
+    if tableView.visibleCells.count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
         self.tableView.alpha = 0.0
@@ -92,7 +96,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
-  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+  func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     let deny = denyEditAction()
     let accept = acceptEditAction()
     return [deny, accept]
@@ -114,10 +118,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //add completion
       operation.completionBlock = {
         dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
+          do {
+            try self.dataSource.fetchedResultsController.performFetch()
+          } catch {
+            print(error)
+          }
           self.tableView.reloadData()
-          print(error)
         }
       }
       
@@ -143,10 +149,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       //add completion
       operation.completionBlock = { () -> Void in
         dispatch_async(dispatch_get_main_queue()) {
-          var error: NSError?
-          self.dataSource.fetchedResultsController.performFetch(&error)
+          do {
+            try self.dataSource.fetchedResultsController.performFetch()
+          } catch {
+            print(error)
+          }
           self.tableView.reloadData()
-          print(error)
         }
       }
       

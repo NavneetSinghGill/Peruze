@@ -73,7 +73,7 @@ class GetFullProfileOperation: GroupOperation {
     
     name = "Get Full Profile"
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if let firstError = errors.first {
       print("Get Full Profile Operation Failed With Error: \(firstError)")
       //produceAlert(firstError)
@@ -87,7 +87,7 @@ class GetFullProfileOperation: GroupOperation {
     if hasProducedAlert { return }
     
     let alert = AlertOperation()
-    let errorReason = (error.domain, error.code, (error.userInfo?[OperationConditionKey] as? String))
+    let errorReason = (error.domain, error.code, (error.userInfo[OperationConditionKey] as? String))
     
     // These are examples of errors for which we might choose to display an error to the user
     // TODO: Add to these when you get time

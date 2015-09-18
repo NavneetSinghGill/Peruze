@@ -37,7 +37,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   var imageURLs = [NSURL]()
   override func main() {
     if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
+    
     if cancelled { finish(); return }
     //create the request from above graph path
     let request = FBSDKGraphRequest(graphPath:Constants.GraphPath, parameters: nil, HTTPMethod:"GET")
@@ -55,8 +55,8 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
     if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
-
+    
+    
     var returnURLs = [NSURL]()
     
     if cancelled { finish(); return [] }
@@ -116,9 +116,9 @@ class DownloadImagesForURLs: AsyncOperation {
   
   override func main() {
     if logging { print("DownloadImagesForURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
-
-
+    
+    
+    
     //get image URLs from dependencies
     for dependency in self.dependencies {
       if let downloadURLDependency = dependency as? DownloadProfilePhotoURLs {
@@ -167,7 +167,7 @@ class FetchFacebookUserProfile: Operation {
   
   init(presentationContext: UIViewController, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
+    
     self.presentationContext = presentationContext
     self.context = context
     
@@ -181,8 +181,8 @@ class FetchFacebookUserProfile: Operation {
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue(), {
       request.startWithCompletionHandler ({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-        if error != nil {
-          self.finish(FacebookOperationsError.RequestFailedWithError(error: error))
+        if let error = error {
+          self.finishWithError(error)
           return
         }
         if let result = result as? [String: AnyObject] {
@@ -192,20 +192,20 @@ class FetchFacebookUserProfile: Operation {
           localMe.setValue(result["id"] as? String, forKey: "facebookID")
           self.context.MR_saveToPersistentStoreAndWait()
         } else {
-          self.finish(GenericError.ExecutionFailed)
+          print("FacebookOperations Finished with Error")
+          self.finishWithError(error)
           return
         }
         self.finish()
       })
     })
   }
-
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
+    
     if errors.first != nil {
       if logging { print("\n There was an error in " + __FILE__ + " \n") }
-      let alert = AlertOperation(presentFromController: presentationContext)
+      let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Error Accessing Facebook"
       alert.message = "There was a problem accessing your general facebook information."
       produceOperation(alert)
@@ -253,7 +253,12 @@ class FetchFacebookFriends: AsyncOperation {
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
       var jsonData: AnyObject?
-      jsonData = NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments, error: &jsonError)
+      
+      do {
+        jsonData = try NSJSONSerialization.JSONObjectWithData(resultData!, options: NSJSONReadingOptions.AllowFragments)
+      } catch {
+        print(error)
+      }
       
       if jsonData == nil { self.finish(); return }
       if resultError != nil {
@@ -280,7 +285,7 @@ class FetchFacebookFriends: AsyncOperation {
   
   private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {
     if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
-
+    
     if array == nil { return [] }
     var returnArray = [String]()
     for obj in array! {

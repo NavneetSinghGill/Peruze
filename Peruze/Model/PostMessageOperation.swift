@@ -47,7 +47,7 @@ class PostMessageOperation: GroupOperation {
       finishOp.addDependencies([saveOp, uploadOp])
       super.init(operations: [uploadOp, saveOp, finishOp])
   }
-  override func operationDidFinish(operation: NSOperation, withErrors errors: [ErrorType]) {
+  override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.count != 0 {
       print("PostMessageOperation finished with errors:")
       print(errors)
@@ -134,9 +134,9 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     let saveRecordsOp = CKModifyRecordsOperation(recordsToSave: [messageRecord], recordIDsToDelete: nil)
     
     saveRecordsOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-      localMessage.setValue(savedRecords?.first?.recordID?.recordName, forKey: "recordIDName")
+      localMessage.setValue(savedRecords?.first?.recordID.recordName, forKey: "recordIDName")
       self.context.MR_saveToPersistentStoreAndWait()
-      self.finish(GenericError.ExecutionFailed)
+      self.finishWithError(operationError)
     }
     saveRecordsOp.qualityOfService = qualityOfService
     database.addOperation(saveRecordsOp)

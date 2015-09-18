@@ -24,7 +24,7 @@ class PostUserOperation: Operation {
   let presentationContext: UIViewController
   let database: CKDatabase
   let context: NSManagedObjectContext
-
+  
   init(presentationContext: UIViewController, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     self.presentationContext = presentationContext
     self.database = database
@@ -45,8 +45,9 @@ class PostUserOperation: Operation {
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
-    if !imageData.writeToURL(imageURL!, atomically: true) {
-      self.finish(PostUserOperationError.SaveImageFailed)
+    if !imageData.writeToURL(imageURL, atomically: true) {
+      print("imageData.writeToURL failed to write")
+      self.finish()
       return
     }
     
@@ -56,64 +57,62 @@ class PostUserOperation: Operation {
     //get my profile from the server
     
     let fetchMyRecord = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
-    fetchMyRecord.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
-      
-      if error != nil {
-        self.finish(PostUserOperationError.FetchMyRecordFailedWithError(error))
+    fetchMyRecord.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+      if let error = error {
+        self.finishWithError(error)
         return
       }
       
-      if let myRecordID = recordsByID.keys.array.first as? CKRecordID {
-        if let myRecord = recordsByID[myRecordID] as? CKRecord {
-          myRecord.setObject(firstName, forKey: "FirstName")
-          myRecord.setObject(lastName, forKey: "LastName")
-          myRecord.setObject(facebookID, forKey: "FacebookID")
-          myRecord.setObject(imageAsset, forKey: "Image")
-          
-          let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
-          saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-            print("saveOp.modifyRecordsCompletionBlock called. \n")
-            
-            if operationError != nil {
-              self.finish(PostUserOperationError.CloudKitOperaitonFailedWithError(operationError))
-            }
-            
-            var removeItemError: NSError?
-            NSFileManager.defaultManager().removeItemAtURL(imageURL!, error: &removeItemError)
-            if removeItemError != nil {
-              print(removeItemError)
-              print("\n")
-              self.finish(PostUserOperationError.DeleteImageFailedWithError(removeItemError))
-              return
-            }
-            
-            if savedRecords.first == nil {
-              self.finish(PostUserOperationError.RecordNotSavedToServer)
-              return
-            }
-            
-            self.finish()
-          }
-          
-          saveOp.qualityOfService = self.qualityOfService
-          self.database.addOperation(saveOp)
-          
-        } else {
-          //value failed to be a CKRecord
-          self.finish(PostUserOperationError.CastFailed)
-        }
-      } else {
-        //key failed to be a CKRecordID
-        self.finish(PostUserOperationError.CastFailed)
+      guard let myRecordID = recordsByID?.keys.first else {
+        print("myRecordID from fetchRecordsCompletionBlock in Post User Operation was nil")
+        self.finish()
+        return
       }
+      guard let myRecord = recordsByID?[myRecordID] else {
+        print("myRecord from fetchRecordsCompletionBlock in Post User Operation was nil")
+        self.finish()
+        return
+      }
+      myRecord.setObject(firstName, forKey: "FirstName")
+      myRecord.setObject(lastName, forKey: "LastName")
+      myRecord.setObject(facebookID, forKey: "FacebookID")
+      myRecord.setObject(imageAsset, forKey: "Image")
+      
+      let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
+      saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
+        print("saveOp.modifyRecordsCompletionBlock called. \n")
+        
+        if let error = operationError {
+          self.finishWithError(error)
+          return
+        }
+        
+        
+        do {
+          try NSFileManager.defaultManager().removeItemAtURL(imageURL)
+        } catch {
+          print(error)
+          self.finish()
+          return
+        }
+        
+        if savedRecords?.first == nil {
+          print("saved records in PostUserOperation was nil")
+          self.finish()
+          return
+        }
+        self.finish()
+      }
+      
+      saveOp.qualityOfService = self.qualityOfService
+      self.database.addOperation(saveOp)
     }
     self.database.addOperation(fetchMyRecord)
   }
-  
-  override func finished(errors: [ErrorType]) {
+  override func finished(errors: [NSError]) {
     if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
-    let alert = AlertOperation(presentFromController: presentationContext)
+    let alert = AlertOperation(presentationContext: presentationContext)
     alert.title = "Oh No!"
     
     if let firstError = errors.first as? PostUserOperationError {
@@ -150,8 +149,9 @@ class PostUserOperation: Operation {
     if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
     
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
-    let cachePath = paths.first! as! String
-    return cachePath.stringByAppendingPathComponent(name)
+    let cachePath = paths.first!
+    let cacheURLString = NSURL(string: cachePath)?.URLByAppendingPathComponent(name) as! String
+    return cacheURLString
   }
   
 }

@@ -25,7 +25,7 @@ class DoubleCircleImage: UIView {
   
   
   required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+    super.init(coder: aDecoder)!
     lesserImage = CircleImage()
     lesserImage!.image = itemImages?.lesserImage
     lesserImage!.backgroundColor = .clearColor()

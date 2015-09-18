@@ -40,17 +40,13 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     super.viewDidLoad()
     //distance
     
-    //Swift 2.0
-    //distanceValues.sortInPlace(<)
-    distanceValues.sort(<)
+    distanceValues.sortInPlace(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
     distanceSlider.setValue(distanceSlider.maximumValue, animated: false)
     //friends
     
-    //Swift 2.0
-    //friendsValues.sortInPlace(<)
-    friendsValues.sort(<)
+    friendsValues.sortInPlace(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
     friendsSlider.setValue(friendsSlider.maximumValue, animated: false)
@@ -130,7 +126,7 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     pulseCircleView!.frame = CGRectMake(view.bounds.width / 2, view.bounds.height / 2, 0, 0)
     pulseCircleView!.layer.removeAllAnimations()
     UIView.transitionWithView(pulseCircleView!, duration: Constants.PulseCircleAnimationDuration,
-      options: .Repeat | .CurveEaseInOut, animations: {
+      options: [.Repeat, .CurveEaseInOut], animations: {
         self.pulseCircleView!.frame = destinationRect
         self.pulseCircleView!.setNeedsDisplay()
       }, completion: nil)

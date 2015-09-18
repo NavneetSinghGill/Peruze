@@ -28,11 +28,9 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     super.init()
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     
-    //Swift 2.0
-    //    guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
-    //      return
-    //    }
-    let personRecordID = myPerson.valueForKey("recordIDName") as! String
+    guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
+      return
+    }
     let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
     fetchedResultsController = Item.MR_fetchAllSortedBy("title",
       ascending: true,
@@ -41,23 +39,15 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
       delegate: self,
       inContext: managedConcurrentObjectContext)
     
-    //Swift 2.0
-    //do {
-    //      try fetchedResultsController.performFetch()
-    //      guard let objects = fetchedResultsController.fetchedObjects else {
-    //        return
-    //      }
-    //      exchangeItems = objects
-    //    } catch {
-    //      print(error)
-    //    }
-    
-    var error: NSError?
-    fetchedResultsController.performFetch(&error)
-    if error != nil {
+    do {
+      try fetchedResultsController.performFetch()
+      guard let objects = fetchedResultsController.fetchedObjects as? [NSManagedObject] else {
+        print("Issue in Peruze Exchange Item Data Source")
+        return
+      }
+      exchangeItems = objects
+    } catch {
       print(error)
-    } else {
-      exchangeItems = fetchedResultsController.fetchedObjects as! [NSManagedObject]
     }
     
   }
