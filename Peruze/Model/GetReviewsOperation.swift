@@ -26,7 +26,7 @@ class GetReviewsOperation: Operation {
   basis for importing data.
   */
   init(recordID: CKRecordID,
-    database: CKDatabase,
+    database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.personID = recordID
       self.database = database
@@ -40,56 +40,55 @@ class GetReviewsOperation: Operation {
     
     //create operation for fetching relevant records
     let personReference     = CKReference(recordID: personID, action: CKReferenceAction.None)
-    let getUploadsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
-    let getUploadsQuery     = CKQuery(recordType: RecordTypes.Review, predicate: getUploadsPredicate)
-    let getUploadsOperation = CKQueryOperation(query: getUploadsQuery)
+    let getReviewsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
+    let getReviewsQuery     = CKQuery(recordType: RecordTypes.Review, predicate: getReviewsPredicate)
+    let getReviewsOperation = CKQueryOperation(query: getReviewsQuery)
 
-    getUploadsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
+    getReviewsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
 
-      let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+      let localReview = Review.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
       
-      let creator = record.creatorUserRecordID?.recordName
+      if let detail = record.objectForKey("Description") as? String {
+        localReview.detail = detail
+      }
       
-      if let creator = creator {
-        let defaultCreatorString: String! = "__defaultOwner__"
-        if creator == defaultCreatorString {
-          let localOwner = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
-          localUpload.setValue(localOwner, forKey: "owner")
-        } else {
-          let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: record.creatorUserRecordID!.recordName, inContext: self.context)
-          localUpload.setValue(localOwner, forKey: "owner")
-        }
+      if let starRating = record.objectForKey("StarRating") as? NSNumber {
+        localReview.starRating = starRating
       }
       
       if let title = record.objectForKey("Title") as? String {
-        localUpload.setValue(title, forKey: "title")
+        localReview.title = title
       }
       
-      if let detail = record.objectForKey("Description") as? String {
-        localUpload.setValue(detail, forKey: "detail")
+      if let userBeingReviewed = record.objectForKey("UserBeingReviewed") as? CKReference {
+        let userReviewedIDName = userBeingReviewed.recordID.recordName
+        print(userReviewedIDName)
+        let reviewedUser = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: userReviewedIDName, inContext: self.context)
+        self.context.MR_saveToPersistentStoreAndWait()
+        localReview.userBeingReviewed = reviewedUser
       }
       
-      if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
-        localUpload.setValue(ownerFacebookID, forKey: "ownerFacebookID")
-      }
+      localReview.date = record.creationDate
       
-      if let imageAsset = record.objectForKey("Image") as? CKAsset {
-        localUpload.setValue(NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
+      if let creator = record.creatorUserRecordID?.recordName {
+        let reviewer = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: creator, inContext: self.context)
+        self.context.MR_saveToPersistentStoreAndWait()
+        localReview.reviewer = reviewer
       }
 
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
     }
-    getUploadsOperation.queryCompletionBlock = { (cursor: CKQueryCursor?, error: NSError?) -> Void in
+    getReviewsOperation.queryCompletionBlock = { (cursor: CKQueryCursor?, error: NSError?) -> Void in
       if error != nil {
-        print("getUploadsOperation.queryCompletionBlock finished with error")
+        print("getReviewsOperation finished with error")
       }
       self.finish()
     }
     
     //add that operation to the operationQueue of self.database
-    getUploadsOperation.qualityOfService = qualityOfService
-    self.database.addOperation(getUploadsOperation)
+    getReviewsOperation.qualityOfService = qualityOfService
+    self.database.addOperation(getReviewsOperation)
   }
 }

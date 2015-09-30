@@ -21,7 +21,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   
   override init() {
     super.init()
-    let predicate = NSPredicate(value: true)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let predicate = NSPredicate(format: "userBeingReviewed.recordIDName == %@", me.recordIDName!)
     fetchedResultsController = Review.MR_fetchAllSortedBy(
       "date",
       ascending: true,
@@ -35,7 +36,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
     if writeReviewEnabled && indexPath.section == 0 {
-      let cell = tableView.dequeueReusableCellWithIdentifier(Constants.WriteReviewReuse, forIndexPath: indexPath) 
+      let cell = tableView.dequeueReusableCellWithIdentifier(Constants.WriteReviewReuse, forIndexPath: indexPath)
       return cell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
@@ -43,23 +44,15 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       
       let review: AnyObject = fetchedResultsController.objectAtIndexPath(indexPath)
       //TODO: Edit the cell contents
-      //      Swift 2.0
-      //      guard
-      //        let title = review.valueForKey("title") as? String,
-      //        let reviewer = review.valueForKey("reviewer") as? NSManagedObject,
-      //        let firstName = reviewer.valueForKey("firstName") as? String,
-      //        let detail = reviewer.valueForKey("detail") as? String,
-      //        let date = review.valueForKey("date") as? NSDate
-      //        else {
-      //          return cell
-      //      }
-      let title = review.valueForKey("title") as! String
-      let reviewer = review.valueForKey("reviewer") as! NSManagedObject
-      let firstName = reviewer.valueForKey("firstName") as! String
-      let detail = reviewer.valueForKey("detail") as! String
-      let date = review.valueForKey("date") as! NSDate
-      
-      
+      guard
+        let title = review.valueForKey("title") as? String,
+        let reviewer = review.valueForKey("reviewer") as? NSManagedObject,
+        let firstName = reviewer.valueForKey("firstName") as? String,
+        let detail = review.valueForKey("detail") as? String,
+        let date = review.valueForKey("date") as? NSDate
+        else {
+          return cell
+      }
       
       cell.titleLabel.text = "\(indexPath.row + 1). \(title)"
       cell.starView.numberOfStars = (review.valueForKey("starRating") as? NSNumber)?.floatValue ?? 0

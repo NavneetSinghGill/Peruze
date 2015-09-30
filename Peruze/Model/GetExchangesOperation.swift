@@ -175,7 +175,7 @@ class GetExchangesOperation: Operation {
       }
       
       //set date
-      if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
+      if let newDate = record.objectForKey("DateExchanged") as? NSDate {
         let date = localExchange.valueForKey("date") as? NSDate
         localExchange.setValue((date ?? newDate), forKey: "date")
       }

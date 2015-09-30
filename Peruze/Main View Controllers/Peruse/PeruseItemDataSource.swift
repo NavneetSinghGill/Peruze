@@ -97,7 +97,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   private var itemChanges = [[NSFetchedResultsChangeType : AnyObject]]()
   
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    collectionView.reloadData()
     sectionChanges = []
     itemChanges = []
   }
@@ -131,8 +130,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       itemChanges.append(change)
   }
   
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    collectionView.reloadData()
+//  func controllerDidChangeContent(controller: NSFetchedResultsController) {
 //    collectionView.performBatchUpdates({
 //      //section changes
 //      for change in self.sectionChanges {
@@ -173,7 +171,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //        }
 //      }
 //      }, completion: nil)
-  }
+//  }
   
   //MARK: - UICollectionView Delegate Methods
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

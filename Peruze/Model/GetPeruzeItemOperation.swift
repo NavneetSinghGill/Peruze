@@ -45,7 +45,8 @@ class GetPeruzeItemOperation: GroupOperation {
   override func finished(errors: [NSError]) {
     cursor = getItems.cursor
     getItems.cursor = nil
-    if errors.first != nil {
+    if let error = errors.first {
+      print(error)
       let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oops!"
       alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."
