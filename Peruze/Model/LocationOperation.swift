@@ -28,11 +28,13 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
     self.accuracy = accuracy
     self.handler = locationHandler
     super.init()
+    print("LocationOperation Initialized.")
     addCondition(LocationCondition(usage: .WhenInUse))
     addCondition(MutuallyExclusive<CLLocationManager>())
   }
   
   override func execute() {
+    print("LocationOperation execute().")
     dispatch_async(dispatch_get_main_queue()) {
       /*
       `CLLocationManager` needs to be created on a thread with an active
@@ -69,7 +71,13 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
   }
   
   func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    print("locationManagerDidFailWithError: \(error)")
     stopLocationUpdates()
     finishWithError(error)
+  }
+  override func finished(errors: [NSError]) {
+    if let error = errors.first {
+      print(error)
+    }
   }
 }

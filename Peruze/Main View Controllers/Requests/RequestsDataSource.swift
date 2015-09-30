@@ -117,16 +117,16 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   //MARK: - NSFetchedResultsControllerDelegate
   
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    tableView.beginUpdates()
+    tableView?.beginUpdates()
   }
   
   func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
     switch type {
     case .Insert:
-      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      tableView?.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
       break
     case .Delete:
-      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+      tableView?.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
       break
     default:
       break
@@ -135,24 +135,24 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
     switch type {
     case .Insert:
-      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Delete:
-      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Update:
-      tableView.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
-      tableView.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.deleteRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.insertRowsAtIndexPaths([(indexPath ?? newIndexPath!)], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     case .Move:
-      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+      tableView?.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     }
   }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    tableView.endUpdates()
+    tableView?.endUpdates()
   }
   
   //MARK: - Editing Data

@@ -33,7 +33,7 @@ class PostUserOperation: Operation {
   }
   
   override func execute() {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -80,7 +80,7 @@ class PostUserOperation: Operation {
       
       let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
       saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-        print("saveOp.modifyRecordsCompletionBlock called. \n")
+        print("saveOp.modifyRecordsCompletionBlock called.  ")
         
         if let error = operationError {
           self.finishWithError(error)
@@ -110,7 +110,7 @@ class PostUserOperation: Operation {
     self.database.addOperation(fetchMyRecord)
   }
   override func finished(errors: [NSError]) {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let alert = AlertOperation(presentationContext: presentationContext)
     alert.title = "Oh No!"
@@ -146,7 +146,7 @@ class PostUserOperation: Operation {
   }
   
   private func cachePathForFileName(name: String) -> String {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
     let cachePath = paths.first!

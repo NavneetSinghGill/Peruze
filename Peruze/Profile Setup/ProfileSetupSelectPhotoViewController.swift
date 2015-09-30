@@ -156,19 +156,19 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //saves the user's image to the local database
     let saveImageOp = NSBlockOperation {
-      if logging { print("saveImageOp called. \n") }
+      if logging { print("saveImageOp called.  ") }
       let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
       let imageData = UIImagePNGRepresentation(self.center.image!)
       me.setValue(imageData, forKey: "image")
       managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
     saveImageOp.completionBlock = {
-      print("saveImageOp.completionBlock\n")
+      print("saveImageOp.completionBlock ")
     }
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation {
-      if logging { print("performSeugeOp called. \n") }
+      if logging { print("performSeugeOp called.  ") }
       dispatch_async(dispatch_get_main_queue()) {
         self.nextLoadingTearDown()
         sender.userInteractionEnabled = true

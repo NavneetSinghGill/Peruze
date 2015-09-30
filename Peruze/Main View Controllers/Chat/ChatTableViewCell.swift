@@ -12,34 +12,26 @@ class ChatTableViewCell: UITableViewCell {
   var data: NSManagedObject? {
     didSet {
       //Swift 2.0
-      //      guard
-      //        let itemOffered = data?.valueForKey("itemOffered") as? NSManagedObject,
-      //        let itemRequested = data?.valueForKey("itemRequested") as? NSManagedObject else {
-      //          print("Error: Issue with item data in ChatTableViewCell")
-      //          return
-      //      }
-      //
-      //      guard
-      //        let offeredImageData = itemOffered.valueForKey("image") as? NSData,
-      //        let requestedImageData = itemRequested.valueForKey("image") as? NSData else {
-      //          print("Error: Issue with image data in ChatTableViewCell")
-      //          return
-      //      }
-      //
-      //      guard
-      //        let itemOfferedTitle = itemOffered.valueForKey("title") as? String,
-      //        let itemRequestedTitle = itemRequested.valueForKey("title") as? String else {
-      //          print("Error: Issue with item title in ChatTableViewCell")
-      //          return
-      //      }
+      guard
+        let itemOffered = data?.valueForKey("itemOffered") as? NSManagedObject,
+        let itemRequested = data?.valueForKey("itemRequested") as? NSManagedObject else {
+          print("Error: Issue with item data in ChatTableViewCell")
+          return
+      }
       
-      let itemOffered = data?.valueForKey("itemOffered") as! NSManagedObject
-      let itemRequested = data?.valueForKey("itemRequested") as! NSManagedObject
-      let offeredImageData = itemOffered.valueForKey("image") as! NSData
-      let requestedImageData = itemRequested.valueForKey("image") as! NSData
-      let itemOfferedTitle = itemOffered.valueForKey("title") as! String
-      let itemRequestedTitle = itemRequested.valueForKey("title") as! String
+      guard
+        let offeredImageData = itemOffered.valueForKey("image") as? NSData,
+        let requestedImageData = itemRequested.valueForKey("image") as? NSData else {
+          print("Error: Issue with image data in ChatTableViewCell")
+          return
+      }
       
+      guard
+        let itemOfferedTitle = itemOffered.valueForKey("title") as? String,
+        let itemRequestedTitle = itemRequested.valueForKey("title") as? String else {
+          print("Error: Issue with item title in ChatTableViewCell")
+          return
+      }
       
       itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
       theirItemNameLabel.text = "\(itemOfferedTitle)"

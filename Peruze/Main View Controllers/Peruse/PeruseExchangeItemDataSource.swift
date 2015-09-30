@@ -82,15 +82,13 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     if indexPath.item < exchangeItems.count {
       let item = exchangeItems[indexPath.item]
       
-      //      guard
-      //      let title = item.valueForKey("title") as? String,
-      //      let imageData = item.valueForKey("image") as? NSData
-      //      else {
-      //        return cell
-      //      }
+      guard
+        let title = item.valueForKey("title") as? String,
+        let imageData = item.valueForKey("image") as? NSData
+        else {
+          return cell
+      }
       
-      let title = item.valueForKey("title") as! String
-      let imageData = item.valueForKey("image") as! NSData
       cell.itemNameLabel.text = title
       cell.imageView.image = UIImage(data: imageData)
     } else if indexPath.item == exchangeItems.count {

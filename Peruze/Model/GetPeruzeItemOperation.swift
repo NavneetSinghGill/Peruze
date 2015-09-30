@@ -24,7 +24,7 @@ class GetPeruzeItemOperation: GroupOperation {
     location: CLLocation?,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
-      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
       self.presentationContext = presentationContext
       var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
       if location == nil {

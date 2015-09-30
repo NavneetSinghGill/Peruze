@@ -132,16 +132,23 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   }
   
   //MARK: - Handling Segues
-  @IBAction func bottomBlurTap(sender: AnyObject) {
-    let bufferSize:CGFloat = 32
-    if sender.state == UIGestureRecognizerState.Ended {
-      if sender.locationInView(bottomBlurView).x >= checkmark.frame.minX - bufferSize {
-        exchangeCompleted()
-      } else if sender.locationInView(bottomBlurView).x <= x.frame.maxX + bufferSize {
-        exchangeCanceled()
-      }
-    }
+  @IBAction func closeTap(sender: UIButton) {
+    exchangeCanceled()
   }
+  @IBAction func checkTap(sender: UIButton) {
+    exchangeCompleted()
+  }
+  
+//  @IBAction func bottomBlurTap(sender: AnyObject) {
+//    let bufferSize:CGFloat = 32
+//    if sender.state == UIGestureRecognizerState.Ended {
+//      if sender.locationInView(bottomBlurView).x >= checkmark.frame.minX - bufferSize {
+//        exchangeCompleted()
+//      } else if sender.locationInView(bottomBlurView).x <= x.frame.maxX + bufferSize {
+//        exchangeCanceled()
+//      }
+//    }
+//  }
   
   private func exchangeCompleted() {
     if !NetworkConnection.connectedToNetwork() {
@@ -153,16 +160,11 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
       
       let owner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject
       
-      /* Swift 2.0
       guard
         let ownerName = owner?.valueForKey("firstName") as? String,
         let itemTitle = itemSelectedForExchange.valueForKey("title") as? String else {
           return
-      } 
-      */
-      
-      let ownerName = owner!.valueForKey("firstName") as! String
-      let itemTitle = itemSelectedForExchange.valueForKey("title") as! String
+      }
       
       let alert = UIAlertView(title: Constants.NoItemAlert.title,
         message: "\(ownerName) is our really good friend! Surely you don't want to offer nothing in return for \(itemTitle).",
@@ -426,6 +428,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     cellPickedUpFromCollectionViewWithIndex(indexPath)
     movePickedUpCellToCircleImage()
+  }
+  func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    //if the touch's location is above the bottom blur view, it should be recognized.
+    let touchY = touch.locationInView(view).y
+    let highestAcceptableY = bottomBlurView.frame.origin.y
+    return touchY <= highestAcceptableY
   }
 }
 

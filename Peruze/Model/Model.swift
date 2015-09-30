@@ -58,13 +58,13 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
   }
   
+  let opQueue = OperationQueue()
   func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
     //In most cases, we want to get the location
     let getLocationOp = LocationOperation(accuracy: locationAccuracy) { (location) -> Void in
       self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
     }
-    OperationQueue().addOperation(getLocationOp)
-    
+    opQueue.addOperation(getLocationOp)
   }
   //helper function for above function
   private func performItemOperationWithLocation(location: CLLocation?, presentationContext: UIViewController, completion: (Void -> Void)) {
@@ -76,7 +76,7 @@ class Model: NSObject, CLLocationManagerDelegate {
       database: self.publicDB
     )
     getItems.completionBlock = completion
-    OperationQueue().addOperation(getItems)
+    opQueue.addOperation(getItems)
   }
   
   //MARK: - Profile Setup

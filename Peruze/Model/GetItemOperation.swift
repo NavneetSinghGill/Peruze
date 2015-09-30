@@ -11,6 +11,7 @@ import CloudKit
 import CoreData
 
 private let logging = true
+private let resultsLimit = 3 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float
@@ -21,7 +22,7 @@ class GetItemInRangeOperation: GetItemOperation {
     cursor: CKQueryCursor?,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
       
       self.range = range
       self.location = location
@@ -33,7 +34,7 @@ class GetItemInRangeOperation: GetItemOperation {
   }
   
   override func getPredicate() -> NSPredicate {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //create predicates
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -62,24 +63,23 @@ class GetItemOperation: Operation {
   init(cursor: CKQueryCursor? = nil,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-      if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
       self.cursor = cursor
       self.database = database
       self.context = context
       super.init()
   }
   override func finished(errors: [NSError]) {
-    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     if errors.first != nil {
       print(errors.first)
     }
   }
   
   override func execute() {
-    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //create operation for fetching relevant records
-    var resultsLimit = 20
     var getItemsOperation: CKQueryOperation
     if cursor == nil {
       let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate())
@@ -89,7 +89,7 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-      if logging { print("getItemsOperation.recordFetchedBlock\n") }
+      if logging { print("getItemsOperation.recordFetchedBlock ") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
@@ -133,7 +133,7 @@ class GetItemOperation: Operation {
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
       if let error = error {
-        print("Get Uploads Finished With Error: \(error)\n")
+        print("Get Uploads Finished With Error: \(error) ")
         self.finishWithError(error)
       } else {
         self.cursor = cursor
@@ -160,7 +160,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     self.database = database
     self.context = context
@@ -168,7 +168,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     print("execute item fetch")
     

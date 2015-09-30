@@ -59,15 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   //MARK: - Push Notifications
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-    print("app did receive remote notification\n")
+    print("app did receive remote notification ")
     let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
     if let _ = cloudKitNotification as? CKQueryNotification {
-      print("app did receive remote notification\n")
+      print("app did receive remote notification ")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
     }
   }
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("app did register for remote notification\n")
+    print("app did register for remote notification ")
   }
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print(error.localizedDescription)

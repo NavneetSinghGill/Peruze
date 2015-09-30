@@ -36,7 +36,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   ///resulting array of image URLs
   var imageURLs = [NSURL]()
   override func main() {
-    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     if cancelled { finish(); return }
     //create the request from above graph path
@@ -54,7 +54,7 @@ class DownloadProfilePhotoURLs: AsyncOperation {
   }
   
   private func parseImageURLsFromResult(result: AnyObject) -> [NSURL] {
-    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadProfilePhotoURLs " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     
     var returnURLs = [NSURL]()
@@ -115,7 +115,7 @@ class DownloadImagesForURLs: AsyncOperation {
   var images = [UIImage]()
   
   override func main() {
-    if logging { print("DownloadImagesForURLs " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("DownloadImagesForURLs " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     
     
@@ -166,7 +166,7 @@ class FetchFacebookUserProfile: Operation {
   let presentationContext: UIViewController
   
   init(presentationContext: UIViewController, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     self.presentationContext = presentationContext
     self.context = context
@@ -176,7 +176,7 @@ class FetchFacebookUserProfile: Operation {
   
   override func execute() {
     
-    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("FetchFacebookUserProfile " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
     dispatch_async(dispatch_get_main_queue(), {
@@ -201,10 +201,10 @@ class FetchFacebookUserProfile: Operation {
     })
   }
   override func finished(errors: [NSError]) {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     if errors.first != nil {
-      if logging { print("\n There was an error in " + __FILE__ + " \n") }
+      if logging { print("  There was an error in " + __FILE__ + "  ") }
       let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Error Accessing Facebook"
       alert.message = "There was a problem accessing your general facebook information."
@@ -222,7 +222,7 @@ class FetchFacebookFriends: AsyncOperation {
   var facebookIDs = [String]()
   
   override func main() {
-    if logging { print("FetchFacebookFriends " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("FetchFacebookFriends " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     let request = FBSDKGraphRequest(graphPath:Constants.ProfilePath, parameters: nil, HTTPMethod:"GET")
@@ -248,7 +248,7 @@ class FetchFacebookFriends: AsyncOperation {
   }
   
   private func recursivelyPageDataFromURL(url: NSURL) {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let getDataTask = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (resultData, resultResponse, resultError) -> Void in
       var jsonError: NSError?
@@ -284,7 +284,7 @@ class FetchFacebookFriends: AsyncOperation {
   }
   
   private func facebookIDsFromArray(array: [[String: AnyObject]]?) -> [String] {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     if array == nil { return [] }
     var returnArray = [String]()

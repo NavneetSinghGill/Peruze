@@ -132,7 +132,7 @@ class GetExchangesOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(" " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //make sure the predicate is valid
     if getPredicate() == NSPredicate(value: false) {
