@@ -122,13 +122,13 @@ class GetAllPersonsWithMissingData: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     self.database = database
     self.context = context
     super.init()
   }
   override func execute() {
-    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
@@ -209,9 +209,9 @@ class GetAllPersonsWithMissingData: Operation {
 
   override func finished(errors: [NSError]) {
     if errors.count != 0 {
-      print("GetAllPersonsWithMissingData finished with an error\n")
+      print("GetAllPersonsWithMissingData finished with an error ")
     } else {
-      print("GetAllPersonsWithMissingData finished \n")
+      print("GetAllPersonsWithMissingData finished  ")
     }
   }
 }

@@ -46,6 +46,7 @@ class InitialViewController: UIViewController {
   }
   
   //MARK: - Segues
+  let opQueue = OperationQueue()
   func segueToCorrectVC() {
     if !NetworkConnection.connectedToNetwork() {
       let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock() { [unowned self] Void in
@@ -75,7 +76,7 @@ class InitialViewController: UIViewController {
           self.setupAndSegueToTabBarVC()
         }
       }
-      OperationQueue().addOperation(getMyProfileOp)
+      opQueue.addOperation(getMyProfileOp)
     }
   }
   

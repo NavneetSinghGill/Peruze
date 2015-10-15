@@ -73,6 +73,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       selector: "receivedNotification:",
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
+    
+    Model.sharedInstance().getPeruzeItems(self, completion: {
+      self.dataSource.performFetchWithPresentationContext(self)
+      print("GetPeruzeItems completed!")
+      dispatch_async(dispatch_get_main_queue()) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+      }
+    })
+    
   }
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
@@ -80,16 +89,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     let insertedObjects: AnyObject? = notification.userInfo?[NSInsertedObjectsKey]
     
     if updatedObjects != nil {
-      print("- - - - - updated objects - - - - -\n")
-      print("\(updatedObjects!)\n" )
+      print("- - - - - updated objects - - - - - ")
+      print("\(updatedObjects!) " )
     }
     if deletedObjects != nil {
-      print("- - - - - deleted objects - - - - -\n")
-      print("\(deletedObjects)\n")
+      print("- - - - - deleted objects - - - - - ")
+      print("\(deletedObjects) ")
     }
     if insertedObjects != nil {
-      print("- - - - - inserted objects - - - - -\n")
-      print("\(insertedObjects)\n")
+      print("- - - - - inserted objects - - - - - ")
+      print("\(insertedObjects) ")
     }
   }
   //store top and bottom for when navigation controller is animating pop and is nil
@@ -139,7 +148,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   func itemFavorited(item: NSManagedObject, favorite: Bool) {
     //favorite data
-    print("item started favorite!\n")
+    print("item started favorite! ")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
     let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
     favoriteOp.completionBlock = {

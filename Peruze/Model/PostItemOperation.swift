@@ -29,7 +29,7 @@ class PostItemOperation: GroupOperation {
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     completionHandler: (Void -> Void) = { },
     errorCompletionHandler: (Void -> Void) = { }) {
-      if logging { print("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+      if logging { print("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       
       //create the record if it doesn't exist
       let itemImageData = UIImagePNGRepresentation(image)
@@ -55,7 +55,7 @@ class PostItemOperation: GroupOperation {
       //ask the user for location permissio
       let locCondition = LocationCondition(usage: LocationCondition.Usage.WhenInUse)
       let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy) { (location) -> Void in
-        print("getLocationOp handler - - - - - - - \n")
+        print("getLocationOp handler - - - - - - -  ")
         //save latitude and longitude to item and self
         let objectID = item.valueForKey("objectID") as! NSManagedObjectID
         do {
@@ -102,13 +102,16 @@ class PostItemOperation: GroupOperation {
       
       var operationsToInit = [Operation]()
       locCondition.evaluateForOperation(getLocationOp) { (result: OperationConditionResult) -> Void in
-        if result.error != nil {
+        switch result {
+        case .Satisfied :
+          operationsToInit = [ getLocationOp, saveItemOp, uploadItemOp, finishOp]
+          break
+        case .Failed(let error) :
+          print(error)
           let finishWithErrorOp = BlockOperation(block: { (continueWithError) -> Void in
             errorCompletionHandler()
           })
           operationsToInit = [presentNoLocOperation, finishWithErrorOp]
-        } else {
-          operationsToInit = [getLocationOp, saveItemOp, uploadItemOp, finishOp]
         }
       }
       
@@ -150,7 +153,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
     image: NSData?,
     objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-      if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+      if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       self.title = title
       self.detail = detail
       self.image = image
@@ -160,7 +163,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+    if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -177,9 +180,16 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       print(error)
     }
     
+    print("Saving Item to Persistent Store and Waiting...")
     context.MR_saveToPersistentStoreAndWait()
     finish()
-    
+  }
+  override func finished(errors: [NSError]) {
+    if let firstError = errors.first {
+      print("SaveItemInfoToLocalStorageOperation finished with an error: \(firstError)")
+    } else {
+      print("SaveItemInfoToLocalStorageOperation finished successfully")
+    }
   }
 }
 
@@ -190,7 +200,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   let objectID: NSManagedObjectID
   
   init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     self.database = database
     self.context = context
     self.objectID = objectID
@@ -199,7 +209,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ".\n") }
+    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     

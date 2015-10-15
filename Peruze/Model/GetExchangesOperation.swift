@@ -132,7 +132,7 @@ class GetExchangesOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("\n" + __FUNCTION__ + " of " + __FILE__ + " called. \n") }
+    if logging { print(" " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //make sure the predicate is valid
     if getPredicate() == NSPredicate(value: false) {
@@ -175,7 +175,7 @@ class GetExchangesOperation: Operation {
       }
       
       //set date
-      if let newDate = record.objectForKey("ExchangeDate") as? NSDate {
+      if let newDate = record.objectForKey("DateExchanged") as? NSDate {
         let date = localExchange.valueForKey("date") as? NSDate
         localExchange.setValue((date ?? newDate), forKey: "date")
       }

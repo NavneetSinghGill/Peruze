@@ -66,7 +66,7 @@ class PostFavoriteOperation: Operation {
     }
     
     if allReferences.count == 0 {
-      print("Error: All references were 0\n")
+      print("Error: All references were 0 ")
       finish()
       return
     }
@@ -79,14 +79,14 @@ class PostFavoriteOperation: Operation {
     saveMeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveMeOp.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, operationError) -> Void in
       if operationError != nil {
-        print("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError)\n")
+        print("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError) ")
         self.finish()
         return
       }
       
-      print("\n \n \n  Here is my saved records \n \n \n")
+      print("       Here is my saved records      ")
       print(savedRecords?.first?.valueForKey("FavoriteItems"))
-      print("\n \n \n")
+      print("     ")
       if let mySavedRecordFavorites = savedRecords?.first?.valueForKey("FavoriteItems") as? NSSet {
         if let savedRecordArray = mySavedRecordFavorites.allObjects as? [CKReference] {
           let itemsFromRecordIDs = savedRecordArray.map {
@@ -94,7 +94,7 @@ class PostFavoriteOperation: Operation {
           }
           myPerson.setValue( NSSet(array: itemsFromRecordIDs), forKey: "favorites")
         } else {
-          print("mySavedRecords is not a [CKReference] \n")
+          print("mySavedRecords is not a [CKReference]  ")
         }
       } else {
         print("mySavedRecord is not an NSSet")

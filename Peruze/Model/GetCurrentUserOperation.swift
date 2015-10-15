@@ -85,63 +85,6 @@ class GetCurrentUserOperation: Operation {
       self.finish()
     }
     
-//    fetchUser.fetchRecordsCompletionBlock = { (recordsByID: [NSObject: AnyObject]!, error: NSError!) -> Void in
-//      
-//      //make sure there were no errors
-//      if error != nil {
-//        print("GetCurrentUserOperation failed with error:")
-//        print(error)
-//        self.finish(CurrentUserOperationError.CloudKitError(error))
-//        return
-//      }
-//      
-//      //make sure there were records
-//      if recordsByID == nil {
-//        self.finish(GenericError.ExecutionFailed)
-//        return
-//      }
-//      
-//      //save the records to the local DB
-//      let recordID = recordsByID!.keys.array.first as! CKRecordID
-//      let person = Person.MR_findFirstOrCreateByAttribute("me",
-//        withValue: true,
-//        inContext: self.context)
-//      
-//      
-//      //set the returned properties
-//      let recordIDName = recordID.recordName
-//      let firstName  = (recordsByID![recordID]!.objectForKey("FirstName")  as? String)
-//      let lastName   = (recordsByID![recordID]!.objectForKey("LastName")   as? String)
-//      let facebookID = (recordsByID![recordID]!.objectForKey("FacebookID") as? String)
-//      
-//      person.setValue(recordIDName, forKey: "recordIDName")
-//      person.setValue(firstName, forKey: "firstName")
-//      person.setValue(lastName, forKey: "lastName")
-//      person.setValue(facebookID, forKey: "facebookID")
-//      
-//      //check for image property and set the data
-//      if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-//        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-//        person.setValue(imageData, forKey: "image")
-//      }
-//      
-//      
-//      //check for favorites
-//      if let favoriteReferences = recordsByID?[recordID]?.objectForKey("FavoriteItems") as? [CKReference] {
-//        let favorites = favoriteReferences.map {
-//          Item.MR_findFirstOrCreateByAttribute("recordIDName",
-//            withValue: $0.recordID.recordName , inContext: self.context)
-//        }
-//        let favoritesSet = NSSet(array: favorites)
-//        person.setValue(favoritesSet, forKey: "favorites")
-//      }
-//      
-//      //save the context
-//      self.context.MR_saveToPersistentStoreAndWait()
-//      self.finish()
-//    }
-    
-    
     //add operation to the cloud kit database
     fetchUser.qualityOfService = qualityOfService
     database.addOperation(fetchUser)

@@ -162,7 +162,6 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
       beginUpload()
       print("OperationQueue().addOperation(PostItemOperation)")
       let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
-      CLLocationManager.locationServicesEnabled()
       OperationQueue().addOperation(
         PostItemOperation(
           image: mainImageView.image!,

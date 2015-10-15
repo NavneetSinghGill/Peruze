@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   private struct Constants {
@@ -30,10 +31,22 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
+    titleLabel.alpha = 0
   }
-
+  
+  let opQueue = OperationQueue()
   func refresh() {
-    refreshControl.endRefreshing()
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let reviewOp = GetReviewsOperation(recordID: CKRecordID(recordName: me.recordIDName!))
+    reviewOp.completionBlock = {
+      dispatch_async(dispatch_get_main_queue()) {
+        self.refreshControl.endRefreshing()
+        if self.tableView.numberOfRowsInSection(0) == 0 {
+          self.titleLabel.alpha = 1
+        }
+      }
+    }
+    opQueue.addOperation(reviewOp)
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

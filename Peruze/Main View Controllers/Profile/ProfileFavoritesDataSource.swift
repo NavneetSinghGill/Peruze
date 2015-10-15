@@ -28,10 +28,10 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
         self.favorites = favoriteObjs
       } else {
-        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject]\n")
+        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject] ")
       }
     } else {
-      print("me.valueForKey('favorites') was not an NSSet\n")
+      print("me.valueForKey('favorites') was not an NSSet ")
     }
   }
   //MARK: - UITableViewDataSource methods

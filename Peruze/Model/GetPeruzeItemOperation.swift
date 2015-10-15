@@ -24,7 +24,7 @@ class GetPeruzeItemOperation: GroupOperation {
     location: CLLocation?,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
-      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called. \n") }
+      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
       self.presentationContext = presentationContext
       var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
       if location == nil {
@@ -45,7 +45,8 @@ class GetPeruzeItemOperation: GroupOperation {
   override func finished(errors: [NSError]) {
     cursor = getItems.cursor
     getItems.cursor = nil
-    if errors.first != nil {
+    if let error = errors.first {
+      print(error)
       let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oops!"
       alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."

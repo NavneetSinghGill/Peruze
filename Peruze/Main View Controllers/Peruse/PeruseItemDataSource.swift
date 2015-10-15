@@ -88,7 +88,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
       self.favorites = favorites.map { $0.valueForKey("recordIDName") as! String }
     } else {
-      print("me.valueForKey('favorites') was not an NSSet\n")
+      print("me.valueForKey('favorites') was not an NSSet ")
     }
   }
   
@@ -130,48 +130,48 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       itemChanges.append(change)
   }
   
-  //  func controllerDidChangeContent(controller: NSFetchedResultsController) {
-  //    collectionView.performBatchUpdates({
-  //      //section changes
-  //      for change in self.sectionChanges {
-  //        for key in change.keys.array {
-  //          switch key {
-  //          case .Insert :
-  //            let indexSet = NSIndexSet(index: change[key]!)
-  //            self.collectionView.insertSections(indexSet)
-  //            break
-  //          case .Delete :
-  //            let indexSet = NSIndexSet(index: change[key]!)
-  //            self.collectionView.deleteSections(indexSet)
-  //            break
-  //          default :
-  //            break
-  //          }
-  //        }
-  //      }
-  //      //item changes
-  //      for change in self.itemChanges {
-  //        for key in change.keys.array {
-  //          switch key {
-  //          case .Insert :
-  //            self.collectionView.insertItemsAtIndexPaths([change[key]!])
-  //            break
-  //          case .Delete :
-  //            self.collectionView.deleteItemsAtIndexPaths([change[key]!])
-  //            break
-  //          case .Update :
-  //            self.collectionView.reloadItemsAtIndexPaths([change[key]!])
-  //            break
-  //          case .Move :
-  //            let fromIndex = (change[key]! as! [NSIndexPath]).first!
-  //            let toIndex = (change[key]! as! [NSIndexPath]).last!
-  //            self.collectionView.moveItemAtIndexPath(fromIndex, toIndexPath: toIndex)
-  //            break
-  //          }
-  //        }
-  //      }
-  //      }, completion: nil)
-  //  }
+//  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+//    collectionView.performBatchUpdates({
+//      //section changes
+//      for change in self.sectionChanges {
+//        for key in change.keys {
+//          switch key {
+//          case .Insert :
+//            let indexSet = NSIndexSet(index: change[key]!)
+//            self.collectionView.insertSections(indexSet)
+//            break
+//          case .Delete :
+//            let indexSet = NSIndexSet(index: change[key]!)
+//            self.collectionView.deleteSections(indexSet)
+//            break
+//          default :
+//            break
+//          }
+//        }
+//      }
+//      //item changes
+//      for change in self.itemChanges {
+//        for key in change.keys {
+//          switch key {
+//          case .Insert :
+//            self.collectionView.insertItemsAtIndexPaths([change[key] as! NSIndexPath])
+//            break
+//          case .Delete :
+//            self.collectionView.deleteItemsAtIndexPaths([change[key] as! NSIndexPath])
+//            break
+//          case .Update :
+//            self.collectionView.reloadItemsAtIndexPaths([change[key] as! NSIndexPath])
+//            break
+//          case .Move :
+//            let fromIndex = (change[key]! as! [NSIndexPath]).first!
+//            let toIndex = (change[key]! as! [NSIndexPath]).last!
+//            self.collectionView.moveItemAtIndexPath(fromIndex, toIndexPath: toIndex)
+//            break
+//          }
+//        }
+//      }
+//      }, completion: nil)
+//  }
   
   //MARK: - UICollectionView Delegate Methods
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
