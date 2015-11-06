@@ -156,11 +156,12 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //saves the user's image to the local database
     let saveImageOp = NSBlockOperation {
-      if logging { print("saveImageOp called.  ") }
-      let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-      let imageData = UIImagePNGRepresentation(self.center.image!)
-      me.setValue(imageData, forKey: "image")
-      managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        if logging { print("saveImageOp called.  ") }
+        if let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext) {
+            let imageData = UIImagePNGRepresentation(self.center.image!)
+            me.setValue(imageData, forKey: "image")
+            managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        }
     }
     saveImageOp.completionBlock = {
       print("saveImageOp.completionBlock ")

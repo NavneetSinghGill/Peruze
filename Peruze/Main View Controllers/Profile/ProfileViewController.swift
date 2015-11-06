@@ -62,8 +62,10 @@ class ProfileViewController: UIViewController {
       personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
     }
     //setup the known information about the person
-    profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
-    profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
+    if (personForProfile?.valueForKey("image") as? NSData != nil) {
+        profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
+        profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
+    }
     //TODO: set #ofStars
     
     //get the updated information for the profile
@@ -95,12 +97,25 @@ class ProfileViewController: UIViewController {
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     starView.backgroundColor = .clearColor()
     starView.numberOfStars = 0
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileUpdate:", name: "profileUpdate", object: nil)
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     containerSpinner.frame = containerView.frame
   }
-  
+    func profileUpdate(noti:NSNotification){
+        let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+        let userInfo:NSDictionary = noti.userInfo!
+        let updatedProfileImage = (userInfo.valueForKey("circleImage") as? CircleImage)!
+        let imageData = UIImagePNGRepresentation(updatedProfileImage.image!)
+        me!.setValue(imageData, forKey: "image")
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        let op = PostUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
+        OperationQueue().addOperation(op)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.profileImageView.image = UIImage(data: me!.valueForKey("image") as! NSData)
+        }
+    }
   //MARK: - Handling Tab Segues
   @IBAction func uploadsTapped(sender: AnyObject) {
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)

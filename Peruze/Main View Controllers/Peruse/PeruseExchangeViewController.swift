@@ -173,7 +173,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
       alert.show()
     } else {
       self.dismissViewControllerAnimated(true) {
-        delegate?.itemChosenToExchange = itemInCircleView
+        self.delegate?.itemChosenToExchange = self.itemInCircleView
       }
     }
   }

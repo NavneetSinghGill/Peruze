@@ -18,7 +18,7 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
         static let PageItemVCIdentifier = "OnboardPageItemViewController"
         static let ProfileSetupSegueIdentifier = "showSelectProfilePhoto"
         
-        static let FacebookPermissions = ["public_profile","user_photos"]
+        static let FacebookPermissions = ["public_profile","user_photos","user_friends"]
         
         static let contentImages: [String?] = ["Onboard_Upload_Cloud", nil, nil];
         static let movies: [String?] = [nil, "Onboard_Peruse", "Onboard_Exchange"]

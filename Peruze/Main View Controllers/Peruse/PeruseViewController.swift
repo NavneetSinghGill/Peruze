@@ -100,6 +100,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       print("- - - - - inserted objects - - - - - ")
       print("\(insertedObjects) ")
     }
+    dispatch_async(dispatch_get_main_queue()) {
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
+    }
   }
   //store top and bottom for when navigation controller is animating pop and is nil
   private var storedTop: CGFloat = 0

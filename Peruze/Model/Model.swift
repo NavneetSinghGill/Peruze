@@ -35,6 +35,7 @@ struct RecordTypes {
   static let Review = "Review"
   static let User = "Users"
   static let Message = "Message"
+    static let Friends = "Friends"
 }
 class Model: NSObject, CLLocationManagerDelegate {
   private let publicDB = CKContainer.defaultContainer().publicCloudDatabase

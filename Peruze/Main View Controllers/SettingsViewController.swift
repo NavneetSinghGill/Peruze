@@ -58,7 +58,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       setupImageViews()
     }
   }
-  private var loadingCircle: LoadingCircleView?
+    private var initialCircleImage: CircleImage!
+    private var selectedCircleImage: CircleImage!
+    private var profilePicDidChange: Bool!
+    private var loadingCircle: LoadingCircleView?
   
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
@@ -88,6 +91,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     //version
     let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
     versionLabel.text = "Version " + version
+    if initialCircleImage == nil{
+        initialCircleImage = upperLeft
+        selectedCircleImage = upperLeft
+    }
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -174,12 +181,23 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   private func tap(selectedImage: CircleImage) {
     for obj in [upperLeft, upperRight, lowerRight, lowerLeft] { obj.selected = false }
     selectedImage.selected = true
+    profilePicUpdate(selectedImage)
   }
-  
+    func profilePicUpdate(selectedImage: CircleImage){
+        if  initialCircleImage.image != selectedImage.image{
+            selectedCircleImage = selectedImage
+            profilePicDidChange = true
+            return
+        }
+        profilePicDidChange = false
+    }
   //MARK: - Handling Buttons
   @IBAction func logOutOfFacebook(sender: UIButton) {
     FBSDKAccessToken.setCurrentAccessToken(nil)
-    dismissViewControllerAnimated(true, completion: nil)
+    let loginManager = FBSDKLoginManager()
+    loginManager.logOut()
+    dismissViewControllerAnimated(false, completion: nil)
+    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))
   }
   
   @IBAction func deleteProfile(sender: UIButton) {
@@ -196,6 +214,12 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     } else {
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
+        NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
+        if profilePicDidChange == true {
+            //Update profile Pic
+            let dict:[String:AnyObject] = ["circleImage":selectedCircleImage]
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "profileUpdate", object: nil, userInfo: dict))
+        }
       dismissViewControllerAnimated(true) {
         //Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         //TODO: Pass edited data back to dataSource

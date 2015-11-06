@@ -110,7 +110,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
       database: CKContainer.defaultContainer().publicCloudDatabase,
       context: managedConcurrentObjectContext) {
         //do something
-        delegate?.collectionView?.reloadData()
+        self.delegate?.collectionView?.reloadData()
     }
     OperationQueue().addOperation(postMessageOp)
   }

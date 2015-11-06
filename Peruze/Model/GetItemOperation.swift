@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 private let logging = true
-private let resultsLimit = 10 //the limit for the results from the server. The lower this is, the faster the speed :)
+private let resultsLimit = 100 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float
@@ -84,7 +84,7 @@ class GetItemOperation: Operation {
     if let cursor = cursor {
       getItemsOperation = CKQueryOperation(cursor: cursor)
     } else {
-      let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: NSPredicate(value: true)/* getPredicate()*/)
+      let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate()/* NSPredicate(value: true)*/)
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     

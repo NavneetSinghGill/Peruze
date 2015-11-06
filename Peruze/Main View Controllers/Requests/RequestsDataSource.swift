@@ -23,6 +23,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   override init() {
     super.init()
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    //POPUP iCloud
     let myRecordID = myPerson.valueForKey("recordIDName") as! String
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))

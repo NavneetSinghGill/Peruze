@@ -39,16 +39,18 @@ class PostUserOperation: Operation {
     
     let firstName = myPerson.valueForKey("firstName") as! String
     let lastName = myPerson.valueForKey("lastName") as! String
-    let imageData = myPerson.valueForKey("image") as! NSData
+
     let facebookID = myPerson.valueForKey("facebookID") as! String
     
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
-    if !imageData.writeToURL(imageURL, atomically: true) {
-      print("imageData.writeToURL failed to write")
-      self.finish()
-      return
+    if let imageData : NSData = myPerson.valueForKey("image") as? NSData {
+        if !imageData.writeToURL(imageURL, atomically: true) {
+            print("imageData.writeToURL failed to write")
+            self.finish()
+            return
+        }
     }
     
     let imageAsset = CKAsset(fileURL: imageURL)
@@ -150,8 +152,8 @@ class PostUserOperation: Operation {
     
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
     let cachePath = paths.first!
-    let cacheURLString = NSURL(string: cachePath)?.URLByAppendingPathComponent(name) as! String
-    return cacheURLString
+    let cacheURL : NSURL = (NSURL(string: cachePath)?.URLByAppendingPathComponent(name))!
+    return (cacheURL.absoluteString)
   }
   
 }

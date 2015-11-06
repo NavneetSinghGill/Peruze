@@ -56,7 +56,7 @@ NSMutableDictionary *optionDictionary;
 + (instancetype)cameraWithFlashButton:(UIButton *)flashButton
 {
     TGCamera *camera = [TGCamera newCamera];
-    [camera setupWithFlashButton:flashButton];
+//    [camera setupWithFlashButton:flashButton];
     
     return camera;
 }

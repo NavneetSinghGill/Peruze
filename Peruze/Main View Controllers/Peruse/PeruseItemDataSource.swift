@@ -53,8 +53,11 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     } catch {
       print(error)
     }
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
   }
-  
+    func reloadCollectionView(){
+        self.collectionView.reloadData()
+    }
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")

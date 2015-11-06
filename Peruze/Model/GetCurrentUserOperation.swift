@@ -18,12 +18,14 @@ class GetCurrentUserOperation: Operation {
   private let context: NSManagedObjectContext
   private let database: CKDatabase
   private let presentationContext: UIViewController
+  internal var finishedBlock : (error :[NSError]) -> (Void)
   
   init(presentationContext: UIViewController, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     
     self.presentationContext = presentationContext
     self.database = database
     self.context = context
+    self.finishedBlock = { error in }
     super.init()
     
     addObserver(NetworkObserver())
@@ -31,7 +33,7 @@ class GetCurrentUserOperation: Operation {
   
   override func execute() {
     
-    print("execute of Get Current User Operation")
+    print("Execute of Get Current User from iCloud Operation")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     fetchUser.perRecordCompletionBlock = { (record, recordID, error) -> Void in
       
@@ -58,6 +60,19 @@ class GetCurrentUserOperation: Operation {
       let firstName  = (record.objectForKey("FirstName")  as? String)
       let lastName   = (record.objectForKey("LastName")   as? String)
       let facebookID = (record.objectForKey("FacebookID") as? String)
+        
+        
+        if (person?.valueForKey("FacebookID") as? String) != facebookID {
+            person.facebookID = nil
+            person.firstName = nil
+            person.lastName = nil
+            person.image = nil
+            self.context.MR_saveToPersistentStoreAndWait()
+            self.finish()
+            return
+        }
+        
+        
 
       person.setValue(recordID!.recordName, forKey: "recordIDName")
       person.setValue(firstName, forKey: "firstName")
@@ -82,6 +97,8 @@ class GetCurrentUserOperation: Operation {
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
+    
+        
       self.finish()
     }
     
@@ -94,15 +111,25 @@ class GetCurrentUserOperation: Operation {
     let alert = AlertOperation(presentationContext: presentationContext)
     alert.title = "iCloud Error"
     
-    if let firstError = errors.first as? CurrentUserOperationError {
-      switch firstError {
-      case .CloudKitError(let error) :
-        alert.message = "Getting your information with the server failed with the following error: " + error.localizedDescription
+    
+    if let firstError = errors.first {
+        let errorCode : CKErrorCode = CKErrorCode(rawValue: firstError.code)!
+      switch errorCode {
+      case .NotAuthenticated :
+        alert.message = "There was an error getting your user from iCloud. Make sure you're logged into iCloud in Settings and iCloud Drive is turned on for Peruze."
+        break
+      default:
+        alert.message = "Getting your information with the server failed with the following error: " + firstError.localizedDescription
         break
       }
-    } else {
-      alert.message = "There was an error getting your user from iCloud. Make sure you're logged into iCloud in Settings and iCloud Drive is turned on for Peruze."
+        alert.addCompletionBlock({Void in
+            self.finishedBlock(error: errors)
+        })
+        produceOperation(alert)
     }
-    produceOperation(alert)
+//    else {
+//      alert.message = "There was an error getting your user from iCloud. Make sure you're logged into iCloud in Settings and iCloud Drive is turned on for Peruze."
+//    }
+    
   }
 }
