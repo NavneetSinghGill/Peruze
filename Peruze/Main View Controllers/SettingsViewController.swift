@@ -58,7 +58,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       setupImageViews()
     }
   }
-    private var initialCircleImage: CircleImage!
     private var selectedCircleImage: CircleImage!
     private var profilePicDidChange: Bool!
     private var loadingCircle: LoadingCircleView?
@@ -91,8 +90,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     //version
     let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
     versionLabel.text = "Version " + version
-    if initialCircleImage == nil{
-        initialCircleImage = upperLeft
+    if selectedCircleImage == nil{
         selectedCircleImage = upperLeft
     }
   }
@@ -184,12 +182,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     profilePicUpdate(selectedImage)
   }
     func profilePicUpdate(selectedImage: CircleImage){
-        if  initialCircleImage.image != selectedImage.image{
             selectedCircleImage = selectedImage
-            profilePicDidChange = true
-            return
-        }
-        profilePicDidChange = false
     }
   //MARK: - Handling Buttons
   @IBAction func logOutOfFacebook(sender: UIButton) {
@@ -215,11 +208,9 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
         NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
-        if profilePicDidChange == true {
             //Update profile Pic
             let dict:[String:AnyObject] = ["circleImage":selectedCircleImage]
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "profileUpdate", object: nil, userInfo: dict))
-        }
       dismissViewControllerAnimated(true) {
         //Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         //TODO: Pass edited data back to dataSource
