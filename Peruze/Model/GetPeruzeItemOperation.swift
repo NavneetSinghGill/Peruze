@@ -40,13 +40,13 @@ class GetPeruzeItemOperation: GroupOperation {
         }
       getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
-//      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
+      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
       
       //add dependencies
-//      fillMissingPeopleData.addDependency(fillMissingItemData)
+      fillMissingPeopleData.addDependency(fillMissingItemData)
       fillMissingItemData.addDependency(getItems)
       
-      super.init(operations: [getItems])//, fillMissingItemData, fillMissingPeopleData])
+      super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
     }
   override func finished(errors: [NSError]) {
     if (getItems.cursor != nil){

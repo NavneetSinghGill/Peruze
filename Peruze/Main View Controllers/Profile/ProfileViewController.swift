@@ -67,6 +67,7 @@ class ProfileViewController: UIViewController {
     if (personForProfile?.valueForKey("image") as? NSData != nil) {
         profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
         profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
+        updateViewAfterGettingResponse()
     }
     //TODO: set #ofStars
     
@@ -85,6 +86,7 @@ class ProfileViewController: UIViewController {
           UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
 //            self.updateChildViewControllers()
           })
+            self.updateViewAfterGettingResponse()
         })
     })
     OperationQueue().addOperation(completePerson)
@@ -176,4 +178,10 @@ class ProfileViewController: UIViewController {
       }
     }
   }
+    
+    func updateViewAfterGettingResponse() {
+        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
+        numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
+        numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+    }
 }

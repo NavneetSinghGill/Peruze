@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 private let logging = true
-private let resultsLimit = 9 //the limit for the results from the server. The lower this is, the faster the speed :)
+private var resultsLimit = 20 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float
@@ -67,6 +67,7 @@ class GetItemOperation: Operation {
       self.cursor = cursor
       self.database = database
       self.context = context
+        resultsLimit = 100
       super.init()
   }
   override func finished(errors: [NSError]) {
@@ -77,7 +78,7 @@ class GetItemOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { print("\(NSDate()) \nExecute GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //create operation for fetching relevant records
     var getItemsOperation: CKQueryOperation
@@ -89,7 +90,7 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-      if logging { print("getItemsOperation.recordFetchedBlock ") }
+      if logging { print("\(NSDate()) \nGetItemsOperation.recordFetchedBlock \n \(record)") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)

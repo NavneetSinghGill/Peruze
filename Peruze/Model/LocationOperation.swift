@@ -29,7 +29,7 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
     self.handler = locationHandler
     super.init()
     print("LocationOperation Initialized.")
-    addCondition(LocationCondition(usage: .WhenInUse))
+    addCondition(LocationCondition(usage: .Always))
     addCondition(MutuallyExclusive<CLLocationManager>())
   }
   

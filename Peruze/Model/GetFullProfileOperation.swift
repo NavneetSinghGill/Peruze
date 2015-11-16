@@ -55,7 +55,7 @@ class GetFullProfileOperation: GroupOperation {
       }
     fetchUploadsOperation = GetUploadsOperation(recordID: personRecordID, database: database, context: context)
       fetchUploadsOperation.completionBlock = {
-        print("Finished fetchUploadsOperation")
+        print("\n \(NSDate()) \nFinished fetchUploadsOperation")
         let recordId : String = personRecordID.recordName
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonUploads", object: recordId, userInfo: nil))
       }

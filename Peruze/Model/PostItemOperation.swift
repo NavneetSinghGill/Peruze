@@ -251,8 +251,8 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         finish()
         return
       }
-      let deleteRecordOp = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [CKRecordID(recordName: recordIDName!)])
-        deleteRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in}
+//      let deleteRecordOp = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [CKRecordID(recordName: recordIDName!)])
+//        deleteRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in}
         
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
       saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in

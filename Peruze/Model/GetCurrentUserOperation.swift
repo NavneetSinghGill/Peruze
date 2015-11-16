@@ -33,10 +33,10 @@ class GetCurrentUserOperation: Operation {
   
   override func execute() {
     
-    print("Execute of Get Current User from iCloud Operation")
+    print("\(NSDate())\nExecute of Get Current User from iCloud Operation\n")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     fetchUser.perRecordCompletionBlock = { (record, recordID, error) -> Void in
-      
+      print("\(NSDate())Fetched Current User from iCloud Operation \(record)")
       //make sure there were no errors
       if let error = error {
         print("GetCurrentUserOperation failed with error:")
