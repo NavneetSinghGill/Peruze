@@ -31,6 +31,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.reloadData()
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
@@ -66,4 +67,13 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     }
     return [defaultAction]
   }
+    
+    
+    //MARK: Reloading view on fetch data from server
+    func reloadFetchedData (notification : NSNotification) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.dataSource.personRecordID = notification.object as! String;
+            
+        })
+    }
 }

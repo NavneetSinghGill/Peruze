@@ -28,6 +28,7 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
@@ -35,4 +36,9 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
   func refresh() {
     refreshControl.endRefreshing()
   }
+    
+    //MARK: Reloading view on fetch data from server
+    func reloadFetchedData () {
+        self.tableView.reloadData()
+    }
 }

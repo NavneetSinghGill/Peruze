@@ -51,8 +51,6 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Peruze uses your location so that people near you can see what you upload.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Peruze uses your location so that people near you can see what you upload.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

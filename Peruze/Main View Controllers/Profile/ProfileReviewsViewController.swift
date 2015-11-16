@@ -32,6 +32,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
     titleLabel.alpha = 0
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonReviews", object: nil)
   }
   
   let opQueue = OperationQueue()
@@ -76,4 +77,13 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     }
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
+    
+    //MARK: Reloading view on fetch data from server
+    func reloadFetchedData () {
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//            self.dataSource.personRecordID = notification.object as! String;
+            self.refresh()
+        })
+    }
 }

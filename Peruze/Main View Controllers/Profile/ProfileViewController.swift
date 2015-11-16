@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController {
           self.personForProfile = completeProfile
           self.containerSpinner.stopAnimating()
           UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
-            self.updateChildViewControllers()
+//            self.updateChildViewControllers()
           })
         })
     })

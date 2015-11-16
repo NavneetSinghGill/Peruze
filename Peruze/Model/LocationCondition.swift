@@ -119,13 +119,17 @@ private class LocationPermissionOperation: Operation {
     let key: String
     
     switch usage {
-    case .WhenInUse:
+    /*case .WhenInUse:
       key = "NSLocationWhenInUseUsageDescription"
-      manager?.requestWhenInUseAuthorization()
+      manager?.requestWhenInUseAuthorization()*/
       
     case .Always:
       key = "NSLocationAlwaysUsageDescription"
       manager?.requestAlwaysAuthorization()
+        break
+    default:
+        key = "NSLocationAlwaysUsageDescription"
+        break
     }
     
     // This is helpful when developing the app.

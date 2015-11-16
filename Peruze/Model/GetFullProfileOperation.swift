@@ -46,19 +46,24 @@ class GetFullProfileOperation: GroupOperation {
     fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: database , context: context)
       fetchPersonOperation.completionBlock = {
         print("Finished FetchPersonOperation")
+//        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPerson", object: nil, userInfo: nil))
       }
     fetchReviewsOperation = GetReviewsOperation(recordID: personRecordID, database: database, context: context)
       fetchReviewsOperation.completionBlock = {
         print("Finished fetchReviewsOperation")
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonReviews", object: nil, userInfo: nil))
       }
     fetchUploadsOperation = GetUploadsOperation(recordID: personRecordID, database: database, context: context)
       fetchUploadsOperation.completionBlock = {
         print("Finished fetchUploadsOperation")
+        let recordId : String = personRecordID.recordName
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonUploads", object: recordId, userInfo: nil))
       }
     fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
       status: ExchangeStatus.Completed, database: database, context: context)
       fetchExchangesOperation.completionBlock = {
         print("Finished fetchExchangesOperation")
+//        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonExchanges", object: nil, userInfo: nil))
       }
     
     let finishOperation = NSBlockOperation(block: completionHandler)
