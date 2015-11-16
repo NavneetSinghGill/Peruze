@@ -31,20 +31,31 @@ class GetPeruzeItemOperation: GroupOperation {
         range = 0 //makes sure that the location is not accessed
       }
       let location = location ?? CLLocation() //makes sure that location is not nil
-      
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if (defaults.objectForKey("kCursor") != nil){
+            let decoded  = defaults.objectForKey("kCursor") as! NSData
+            let decodedTeams = NSKeyedUnarchiver.unarchiveObjectWithData(decoded) as! CKQueryCursor
+            cursor = decodedTeams
+            defaults.synchronize()
+        }
       getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
-      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
+//      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
       
       //add dependencies
-      fillMissingPeopleData.addDependency(fillMissingItemData)
+//      fillMissingPeopleData.addDependency(fillMissingItemData)
       fillMissingItemData.addDependency(getItems)
       
-      super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
-  }
+      super.init(operations: [getItems])//, fillMissingItemData, fillMissingPeopleData])
+    }
   override func finished(errors: [NSError]) {
+    if (getItems.cursor != nil){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let encodedData = NSKeyedArchiver.archivedDataWithRootObject(getItems.cursor!)
+        defaults.setObject(encodedData, forKey: "kCursor")
+        defaults.synchronize()
+    }
     cursor = getItems.cursor
-    getItems.cursor = nil
     if let error = errors.first {
       print(error)
       let alert = AlertOperation(presentationContext: presentationContext)

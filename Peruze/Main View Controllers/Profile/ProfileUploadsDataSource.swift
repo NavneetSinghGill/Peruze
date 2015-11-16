@@ -59,6 +59,11 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     cell.subtitleTextLabel.text = ""
     cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
     cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
+    if item.valueForKey("recordIDName") == nil {
+        cell.recordIDName = nil
+    } else {
+        cell.recordIDName = item.valueForKey("recordIDName") as! String
+    }
     cell.accessoryType = editableCells ? .DisclosureIndicator : .None
     cell.userInteractionEnabled = editableCells
     

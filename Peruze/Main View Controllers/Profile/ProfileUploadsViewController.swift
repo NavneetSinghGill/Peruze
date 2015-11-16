@@ -42,6 +42,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     uploadView.image = cell.circleImageView.image
     uploadView.itemTitle = cell.titleTextLabel.text
     uploadView.itemDescription = cell.descriptionTextLabel.text
+    uploadView.recordIDName = cell.recordIDName
     presentViewController(uploadView, animated: true) {
       self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
       self.tableView.reloadData()

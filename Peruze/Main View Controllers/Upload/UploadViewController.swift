@@ -17,6 +17,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     static let DefaultImage = UIImage(named: "Add_Photo")
     static let AlertTitle = "Not Enough Information"
     static let AlertMessage = "To increase your chances of an exchange, fill out the max amount of information!"
+    static let doUpdate = 0
   }
   //MARK: - Variables
   @IBOutlet weak var scrollView: UIScrollView!
@@ -30,6 +31,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
   var image: UIImage?
   var itemTitle: String?
   var itemDescription: String?
+    var recordIDName: String?
   
   //MARK: - View Controller Lifecycle Methods
   override func viewDidLoad() {
@@ -162,17 +164,22 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
       beginUpload()
       print("OperationQueue().addOperation(PostItemOperation)")
       let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
-      OperationQueue().addOperation(
-        PostItemOperation(
-          image: mainImageView.image!,
-          title: titleTextField.text!,
-          detail: descriptionTextView.text,
-          recordIDName: nil,
-          presentationContext: self,
-          completionHandler: allCompletionHandlers,
-          errorCompletionHandler: allCompletionHandlers
-        )
-      )
+//        if Constants.doUpdate == 0 {
+            OperationQueue().addOperation(
+                PostItemOperation(
+                    image: mainImageView.image!,
+                    title: titleTextField.text!,
+                    detail: descriptionTextView.text,
+                    recordIDName: recordIDName,
+                    presentationContext: self,
+                    completionHandler: allCompletionHandlers,
+                    errorCompletionHandler: allCompletionHandlers
+                )
+            )
+
+//        } else if Constants.doUpdate == 1 {
+//            OperationQueue().addOperation(updateI)
+//        }
     } else {
       let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
       alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))

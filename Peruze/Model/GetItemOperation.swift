@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 private let logging = true
-private let resultsLimit = 100 //the limit for the results from the server. The lower this is, the faster the speed :)
+private let resultsLimit = 9 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float

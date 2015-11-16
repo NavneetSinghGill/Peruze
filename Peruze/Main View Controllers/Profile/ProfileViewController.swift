@@ -51,7 +51,9 @@ class ProfileViewController: UIViewController {
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    numberOfExchangesLabel.text = "0"
+    numberOfFavoritesLabel.text = "0"
+    numberOfUploadsLabel.text = "0"
     //hide the container view and start loading data
     containerView.alpha = 0.0
     containerSpinner.startAnimating()

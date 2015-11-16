@@ -13,4 +13,5 @@ class ProfileUploadsTableViewCell: UITableViewCell {
     @IBOutlet weak var titleTextLabel: UILabel!
     @IBOutlet weak var subtitleTextLabel: UILabel!
     @IBOutlet weak var descriptionTextLabel: UILabel!
+    var recordIDName: String!
 }
