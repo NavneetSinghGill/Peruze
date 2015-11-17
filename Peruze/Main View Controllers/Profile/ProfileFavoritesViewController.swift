@@ -21,13 +21,18 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
       dataSource.editableCells = tabBarController?.parentViewController?.tabBarController != nil
       tableView.dataSource = dataSource
       tableView.delegate = self
+        dataSource.tableView = tableView
     }
   }
   override func viewDidLoad() {
     super.viewDidLoad()
-    dataSource.refresh()
     titleLabel.alpha = 0.0
   }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dataSource.refresh()
+    }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     checkForEmptyData(true)
@@ -77,6 +82,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     }
     return [defaultAction]
   }
+    
   
   /* Swift 2.0
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {

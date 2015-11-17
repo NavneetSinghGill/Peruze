@@ -24,6 +24,7 @@ class ProfileContainerViewController: UITabBarController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tabBar.hidden = true
+    self.setChildViewControllerData()
   }
   private func setChildViewControllerData() {
     print("Container VC With Person:")
@@ -34,6 +35,7 @@ class ProfileContainerViewController: UITabBarController {
         uploadsVC.dataSource.personRecordID = profileOwner?.valueForKey("recordIDName") as? String
         break
       case let favoritesVC as ProfileFavoritesViewController:
+        favoritesVC.dataSource.refresh()
         //favoritesVC.dataSource.favorites = profileOwner!.favorites
         break
       case let reviewsVC as ProfileReviewsViewController:

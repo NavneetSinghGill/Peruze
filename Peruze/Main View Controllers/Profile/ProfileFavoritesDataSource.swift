@@ -20,6 +20,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
   var favorites = [NSManagedObject]()
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var editableCells = true
+    var tableView: UITableView!
   
   ///fetch current user profile and set `favorites` to the favorites of my profile
   func refresh() {
@@ -32,6 +33,9 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       }
     } else {
       print("me.valueForKey('favorites') was not an NSSet ")
+    }
+    if tableView != nil {
+        tableView.reloadData()
     }
   }
   //MARK: - UITableViewDataSource methods

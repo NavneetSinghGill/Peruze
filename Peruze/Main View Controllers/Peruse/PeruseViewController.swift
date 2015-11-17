@@ -164,7 +164,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
     if indexPath.section == 1 {
       //this is about to display the loading cell
-      Model.sharedInstance().getPeruzeItems(self)
+//      Model.sharedInstance().getPeruzeItems(self)
     }
   }
   

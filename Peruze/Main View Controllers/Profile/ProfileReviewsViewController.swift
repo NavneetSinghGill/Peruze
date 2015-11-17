@@ -34,6 +34,10 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     titleLabel.alpha = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonReviews", object: nil)
   }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.refresh()
+    }
   
   let opQueue = OperationQueue()
   func refresh() {

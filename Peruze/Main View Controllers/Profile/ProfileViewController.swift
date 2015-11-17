@@ -67,7 +67,6 @@ class ProfileViewController: UIViewController {
     if (personForProfile?.valueForKey("image") as? NSData != nil) {
         profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
         profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
-        updateViewAfterGettingResponse()
     }
     //TODO: set #ofStars
     
@@ -79,12 +78,13 @@ class ProfileViewController: UIViewController {
       context: managedConcurrentObjectContext,
       database: CKContainer.defaultContainer().publicCloudDatabase,
       completionHandler: {
+        print("\(NSDate())\nFinished GetFullProfileOperation")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
           let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfileRecordID)
           self.personForProfile = completeProfile
           self.containerSpinner.stopAnimating()
           UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
-//            self.updateChildViewControllers()
+            self.updateChildViewControllers()
           })
             self.updateViewAfterGettingResponse()
         })
@@ -103,6 +103,13 @@ class ProfileViewController: UIViewController {
     starView.numberOfStars = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileUpdate:", name: "profileUpdate", object: nil)
   }
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateViewAfterGettingResponse()
+    }
+    
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     containerSpinner.frame = containerView.frame
