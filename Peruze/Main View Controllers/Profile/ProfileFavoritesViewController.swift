@@ -43,11 +43,14 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let parentVC = parentViewController as? ProfileContainerViewController {
-      if let originVC = parentVC.parentViewController as? ProfileViewController {
-        originVC.performSegueWithIdentifier("toFavorite", sender:dataSource)
-      }
-    }
+//    if let parentVC = parentViewController as? ProfileContainerViewController {
+//      if let originVC = parentVC.parentViewController as? ProfileViewController {
+//        originVC.performSegueWithIdentifier("toFavorite", sender:dataSource)
+//      }
+//    }
+    let alert = UIAlertController(title: "Peruze", message: "Not implemented yet.", preferredStyle: UIAlertControllerStyle.Alert)
+    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+    self.presentViewController(alert, animated: true, completion: nil)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   

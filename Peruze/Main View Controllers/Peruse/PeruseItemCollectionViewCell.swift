@@ -157,7 +157,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       if let ownerName = owner.valueForKey("firstName") as? String {
         ownerNameLabel.text = ownerName
       } else {
-        ownerNameLabel.text = "Error"
+        ownerNameLabel.text = ""
       }
       if let ownerImageData = owner.valueForKey("image") as? NSData {
         ownerProfileImage.image = UIImage(data: ownerImageData)

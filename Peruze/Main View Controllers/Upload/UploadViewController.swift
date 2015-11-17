@@ -17,7 +17,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     static let DefaultImage = UIImage(named: "Add_Photo")
     static let AlertTitle = "Not Enough Information"
     static let AlertMessage = "To increase your chances of an exchange, fill out the max amount of information!"
-    static let doUpdate = 0
+    static let descriptionTextViewTag = 10
   }
   //MARK: - Variables
   @IBOutlet weak var scrollView: UIScrollView!
@@ -32,7 +32,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
   var itemTitle: String?
   var itemDescription: String?
     var recordIDName: String?
-  
+    var parentVC: UIViewController?
   //MARK: - View Controller Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -67,6 +67,10 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     descriptionTextView = UITextView()
     descriptionTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
     descriptionTextView.delegate = self
+    descriptionTextView.tag = Constants.descriptionTextViewTag
+    descriptionTextView.layer.borderWidth = 1
+    descriptionTextView.layer.borderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.8).CGColor
+    descriptionTextView.layer.cornerRadius = 5
     
     //setup upload button
     uploadButton = UIButton()
@@ -163,8 +167,12 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
       print("OperationQueue().addOperation(PostItemOperation)")
-      let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) { self.endUpload() } }
-//        if Constants.doUpdate == 0 {
+      let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) {
+        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+//            let per = self.parentVC as! PeruseExchangeViewController
+            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+        }
+        self.endUpload() } }
             OperationQueue().addOperation(
                 PostItemOperation(
                     image: mainImageView.image!,
@@ -177,9 +185,6 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 )
             )
 
-//        } else if Constants.doUpdate == 1 {
-//            OperationQueue().addOperation(updateI)
-//        }
     } else {
       let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
       alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
@@ -255,12 +260,12 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
   //MARK: - UITextField and UITextView Delegate Methods
   func textFieldShouldReturn(textField: UITextField) -> Bool {
     if textField == titleTextField {
-      textField.endEditing(true)
+//      textField.endEditing(true)
       descriptionTextView.becomeFirstResponder()
     } else {
       textField.resignFirstResponder()
     }
-    return true
+    return false
   }
   
   @IBAction func textFieldEditingChanged(sender: UITextField) {
@@ -268,6 +273,13 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
       uploadButton.enabled = true
     }
   }
+    
+    func textViewDidChange(textView: UITextView) {
+        if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage && textView.tag
+         == Constants.descriptionTextViewTag{
+            uploadButton.enabled = true
+        }
+    }
   
   //MARK: - Upload View
   var uploadingView: UploadingEyesView?

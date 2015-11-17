@@ -60,7 +60,6 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     }
   }
   private let greenCircle = CircleView()
-  
   //other person's item
   @IBOutlet weak var rightCircleImageView: CircleImage!
   @IBOutlet weak var otherPersonsFullNameLabel: UILabel!
@@ -104,6 +103,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
         otherPersonsItemLabel.text = title
         otherPersonsProfileImageView.image = UIImage(data: ownerImageData)
     }
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionViewManually", name: "reloadPeruzeExchangeScreen", object: nil)
   }
   
   override func viewDidLayoutSubviews() {
@@ -157,24 +157,30 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
       return
     }
     if itemInCircleView == nil {
-      
-      let owner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject
-      
-      guard
-        let ownerName = owner?.valueForKey("firstName") as? String,
-        let itemTitle = itemSelectedForExchange.valueForKey("title") as? String else {
-          return
-      }
-      
-      let alert = UIAlertView(title: Constants.NoItemAlert.title,
-        message: "\(ownerName) is our really good friend! Surely you don't want to offer nothing in return for \(itemTitle).",
-        delegate: self,
-        cancelButtonTitle: Constants.NoItemAlert.cancelTitle)
-      alert.show()
+//      
+//      let owner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject
+//      
+//      guard
+//        let ownerName = owner?.valueForKey("firstName") as? String,
+//        let itemTitle = itemSelectedForExchange.valueForKey("title") as? String else {
+//          return
+//      }
+//      
+//      let alert = UIAlertView(title: Constants.NoItemAlert.title,
+//        message: "\(ownerName) is our really good friend! Surely you don't want to offer nothing in return for \(itemTitle).",
+//        delegate: self,
+//        cancelButtonTitle: Constants.NoItemAlert.cancelTitle)
+//      alert.show()
+        
+        let alert = UIAlertController(title: "Peruze", message: "Select an item for exchange.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+        
     } else {
       self.dismissViewControllerAnimated(true) {
         self.delegate?.itemChosenToExchange = self.itemInCircleView
       }
+        
     }
   }
   
@@ -184,10 +190,16 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   
   private func segueToUploadNewItem() {
     let UploadVC = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
+    UploadVC.parentVC = self
     presentViewController(UploadVC, animated: true, completion: nil)
     //TODO: Implement this segue
   }
-  
+    
+    func reloadCollectionViewManually() {
+        dataSource.getItems()
+        dataSource.collectionView!.reloadData()
+    }
+    
   //MARK: - Handling Long Press
   private struct PickedUpCell {
     var circleImage: CircleImage

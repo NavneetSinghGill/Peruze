@@ -113,9 +113,29 @@ class InitialViewController: UIViewController {
                 self.getMyFriends()
             }
         }
-        getMyProfileOp.finishedBlock = { errors in
-            FBSDKAccessToken.setCurrentAccessToken(nil)
+        getMyProfileOp.finishedBlock = { error in
+            let dict = error.userInfo as NSDictionary
+            var isNewUser: String?
+            var oldUserFirstName: String?
+            if let val = dict["isNewUser"]{
+                isNewUser = val as? String
+            }
+            if let val = dict["firstName"]{
+                oldUserFirstName = val as? String
+            }
+            if isNewUser == "yes" && oldUserFirstName != nil{
+                let alert = UIAlertController(title: "Peruze", message: "This iCloud account is attached to \"\(oldUserFirstName!)\". Please login to another iCloud account.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
+                    FBSDKAccessToken.setCurrentAccessToken(nil)
+                    self.setupAndSegueToOnboardVC()
+                }))
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            } else {
+                FBSDKAccessToken.setCurrentAccessToken(nil)
                 self.setupAndSegueToOnboardVC()
+            }
         }
         opQueue.addOperation(getMyProfileOp)
     }

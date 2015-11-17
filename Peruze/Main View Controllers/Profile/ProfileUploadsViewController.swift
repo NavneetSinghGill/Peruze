@@ -63,7 +63,19 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { (rowAction, indexPath) -> Void in
       
       //self.dataSource.items.removeAtIndex(indexPath.row)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+//      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+        print("OperationQueue().addOperation(DeleteItemOperation)")
+        let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) {
+            if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
+                parentVC.updateViewAfterGettingResponse()
+            }} }
+        OperationQueue().addOperation(
+            DeleteItemOperation(
+                recordIDName: item.valueForKey("recordIDName") as? String,
+                presentationContext: self,
+                completionHandler: allCompletionHandlers,
+                errorCompletionHandler: allCompletionHandlers))
     }
     return [defaultAction]
   }

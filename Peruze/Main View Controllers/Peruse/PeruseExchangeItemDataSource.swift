@@ -26,30 +26,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
   var exchangeItems = [NSManagedObject]()
   override init() {
     super.init()
-    let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
-    
-    guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
-      return
-    }
-    let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
-    fetchedResultsController = Item.MR_fetchAllSortedBy("title",
-      ascending: true,
-      withPredicate: predicate,
-      groupBy: nil,
-      delegate: self,
-      inContext: managedConcurrentObjectContext)
-    
-    do {
-      try fetchedResultsController.performFetch()
-      guard let objects = fetchedResultsController.fetchedObjects as? [NSManagedObject] else {
-        print("Issue in Peruze Exchange Item Data Source")
-        return
-      }
-      exchangeItems = objects
-    } catch {
-      print(error)
-    }
-    
+    getItems()
   }
   
   func deleteItemsAtIndexPaths(paths: [NSIndexPath]) -> [NSManagedObject] {
@@ -103,4 +80,30 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return exchangeItems.count + 1
   }
+    
+    func getItems() {
+        let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+        
+        guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
+            return
+        }
+        let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
+        fetchedResultsController = Item.MR_fetchAllSortedBy("title",
+            ascending: true,
+            withPredicate: predicate,
+            groupBy: nil,
+            delegate: self,
+            inContext: managedConcurrentObjectContext)
+        
+        do {
+            try fetchedResultsController.performFetch()
+            guard let objects = fetchedResultsController.fetchedObjects as? [NSManagedObject] else {
+                print("Issue in Peruze Exchange Item Data Source")
+                return
+            }
+            exchangeItems = objects
+        } catch {
+            print(error)
+        }
+    }
 }

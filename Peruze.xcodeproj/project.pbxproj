@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */; };
@@ -186,6 +187,7 @@
 /* Begin PBXFileReference section */
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
+		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GetItemOperation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPeruzeItemOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 			isa = PBXGroup;
 			children = (
 				9D177B211B54DDC3009CB9FA /* UploadViewController.swift */,
+				3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1203,6 +1206,7 @@
 				9DC345781BA9F22B00B1CA2C /* DelayOperation.swift in Sources */,
 				9D177BA31B54DDC3009CB9FA /* ProfileUploadsViewController.swift in Sources */,
 				9DC345731BA9F22B00B1CA2C /* BlockObserver.swift in Sources */,
+				3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */,
 				9D45D2281B5B5D8B00D555F3 /* Exchange.swift in Sources */,
 				9D177BC21B54DDC3009CB9FA /* TGCameraNavigationController.m in Sources */,
 				9D177BCF1B54DDC4009CB9FA /* TGCameraFilterView.m in Sources */,
@@ -1361,7 +1365,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1401,7 +1405,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1425,7 +1429,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1451,7 +1455,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;

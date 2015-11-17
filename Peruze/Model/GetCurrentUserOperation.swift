@@ -18,7 +18,7 @@ class GetCurrentUserOperation: Operation {
   private let context: NSManagedObjectContext
   private let database: CKDatabase
   private let presentationContext: UIViewController
-  internal var finishedBlock : (error :[NSError]) -> (Void)
+  internal var finishedBlock : (error :NSError) -> (Void)
   
   init(presentationContext: UIViewController, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
     
@@ -68,8 +68,9 @@ class GetCurrentUserOperation: Operation {
             person.lastName = nil
             person.image = nil
             self.context.MR_saveToPersistentStoreAndWait()
-            self.finish()
-            return
+            let error = NSError(domain: "Error: New user", code: 123, userInfo: ["isNewUser":"yes", "firstName":firstName!])
+            self.finishedBlock(error: error)
+            self.cancel()
         }
         
         
@@ -123,7 +124,7 @@ class GetCurrentUserOperation: Operation {
         break
       }
         alert.addCompletionBlock({Void in
-            self.finishedBlock(error: errors)
+            self.finishedBlock(error: firstError)
         })
         produceOperation(alert)
     }

@@ -251,8 +251,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         finish()
         return
       }
-//      let deleteRecordOp = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [CKRecordID(recordName: recordIDName!)])
-//        deleteRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in}
+
         
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
       saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
@@ -273,9 +272,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         self.context.MR_saveToPersistentStoreAndWait()
         self.finish()
       }
-//        saveItemRecordOp.addDependency(deleteRecordOp)
-//        deleteRecordOp.qualityOfService = qualityOfService
-//        database.addOperation(deleteRecordOp)
+        saveItemRecordOp.savePolicy = .ChangedKeys
       saveItemRecordOp.qualityOfService = qualityOfService
       database.addOperation(saveItemRecordOp)
     } catch {
@@ -291,4 +288,3 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   }
   
 }
-

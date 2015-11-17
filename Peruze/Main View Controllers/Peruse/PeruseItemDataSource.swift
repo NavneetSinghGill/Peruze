@@ -59,7 +59,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         dispatch_async(dispatch_get_main_queue()) {
             self.collectionView.reloadData()
         }
-        
     }
     
   ///fetches the results from the fetchedResultsController

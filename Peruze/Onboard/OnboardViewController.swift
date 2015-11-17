@@ -55,6 +55,7 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
         setupFacebookLoginButton()
         facebookLoginButton!.alpha = 0.0
         facebookLoginButton!.enabled = false
+        facebookLoginButton?.loginBehavior = FBSDKLoginBehavior.SystemAccount
         
         //setup view to shrink
         let whiteView = UIView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height))
