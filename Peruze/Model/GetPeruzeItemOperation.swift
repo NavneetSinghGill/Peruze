@@ -38,23 +38,28 @@ class GetPeruzeItemOperation: GroupOperation {
             cursor = decodedTeams
             defaults.synchronize()
         }
-      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context)
+      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 5)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
       let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
       
       //add dependencies
-      fillMissingPeopleData.addDependency(fillMissingItemData)
+      fillMissingPeopleData.addDependency(getItems)
       fillMissingItemData.addDependency(getItems)
       
       super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
     }
   override func finished(errors: [NSError]) {
+    let defaults = NSUserDefaults.standardUserDefaults()
     if (getItems.cursor != nil){
-        let defaults = NSUserDefaults.standardUserDefaults()
         let encodedData = NSKeyedArchiver.archivedDataWithRootObject(getItems.cursor!)
         defaults.setObject(encodedData, forKey: "kCursor")
+    } else {
+        defaults.removeObjectForKey("kCursor")
+        
+        defaults.setBool(false, forKey: "keyIsMoreItemsAvalable")
         defaults.synchronize()
     }
+    defaults.synchronize()
     cursor = getItems.cursor
     if let error = errors.first {
       print(error)

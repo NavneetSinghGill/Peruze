@@ -22,7 +22,7 @@ struct OwnerStruct {
   var recordIDName: String
 }
 
-class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
+class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
   private struct Constants {
     static let ReuseIdentifier = "item"
     static let LoadingReuseIdentifier = "loading"
@@ -56,8 +56,12 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
   }
     func reloadCollectionView(){
-        self.collectionView.reloadData()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.collectionView.reloadData()
+        }
+        
     }
+    
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
@@ -80,8 +84,9 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
           })
         presentationContext.presentViewController(alert, animated: true, completion: nil)
       }
-      self.collectionView.reloadData()
-      self.getFavorites()
+       
+            self.collectionView.reloadData()
+            self.getFavorites()
     }
   }
   
@@ -197,6 +202,14 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     } else {
       //loading cell
       cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
+        let view : UIView = cell.viewWithTag(3)!
+        if  isMoreItemsAvailable == false {
+            view.hidden = false
+        } else {
+            view.hidden = true
+        }
     }
     return cell
   }
@@ -214,4 +227,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
   }
+    
+
 }

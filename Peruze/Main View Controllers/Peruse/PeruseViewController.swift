@@ -18,6 +18,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   private lazy var dataSource = PeruseItemDataSource()
   private var itemToForwardToExchange: NSManagedObject?
+    var isGetItemsInProgress: Bool?
   
   //the item the user owns that he/she selected to exchange
   var itemChosenToExchange: NSManagedObject? {
@@ -59,6 +60,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setBool(true, forKey: "keyIsMoreItemsAvalable")
+    defaults.synchronize()
+    
     //Register for push notifications
     let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil)
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
@@ -74,19 +79,24 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
     
+    isGetItemsInProgress = true
+    
+    print("\(NSDate()) Peruze view - GetPeruzeItems called")
     Model.sharedInstance().getPeruzeItems(self, completion: {
+        self.isGetItemsInProgress = false
       self.dataSource.performFetchWithPresentationContext(self)
-      print("GetPeruzeItems completed!")
+      print("\(NSDate()) Peruze view - GetPeruzeItems completed!")
       dispatch_async(dispatch_get_main_queue()) {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
       }
     })
     
+    
   }
   func receivedNotification(notification: NSNotification) {
-    let updatedObjects: AnyObject? = notification.userInfo?[NSUpdatedObjectsKey]
+    let updatedObjects: NSArray? = notification.userInfo?[NSUpdatedObjectsKey] as? NSArray
     let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
-    let insertedObjects: AnyObject? = notification.userInfo?[NSInsertedObjectsKey]
+    let insertedObjects: NSArray? = notification.userInfo?[NSInsertedObjectsKey] as? NSArray
     
     if updatedObjects != nil {
       print("- - - - - updated objects - - - - - ")
@@ -100,9 +110,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       print("- - - - - inserted objects - - - - - ")
       print("\(insertedObjects) ")
     }
-    dispatch_async(dispatch_get_main_queue()) {
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
-    }
+//    dispatch_async(dispatch_get_main_queue()) {
+//        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
+//    }
   }
   //store top and bottom for when navigation controller is animating pop and is nil
   private var storedTop: CGFloat = 0
@@ -162,11 +172,34 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   
   func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-    if indexPath.section == 1 {
+//    if indexPath.section == 1 {
       //this is about to display the loading cell
-//      Model.sharedInstance().getPeruzeItems(self)
-    }
+//        if  self.isGetItemsInProgress == false {
+//            self.isGetItemsInProgress = true
+//            Model.sharedInstance().getPeruzeItems(self, completion: {
+//                print("-------------GetPeruzeItems Finish-----------------")
+//                self.isGetItemsInProgress = false
+//                self.dataSource.performFetchWithPresentationContext(self)
+//            })
+//        }
+//    }
   }
+    func scrollViewDidScroll(scrollView: UIScrollView){
+        if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.frame.size.width)
+        {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
+            if  self.isGetItemsInProgress == false && isMoreItemsAvailable == true {
+                self.isGetItemsInProgress = true
+                print("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
+                Model.sharedInstance().getPeruzeItems(self, completion: {
+                    print("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
+                    self.isGetItemsInProgress = false
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
+                })
+            }
+        }
+    }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {

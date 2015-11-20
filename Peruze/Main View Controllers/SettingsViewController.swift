@@ -206,7 +206,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     } else {
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
-        NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
             //Update profile Pic
             let dict:[String:AnyObject] = ["circleImage":selectedCircleImage]
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "profileUpdate", object: nil, userInfo: dict))

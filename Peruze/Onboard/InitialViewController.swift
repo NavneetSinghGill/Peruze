@@ -63,7 +63,8 @@ class InitialViewController: UIViewController {
             spinner.stopAnimating()
             setupAndSegueToOnboardVC()
         } else {
-            getMyFriends()
+            
+            
             let getFacebookProfileOp = FetchFacebookUserProfile(presentationContext: self)
             getFacebookProfileOp.completionBlock = {
                 
@@ -109,6 +110,7 @@ class InitialViewController: UIViewController {
                 
                 //if there isn't anything wrong with my profile, segue to tab bar
                 self.setupAndSegueToTabBarVC()
+                self.getMyFriends()
             }
         }
         getMyProfileOp.finishedBlock = { errors in
@@ -161,7 +163,12 @@ class InitialViewController: UIViewController {
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 
                 let friends : NSArray = (result["data"] as? NSArray)!
+                let ids : NSArray = friends.valueForKey("id") as! NSArray
                 
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setObject(ids, forKey: "kFriends")
+                defaults.synchronize()
+            
                 if myPerson != nil {
                     for element in friends
                     {
@@ -195,7 +202,7 @@ class InitialViewController: UIViewController {
         
         let operation = CKQueryOperation(query: query)
         //        operation.desiredKeys = ["genre", "comments"]
-        operation.resultsLimit = 50
+        operation.resultsLimit = 500
         
         var isRecordpresent = false
         
@@ -206,6 +213,7 @@ class InitialViewController: UIViewController {
         
         operation.queryCompletionBlock = { (cursor, error) -> Void in
             finishBlock(isRecordpresent)
+            self.loadFriendOfFriends()
         }
         
         let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
@@ -234,6 +242,40 @@ class InitialViewController: UIViewController {
         let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
         //                saveItemRecordOp.qualityOfService = NSQualityOfService()
         database.addOperation(saveItemRecordOp)
+    }
+    
+    
+    func loadFriendOfFriends() {
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if    let friendsIds : NSArray = defaults.objectForKey("kFriends") as? NSArray {
+            let predicate =  NSPredicate(format: "FacebookID IN %@",friendsIds)
+            
+            //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
+            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+            //        query.sortDescriptors = [sort]
+            
+            let operation = CKQueryOperation(query: query)
+            //        operation.desiredKeys = ["genre", "comments"]
+            operation.resultsLimit = 500
+            
+            var friendsOfFriendsList = [String]()
+            operation.recordFetchedBlock = { (record) in
+                print("friendsOfFriends : \(record)")
+                let fbId = record.objectForKey("FriendsFacebookIDs") as! String
+                friendsOfFriendsList.append(fbId)
+            }
+            
+            operation.queryCompletionBlock = { (cursor, error) -> Void in
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setObject(friendsOfFriendsList, forKey: "kFriendsOfFriend")
+                defaults.synchronize()
+            }
+            
+            let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
+            //                saveItemRecordOp.qualityOfService = NSQualityOfService()
+            database.addOperation(operation)
+        }
     }
     
     

@@ -44,7 +44,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     return modelSingletonGlobal
   }
   
-  private func userPrivacySetting() -> FriendsPrivacy {
+  func userPrivacySetting() -> FriendsPrivacy {
     let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Int ?? FriendsPrivacy.Everyone.rawValue
     switch value {
     case FriendsPrivacy.Friends.rawValue:

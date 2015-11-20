@@ -24,7 +24,8 @@ class GetUploadsOperation: GetItemOperation {
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.personIDName = recordID.recordName
-      super.init(database: database, context: context)
+        let limit = 500
+        super.init(database: database, context: context, resultLimit: limit)
   }
   
   override func getPredicate() -> NSPredicate {

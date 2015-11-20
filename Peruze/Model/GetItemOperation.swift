@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 
 private let logging = true
-private var resultsLimit = 20 //the limit for the results from the server. The lower this is, the faster the speed :)
+private var resultsLimit = 100 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
   let range: Float
@@ -21,13 +21,14 @@ class GetItemInRangeOperation: GetItemOperation {
     location: CLLocation,
     cursor: CKQueryCursor?,
     database: CKDatabase,
-    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext,
+    resultLimit : Int) {
       if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
       
       self.range = range
       self.location = location
       
-      super.init(cursor: cursor, database: database, context: context)
+        super.init(cursor: cursor, database: database, context: context, resultLimit : resultLimit)
       
       let networkObserver = NetworkObserver()
       addObserver(networkObserver)
@@ -49,8 +50,22 @@ class GetItemInRangeOperation: GetItemOperation {
     //choose and concatenate predicates
     let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
     
-    let othersInRange = NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate])
-    return othersInRange
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    var friendPredicate = NSPredicate!()
+    let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
+    if userPrivacySetting == FriendsPrivacy.Friends {
+        let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+        friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
+        return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, notMyItemsPredicate, friendPredicate])
+    } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
+        let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as! NSArray
+        friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate, friendPredicate])
+    } else {
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate])
+    }
   }
 }
 
@@ -62,12 +77,13 @@ class GetItemOperation: Operation {
   
   init(cursor: CKQueryCursor? = nil,
     database: CKDatabase,
-    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext,
+    resultLimit : Int) {
       if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
       self.cursor = cursor
       self.database = database
       self.context = context
-        resultsLimit = 100
+    resultsLimit = resultLimit
       super.init()
   }
   override func finished(errors: [NSError]) {
