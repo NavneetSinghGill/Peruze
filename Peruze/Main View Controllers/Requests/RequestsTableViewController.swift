@@ -92,7 +92,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    //performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
+    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   

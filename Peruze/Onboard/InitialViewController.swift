@@ -110,7 +110,7 @@ class InitialViewController: UIViewController {
                 
                 //if there isn't anything wrong with my profile, segue to tab bar
                 self.setupAndSegueToTabBarVC()
-                self.getMyFriends()
+//                self.getMyFriends()
             }
         }
         getMyProfileOp.finishedBlock = { error in

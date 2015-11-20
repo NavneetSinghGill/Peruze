@@ -110,6 +110,7 @@ class GetItemOperation: Operation {
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
+        
       localUpload.setValue(record.recordID.recordName, forKey: "recordIDName")
       
       let ownerRecordIDName = record.creatorUserRecordID!.recordName

@@ -79,19 +79,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
     
-    isGetItemsInProgress = true
     
-    print("\(NSDate()) Peruze view - GetPeruzeItems called")
-    Model.sharedInstance().getPeruzeItems(self, completion: {
-        self.isGetItemsInProgress = false
-      self.dataSource.performFetchWithPresentationContext(self)
-      print("\(NSDate()) Peruze view - GetPeruzeItems completed!")
-      dispatch_async(dispatch_get_main_queue()) {
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-      }
-    })
-    
-    
+    getMyExchanges()
   }
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: NSArray? = notification.userInfo?[NSUpdatedObjectsKey] as? NSArray
@@ -204,6 +193,41 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
         }
     }
+    
+    func getMyExchanges() {
+        var personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+//        if personForProfile.exchanges?.count == 0 {
+            let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
+            let personRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
+            
+            let fetchExchangesOperation: GetAllParticipatingExchangesOperation
+            fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
+                status: ExchangeStatus.Pending, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
+            fetchExchangesOperation.completionBlock = {
+                print("Finished fetchExchangesOperation \(personForProfileRecordID)")
+                personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+//                self.dataSource.performFetchWithPresentationContext(self)
+                self.getAllItems()
+            }
+            OperationQueue().addOperation(fetchExchangesOperation)
+//        }
+    }
+    
+    func getAllItems() {
+        isGetItemsInProgress = true
+        
+        print("\(NSDate()) Peruze view - GetPeruzeItems called")
+        Model.sharedInstance().getPeruzeItems(self, completion: {
+            self.isGetItemsInProgress = false
+            self.dataSource.performFetchWithPresentationContext(self)
+            print("\(NSDate()) Peruze view - GetPeruzeItems completed!")
+            dispatch_async(dispatch_get_main_queue()) {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+//                self.getMyExchanges()
+            }
+        })
+    }
+    
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
