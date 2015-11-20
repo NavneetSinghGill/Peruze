@@ -19,7 +19,8 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   
   override init() {
     super.init()
-    let predicate = NSPredicate(value: true)
+//    let predicate = NSPredicate(value: true)
+    let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
     fetchedResultsController = Exchange.MR_fetchAllSortedBy(
       "date",
       ascending: true,
@@ -156,7 +157,9 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    tableView.endUpdates()
+    dispatch_async(dispatch_get_main_queue()) {
+        self.tableView.endUpdates()
+    }
   }
   
   

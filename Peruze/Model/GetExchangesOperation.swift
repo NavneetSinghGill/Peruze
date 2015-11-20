@@ -170,8 +170,8 @@ class GetExchangesOperation: Operation {
       }
       
       //set exchange status
-      if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int64 {
-        localExchange.setValue(NSNumber(longLong: newExchangeStatus), forKey: "status")
+      if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int {
+        localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
       }
       
       //set date
