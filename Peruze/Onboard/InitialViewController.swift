@@ -192,12 +192,12 @@ class InitialViewController: UIViewController {
                 if myPerson != nil {
                     for element in friends
                     {
-                        var predicate =  NSPredicate(format: "(FacebookID = %@ AND FriendsFacebookIDs = %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
+                        var predicate =  NSPredicate(format: "(FacebookID == %@ AND FriendsFacebookIDs == %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
                         self.loadFriend(predicate, finishBlock: { isPresent in
                             if isPresent == true {
                                 print("\nFriend entry already present");
                             } else {
-                                predicate =  NSPredicate(format: "(FriendsFacebookIDs = %@ AND FacebookID = %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
+                                predicate =  NSPredicate(format: "(FriendsFacebookIDs == %@ AND FacebookID == %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
                                 self.loadFriend(predicate, finishBlock: { isPresent in
                                     if isPresent == false {
                                         self.addRecord(myPerson, element: element as! NSDictionary)
@@ -283,16 +283,55 @@ class InitialViewController: UIViewController {
             operation.recordFetchedBlock = { (record) in
                 print("friendsOfFriends : \(record)")
                 let fbId = record.objectForKey("FriendsFacebookIDs") as! String
-                friendsOfFriendsList.append(fbId)
+                if friendsOfFriendsList.indexOf(fbId) == nil{
+                    friendsOfFriendsList.append(fbId)
+                }
+            }
+            
+            
+            let predicate2 =  NSPredicate(format: "FriendsFacebookIDs IN %@",friendsIds)
+            
+            //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
+            let query2 = CKQuery(recordType: RecordTypes.Friends, predicate: predicate2)
+            //        query.sortDescriptors = [sort]
+            
+            let operation2 = CKQueryOperation(query: query2)
+            //        operation.desiredKeys = ["genre", "comments"]
+            operation2.resultsLimit = 500
+            
+            var friendsOfFriendsList2 = [String]()
+            operation2.recordFetchedBlock = { (record) in
+                print("friendsOfFriends : \(record)")
+                if record.objectForKey("FacebookID") != nil{
+//                    let friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
+                    let fbId = record.objectForKey("FacebookID") as! String
+                    if friendsOfFriendsList.indexOf(fbId) == nil{
+                        friendsOfFriendsList2.append(fbId)
+                    }
+                }
+            }
+            
+            let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
+            
+            operation2.queryCompletionBlock = { (cursor, error) -> Void in
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if defaults.objectForKey("kFriendsOfFriend") == nil {
+                   defaults.setObject(friendsOfFriendsList2, forKey: "kFriendsOfFriend")
+                } else {
+                    var friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
+                    friendsOfFriends = friendsOfFriends + friendsOfFriendsList2
+                    defaults.setObject(friendsOfFriends, forKey: "kFriendsOfFriend")
+                }
+                defaults.synchronize()
             }
             
             operation.queryCompletionBlock = { (cursor, error) -> Void in
                 let defaults = NSUserDefaults.standardUserDefaults()
                 defaults.setObject(friendsOfFriendsList, forKey: "kFriendsOfFriend")
                 defaults.synchronize()
+                database.addOperation(operation2)
             }
             
-            let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
             //                saveItemRecordOp.qualityOfService = NSQualityOfService()
             database.addOperation(operation)
         }
