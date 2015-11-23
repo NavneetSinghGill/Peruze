@@ -198,11 +198,12 @@ class GetExchangesOperation: Operation {
       
       //add this exchange to the requesting user's exchanges
       let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
-            print("Saving exchanges \(currentExchanges.count)")
-         print("\n requestingPerson \(requestingPerson)")
-        print("\n localExchange \(localExchange)")
-        currentExchanges.setByAddingObject(localExchange)
-            requestingPerson.setValue(currentExchanges, forKey: "exchanges")
+//            print("Saving exchanges \(currentExchanges.count)")
+//         print("\n requestingPerson \(requestingPerson)")
+//        print("\n localExchange \(localExchange)")
+//
+        let set = currentExchanges.setByAddingObject(localExchange)
+        requestingPerson.setValue(set, forKey: "exchanges")
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()

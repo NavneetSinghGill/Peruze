@@ -195,22 +195,28 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func getMyExchanges() {
+        
         var personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
 //        if personForProfile.exchanges?.count == 0 {
             let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
             let personRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
-            
+        
+        let fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: CKContainer.defaultContainer().publicCloudDatabase , context: managedConcurrentObjectContext)
+        fetchPersonOperation.completionBlock = {
+            print("Finished FetchPersonOperation")
             let fetchExchangesOperation: GetAllParticipatingExchangesOperation
             fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
                 status: ExchangeStatus.Pending, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
             fetchExchangesOperation.completionBlock = {
                 print("Finished fetchExchangesOperation \(personForProfileRecordID)")
                 personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
-//                self.dataSource.performFetchWithPresentationContext(self)
+                //                self.dataSource.performFetchWithPresentationContext(self)
                 self.getAllItems()
             }
             OperationQueue().addOperation(fetchExchangesOperation)
-//        }
+            //        }
+        }
+        OperationQueue().addOperation(fetchPersonOperation)
     }
     
     func getAllItems() {

@@ -60,7 +60,7 @@ class GetFullProfileOperation: GroupOperation {
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonUploads", object: recordId, userInfo: nil))
       }
     fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
-      status: ExchangeStatus.Completed, database: database, context: context)
+      status: ExchangeStatus.Pending, database: database, context: context)
       fetchExchangesOperation.completionBlock = {
         print("Finished fetchExchangesOperation")
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonExchanges", object: nil, userInfo: nil))
