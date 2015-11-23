@@ -38,7 +38,11 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myID = me.valueForKey("recordIDName") as! String
-    fetchRequest.predicate = NSPredicate(format: "owner.recordIDName != %@", myID)
+    let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
+    let yesString = "yes"
+    let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+    fetchRequest.predicate = compoundPredicate
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false

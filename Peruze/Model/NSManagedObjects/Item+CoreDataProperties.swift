@@ -21,6 +21,7 @@ extension Item {
   @NSManaged var ownerFacebookID: String?
   @NSManaged var recordIDName: String?
   @NSManaged var title: String?
+  @NSManaged var hasRequested: String?
   @NSManaged var owner: Person?
   
 }

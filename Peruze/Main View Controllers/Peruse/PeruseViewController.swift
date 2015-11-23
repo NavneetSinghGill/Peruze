@@ -146,7 +146,11 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       itemOfferedRecordIDName: itemChosenToExchange!.valueForKey("recordIDName") as! String,
       itemRequestedRecordIDName: itemToForwardToExchange!.valueForKey("recordIDName") as! String,
       database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedConcurrentObjectContext) { /* Completion */ }
+      context: managedConcurrentObjectContext) { /* Completion */
+        dispatch_async(dispatch_get_main_queue()){
+            self.dataSource.collectionView.reloadData()
+        }
+    }
     OperationQueue().addOperation(postExchange)
   }
   

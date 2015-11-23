@@ -109,6 +109,7 @@ class SaveExchangeToLocalStorageOperation: Operation {
       "recordIDName",
       withValue: itemRequestedRecordIDName,
       inContext: context)
+    itemRequested.setValue("yes", forKey: "hasRequested")
     localExchange.setValue(itemRequested, forKey: "itemRequested")
     
     let creator = Person.MR_findFirstByAttribute(
