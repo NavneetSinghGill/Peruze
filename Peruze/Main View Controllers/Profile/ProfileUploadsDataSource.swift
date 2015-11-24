@@ -27,7 +27,9 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         withPredicate: predicate,
         groupBy: nil, delegate: self,
         inContext: managedConcurrentObjectContext)
+        if tableView != nil {
       tableView.reloadData()
+        }
     }
   }
   

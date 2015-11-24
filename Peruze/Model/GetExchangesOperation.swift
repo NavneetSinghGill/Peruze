@@ -185,6 +185,7 @@ class GetExchangesOperation: Operation {
         let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemOfferedReference.recordID.recordName,
           inContext: self.context)
+        itemOffered.setValue("yes", forKey: "hasRequested")
         localExchange.setValue(itemOffered, forKey: "itemOffered")
       }
       
@@ -193,8 +194,12 @@ class GetExchangesOperation: Operation {
         let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemRequestedReference.recordID.recordName,
           inContext: self.context)
+        itemRequested.setValue("yes", forKey: "hasRequested")
         localExchange.setValue(itemRequested, forKey: "itemRequested")
+        
       }
+        
+        
       
       //add this exchange to the requesting user's exchanges
       let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet

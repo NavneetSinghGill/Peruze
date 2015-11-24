@@ -102,7 +102,7 @@ class InitialViewController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()){
                 
-                print("hit completion block")
+                print("\(NSDate()) \n GetCurrentUserOperation completion block on initial view \n\n")
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 if (myPerson?.valueForKey("firstName") as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
                 if (myPerson?.valueForKey("lastName")  as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
@@ -159,9 +159,19 @@ class InitialViewController: UIViewController {
     
     //MARK: - Logged into facebook and profile setup
     private func setupAndSegueToTabBarVC() {
+        print("\(NSDate()) setupAndSegueToTabBarVC()")
         tabBarVC = tabBarVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.TabBarVCIdentifier) as? UITabBarController
         if tabBarVC == nil { assertionFailure("VC Pulled out of storyboard is not a UITabBarController")}
         tabBarVC!.selectedIndex = profileSetupVC == nil ? 0 : 1
+        for childVC in (tabBarVC?.viewControllers)! {
+            _ = childVC.view
+            
+            if let nc : UINavigationController = childVC as? UINavigationController {
+                let root = nc.viewControllers[0] as UIViewController
+                _ = root.view
+            }
+        }
+        
         self.presentViewController(tabBarVC!, animated: true, completion: nil)
     }
     

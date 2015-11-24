@@ -68,6 +68,21 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
+    let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let myID = me.valueForKey("recordIDName") as! String
+    let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
+    let yesString = "yes"
+    let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+    fetchRequest.predicate = compoundPredicate
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
+    fetchRequest.includesSubentities = true
+    fetchRequest.returnsObjectsAsFaults = false
+    fetchRequest.includesPropertyValues = true
+    fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
+    fetchedResultsController.delegate = self
     dispatch_async(dispatch_get_main_queue()) {
       do {
         try self.fetchedResultsController.performFetch()

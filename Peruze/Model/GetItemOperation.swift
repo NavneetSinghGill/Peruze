@@ -144,7 +144,10 @@ class GetItemOperation: Operation {
         localUpload.setValue(imageData, forKey: "image")
       }
         
-      localUpload.setValue("no", forKey: "hasRequested")
+        
+        if localUpload.hasRequested != "yes" {
+            localUpload.setValue("no", forKey: "hasRequested")
+        }
         
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
