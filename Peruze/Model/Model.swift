@@ -25,6 +25,8 @@ struct NotificationCenterKeys {
     static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
   }
+    
+    static let UpdateItemsOnFilterChange = "UpdateItemsOnFilterChange"
 }
 struct SubscritionTypes {
   static let PeruzeItemUpdates = "PeruzeItemUpdates"

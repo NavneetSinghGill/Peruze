@@ -79,7 +79,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       name: NSManagedObjectContextObjectsDidChangeNotification,
       object: managedConcurrentObjectContext)
     
-    
+    //call on settings itmes filter change
+    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "updateItemsOnFilterChange",
+        name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     getMyExchanges()
   }
   func receivedNotification(notification: NSNotification) {
@@ -196,11 +199,26 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func getMyExchanges() {
         
-        var personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
-//        if personForProfile.exchanges?.count == 0 {
-            let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
-            let personRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
+        //Setting more data available controlling functionality
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(true, forKey: "keyIsMoreItemsAvalable")
+        defaults.synchronize()
         
+        //Retrive user from DB
+        var personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+        //        if personForProfile.exchanges?.count == 0 {
+        let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
+        let personRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
+        
+        //Delete all items of peruze tab
+        let myRequestedPredicate = NSPredicate(format: "owner.recordIDName != %@", personForProfileRecordID)
+        Item.MR_deleteAllMatchingPredicate(myRequestedPredicate, inContext: managedConcurrentObjectContext)
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        
+        //Refresh view items
+        self.dataSource.performFetchWithPresentationContext(self)
+        
+        //fetch exchanges, items
         let fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: CKContainer.defaultContainer().publicCloudDatabase , context: managedConcurrentObjectContext)
         fetchPersonOperation.completionBlock = {
             print("Finished FetchPersonOperation")
@@ -221,7 +239,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func getAllItems() {
         isGetItemsInProgress = true
-        
         print("\(NSDate()) Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             self.isGetItemsInProgress = false
@@ -232,6 +249,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
 //                self.getMyExchanges()
             }
         })
+    }
+    
+    func updateItemsOnFilterChange() {
+            dispatch_async(dispatch_get_main_queue()) {
+               self.getMyExchanges()
+            }
     }
     
   

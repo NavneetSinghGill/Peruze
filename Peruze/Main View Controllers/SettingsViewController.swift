@@ -58,6 +58,9 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       setupImageViews()
     }
   }
+    var initialFriendFilterValue : Float = 0.0
+    var initialRangeFilterValue : Float = 0.0
+    
     private var selectedCircleImage: CircleImage!
     private var profilePicDidChange: Bool!
     private var loadingCircle: LoadingCircleView?
@@ -78,13 +81,15 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
     distanceSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Float ?? distanceSlider.maximumValue
+    initialRangeFilterValue = distanceSlider.value
     
     //friends
     friendsValues.sortInPlace(<)
     friendsSlider.minimumValue = friendsValues.first!
     friendsSlider.maximumValue = friendsValues.last!
     friendsSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Float ?? friendsSlider.maximumValue
-
+    initialFriendFilterValue = friendsSlider.value
+ 
     rangeLabel.text = "\(Int(distanceSlider.value)) mi"
     
     //version
@@ -204,6 +209,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     } else if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
       mustChangeFacebookFriendsAccessSetting()
     } else {
+        if initialRangeFilterValue != distanceSlider.value || initialFriendFilterValue != friendsSlider.value {
+             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name:"LNUpdateItemsOnFilterChange", object: nil, userInfo: nil))
+        }
+        
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
             //Update profile Pic

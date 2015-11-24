@@ -60,9 +60,11 @@ class GetItemInRangeOperation: GetItemOperation {
         friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
         return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, notMyItemsPredicate, friendPredicate])
     } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
-        let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as! NSArray
-        friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate, friendPredicate])
+        if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
+            friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate, friendPredicate])
+        }
+        return NSPredicate(value: true)
     } else {
         return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate])
     }
