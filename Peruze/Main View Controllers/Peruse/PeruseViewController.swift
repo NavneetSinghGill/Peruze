@@ -239,15 +239,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func getAllItems() {
         isGetItemsInProgress = true
-        print("\(NSDate()) Peruze view - GetPeruzeItems called")
+        print(">>>>>\(NSDate()) Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             self.isGetItemsInProgress = false
             self.dataSource.performFetchWithPresentationContext(self)
-            print("\(NSDate()) Peruze view - GetPeruzeItems completed!")
-            dispatch_async(dispatch_get_main_queue()) {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-//                self.getMyExchanges()
-            }
+            print("\(NSDate())<<< Peruze view - GetPeruzeItems completed!")
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchUserProfileIfNeeded", object: nil, userInfo: nil))
         })
     }
     
