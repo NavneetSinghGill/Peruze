@@ -40,7 +40,20 @@ class GetItemInRangeOperation: GetItemOperation {
     //create predicates
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
-    let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+    
+    var compoundPredicate: NSCompoundPredicate?
+    let defaults = NSUserDefaults.standardUserDefaults()
+    if defaults.objectForKey("shouldCallWithSyncDate") as? String != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
+        let date = defaults.objectForKey("syncDate") as! NSDate
+        let datePredicate = NSPredicate(format: "modificationDate > %@", date)
+        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate,notMyItemsPredicate])
+        defaults.setObject("no", forKey: "shouldCallWithSyncDate")
+    } else {
+        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notMyItemsPredicate])
+    }
+    
     let everywhereLocation = NSPredicate(value: true)
     let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
       "Location",
@@ -50,23 +63,20 @@ class GetItemInRangeOperation: GetItemOperation {
     //choose and concatenate predicates
     let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
     
-    
-    let defaults = NSUserDefaults.standardUserDefaults()
-    
     var friendPredicate = NSPredicate!()
     let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
     if userPrivacySetting == FriendsPrivacy.Friends {
         let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
         friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
-        return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, notMyItemsPredicate, friendPredicate])
+        return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, compoundPredicate!, friendPredicate])
     } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
         if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
             friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate, friendPredicate])
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!, friendPredicate])
         }
         return NSPredicate(value: true)
     } else {
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, notMyItemsPredicate])
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!])
     }
   }
 }
@@ -159,6 +169,8 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
+        let date = NSDate()
+        NSUserDefaults.standardUserDefaults().setObject(date, forKey: "syncDate")
       if let error = error {
         print("Get Uploads Finished With Error: \(error) ")
         self.finishWithError(error)
