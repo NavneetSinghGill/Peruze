@@ -57,6 +57,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       collectionView.showsHorizontalScrollIndicator = false
     }
   }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -83,7 +84,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "updateItemsOnFilterChange",
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
-    getMyExchanges()
+    
+    if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
+        self.getMyExchanges()
+    } else {
+        NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
+        self.getAllItems()
+    }
+    
   }
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: NSArray? = notification.userInfo?[NSUpdatedObjectsKey] as? NSArray
@@ -193,6 +201,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.isGetItemsInProgress = false
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
                 })
+            } else {
+                NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
+                self.getAllItems()
             }
         }
     }
@@ -266,4 +277,5 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       }
     }
   }
+
 }

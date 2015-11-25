@@ -87,7 +87,9 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   //MARK: - NSFetchedResultsControllerDelegate
   
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    tableView.beginUpdates()
+    if self.tableView != nil {
+        tableView.beginUpdates()
+    }
   }
   
   func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {

@@ -36,7 +36,11 @@ class GetPeruzeItemOperation: GroupOperation {
             let decoded  = defaults.objectForKey("kCursor") as! NSData
             let decodedTeams = NSKeyedUnarchiver.unarchiveObjectWithData(decoded) as! CKQueryCursor
             cursor = decodedTeams
+            defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
             defaults.synchronize()
+        }
+        if defaults.objectForKey("kCursor") == nil && defaults.boolForKey("keyIsMoreItemsAvalable") == false {
+            defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
         }
       getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 5)
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
@@ -50,6 +54,9 @@ class GetPeruzeItemOperation: GroupOperation {
     }
   override func finished(errors: [NSError]) {
     let defaults = NSUserDefaults.standardUserDefaults()
+    if defaults.objectForKey("shouldCallWithSyncDate") != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
+        defaults.setObject("no", forKey: "shouldCallWithSyncDate")
+    }
     if (getItems.cursor != nil){
         let encodedData = NSKeyedArchiver.archivedDataWithRootObject(getItems.cursor!)
         defaults.setObject(encodedData, forKey: "kCursor")
