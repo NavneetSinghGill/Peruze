@@ -87,7 +87,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   //MARK: - NSFetchedResultsControllerDelegate
   
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    if self.tableView != nil {
+    if tableView != nil {
         tableView.beginUpdates()
     }
   }
@@ -106,6 +106,9 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
   
   func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    if self.tableView == nil {
+        return
+    }
     switch type {
     case .Insert:
       tableView.insertRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -125,7 +128,9 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     dispatch_async(dispatch_get_main_queue()) {
-        self.tableView.endUpdates()
+        if self.tableView != nil {
+            self.tableView.endUpdates()
+        }
     }
   }
 }

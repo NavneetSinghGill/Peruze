@@ -51,13 +51,13 @@ class ProfileViewController: UIViewController {
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    
+    
     numberOfExchangesLabel.text = "0"
     numberOfFavoritesLabel.text = "0"
     numberOfUploadsLabel.text = "0"
-    //hide the container view and start loading data
-    containerView.alpha = 0.0
-    containerSpinner.startAnimating()
-    view.addSubview(containerSpinner)
+    
     
     //check for a person, if there's no person, then it's my profile
     if personForProfile == nil {
@@ -70,26 +70,14 @@ class ProfileViewController: UIViewController {
     }
     //TODO: set #ofStars
     
-    //get the updated information for the profile
-    let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
-    let completePersonRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
-    let completePerson = GetFullProfileOperation(
-      personRecordID: completePersonRecordID,
-      context: managedConcurrentObjectContext,
-      database: CKContainer.defaultContainer().publicCloudDatabase,
-      completionHandler: {
-        print("\(NSDate())\nFinished GetFullProfileOperation")
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfileRecordID)
-          self.personForProfile = completeProfile
-          self.containerSpinner.stopAnimating()
-          UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
+    //Fetch user all info if not fetched
+    if checkForUserInfo() == true {
+        UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
             self.updateChildViewControllers()
-          })
-            self.updateViewAfterGettingResponse()
         })
-    })
-    OperationQueue().addOperation(completePerson)
+        self.updateViewAfterGettingResponse()
+    }
+    
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = UIColor.redColor()
@@ -102,6 +90,7 @@ class ProfileViewController: UIViewController {
     starView.backgroundColor = .clearColor()
     starView.numberOfStars = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileUpdate:", name: "profileUpdate", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "fetchUserProfileIfNeeded", name: "FetchUserProfileIfNeeded", object: nil)
   }
     
     
@@ -179,6 +168,7 @@ class ProfileViewController: UIViewController {
   //MARK: - Setting Info for Child View Controllers
   private func updateChildViewControllers() {
     print(self.childViewControllers)
+    
     for childVC in childViewControllers {
       if let container = childVC as? ProfileContainerViewController {
         container.profileOwner = personForProfile
@@ -190,5 +180,57 @@ class ProfileViewController: UIViewController {
         numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
         numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
         numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+    }
+    
+    func getAllDataOfCurentUser() {
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(false, forKey: "keyFetchedUserProfile")
+        defaults.synchronize()
+        
+        //hide the container view and start loading data
+        containerView.alpha = 0.0
+        containerSpinner.startAnimating()
+        view.addSubview(containerSpinner)
+        
+        //get the updated information for the profile
+        let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
+        let completePersonRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
+        let completePerson = GetFullProfileOperation(
+            personRecordID: completePersonRecordID,
+            context: managedConcurrentObjectContext,
+            database: CKContainer.defaultContainer().publicCloudDatabase,
+            completionHandler: {
+                print("\(NSDate())\nFinished GetFullProfileOperation")
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfileRecordID)
+                    self.personForProfile = completeProfile
+                    self.containerSpinner.stopAnimating()
+                    UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
+                        self.updateChildViewControllers()
+                    })
+                    self.updateViewAfterGettingResponse()
+                    
+                    let defaults = NSUserDefaults.standardUserDefaults()
+                    defaults.setBool(true, forKey: "keyFetchedUserProfile")
+                    defaults.synchronize()
+                })
+        })
+        OperationQueue().addOperation(completePerson)
+    }
+    
+    func checkForUserInfo() -> Bool {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let shouldFetchAllInfo = defaults.boolForKey("keyFetchedUserProfile")
+        if shouldFetchAllInfo == false {
+            getAllDataOfCurentUser()
+        }
+        return shouldFetchAllInfo
+    }
+    
+    
+    //MARK: - notification Obeserver method
+    func fetchUserProfileIfNeeded() {
+        checkForUserInfo()
     }
 }

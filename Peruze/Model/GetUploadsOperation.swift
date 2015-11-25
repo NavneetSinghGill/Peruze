@@ -29,6 +29,7 @@ class GetUploadsOperation: GetItemOperation {
   }
   
   override func getPredicate() -> NSPredicate {
+    print("\n \(NSDate()) GetUploadItemOperation getPredicate()")
     return NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personIDName))
   }
   

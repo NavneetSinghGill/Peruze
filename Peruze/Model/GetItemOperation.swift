@@ -106,19 +106,21 @@ class GetItemOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("\(NSDate()) \nExecute GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { print("\n\(NSDate())\nExecute GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //create operation for fetching relevant records
     var getItemsOperation: CKQueryOperation
     if let cursor = cursor {
       getItemsOperation = CKQueryOperation(cursor: cursor)
     } else {
-      let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: getPredicate()/* NSPredicate(value: true)*/)
+    let predicate = getPredicate()
+        if logging { print("\n\(NSDate())\n Predicate for get Items::: \(predicate)") }
+      let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: predicate/* NSPredicate(value: true)*/)
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-      if logging { print("\(NSDate()) \nGetItemsOperation.recordFetchedBlock \n \(record)") }
+      if logging { print("\(NSDate())\nGetItemsOperation per record completion block \n \(record)") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
@@ -205,9 +207,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
-    
-    print("execute item fetch")
+    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")
     
@@ -225,7 +225,8 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      
+    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+        
       guard let recordsByID = recordsByID else {
         self.finishWithError(error)
         return
