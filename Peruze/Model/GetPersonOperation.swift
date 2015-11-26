@@ -102,7 +102,11 @@ class GetPersonOperation: Operation {
             localPerson.setValue(image, forKey: "image")
           }
           
-          self.context.MR_saveToPersistentStoreAndWait()
+//          self.context.MR_saveToPersistentStoreAndWait()
+            self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
+                print("\n\n\(NSDate())************ SaveComplrtion GetItemOperation ======")
+                }
+            )
         }
         
       }
@@ -128,7 +132,7 @@ class GetAllPersonsWithMissingData: Operation {
     super.init()
   }
   override func execute() {
-    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { print("\n\n\(NSDate()) GetAllPersonsWithMissingData exection start" + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
@@ -152,6 +156,7 @@ class GetAllPersonsWithMissingData: Operation {
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: missingPersonsRecordIDs)
     getPersonOperation.desiredKeys = desiredKeys
     getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+        print("\n\n\(NSDate()) GetAllPersonsWithMissingData Per record completion======")
       if let error = error {
         print("Get All Persons With Missing Data Finished With Error: \(error)")
         self.finishWithError(error)
@@ -193,7 +198,11 @@ class GetAllPersonsWithMissingData: Operation {
           localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
         }
         
-        self.context.MR_saveToPersistentStoreAndWait()
+//        self.context.MR_saveToPersistentStoreAndWait()
+        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
+            print("\n\n\(NSDate())************ SaveComplrtion GetAllPersonsWithMissingData ======")
+            }
+        )
       }
       
       //because the operations inside of the block wait, we can call finish outside of the block

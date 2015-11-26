@@ -70,12 +70,23 @@ class ProfileViewController: UIViewController {
     }
     //TODO: set #ofStars
     
+    
+    //hide the container view and start loading data
+    containerView.alpha = 0.0
+    containerSpinner.startAnimating()
+    view.addSubview(containerSpinner)
+    
     //Fetch user all info if not fetched
-    if checkForUserInfo() == true {
+    let defaults = NSUserDefaults.standardUserDefaults()
+    let shouldFetchAllInfo = defaults.boolForKey("keyFetchedUserProfile")
+    if shouldFetchAllInfo == true {
+        self.containerSpinner.stopAnimating()
         UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
             self.updateChildViewControllers()
         })
+
         self.updateViewAfterGettingResponse()
+        
     }
     
     if tabBarController == nil {
@@ -188,10 +199,7 @@ class ProfileViewController: UIViewController {
         defaults.setBool(false, forKey: "keyFetchedUserProfile")
         defaults.synchronize()
         
-        //hide the container view and start loading data
-        containerView.alpha = 0.0
-        containerSpinner.startAnimating()
-        view.addSubview(containerSpinner)
+        
         
         //get the updated information for the profile
         let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String

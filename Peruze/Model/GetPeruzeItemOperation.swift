@@ -42,9 +42,21 @@ class GetPeruzeItemOperation: GroupOperation {
         if defaults.objectForKey("kCursor") == nil && defaults.boolForKey("keyIsMoreItemsAvalable") == false {
             defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
         }
-      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 5)
+        print("\n\n\(NSDate())===== GroupOperation Start======")
+      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 10)
+        getItems.completionBlock = {
+            print("\n\n\(NSDate())===== GetItemInRangeOperation Comp======")
+        }
+        
+        
       let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
+        fillMissingItemData.completionBlock = {
+            print("\n\n\(NSDate())===== fillMissingItemData Comp======")
+        }
       let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
+        fillMissingPeopleData.completionBlock = {
+            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+        }
       
       //add dependencies
       fillMissingPeopleData.addDependency(getItems)
@@ -53,6 +65,7 @@ class GetPeruzeItemOperation: GroupOperation {
       super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
     }
   override func finished(errors: [NSError]) {
+    print("\n\n\(NSDate())===== GroupOperation Comp======")
     let defaults = NSUserDefaults.standardUserDefaults()
     if defaults.objectForKey("shouldCallWithSyncDate") != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
         defaults.setObject("no", forKey: "shouldCallWithSyncDate")
@@ -84,7 +97,7 @@ class GetPeruzeItemOperation: GroupOperation {
   private class func userDistanceSettingInMi() -> Int {
     return NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersDistancePreference) as? Int ?? 25
   }
-  private class func userDistanceSettingInMeters() -> Float {
+  public class func userDistanceSettingInMeters() -> Float {
     return convertToKilometers(userDistanceSettingInMi()) * 1000
   }
   private class func convertToKilometers(miles: Int) -> Float {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Darwin
 
 struct ItemStruct {
   var image: UIImage
@@ -30,6 +31,10 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var collectionView: UICollectionView!
   var fetchedResultsController: NSFetchedResultsController!
+    var location =  CLLocation()
+    
+    var items = [Item]()
+    
   ///the .recordIDName's of the favorite items
   var favorites = [String]()
   
@@ -41,19 +46,19 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
     let yesString = "yes"
     let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
     fetchRequest.predicate = compoundPredicate
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
     fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
-    
     getFavorites()
     do {
       try self.fetchedResultsController.performFetch()
+        
     } catch {
       print(error)
     }
@@ -68,24 +73,12 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
-    let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let myID = me.valueForKey("recordIDName") as! String
-    let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
-    let yesString = "yes"
-    let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-    fetchRequest.predicate = compoundPredicate
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
-    fetchRequest.includesSubentities = true
-    fetchRequest.returnsObjectsAsFaults = false
-    fetchRequest.includesPropertyValues = true
-    fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: "PeruseItemDataSourceCache")
-    fetchedResultsController.delegate = self
+
     dispatch_async(dispatch_get_main_queue()) {
       do {
         try self.fetchedResultsController.performFetch()
+        
+//        self.refreshData(presentationContext)
       } catch {
         
         print(error)
@@ -103,11 +96,66 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         presentationContext.presentViewController(alert, animated: true, completion: nil)
       }
        
-            self.collectionView.reloadData()
-            self.getFavorites()
+//            self.collectionView.reloadData()
+//            self.getFavorites()
     }
   }
   
+    
+    func getDistancePredicate() -> NSPredicate {
+        //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
+        
+        
+        
+        let maxRadius:CLLocationDistance = 45000 //Double(GetPeruzeItemOperation.userDistanceSettingInMeters())// in meters
+        let targetLocation: CLLocation = self.location //CLLocation(latitude: 51.5028,longitude: 0.0031)
+        //        CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:51.5028 longitude:0.0031];
+        
+        let predicate: NSPredicate = NSPredicate { (Item item, NSDictionary bindings) -> Bool in
+            
+            let itemLocation: CLLocation = CLLocation(latitude: Double( (item as! Item).latitude!),longitude: Double( (item as! Item).longitude!))
+            print( (itemLocation.distanceFromLocation(targetLocation)))
+            return itemLocation.distanceFromLocation(targetLocation) <= maxRadius
+            
+        }
+        return predicate
+    }
+    
+    
+    func refreshData(presentationContext: UIViewController) {
+        let opQueue = OperationQueue()
+        let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
+            self.location = location
+            let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
+            self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
+            print(self.items)
+            
+            self.collectionView.reloadData()
+            self.getFavorites()
+            
+        }
+        opQueue.addOperation(getLocationOp)
+    }
+    
+    
+//    func getDistancePredicate(myLocation : CLLocation) -> NSPredicate {
+////        let myLocation : CLLocation =  CLLocation(latitude: 50.000, longitude: 0.2555)
+////        let region : CLRegion = CLRegion(center: myLocation,radius:50 ,identifier:"dfs")
+//        let   D : Double = Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) * Double(1.1)
+//        let   R : Double = 6371009.0 //; // Earth readius in meters Double(GetPeruzeItemOperation.userDistanceSettingInMeters())
+//        let meanLatitidue : Double = myLocation.coordinate.latitude * M_PI / Double(180)
+//        let deltaLatitude : Double = D / R * Double(180) / M_PI
+//        let deltaLongitude : Double = D / (R * cos(meanLatitidue)) * Double(180) / M_PI;
+//        let minLatitude : Double = myLocation.coordinate.latitude - deltaLatitude;
+//        let maxLatitude : Double = myLocation.coordinate.latitude + deltaLatitude;
+//        let minLongitude : Double = myLocation.coordinate.longitude - deltaLongitude;
+//        let maxLongitude : Double = myLocation.coordinate.longitude + deltaLongitude;
+//        
+//        
+//        
+//        return NSPredicate(format:"(%@ <= longitude) AND (longitude <= %@) AND (%@ <= latitude) AND (latitude <= %@)",
+//         argumentArray:[minLongitude, maxLongitude, minLatitude, maxLatitude])
+//    }
   
   func getFavorites() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
@@ -210,8 +258,9 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     if indexPath.section == 0 {
       //normal item cell
       let localCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
-      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-      
+//      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+      let item = self.items[indexPath.row]
+        
       localCell.item = item
       localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
       localCell.delegate = itemDelegate
@@ -235,7 +284,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     var returnValue = 0
     if section == 0 {
-      returnValue = fetchedResultsController.sections?[section].numberOfObjects ?? 0
+//      returnValue = fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        returnValue = self.items.count
     } else {
       returnValue = 1
     }
@@ -243,7 +293,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   }
   
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
+//    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
+    return 2
   }
     
 

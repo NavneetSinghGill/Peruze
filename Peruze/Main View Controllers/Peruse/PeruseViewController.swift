@@ -85,6 +85,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     
+
+    
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
         self.getMyExchanges()
     } else {
@@ -221,13 +223,13 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         let personForProfileRecordID = personForProfile?.valueForKey("recordIDName") as! String
         let personRecordID = CKRecordID(recordName: personForProfile?.valueForKey("recordIDName") as! String)
         
-        //Delete all items of peruze tab
-        let myRequestedPredicate = NSPredicate(format: "owner.recordIDName != %@", personForProfileRecordID)
-        Item.MR_deleteAllMatchingPredicate(myRequestedPredicate, inContext: managedConcurrentObjectContext)
-        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+//        //Delete all items of peruze tab
+//        let myRequestedPredicate = NSPredicate(format: "owner.recordIDName != %@ ", personForProfileRecordID)
+//        Item.MR_deleteAllMatchingPredicate(myRequestedPredicate, inContext: managedConcurrentObjectContext)
+//        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
         
         //Refresh view items
-        self.dataSource.performFetchWithPresentationContext(self)
+//        self.dataSource.performFetchWithPresentationContext(self)
         
         //fetch exchanges, items
         let fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: CKContainer.defaultContainer().publicCloudDatabase , context: managedConcurrentObjectContext)
@@ -250,11 +252,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func getAllItems() {
         isGetItemsInProgress = true
-        print(">>>>>\(NSDate()) Peruze view - GetPeruzeItems called")
+        print("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             self.isGetItemsInProgress = false
-            self.dataSource.performFetchWithPresentationContext(self)
-            print("\(NSDate())<<< Peruze view - GetPeruzeItems completed!")
+//            self.dataSource.performFetchWithPresentationContext(self)
+            self.dataSource.refreshData(self)
+            print("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchUserProfileIfNeeded", object: nil, userInfo: nil))
         })
     }

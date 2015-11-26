@@ -207,8 +207,8 @@ class GetExchangesOperation: Operation {
 //         print("\n requestingPerson \(requestingPerson)")
 //        print("\n localExchange \(localExchange)")
 //
-        let set = currentExchanges.setByAddingObject(localExchange)
-        requestingPerson.setValue(set, forKey: "exchanges")
+//        let set = currentExchanges.setByAddingObject(localExchange)
+//        requestingPerson.setValue(set, forKey: "exchanges")
       
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()

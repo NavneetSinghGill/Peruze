@@ -33,52 +33,66 @@ class GetItemInRangeOperation: GetItemOperation {
       let networkObserver = NetworkObserver()
       addObserver(networkObserver)
   }
+    
+//   override func getPredicate() -> NSPredicate {
+//        return NSPredicate(value: true)
+//    }
+    
+    override func getPredicate() -> NSPredicate {
+        print("\n \(NSDate()) GetItemInRangeOperation getPredicate()")
+        let owner = Person.MR_findFirstByAttribute("me",
+            withValue: false,
+            inContext: self.context)
+        return NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: owner.recordIDName!))
+    }
   
-  override func getPredicate() -> NSPredicate {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
-    
-    //create predicates
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
-    
-    var compoundPredicate: NSCompoundPredicate?
-    let defaults = NSUserDefaults.standardUserDefaults()
-    if defaults.objectForKey("shouldCallWithSyncDate") as? String != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
-        let date = defaults.objectForKey("syncDate") as! NSDate
-        let datePredicate = NSPredicate(format: "modificationDate > %@", date)
-        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
-        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate,notMyItemsPredicate])
-        defaults.setObject("no", forKey: "shouldCallWithSyncDate")
-    } else {
-        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
-        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notMyItemsPredicate])
-    }
-    
-    let everywhereLocation = NSPredicate(value: true)
-    let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
-      "Location",
-      location,
-      range)
-    
-    //choose and concatenate predicates
-    let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
-    
-    var friendPredicate = NSPredicate!()
-    let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
-    if userPrivacySetting == FriendsPrivacy.Friends {
-        let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
-        friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
-        return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, compoundPredicate!, friendPredicate])
-    } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
-        if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
-            friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!, friendPredicate])
-        }
-        return NSPredicate(value: true)
-    } else {
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!])
-    }
-  }
+//  override func getPredicate() -> NSPredicate {
+//    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+//    
+//    //create predicates
+//    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+//    let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
+//    
+//    var compoundPredicate: NSCompoundPredicate?
+//    let defaults = NSUserDefaults.standardUserDefaults()
+//    if defaults.objectForKey("shouldCallWithSyncDate") as? String != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
+//        var datePredicate = NSPredicate(format: "modificationDate > %@", NSDate())
+//        if let date = defaults.objectForKey("syncDate") as? NSDate {
+//            datePredicate = NSPredicate(format: "modificationDate > %@", date)
+//        }
+//        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+//        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate,notMyItemsPredicate])
+//        defaults.setObject("no", forKey: "shouldCallWithSyncDate")
+//    } else {
+//        let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+//        compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notMyItemsPredicate])
+//    }
+//    
+//    let everywhereLocation = NSPredicate(value: true)
+//    let specificLocation = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+//      "Location",
+//      location,
+//      range)
+//    
+//    //choose and concatenate predicates
+//    let locationPredicate = ((range == 0) ? everywhereLocation : specificLocation)
+//    
+//    var friendPredicate = NSPredicate!()
+//    let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
+//    if userPrivacySetting == FriendsPrivacy.Friends {
+//        let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+//        friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
+//        return NSCompoundPredicate(andPredicateWithSubpredicates:[locationPredicate, compoundPredicate!, friendPredicate])
+//    } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
+//        if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
+//            friendPredicate = NSPredicate(format: "OwnerFacebookID IN %@", friendsIds)
+//            return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!, friendPredicate])
+//        }
+//        return NSPredicate(value: true)
+//    } else {
+//        return NSCompoundPredicate(andPredicateWithSubpredicates: [locationPredicate, compoundPredicate!])
+//    }
+//  }
 }
 
 class GetItemOperation: Operation {
@@ -159,13 +173,28 @@ class GetItemOperation: Operation {
       }
         
         
+        if let itemLocation = record.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
+            
+            if let latitude : Double = Double(itemLocation.coordinate.latitude) {
+                localUpload.setValue(latitude, forKey: "latitude")
+            }
+            
+            if let longitude : Double = Double(itemLocation.coordinate.longitude) {
+                localUpload.setValue(longitude, forKey: "longitude")
+            }
+        }
+        
         if localUpload.hasRequested != "yes" {
             localUpload.setValue("no", forKey: "hasRequested")
         }
         
       //save the context
-      self.context.MR_saveToPersistentStoreAndWait()
-      
+//      self.context.MR_saveToPersistentStoreAndWait()
+        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
+            print("\n\n\(NSDate())************ SaveComplrtion GetItemOperation ======")
+            }
+        )
+    
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
@@ -213,6 +242,8 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     
+    if logging { print("\n\n\(NSDate()) MissingDataCount : \( allItems.count)") }
+    
     let allRecordIDNames = allItems.map { $0.valueForKey("recordIDName") as? String }
     
     var itemRecordsToFetch = [CKRecordID]()
@@ -225,7 +256,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
         
       guard let recordsByID = recordsByID else {
         self.finishWithError(error)
@@ -279,7 +310,21 @@ class GetAllItemsWithMissingDataOperation: Operation {
           localOwner.setValue(facebookID, forKey: "facebookID")
         }
         
-        self.context.MR_saveToPersistentStoreAndWait()
+//        self.context.MR_saveToPersistentStoreAndWait()
+        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
+            
+            print("\n\n\(NSDate())************ SaveComplrtion GetAllItemsWithMissingDataOperation ======")
+            if successBlock {
+                
+            }
+            else {
+                if error != nil {
+                }
+                else {
+                }
+            }
+            }
+        )
       }
       self.finish()
     }

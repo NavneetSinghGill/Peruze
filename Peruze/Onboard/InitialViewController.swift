@@ -68,7 +68,7 @@ class InitialViewController: UIViewController {
             let getFacebookProfileOp = FetchFacebookUserProfile(presentationContext: self)
             getFacebookProfileOp.completionBlock = {
                 
-                self.spinner.stopAnimating()
+//                self.spinner.stopAnimating()
                 
                 if getFacebookProfileOp.cancelled {
                     return
@@ -95,14 +95,12 @@ class InitialViewController: UIViewController {
         getMyProfileOp.completionBlock = {
             
             self.spinner.stopAnimating()
-            
+            print("\(NSDate()) \n Initial view Stopped spinner \n\n")
             if getMyProfileOp.cancelled {
                 return
             }
             
             dispatch_async(dispatch_get_main_queue()){
-                
-                print("\(NSDate()) \n GetCurrentUserOperation completion block on initial view \n\n")
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 if (myPerson?.valueForKey("firstName") as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
                 if (myPerson?.valueForKey("lastName")  as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
