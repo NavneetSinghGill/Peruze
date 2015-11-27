@@ -24,13 +24,13 @@ class GetPeruzeItemOperation: GroupOperation {
     location: CLLocation?,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
-      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
-      self.presentationContext = presentationContext
-      var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
-      if location == nil {
-        range = 0 //makes sure that the location is not accessed
-      }
-      let location = location ?? CLLocation() //makes sure that location is not nil
+        if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+        self.presentationContext = presentationContext
+        var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
+        if location == nil {
+            range = 0 //makes sure that the location is not accessed
+        }
+        let location = location ?? CLLocation() //makes sure that location is not nil
         let defaults = NSUserDefaults.standardUserDefaults()
         if (defaults.objectForKey("kCursor") != nil){
             let decoded  = defaults.objectForKey("kCursor") as! NSData
@@ -42,30 +42,29 @@ class GetPeruzeItemOperation: GroupOperation {
         if defaults.objectForKey("kCursor") == nil && defaults.boolForKey("keyIsMoreItemsAvalable") == false {
             defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
         }
-        print("\n\n\(NSDate())===== GroupOperation Start======")
-      getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 10)
+        print("\n\n\(NSDate()) GroupOperation Start")
+        getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 10)
         getItems.completionBlock = {
-            print("\n\n\(NSDate())===== GetItemInRangeOperation Comp======")
+            print("\n\n\(NSDate()) GetItemInRangeOperation Completed")
         }
         
         
-      let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
+        let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
         fillMissingItemData.completionBlock = {
-            print("\n\n\(NSDate())===== fillMissingItemData Comp======")
+            print("\n\n\(NSDate()) fillMissingItemData Completed")
         }
-//      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
-//        fillMissingPeopleData.completionBlock = {
-//            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
-//        }
-      
-      //add dependencies
-//      fillMissingPeopleData.addDependency(getItems)
-      fillMissingItemData.addDependency(getItems)
-      
-      super.init(operations: [getItems, fillMissingItemData])
+        //      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
+        //        fillMissingPeopleData.completionBlock = {
+        //            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+        //        }
+        //add dependencies
+        //      fillMissingPeopleData.addDependency(getItems)
+        fillMissingItemData.addDependency(getItems)
+        
+        super.init(operations: [getItems, fillMissingItemData])
     }
   override func finished(errors: [NSError]) {
-    print("\n\n\(NSDate())===== GroupOperation Comp======")
+    print("\n\n\(NSDate()) GroupOperation Completed")
     let defaults = NSUserDefaults.standardUserDefaults()
     if defaults.objectForKey("shouldCallWithSyncDate") != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
         defaults.setObject("no", forKey: "shouldCallWithSyncDate")

@@ -120,6 +120,14 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
         localMessage.setValue(messageExchange, forKey: "exchange")
       }
       
+        if let receiverRecordIDName = record.objectForKey("ReceiverRecordIDName") as? String {
+            localMessage.setValue(receiverRecordIDName, forKey: "receiverRecordIDName")
+        }
+        
+        if let senderRecordIDName = record.objectForKey("SenderRecordIDName") as? String {
+            localMessage.setValue(senderRecordIDName, forKey: "senderRecordIDName")
+        }
+        
       if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
         let sender = Person.MR_findFirstOrCreateByAttribute("me",
           withValue: true,

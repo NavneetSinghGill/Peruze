@@ -120,6 +120,12 @@ class UpdateExchangeWithIncrementalData: Operation {
   }
   override func execute() {
     let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: recordIDName, inContext: context)
+    let offeredItem = Item.MR_findFirstByAttribute("recordIDName", withValue: localExchange.itemOffered?.recordIDName, inContext: context)
+    let requestedItem = Item.MR_findFirstByAttribute("recordIDName", withValue: localExchange.itemRequested?.recordIDName, inContext: context)
+    offeredItem.hasRequested = "no"
+    requestedItem.hasRequested = "no"
+//    context.MR_saveToPersistentStoreAndWait()
+    
     let exchangeRecordID = CKRecordID(recordName: recordIDName)
     let exchangeRecord = CKRecord(recordType: RecordTypes.Exchange, recordID: exchangeRecordID)
     

@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */; };
+		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
+		3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */; };
@@ -187,7 +190,10 @@
 /* Begin PBXFileReference section */
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
+		3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableViewCell.xib; sourceTree = "<group>"; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
+		3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GetItemOperation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPeruzeItemOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -425,6 +431,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3B0EA1951C0C9C5300A12DFD /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */,
+				3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */,
+				3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */,
+			);
+			name = Friends;
+			path = Upload;
+			sourceTree = "<group>";
+		};
 		9D177AE41B54DDC3009CB9FA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +472,7 @@
 				9D177AFD1B54DDC3009CB9FA /* Peruse */,
 				9D177B061B54DDC3009CB9FA /* Profile */,
 				9D177B191B54DDC3009CB9FA /* Requests */,
+				3B0EA1951C0C9C5300A12DFD /* Friends */,
 				9D177B201B54DDC3009CB9FA /* Upload */,
 				9DF505A11B69D6AE00404BD4 /* EmptyCell.xib */,
 			);
@@ -1058,6 +1076,7 @@
 				9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */,
 				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
 				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
+				3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */,
 				9DF505A21B69D6AE00404BD4 /* EmptyCell.xib in Resources */,
 				9D5C3A721B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib in Resources */,
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
@@ -1185,9 +1204,11 @@
 				9D45D2361B5B6BD300D555F3 /* GetPersonOperation.swift in Sources */,
 				9D177B861B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift in Sources */,
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
+				3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */,
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
+				3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
 				9DC345771BA9F22B00B1CA2C /* CloudCondition.swift in Sources */,
 				9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */,
@@ -1365,7 +1386,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1405,7 +1426,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1429,7 +1450,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1455,7 +1476,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peruzenow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd6b95d9-5955-46d5-b5a2-7d20109f0dfc";
+				PROVISIONING_PROFILE = "68eccc5a-df98-45e0-a74e-e0078627aa04";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Peruze/Peruze-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;

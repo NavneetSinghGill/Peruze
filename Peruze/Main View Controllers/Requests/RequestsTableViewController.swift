@@ -34,7 +34,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     title = "Requests"
     navigationController?.navigationBar.tintColor = .redColor()
     view.backgroundColor = .whiteColor()
+    refresh()
   }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        resetBadgeCounter()
+    }
   func refresh() {
     //reload the data
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -80,19 +85,32 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     titleLabel.font = .preferredFontForTextStyle(UIFontTextStyleBody)
     titleLabel.textColor = .lightGrayColor()
     view.addSubview(titleLabel)
+//    checkForEmptyData(true)
   }
   
-  private func checkForEmptyData(animated: Bool) {
-    if tableView.visibleCells.count == 0 {
-      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-        self.titleLabel.alpha = 1.0
-        self.tableView.alpha = 0.0
-      }
+//  private func checkForEmptyData(animated: Bool) {
+//    if tableView.visibleCells.count == 0 {
+//      UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//        self.titleLabel.alpha = 1.0
+//        self.tableView.alpha = 0.0
+//      }
+//    }
+//  }
+    private func checkForEmptyData(animated: Bool) {
+        if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
+            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+                self.titleLabel.alpha = 1.0
+                self.tableView.alpha = 0.2
+            }
+        } else {
+            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+                self.titleLabel.alpha = 0.0
+                self.tableView.alpha = 1.0
+            }
+        }
     }
-  }
-  
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
+//    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
@@ -184,5 +202,10 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       }
     }
   }
+    
+    //MARK: - reset cloudkit badge value
+    func resetBadgeCounter() {
+        NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil)
+    }
   
 }

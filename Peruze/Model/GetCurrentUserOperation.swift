@@ -61,8 +61,8 @@ class GetCurrentUserOperation: Operation {
       let lastName   = (record.objectForKey("LastName")   as? String)
       let facebookID = (record.objectForKey("FacebookID") as? String)
         
-        
-        if (person?.valueForKey("FacebookID") as? String) != facebookID {
+        // if firstName == nil it means it's the very first time any user is logging to device
+        if (person?.valueForKey("FacebookID") as? String) != facebookID && firstName != nil{
             person.facebookID = nil
             person.firstName = nil
             person.lastName = nil

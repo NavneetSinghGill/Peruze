@@ -93,6 +93,12 @@ class SaveMessageWithTempRecordIDOperation: Operation {
     newMessage.setValue(me, forKey: "sender")
     newMessage.setValue(tempID, forKey: "recordIDName")
     newMessage.setValue(exchange, forKey: "exchange")
+    newMessage.setValue(me.valueForKey("recordIDName") as! String, forKey: "senderRecordIDName")
+    if exchange.itemOffered?.owner?.recordIDName != me.recordIDName {
+        newMessage.setValue(exchange.itemOffered?.owner?.recordIDName, forKey: "receiverRecordIDName")
+    } else {
+        newMessage.setValue(exchange.itemRequested?.owner?.recordIDName, forKey: "receiverRecordIDName")
+    }
     context.MR_saveToPersistentStoreAndWait()
     finish()
   }
@@ -124,6 +130,8 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     messageRecord.setObject(localMessage.valueForKey("text") as? String, forKey: "Text")
     messageRecord.setObject(localMessage.valueForKey("image") as? NSData, forKey: "Image")
     messageRecord.setObject(localMessage.valueForKey("date") as? NSDate, forKey: "Date")
+    messageRecord.setObject(localMessage.valueForKey("senderRecordIDName") as? String, forKey: "SenderRecordIDName")
+    messageRecord.setObject(localMessage.valueForKey("receiverRecordIDName") as? String, forKey: "ReceiverRecordIDName")
     if let exchange = localMessage.valueForKey("Exchange") as? NSManagedObject,
       let exchangeID = exchange.valueForKey("recordIDName") as? String {
         let exchangeRecordID = CKRecordID(recordName: exchangeID)

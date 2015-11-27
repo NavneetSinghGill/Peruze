@@ -536,7 +536,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1oU-RA-NgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3483" y="-1101"/>
+            <point key="canvasLocation" x="3483" y="-1108"/>
         </scene>
         <!--Requests-->
         <scene sceneID="V5E-jY-B2d">
@@ -2471,6 +2471,9 @@
                                                         <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="inviteFacebookFriendsButtonTapped:" destination="JaR-yA-1li" eventType="touchUpInside" id="S9A-Al-9cE"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <animations/>
@@ -2680,6 +2683,7 @@
                         <outlet property="upperLeft" destination="4U7-7i-jBK" id="Lto-N4-d6s"/>
                         <outlet property="upperRight" destination="3fW-bc-XpO" id="6DB-xa-2Sd"/>
                         <outlet property="versionLabel" destination="IYT-5E-DQX" id="o8w-S8-dyq"/>
+                        <segue destination="Jhh-4P-tpl" kind="presentation" identifier="toFriendsViewControllerSegueIdentifier" id="ZF5-HN-Oze"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ch0-Ct-vsj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3631,6 +3635,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wAl-bL-QCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4938" y="761"/>
+        </scene>
+        <!--Friends View Controller-->
+        <scene sceneID="saM-1Z-FPn">
+            <objects>
+                <viewController storyboardIdentifier="FriendsViewController" id="Jhh-4P-tpl" customClass="FriendsViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TBv-BZ-abz"/>
+                        <viewControllerLayoutGuide type="bottom" id="cgu-gA-1Wq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="anL-6X-DAO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="B6g-af-zKr">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Jhh-4P-tpl" id="jfN-iW-o95"/>
+                                    <outlet property="delegate" destination="Jhh-4P-tpl" id="M15-K1-t5n"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="B6g-af-zKr" secondAttribute="bottom" id="QQG-1Q-64L"/>
+                            <constraint firstItem="B6g-af-zKr" firstAttribute="leading" secondItem="anL-6X-DAO" secondAttribute="leading" id="ZN9-LQ-Ydz"/>
+                            <constraint firstItem="B6g-af-zKr" firstAttribute="top" secondItem="anL-6X-DAO" secondAttribute="top" constant="20" id="dVm-TX-7AC"/>
+                            <constraint firstAttribute="trailing" secondItem="B6g-af-zKr" secondAttribute="trailing" id="lrp-hz-Yok"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="kcY-fC-uHy"/>
+                    <connections>
+                        <outlet property="tableView" destination="B6g-af-zKr" id="0Xe-jT-mXf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jO6-xm-Io7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6475" y="-1101"/>
         </scene>
     </scenes>
     <resources>

@@ -121,7 +121,7 @@ class InitialViewController: UIViewController {
             if let val = dict["firstName"]{
                 oldUserFirstName = val as? String
             }
-            if isNewUser == "yes" && oldUserFirstName != nil{
+            if isNewUser == "yes" && oldUserFirstName != nil {
                 let alert = UIAlertController(title: "Peruze", message: "This iCloud account is attached to \"\(oldUserFirstName!)\". Please login to another iCloud account.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
                     FBSDKAccessToken.setCurrentAccessToken(nil)
@@ -191,8 +191,11 @@ class InitialViewController: UIViewController {
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 
                 let friends : NSArray = (result["data"] as? NSArray)!
-                let ids : NSArray = friends.valueForKey("id") as! NSArray
+                var ids : NSArray = friends.valueForKey("id") as! NSArray
                 
+                if ids.count == 0 {
+                    ids = ["000000"]
+                }
                 let defaults = NSUserDefaults.standardUserDefaults()
                 defaults.setObject(ids, forKey: "kFriends")
                 defaults.synchronize()
@@ -285,7 +288,7 @@ class InitialViewController: UIViewController {
             
             let operation = CKQueryOperation(query: query)
             //        operation.desiredKeys = ["genre", "comments"]
-            operation.resultsLimit = 500
+            //operation.resultsLimit = 500
             
             var friendsOfFriendsList = [String]()
             operation.recordFetchedBlock = { (record) in
@@ -305,7 +308,7 @@ class InitialViewController: UIViewController {
             
             let operation2 = CKQueryOperation(query: query2)
             //        operation.desiredKeys = ["genre", "comments"]
-            operation2.resultsLimit = 500
+//            operation2.resultsLimit = 500
             
             var friendsOfFriendsList2 = [String]()
             operation2.recordFetchedBlock = { (record) in
@@ -323,19 +326,35 @@ class InitialViewController: UIViewController {
             
             operation2.queryCompletionBlock = { (cursor, error) -> Void in
                 let defaults = NSUserDefaults.standardUserDefaults()
-                if defaults.objectForKey("kFriendsOfFriend") == nil {
-                   defaults.setObject(friendsOfFriendsList2, forKey: "kFriendsOfFriend")
+//                if defaults.objectForKey("kFriendsOfFriend") == nil {
+//                   defaults.setObject(friendsOfFriendsList2, forKey: "kFriendsOfFriend")
+//                } else {
+//                    var friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
+//                    friendsOfFriends = friendsOfFriends + friendsOfFriendsList2
+//                    defaults.setObject(friendsOfFriends, forKey: "kFriendsOfFriend")
+//                }
+                
+                if defaults.objectForKey("kFriendsOfFriend") as? String == "0000" {
+                    if friendsOfFriendsList2.count != 0 {
+                        defaults.setObject(friendsOfFriendsList2, forKey: "kFriendsOfFriend")
+                    }
                 } else {
-                    var friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
-                    friendsOfFriends = friendsOfFriends + friendsOfFriendsList2
-                    defaults.setObject(friendsOfFriends, forKey: "kFriendsOfFriend")
+                    if friendsOfFriendsList2.count != 0{
+                        var friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
+                        friendsOfFriends = friendsOfFriends + friendsOfFriendsList2
+                        defaults.setObject(friendsOfFriends, forKey: "kFriendsOfFriend")
+                    }
                 }
                 defaults.synchronize()
             }
             
             operation.queryCompletionBlock = { (cursor, error) -> Void in
                 let defaults = NSUserDefaults.standardUserDefaults()
-                defaults.setObject(friendsOfFriendsList, forKey: "kFriendsOfFriend")
+                if friendsOfFriendsList.count != 0{
+                    defaults.setObject(friendsOfFriendsList, forKey: "kFriendsOfFriend")
+                } else {
+                    defaults.setObject("0000", forKey: "kFriendsOfFriend")
+                }
                 defaults.synchronize()
                 database.addOperation(operation2)
             }

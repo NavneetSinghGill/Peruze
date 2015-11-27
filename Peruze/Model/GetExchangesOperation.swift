@@ -147,7 +147,7 @@ class GetExchangesOperation: Operation {
     
     //handle returned objects
     getExchangesOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-      
+      record
       //find or create the record
       let requestingPerson = Person.MR_findFirstByAttribute("recordIDName",
         withValue: self.personRecordIDName,
@@ -185,7 +185,11 @@ class GetExchangesOperation: Operation {
         let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemOfferedReference.recordID.recordName,
           inContext: self.context)
-        itemOffered.setValue("yes", forKey: "hasRequested")
+        if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName{
+            itemOffered.setValue("yes", forKey: "hasRequested")
+        } else {
+            itemOffered.setValue("no", forKey: "hasRequested")
+        }
         localExchange.setValue(itemOffered, forKey: "itemOffered")
       }
       
@@ -194,7 +198,12 @@ class GetExchangesOperation: Operation {
         let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemRequestedReference.recordID.recordName,
           inContext: self.context)
-        itemRequested.setValue("yes", forKey: "hasRequested")
+        if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName {
+            itemRequested.setValue("no", forKey: "hasRequested")
+        } else {
+            itemRequested.setValue("yes", forKey: "hasRequested")
+        }
+        
         localExchange.setValue(itemRequested, forKey: "itemRequested")
         
       }

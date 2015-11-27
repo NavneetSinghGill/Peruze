@@ -18,6 +18,8 @@ extension Message {
     @NSManaged var recordIDName: String?
     @NSManaged var text: String?
     @NSManaged var date: NSDate?
+    @NSManaged var receiverRecordIDName: String?
+    @NSManaged var senderRecordIDName: String?
     @NSManaged var exchange: Exchange?
     @NSManaged var sender: Person?
 

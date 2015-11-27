@@ -14,7 +14,7 @@ private let logging = true
 private var resultsLimit = 100 //the limit for the results from the server. The lower this is, the faster the speed :)
 
 class GetItemInRangeOperation: GetItemOperation {
-  let range: Float
+  var range: Float
   let location: CLLocation
   ///If range is 0, then will retrieve all items
   init(range: Float,
@@ -33,6 +33,7 @@ class GetItemInRangeOperation: GetItemOperation {
       let networkObserver = NetworkObserver()
       addObserver(networkObserver)
   }
+
     
 //   override func getPredicate() -> NSPredicate {
 //        return NSPredicate(value: true)
@@ -43,6 +44,13 @@ class GetItemInRangeOperation: GetItemOperation {
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
+        
+        range = 1.60934 * 1000 * 25 //everywhere range is 25 miles
+        
+//        let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+//              "Location",
+//              location,
+//              range)
         
         //            var compoundPredicate: NSCompoundPredicate?
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -179,14 +187,15 @@ class GetItemOperation: Operation {
       
       if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
         localUpload.setValue(ownerFacebookID, forKey: "ownerFacebookID")
+      } else {
+        localUpload.setValue("noId", forKey: "ownerFacebookID")
       }
       
       if let imageAsset = record.objectForKey("Image") as? CKAsset {
         let imageData = NSData(contentsOfURL: imageAsset.fileURL)
         localUpload.setValue(imageData, forKey: "image")
       }
-        
-        
+               
         if let itemLocation = record.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
             
             if let latitude : Double = Double(itemLocation.coordinate.latitude) {
@@ -203,12 +212,7 @@ class GetItemOperation: Operation {
         }
         
       //save the context
-//      self.context.MR_saveToPersistentStoreAndWait()
-        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
-            print("\n\n\(NSDate())************ SaveComplrtion GetItemOperation ======")
-            }
-        )
-    
+      self.context.MR_saveToPersistentStoreAndWait()
     }
     
     getItemsOperation.queryCompletionBlock = { (cursor, error) -> Void in
@@ -322,23 +326,11 @@ class GetAllItemsWithMissingDataOperation: Operation {
         
         if let facebookID = record.valueForKey("OwnerFacebookID") as? String {
           localOwner.setValue(facebookID, forKey: "facebookID")
+        } else {
+            localOwner.setValue("noId", forKey: "ownerFacebookID")
         }
-        
-//        self.context.MR_saveToPersistentStoreAndWait()
-        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
-            
-            print("\n\n\(NSDate())************ SaveComplrtion GetAllItemsWithMissingDataOperation ======")
-            if successBlock {
-                
-            }
-            else {
-                if error != nil {
-                }
-                else {
-                }
-            }
-            }
-        )
+        self.context.MR_saveToPersistentStoreAndWait()
+
       }
       self.finish()
     }

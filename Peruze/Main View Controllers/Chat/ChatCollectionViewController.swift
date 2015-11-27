@@ -93,6 +93,8 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     self.inputToolbar?.contentView?.rightBarButtonItem = self.sendButton
     self.inputToolbar?.contentView?.rightBarButtonItem?.enabled = !self.keyboardController!.textView!.text!.isEmpty
     
+    self.dataSource?.scrollToBottom()
+    
     UIView.animateWithDuration(0.5) {
       self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 1.0
       self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 1.0
@@ -147,7 +149,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
       let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel this exchange? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
       let doNotDelete = UIAlertAction(title: "Do Not Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
       let doDelete = UIAlertAction(title: "Cancel Exchange", style: UIAlertActionStyle.Destructive) { (alertAction) -> Void in
-        //self.delegate!.cancelExchange(self.exchange)
+        self.delegate!.cancelExchange(self.exchange)
         self.navigationController!.popViewControllerAnimated(true)
       }
       alert.addAction(doNotDelete)
@@ -170,7 +172,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     case completeButton!:
       let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange!", preferredStyle: UIAlertControllerStyle.Alert)
       let successfulExchange = UIAlertAction(title: "We've successfully exchanged.", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-        //self.delegate!.completeExchange(self.exchange)
+        self.delegate!.completeExchange(self.exchange)
         self.navigationController!.popViewControllerAnimated(true)
       }
       let notExchangedYet = UIAlertAction(title: "We're not done yet!", style: UIAlertActionStyle.Cancel, handler: nil)

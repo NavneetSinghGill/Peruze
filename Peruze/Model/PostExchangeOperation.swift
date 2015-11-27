@@ -119,6 +119,7 @@ class SaveExchangeToLocalStorageOperation: Operation {
     localExchange.setValue(creator, forKey: "creator")
     
     context.MR_saveToPersistentStoreAndWait()
+    NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
     finish()
   }
   

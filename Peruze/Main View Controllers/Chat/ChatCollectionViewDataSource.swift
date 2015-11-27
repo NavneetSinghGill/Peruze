@@ -38,17 +38,22 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   init(exchange: NSManagedObject) {
     self.exchange = exchange
     super.init()
-    let exchangePredicate = NSPredicate(value: true)
-    fetchedResultsController = Message.MR_fetchAllSortedBy(
-      "date",
-      ascending: true,
-      withPredicate: exchangePredicate,
-      groupBy: nil,
-      delegate: self,
-      inContext: managedConcurrentObjectContext
-    )
+    self.getChatData()
   }
   
+    func getChatData() {
+        //    let exchangePredicate = NSPredicate(value: true)
+        let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", self.exchange.valueForKey("recordIDName") as! String)
+        fetchedResultsController = Message.MR_fetchAllSortedBy(
+            "date",
+            ascending: true,
+            withPredicate: exchangePredicate,
+            groupBy: nil,
+            delegate: self,
+            inContext: managedConcurrentObjectContext
+        )
+    }
+    
   //Setting up the labels around the bubble
   func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
     let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
@@ -110,10 +115,21 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
       database: CKContainer.defaultContainer().publicCloudDatabase,
       context: managedConcurrentObjectContext) {
         //do something
-        self.delegate?.collectionView?.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.getChatData()
+            self.delegate?.collectionView?.reloadData()
+            self.scrollToBottom()
+        }
     }
     OperationQueue().addOperation(postMessageOp)
   }
+    
+    func scrollToBottom() {
+        let sections = self.delegate?.collectionView?.numberOfSections()
+        let rows = self.delegate?.collectionView?.numberOfItemsInSection(sections! - 1)
+        let indexPath = NSIndexPath(forRow: rows! - 1, inSection: sections! - 1)
+        self.delegate?.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.Bottom, animated: false)
+    }
   
   private func JSQMessageFromMessage(message: NSManagedObject) -> JSQMessage {
     //Swift 2.0

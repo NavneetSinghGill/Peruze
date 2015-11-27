@@ -188,7 +188,10 @@ class ProfileViewController: UIViewController {
   }
     
     func updateViewAfterGettingResponse() {
-        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
+        let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
+        let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
+        numberOfExchangesLabel.text = String(ex.count)
+//        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
         numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
         numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
     }

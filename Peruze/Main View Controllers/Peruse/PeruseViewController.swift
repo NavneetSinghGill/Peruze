@@ -26,26 +26,28 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   var itemChosenToExchange: NSManagedObject? {
     didSet {
       if itemChosenToExchange != nil {
-        let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
-        circle.strokeColor = .greenColor()
-        circle.center = CGPointMake(view.frame.width / 2, view.frame.height / 2)
-        circle.backgroundColor = .clearColor()
-        circle.strokeWidth = 5
-        view.addSubview(circle)
+//        let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
+//        circle.strokeColor = .greenColor()
+//        circle.center = CGPointMake(view.frame.width / 2, view.frame.height / 2)
+//        circle.backgroundColor = .clearColor()
+//        circle.strokeWidth = 5
+//        view.addSubview(circle)
         
-        let checkmark = UIImageView(frame: circle.frame)
-        checkmark.image = UIImage(named: "Large_Check_Mark")
-        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
-        view.addSubview(checkmark)
-        
-        UIView.animateWithDuration(1, animations: { () -> Void in
-          circle.alpha = 0.0
-          checkmark.alpha = 0.0
-          }, completion: { (_) -> Void in
-            circle.removeFromSuperview()
-            checkmark.removeFromSuperview()
+//        let checkmark = UIImageView(frame: circle.frame)
+//        checkmark.image = UIImage(named: "Large_Check_Mark")
+//        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
+//        view.addSubview(checkmark)
+        if self.dataSource.collectionView != nil {
+            self.dataSource.collectionView.reloadData()
+        }
+//        UIView.animateWithDuration(1, animations: { () -> Void in
+//          circle.alpha = 0.0
+//          checkmark.alpha = 0.0
+//          }, completion: { (_) -> Void in
+//            circle.removeFromSuperview()
+//            checkmark.removeFromSuperview()
             self.exchangeInitiated()
-        })
+//        })
       }
     }
   }
@@ -63,10 +65,11 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.timer = NSTimer.scheduledTimerWithTimeInterval(2*60, target: self, selector: "update", userInfo: nil, repeats: true)
+    self.timer = NSTimer.scheduledTimerWithTimeInterval(3*60, target: self, selector: "update", userInfo: nil, repeats: true)
     
     //Register for push notifications
-    let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil)
+    let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+//    let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil)
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
     UIApplication.sharedApplication().registerForRemoteNotifications()
     
@@ -84,6 +87,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "updateItemsOnFilterChange",
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
     
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
         self.getMyExchanges()
@@ -93,7 +97,22 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         self.getAllItems()
     }
     
+    //APNS
+//    subscribeForNewOffer()
+//    subscribeForChat()
   }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+//        if self.dataSource.items.count == 0{
+//            self.getMoreItems()
+//        }
+    }
+    func reloadPeruseItemMainScreen(){
+        self.dataSource.refreshData(self)
+    }
+    
+    
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: NSArray? = notification.userInfo?[NSUpdatedObjectsKey] as? NSArray
     let deletedObjects: AnyObject? = notification.userInfo?[NSDeletedObjectsKey]
@@ -152,6 +171,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.dataSource.collectionView.reloadData()
         }
     }
+    
     OperationQueue().addOperation(postExchange)
   }
   
@@ -272,8 +292,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.dataSource.refreshData(self)
                 })
             } else {
-                print("\n\n\(NSDate()) Timer Stopped ----------------  -------------------------------------")
-                timer!.invalidate()
+//                print("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
+//                timer!.invalidate()
                 NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
                 self.getAllItems()
             }
@@ -292,7 +312,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func update() {
-        print("\n\n\(NSDate()) Timer started ----------------  -------------------------------------")
+        print("\n\n\(NSDate()) ----------------  Timer started ----------------------")
         getMoreItems()
     }
     
@@ -305,5 +325,121 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       }
     }
   }
+    
+    
+    func subscribeForNewOffer() {
+            let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+            
+//            let predicate = NSPredicate(format: "TRUEPREDICATE")
+         let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+            let subscription = CKSubscription(recordType: "Exchange",
+                predicate: predicate,
+                options: .FiresOnRecordCreation)
+            
+            let notificationInfo = CKNotificationInfo()
+            
+            notificationInfo.alertBody = NotificationMessages.NewOfferMessage
+            notificationInfo.shouldBadge = true
+            
+            subscription.notificationInfo = notificationInfo
+            
+            publicDatabase.saveSubscription(subscription,
+                completionHandler: ({returnRecord, error in
+                    if let err = error {
+                        print("subscription failed %@",
+                            err.localizedDescription)
+                    } else {
+                        print("subscription success")
+//                        dispatch_async(dispatch_get_main_queue()) {
+//                            self.notifyUser("Success", 
+//                                message: "Subscription set up successfully")
+//                        }
+                    }
+                }))
+        }
+    
+    
+    
+    func subscribeForChat() {
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        //            let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "Exchange.RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let subscription = CKSubscription(recordType: "Message",
+            predicate: predicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.NewOfferMessage
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    print("subscription failed %@",
+                        err.localizedDescription)
+                } else {
+                    print("subscription success")
+                    //                        dispatch_async(dispatch_get_main_queue()) {
+                    //                            self.notifyUser("Success",
+                    //                                message: "Subscription set up successfully")
+                    //                        }
+                }
+            }))
+    }
+    
+    
+    
+    func subscribeForOfferRecall() {
+        
+        
+//        var reminderDate = dueDate.addDays(1)
+        
+//        //Check if reminderDate is Greater than Right now
+//        if(reminderDate.isGreaterThanDate(currentDateTime))
+//        {
+//            //Do Something...
+//        }
+        
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        //            let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let myExchangePredicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let datePredicate = NSPredicate(format: "modificationDate < %@", me)
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[myExchangePredicate,datePredicate])
+        
+        let subscription = CKSubscription(recordType: "Exchange",
+            predicate: compoundPredicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ExchangeRecall
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    print("subscription failed %@",
+                        err.localizedDescription)
+                } else {
+                    print("subscription success")
+                    //                        dispatch_async(dispatch_get_main_queue()) {
+                    //                            self.notifyUser("Success",
+                    //                                message: "Subscription set up successfully")
+                    //                        }
+                }
+            }))
+    }
 
 }

@@ -38,6 +38,7 @@ class PostItemOperation: GroupOperation {
       tempItem.setValue(title, forKey: "title")
       tempItem.setValue(detail, forKey: "detail")
       tempItem.setValue((recordIDName ?? "tempID"), forKey: "recordIDName")
+      tempItem.setValue("no", forKey: "hasRequested")
       
       context.MR_saveToPersistentStoreAndWait()
       

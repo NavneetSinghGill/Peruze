@@ -46,7 +46,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     didSet {
       if itemFavorited {
         favoriteImageView.image = UIImage(named: Constants.FilledHeartName)
-        heartFlash()
+//        heartFlash()
       } else {
         favoriteImageView.image = UIImage(named: Constants.EmptyHeartName)
       }
@@ -118,6 +118,9 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     if CGRectContainsPoint(favoriteBuffer, sender.locationInView(scrollView)) {
       itemFavorited = !itemFavorited
       delegate?.itemFavorited(item!, favorite: itemFavorited)
+        if itemFavorited == true {
+            heartFlash()
+        }
     } else if scrollView.contentOffset != CGPointMake(0, 0) {
       scrollView.scrollRectToVisible(CGRectMake(0, 0, 10, 10), animated: true)
     } else if CGRectContainsPoint(ownerProfileImage.frame, sender.locationInView(contentView)) {

@@ -22,6 +22,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     static let DeveloperIndexPath = NSIndexPath(forRow: 3, inSection: 2)
     static let AboutURL = NSURL(string: "http://www.perusenow.com")
     static let DeveloperWebsiteURL = NSURL(string: "http://www.philliphtrentiii.info")
+    static let friendsViewControllerSegueIdentifier = "toFriendsViewControllerSegueIdentifier"
     struct Alerts {
       struct ProfilePhoto {
         static let Title = "Profile Photos"
@@ -48,6 +49,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBOutlet weak var lowerLeft: CircleImage!
   @IBOutlet weak var loadingViewContainer: UIView!
   @IBOutlet weak var versionLabel: UILabel!
+  @IBOutlet weak var inviteFacebookFriendsButton: UIButton!
   
   //MARK: Local Vars
   private var facebookData = FacebookDataSource()
@@ -90,7 +92,11 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     friendsSlider.value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Float ?? friendsSlider.maximumValue
     initialFriendFilterValue = friendsSlider.value
  
-    rangeLabel.text = "\(Int(distanceSlider.value)) mi"
+    if distanceSlider.value == distanceSlider.maximumValue{
+        rangeLabel.text = "Everywhere"
+    } else {
+        rangeLabel.text = "\(Int(distanceSlider.value)) mi"
+    }
     
     //version
     let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
@@ -225,6 +231,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
   }
   
+    @IBAction func inviteFacebookFriendsButtonTapped(sender: UIButton) {
+//        performSegueWithIdentifier(Constants.friendsViewControllerSegueIdentifier, sender: self)
+    }
+    
   //MARK: - Handling Sliders
   
   private var distanceValues: [Float] = [1, 5, 10, 15, 20, 25]

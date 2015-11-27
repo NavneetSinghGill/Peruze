@@ -30,12 +30,32 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
     tableView.addSubview(refreshControl)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
   }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        checkForEmptyData(true)
+    }
+    
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
   }
   func refresh() {
     refreshControl.endRefreshing()
   }
+    
+    private func checkForEmptyData(animated: Bool) {
+        if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
+            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+                self.titleLabel.alpha = 1.0
+                self.tableView.alpha = 0.0
+            }
+        } else {
+            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+                self.titleLabel.alpha = 0.0
+                self.tableView.alpha = 1.0
+            }
+        }
+    }
     
     //MARK: Reloading view on fetch data from server
     func reloadFetchedData () {

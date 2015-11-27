@@ -46,7 +46,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
     let yesString = "yes"
     let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2])
     fetchRequest.predicate = compoundPredicate
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
@@ -73,7 +73,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
     print("Perform Fetch")
-
     dispatch_async(dispatch_get_main_queue()) {
       do {
         try self.fetchedResultsController.performFetch()
@@ -108,26 +107,28 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
         
         if userPrivacySetting == FriendsPrivacy.Friends {
-            let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
-            friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
-            return friendPredicate
-        } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
-            if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
+            if let friendsIds : NSArray = defaults.objectForKey("kFriends") as? NSArray {
                 friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
                 return friendPredicate
             }
-            return NSPredicate(value: true)
-        } else {
-            return NSPredicate(value: true)
+        } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
+            let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+            let friendsOfFriendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as! NSArray
+            let allFriends = friendsIds.arrayByAddingObjectsFromArray(friendsOfFriendsIds as! [String])
+            let set = Set(allFriends as! [String])
+            friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", set)
+            return friendPredicate
         }
+        return NSPredicate(value: true)
     }
     
     func getDistancePredicate() -> NSPredicate {
         //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
         
-        
-        
         let maxRadius:CLLocationDistance = Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) //45000// in meters
+        if Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) >= 40233{ //25miles in meters
+            return NSPredicate(value: true)
+        }
         let targetLocation: CLLocation = self.location //CLLocation(latitude: 51.5028,longitude: 0.0031)
         //        CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:51.5028 longitude:0.0031];
         
@@ -145,6 +146,9 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     func refreshData(presentationContext: UIViewController) {
         refreshFetchResultController()
         let opQueue = OperationQueue()
+        
+        
+        
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
             let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
@@ -167,7 +171,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
         let yesString = "yes"
         let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
-        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),])
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2])
         fetchRequest.predicate = compoundPredicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
         fetchRequest.includesSubentities = true
@@ -213,7 +217,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       print("me.valueForKey('favorites') was not an NSSet ")
     }
   }
-  
+    
   //MARK: - NSFetchedResultsController Delegate Methods
   private var sectionChanges = [[NSFetchedResultsChangeType: Int]]()
   private var itemChanges = [[NSFetchedResultsChangeType : AnyObject]]()
@@ -344,6 +348,10 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
     return 2
   }
-    
+    func reloadPeruseItemMainScreen() {
+        dispatch_async(dispatch_get_main_queue()){
+            self.collectionView.reloadData()
+        }
+    }
 
 }

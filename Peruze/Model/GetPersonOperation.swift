@@ -102,11 +102,7 @@ class GetPersonOperation: Operation {
             localPerson.setValue(image, forKey: "image")
           }
           
-//          self.context.MR_saveToPersistentStoreAndWait()
-            self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
-                print("\n\n\(NSDate())************ SaveComplrtion GetItemOperation ======")
-                }
-            )
+          self.context.MR_saveToPersistentStoreAndWait()
         }
         
       }
@@ -198,11 +194,7 @@ class GetAllPersonsWithMissingData: Operation {
           localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
         }
         
-//        self.context.MR_saveToPersistentStoreAndWait()
-        self.context.MR_saveToPersistentStoreWithCompletion({(successBlock : Bool, error : NSError!) in
-            print("\n\n\(NSDate())************ SaveComplrtion GetAllPersonsWithMissingData ======")
-            }
-        )
+        self.context.MR_saveToPersistentStoreAndWait()
       }
       
       //because the operations inside of the block wait, we can call finish outside of the block
