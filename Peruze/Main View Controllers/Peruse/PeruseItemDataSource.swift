@@ -102,12 +102,32 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   }
   
     
+    func getFriendsPredicate() -> NSPredicate {
+        var friendPredicate = NSPredicate!()
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
+        
+        if userPrivacySetting == FriendsPrivacy.Friends {
+            let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+            friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
+            return friendPredicate
+        } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
+            if let friendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as? NSArray {
+                friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
+                return friendPredicate
+            }
+            return NSPredicate(value: true)
+        } else {
+            return NSPredicate(value: true)
+        }
+    }
+    
     func getDistancePredicate() -> NSPredicate {
         //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
         
         
         
-        let maxRadius:CLLocationDistance = 45000 //Double(GetPeruzeItemOperation.userDistanceSettingInMeters())// in meters
+        let maxRadius:CLLocationDistance = Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) //45000// in meters
         let targetLocation: CLLocation = self.location //CLLocation(latitude: 51.5028,longitude: 0.0031)
         //        CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:51.5028 longitude:0.0031];
         
@@ -123,18 +143,46 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     
     
     func refreshData(presentationContext: UIViewController) {
+        refreshFetchResultController()
         let opQueue = OperationQueue()
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
             let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
             self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
-            print(self.items)
-            
-            self.collectionView.reloadData()
+            print("Filtered items = \(self.items)")
+            dispatch_async(dispatch_get_main_queue()) {
+                self.collectionView.reloadData()
+            }
             self.getFavorites()
             
         }
         opQueue.addOperation(getLocationOp)
+    }
+    
+    
+    func refreshFetchResultController() {
+        let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let myID = me.valueForKey("recordIDName") as! String
+        let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
+        let yesString = "yes"
+        let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),])
+        fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
+        fetchRequest.includesSubentities = true
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.includesPropertyValues = true
+        fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        getFavorites()
+        do {
+            try self.fetchedResultsController.performFetch()
+            
+        } catch {
+            print(error)
+        }
     }
     
     

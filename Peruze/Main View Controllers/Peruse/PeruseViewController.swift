@@ -19,6 +19,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   private lazy var dataSource = PeruseItemDataSource()
   private var itemToForwardToExchange: NSManagedObject?
     var isGetItemsInProgress: Bool?
+    
+    var timer : NSTimer? = nil
   
   //the item the user owns that he/she selected to exchange
   var itemChosenToExchange: NSManagedObject? {
@@ -61,9 +63,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let defaults = NSUserDefaults.standardUserDefaults()
-    defaults.setBool(true, forKey: "keyIsMoreItemsAvalable")
-    defaults.synchronize()
+    self.timer = NSTimer.scheduledTimerWithTimeInterval(2*60, target: self, selector: "update", userInfo: nil, repeats: true)
     
     //Register for push notifications
     let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil)
@@ -85,11 +85,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     
-
-    
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
         self.getMyExchanges()
     } else {
+        updateItemsOnFilterChange()
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
@@ -193,20 +192,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     func scrollViewDidScroll(scrollView: UIScrollView){
         if (scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.frame.size.width)
         {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
-            if  self.isGetItemsInProgress == false && isMoreItemsAvailable == true {
-                self.isGetItemsInProgress = true
-                print("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
-                Model.sharedInstance().getPeruzeItems(self, completion: {
-                    print("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
-                    self.isGetItemsInProgress = false
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
-                })
-            } else {
-                NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
-                self.getAllItems()
-            }
+            getMoreItems()
         }
     }
     
@@ -254,18 +240,60 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         isGetItemsInProgress = true
         print("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
+            
             self.isGetItemsInProgress = false
-//            self.dataSource.performFetchWithPresentationContext(self)
             self.dataSource.refreshData(self)
             print("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchUserProfileIfNeeded", object: nil, userInfo: nil))
+            self.getAllPersonsMissingData()
+            
         })
     }
     
+    func getAllPersonsMissingData() {
+        let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
+        fillMissingPeopleData.completionBlock = {
+            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+        }
+        OperationQueue().addOperation(fillMissingPeopleData)
+    }
+    
+    func getMoreItems() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
+         if  self.isGetItemsInProgress == false {
+            if isMoreItemsAvailable == true {
+                self.isGetItemsInProgress = true
+                print("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
+                Model.sharedInstance().getPeruzeItems(self, completion: {
+                    print("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
+                    self.isGetItemsInProgress = false
+//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
+                    self.dataSource.refreshData(self)
+                })
+            } else {
+                print("\n\n\(NSDate()) Timer Stopped ----------------  -------------------------------------")
+                timer!.invalidate()
+                NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
+                self.getAllItems()
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    // Method calls when filter changed from the setting screen
     func updateItemsOnFilterChange() {
             dispatch_async(dispatch_get_main_queue()) {
-               self.getMyExchanges()
+               self.dataSource.refreshData(self)
             }
+    }
+    
+    func update() {
+        print("\n\n\(NSDate()) Timer started ----------------  -------------------------------------")
+        getMoreItems()
     }
     
   

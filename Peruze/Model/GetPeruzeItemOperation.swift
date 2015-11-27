@@ -53,16 +53,16 @@ class GetPeruzeItemOperation: GroupOperation {
         fillMissingItemData.completionBlock = {
             print("\n\n\(NSDate())===== fillMissingItemData Comp======")
         }
-      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
-        fillMissingPeopleData.completionBlock = {
-            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
-        }
+//      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
+//        fillMissingPeopleData.completionBlock = {
+//            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+//        }
       
       //add dependencies
-      fillMissingPeopleData.addDependency(getItems)
+//      fillMissingPeopleData.addDependency(getItems)
       fillMissingItemData.addDependency(getItems)
       
-      super.init(operations: [getItems, fillMissingItemData, fillMissingPeopleData])
+      super.init(operations: [getItems, fillMissingItemData])
     }
   override func finished(errors: [NSError]) {
     print("\n\n\(NSDate())===== GroupOperation Comp======")
@@ -75,7 +75,6 @@ class GetPeruzeItemOperation: GroupOperation {
         defaults.setObject(encodedData, forKey: "kCursor")
     } else {
         defaults.removeObjectForKey("kCursor")
-        
         defaults.setBool(false, forKey: "keyIsMoreItemsAvalable")
         defaults.synchronize()
     }

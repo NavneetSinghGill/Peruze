@@ -40,10 +40,24 @@ class GetItemInRangeOperation: GetItemOperation {
     
     override func getPredicate() -> NSPredicate {
         print("\n \(NSDate()) GetItemInRangeOperation getPredicate()")
-        let owner = Person.MR_findFirstByAttribute("me",
-            withValue: false,
-            inContext: self.context)
-        return NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: owner.recordIDName!))
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
+        
+        //            var compoundPredicate: NSCompoundPredicate?
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.objectForKey("shouldCallWithSyncDate") as? String != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
+            var datePredicate = NSPredicate(format: "modificationDate > %@", NSDate())
+            if let date = defaults.objectForKey("syncDate") as? NSDate {
+                datePredicate = NSPredicate(format: "modificationDate > %@", date)
+            }
+            let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+            defaults.setObject("no", forKey: "shouldCallWithSyncDate")
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate,notMyItemsPredicate])
+        } else {
+            let notMyItemsPredicate = NSPredicate(format: "creatorUserRecordID != %@", myRecordID)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [notMyItemsPredicate])
+        }
     }
   
 //  override func getPredicate() -> NSPredicate {
@@ -242,7 +256,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     
-    if logging { print("\n\n\(NSDate()) MissingDataCount : \( allItems.count)") }
+    if logging { print("\n\n\(NSDate()) MissingItemsDataCount : \( allItems.count)") }
     
     let allRecordIDNames = allItems.map { $0.valueForKey("recordIDName") as? String }
     
