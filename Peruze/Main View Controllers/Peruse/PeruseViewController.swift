@@ -261,7 +261,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         isGetItemsInProgress = true
         logw("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
-            
             self.isGetItemsInProgress = false
             self.dataSource.refreshData(self)
             logw("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
@@ -284,14 +283,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
          if  self.isGetItemsInProgress == false {
             if isMoreItemsAvailable == true {
-                self.isGetItemsInProgress = true
-                logw("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
-                Model.sharedInstance().getPeruzeItems(self, completion: {
-                    logw("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
-                    self.isGetItemsInProgress = false
-//                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
-                    self.dataSource.refreshData(self)
-                })
+                self.getAllItems()
             } else {
 //                logw("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
 //                timer!.invalidate()
