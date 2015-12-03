@@ -24,7 +24,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     static let DeveloperIndexPath = NSIndexPath(forRow: 3, inSection: 2)
     static let AboutURL = NSURL(string: "http://www.perusenow.com")
     static let DeveloperWebsiteURL = NSURL(string: "http://www.philliphtrentiii.info")
-    static let friendsViewControllerSegueIdentifier = "toFriendsViewControllerSegueIdentifier"
+    static let friendsNavigationSegueIdentifier = "toFriendsNavigationSegueIdentifier"
     struct Alerts {
       struct ProfilePhoto {
         static let Title = "Profile Photos"
@@ -235,7 +235,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
     @IBAction func inviteFacebookFriendsButtonTapped(sender: UIButton) {
-//        performSegueWithIdentifier(Constants.friendsViewControllerSegueIdentifier, sender: self)
+        performSegueWithIdentifier(Constants.friendsNavigationSegueIdentifier, sender: self)
     }
     
     @IBAction func sendLogs(sender: UIButton) {

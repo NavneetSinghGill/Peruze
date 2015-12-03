@@ -11,4 +11,5 @@ import UIKit
 class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: CircleImage!
     @IBOutlet weak var nameLabel: UILabel!
+    var friendDataDict: NSDictionary!
 }

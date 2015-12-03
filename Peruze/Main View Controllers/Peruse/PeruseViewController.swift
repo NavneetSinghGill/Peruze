@@ -99,16 +99,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     //APNS
-//    subscribeForNewOffer()
-//    subscribeForChat()
+    subscribeForNewOffer()
+    subscribeForChat()
   }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-//        if self.dataSource.items.count == 0{
-//            self.getMoreItems()
-//        }
-    }
     func reloadPeruseItemMainScreen(){
         self.dataSource.refreshData(self)
     }
@@ -359,14 +353,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         //            let predicate = NSPredicate(format: "TRUEPREDICATE")
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
-        let predicate = NSPredicate(format: "Exchange.RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let predicate = NSPredicate(format: "ReceiverRecordIDName == %@", me.recordIDName!)
         let subscription = CKSubscription(recordType: "Message",
             predicate: predicate,
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
         
-        notificationInfo.alertBody = NotificationMessages.NewOfferMessage
+        notificationInfo.alertBody = NotificationMessages.NewChatMessage
         notificationInfo.shouldBadge = true
         
         subscription.notificationInfo = notificationInfo

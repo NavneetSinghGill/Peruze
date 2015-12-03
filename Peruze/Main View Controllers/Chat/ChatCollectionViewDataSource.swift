@@ -129,7 +129,9 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
         let sections = self.delegate?.collectionView?.numberOfSections()
         let rows = self.delegate?.collectionView?.numberOfItemsInSection(sections! - 1)
         let indexPath = NSIndexPath(forRow: rows! - 1, inSection: sections! - 1)
-        self.delegate?.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.Bottom, animated: false)
+        if indexPath.row >= 0 && indexPath.section >= 0 {
+            self.delegate?.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.Bottom, animated: false)
+        }
     }
   
   private func JSQMessageFromMessage(message: NSManagedObject) -> JSQMessage {

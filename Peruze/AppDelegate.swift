@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if  let alert = info["alert"] as? String {
                 // Printout of (userInfo["aps"])["type"]
                 logw("\nFrom APS-dictionary with key \"type\":  \( alert)")
-                NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:info)
+                NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }
             if  let badge = info["badge"] as? Int {
                 logw("\nFrom APS-dictionary with key \"type\":  \( badge)")
