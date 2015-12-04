@@ -37,7 +37,7 @@ class ProfileViewController: UIViewController {
   
   //MARK: - Variables
   var personForProfile: Person?
-    var isShowingMyProfile = false
+  var isShowingMyProfile = false
   @IBOutlet weak var profileImageView: CircleImage!
   @IBOutlet weak var profileNameLabel: UILabel!
   @IBOutlet weak var numberOfExchangesLabel: UILabel!

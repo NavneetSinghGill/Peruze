@@ -36,11 +36,22 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     navigationController?.navigationBar.tintColor = .redColor()
     view.backgroundColor = .whiteColor()
     refresh()
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "getRequestedExchange", name: "getRequestedExchange", object: nil)
   }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         resetBadgeCounter()
+        if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "no"{
+            refresh()
+            NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "isRequestsShowing")
+        }
     }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "getRequestedExchange", object: nil)
+    }
+    
   func refresh() {
     //reload the data
     let me = Person.MR_findFirstByAttribute("me", withValue: true)

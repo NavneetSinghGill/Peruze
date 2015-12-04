@@ -27,28 +27,28 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   var itemChosenToExchange: NSManagedObject? {
     didSet {
       if itemChosenToExchange != nil {
-//        let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
-//        circle.strokeColor = .greenColor()
-//        circle.center = CGPointMake(view.frame.width / 2, view.frame.height / 2)
-//        circle.backgroundColor = .clearColor()
-//        circle.strokeWidth = 5
-//        view.addSubview(circle)
+        let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
+        circle.strokeColor = .greenColor()
+        circle.center = CGPointMake(view.frame.width / 2, view.frame.height / 2)
+        circle.backgroundColor = .clearColor()
+        circle.strokeWidth = 5
+        view.addSubview(circle)
         
-//        let checkmark = UIImageView(frame: circle.frame)
-//        checkmark.image = UIImage(named: "Large_Check_Mark")
-//        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
-//        view.addSubview(checkmark)
+        let checkmark = UIImageView(frame: circle.frame)
+        checkmark.image = UIImage(named: "Large_Check_Mark")
+        checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
+        view.addSubview(checkmark)
         if self.dataSource.collectionView != nil {
             self.dataSource.collectionView.reloadData()
         }
-//        UIView.animateWithDuration(1, animations: { () -> Void in
-//          circle.alpha = 0.0
-//          checkmark.alpha = 0.0
-//          }, completion: { (_) -> Void in
-//            circle.removeFromSuperview()
-//            checkmark.removeFromSuperview()
-            self.exchangeInitiated()
-//        })
+        UIView.animateWithDuration(1, animations: { () -> Void in
+          circle.alpha = 0.0
+          checkmark.alpha = 0.0
+          }, completion: { (_) -> Void in
+            circle.removeFromSuperview()
+            checkmark.removeFromSuperview()
+        })
+        self.exchangeInitiated()
       }
     }
   }

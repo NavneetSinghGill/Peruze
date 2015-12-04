@@ -25,6 +25,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
       tableView.dataSource = dataSource
       tableView.delegate = self
       tableView.estimatedRowHeight = Constants.TableViewCellHeight
+      dataSource.tableView = tableView
     }
   }
   override func viewDidLoad() {
@@ -42,14 +43,22 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   
   let opQueue = OperationQueue()
   func refresh() {
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let reviewOp = GetReviewsOperation(recordID: CKRecordID(recordName: me.recordIDName!))
+//    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    let recordIDName: String
+    if dataSource.profileOwner.valueForKey("recordIDName") != nil{
+        recordIDName = dataSource.profileOwner.valueForKey("recordIDName") as! String
+    } else {
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        recordIDName = me.valueForKey("recordIDName") as! String
+    }
+    let reviewOp = GetReviewsOperation(recordID: CKRecordID(recordName: recordIDName))
     reviewOp.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
         self.refreshControl.endRefreshing()
         if self.tableView.numberOfRowsInSection(0) == 0 {
           self.titleLabel.alpha = 1
         }
+        self.dataSource.fetchData()
       }
     }
     opQueue.addOperation(reviewOp)
@@ -62,6 +71,9 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
       let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
       logw("segue to write review")
+        if let writeReviewVC = reviewVC?.childViewControllers[0] as? WriteReviewViewController {
+            writeReviewVC.profileOwner = self.dataSource.profileOwner
+        }
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {
       var foundMatch: Int? = nil
@@ -82,6 +94,12 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     }
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Constants.WriteReviewIdentifier {
+            
+        }
+    }
     
     //MARK: Reloading view on fetch data from server
     func reloadFetchedData () {

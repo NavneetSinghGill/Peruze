@@ -40,7 +40,8 @@ class ProfileContainerViewController: UITabBarController {
         //favoritesVC.dataSource.favorites = profileOwner!.favorites
         break
       case let reviewsVC as ProfileReviewsViewController:
-        //reviewsVC.dataSource.reviews = profileOwner!.reviews
+//        reviewsVC.dataSource.reviews = profileOwner!.reviews
+        reviewsVC.dataSource.profileOwner = profileOwner
         break
       case let exchangesVC as ProfileExchangesViewController:
         //exchangesVC.dataSource.exchanges = profileOwner!.completedExchanges

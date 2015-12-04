@@ -17,21 +17,38 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   var writeReviewEnabled = false
   var fetchedResultsController: NSFetchedResultsController!
   var tableView: UITableView!
+  var profileOwner: Person!
   
   
   override init() {
     super.init()
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let predicate = NSPredicate(format: "userBeingReviewed.recordIDName == %@", me.recordIDName!)
-    fetchedResultsController = Review.MR_fetchAllSortedBy(
-      "date",
-      ascending: true,
-      withPredicate: predicate,
-      groupBy: nil,
-      delegate: self,
-      inContext: managedConcurrentObjectContext
-    )
+    fetchData()
   }
+    
+    func fetchData() {
+        let recordIDName: String
+        if profileOwner != nil && profileOwner.valueForKey("recordIDName") != nil{
+            recordIDName = profileOwner.valueForKey("recordIDName") as! String
+        } else {
+            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+            recordIDName = me.valueForKey("recordIDName") as! String
+        }
+        let predicate = NSPredicate(format: "userBeingReviewed.recordIDName == %@", recordIDName)
+        fetchedResultsController = Review.MR_fetchAllSortedBy(
+            "date",
+            ascending: true,
+            withPredicate: predicate,
+            groupBy: nil,
+            delegate: self,
+            inContext: managedConcurrentObjectContext
+        )
+        if self.tableView != nil{
+            dispatch_async(dispatch_get_main_queue()){
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
     tableView.registerNib(nib, forCellReuseIdentifier: Constants.ReuseIdentifier)
@@ -41,8 +58,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier,
         forIndexPath: indexPath) as! ProfileReviewsTableViewCell
-      
-      let review: AnyObject = fetchedResultsController.objectAtIndexPath(indexPath)
+      let review: AnyObject = fetchedResultsController.sections![0].objects![indexPath.row]
+        
       //TODO: Edit the cell contents
       guard
         let title = review.valueForKey("title") as? String,

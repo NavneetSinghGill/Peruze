@@ -46,13 +46,29 @@ class MainTabBarViewController: UITabBarController {
                         self.setChatBadgeCount(Int(badge))
                         let navController = self.viewControllers![2] as! UINavigationController
                         let chatTableViewController = navController.viewControllers[0] as! ChatTableViewController
-                        chatTableViewController.refresh()
+//                        chatTableViewController.refresh()
+                        if chatTableViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "no")
+                        }
+                        let recordID = CKRecordID(recordName: NSUserDefaults.standardUserDefaults().valueForKey("recordID") as! String)
+                        Model.sharedInstance().fetchChatWithRecord(recordID)
                     } else if alert == NotificationMessages.NewOfferMessage {
                         self.setRequestBadgeCount(Int(badge))
                         //refresh Exchanges
                         let navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
-                        requestsTableViewController.refresh()
+                        if requestsTableViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "no")
+                        }
+//                        requestsTableViewController.refresh()
+                        let recordID = CKRecordID(recordName: NSUserDefaults.standardUserDefaults().valueForKey("recordID") as! String)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID)
                     }
                 }
                 resetBadgeCounter()

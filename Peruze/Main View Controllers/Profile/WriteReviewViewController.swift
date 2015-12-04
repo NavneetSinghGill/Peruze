@@ -31,6 +31,8 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var farRightStar: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
+    private var starRatingCount: Int = 0
+    var profileOwner: Person?
     private var detailTextView: UITextView!
     private var keyboardOnScreen = false
     
@@ -56,12 +58,17 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     @IBAction func starTap(sender: UITapGestureRecognizer) {
         var hitTap = false
         let starArray = [farLeftStar, middleLeftStar, middleStar, middleRightStar, farRightStar]
+        starRatingCount = 0
         for i in 0..<starArray.count {
             starArray[i].image = UIImage(named: hitTap ? Constants.EmptyStarName : Constants.FullStarName)
+            if hitTap == false {
+                starRatingCount++
+            }
             hitTap = hitTap || CGRectContainsPoint(starArray[i].frame, sender.locationInView(scrollView))
         }
         view.endEditing(true)
     }
+    
     @IBAction func cancel(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -79,6 +86,15 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
         } else {
             dismissViewControllerAnimated(true){
                 //TODO: save review
+                let postReviewOperation = PostReviewOperation(
+                    title: self.titleTextField.text!,
+                    review: self.detailTextView.text,
+                    starRating: self.starRatingCount,
+                    userBeingReviewRecordIDName: self.profileOwner!.valueForKey("recordIDName") as! String,
+                    presentationContext: self){
+                        //Completion block
+                }
+                OperationQueue().addOperation(postReviewOperation)
             }
         }
     }

@@ -184,6 +184,9 @@ class Model: NSObject, CLLocationManagerDelegate {
                     
                     //save the context
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                    if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+                        NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                    }
                 }
             }))
     }
@@ -233,6 +236,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                     
                     //save the context
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                    NSNotificationCenter.defaultCenter().postNotificationName("getChat", object: nil)
                 }
             }))
     }

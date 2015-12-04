@@ -41,7 +41,18 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     super.init()
     self.getChatData()
   }
-  
+    
+    func removeNoti() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "getChat", object: nil)
+    }
+    
+    func getChat() {
+        self.getChatData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.delegate?.collectionView?.reloadData()
+            self.scrollToBottom()
+        }
+    }
     func getChatData() {
         //    let exchangePredicate = NSPredicate(value: true)
         let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", self.exchange.valueForKey("recordIDName") as! String)

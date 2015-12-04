@@ -2895,7 +2895,7 @@
                                             <constraint firstAttribute="width" secondItem="INq-DU-wyz" secondAttribute="height" multiplier="1:1" id="PzW-fC-Nke"/>
                                         </constraints>
                                         <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uBR-os-s2P" appends="YES" id="jh4-31-ZHC"/>
+                                            <outletCollection property="gestureRecognizers" destination="AoW-tq-2jP" appends="YES" id="fuu-3P-DgB"/>
                                         </connections>
                                     </imageView>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Empty_Star" translatesAutoresizingMaskIntoConstraints="NO" id="4lJ-rT-QXb">
@@ -2905,7 +2905,7 @@
                                             <constraint firstAttribute="width" secondItem="4lJ-rT-QXb" secondAttribute="height" multiplier="1:1" id="bzN-Vl-sWV"/>
                                         </constraints>
                                         <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uBR-os-s2P" appends="YES" id="nU3-CD-w2n"/>
+                                            <outletCollection property="gestureRecognizers" destination="ijs-31-PMo" appends="YES" id="KLV-MS-K0c"/>
                                         </connections>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap a Star to Rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6I-az-dk7">
@@ -2933,7 +2933,7 @@
                                             <constraint firstAttribute="width" secondItem="Qtm-Bc-QhR" secondAttribute="height" multiplier="1:1" id="vZ5-ux-Evy"/>
                                         </constraints>
                                         <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uBR-os-s2P" appends="YES" id="Swb-o0-nMN"/>
+                                            <outletCollection property="gestureRecognizers" destination="Ahe-vT-1YP" appends="YES" id="Ilq-xI-9Tb"/>
                                         </connections>
                                     </imageView>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Empty_Star" translatesAutoresizingMaskIntoConstraints="NO" id="O1l-4d-zVG">
@@ -2943,7 +2943,7 @@
                                             <constraint firstAttribute="width" secondItem="O1l-4d-zVG" secondAttribute="height" multiplier="1:1" id="MDI-NO-acr"/>
                                         </constraints>
                                         <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uBR-os-s2P" appends="YES" id="sin-mj-2NG"/>
+                                            <outletCollection property="gestureRecognizers" destination="d9W-Ys-wqx" appends="YES" id="XCl-aR-y5W"/>
                                         </connections>
                                     </imageView>
                                 </subviews>
@@ -3020,6 +3020,26 @@
                 <tapGestureRecognizer id="uBR-os-s2P">
                     <connections>
                         <action selector="starTap:" destination="kU8-Cw-JQa" id="cR5-q2-ivO"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="ijs-31-PMo">
+                    <connections>
+                        <action selector="starTap:" destination="kU8-Cw-JQa" id="AUi-2c-bp1"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="AoW-tq-2jP">
+                    <connections>
+                        <action selector="starTap:" destination="kU8-Cw-JQa" id="en2-5a-5uK"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Ahe-vT-1YP">
+                    <connections>
+                        <action selector="starTap:" destination="kU8-Cw-JQa" id="0ud-N9-C5h"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="d9W-Ys-wqx">
+                    <connections>
+                        <action selector="starTap:" destination="kU8-Cw-JQa" id="ppu-S7-WwL"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -3233,8 +3253,8 @@
                                 <animations/>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaclyn Woodward" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpd-WN-aDH">
-                                <rect key="frame" x="128" y="58" width="135" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpd-WN-aDH">
+                                <rect key="frame" x="128" y="58" width="0.0" height="0.0"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="highlightedColor"/>
@@ -3321,9 +3341,6 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ijh-fS-Yxy" secondAttribute="height" multiplier="1:1" id="KXn-nP-ne5"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="Art"/>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9b-Ai-Dpq" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                                 <rect key="frame" x="325" y="136" width="255" height="255"/>
@@ -3332,9 +3349,6 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="u9b-Ai-Dpq" secondAttribute="height" multiplier="1:1" id="pUn-0e-a3b"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="Bag"/>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" text="Satchel and T-Shirts" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IJq-pb-Bvn">
                                 <rect key="frame" x="325" y="412" width="149" height="20"/>
@@ -3369,9 +3383,6 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="R1b-nZ-Pag" secondAttribute="height" multiplier="1:1" id="h9v-Jk-s2q"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="Alison"/>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Exchange_Arrows" translatesAutoresizingMaskIntoConstraints="NO" id="sCJ-YY-Twj">
                                 <rect key="frame" x="283" y="248" width="34" height="34"/>

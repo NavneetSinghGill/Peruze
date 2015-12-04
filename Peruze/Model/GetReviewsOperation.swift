@@ -72,7 +72,10 @@ class GetReviewsOperation: Operation {
       
       localReview.date = record.creationDate
       
-      if let creator = record.creatorUserRecordID?.recordName {
+      if var creator = record.creatorUserRecordID?.recordName {
+        if creator == "__defaultOwner__"{
+            creator = Person.MR_findFirstByAttribute("me",withValue: true, inContext: self.context).valueForKey("recordIDName") as! String
+        }
         let reviewer = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: creator, inContext: self.context)
         self.context.MR_saveToPersistentStoreAndWait()
         localReview.reviewer = reviewer

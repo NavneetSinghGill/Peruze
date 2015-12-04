@@ -89,13 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Default printout of info = userInfo["aps"]
             logw("All of info: \n\(info)\n")
             
-            for (key, value) in info {
-                logw("APS: \(key) —> \(value)")
-            }
-            
             if  let alert = info["alert"] as? String {
-                // Printout of (userInfo["aps"])["type"]
-                logw("\nFrom APS-dictionary with key \"type\":  \( alert)")
+                NSUserDefaults.standardUserDefaults().setValue(notification.recordID?.recordName, forKey: "recordID")
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }
             if  let badge = info["badge"] as? Int {

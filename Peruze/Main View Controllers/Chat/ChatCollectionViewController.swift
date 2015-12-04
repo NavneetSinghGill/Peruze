@@ -63,9 +63,18 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     inputToolbar?.contentView?.leftBarButtonItem?.enabled = true
     inputToolbar?.contentView?.rightBarButtonItem = completeButton
     inputToolbar?.contentView?.rightBarButtonItem?.enabled = true
-    
   }
-  
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(dataSource!, selector: "getChat", name: "getChat", object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.dataSource?.removeNoti()
+    }
+    
   //MARK: - Required Subclassing Methods for Collection View and Layout
   override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     return super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
