@@ -313,34 +313,33 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
   }
     
-    //MARK: - Post On facebook 
-    
+    //MARK: - Post On facebook
     func postOnFaceBook() {
-        
-            if !FBSDKAccessToken.currentAccessToken().hasGranted("publish_actions") {
-                let manager = FBSDKLoginManager()
-                manager.logInWithPublishPermissions(["publish_actions"], handler: { (loginResult, error) -> Void in
-                    if !loginResult.grantedPermissions.contains("publish_actions") {
-                        
-                        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : "www.google.com","picture": "picture","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps."],  HTTPMethod:"POST")
-                        
-                        
-                        request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-                            //set error and return
-                            if error != nil {
-                                print("Post success")
-                            } else {
-                                print("Post failed: \(error)")
-                            }
-                            
-                        })
-                        
-                        
-                        
-                    }
-                })
+        if !FBSDKAccessToken.currentAccessToken().hasGranted("publish_actions") {
+            let manager = FBSDKLoginManager()
+            manager.logInWithPublishPermissions(["publish_actions"], handler: { (loginResult, error) -> Void in
+                if !loginResult.grantedPermissions.contains("publish_actions") {
+                    self.performPost()
+                }
+            })
+        } else {
+            performPost()
+        }
+    }
+    
+    
+    func performPost() {
+//        let image : UIImage = UIImage(named: "Check_Mark")!
+        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "hello world!", "link" : "www.google.com","picture": "Check_Mark.png","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":""],  HTTPMethod:"POST")
+        request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
+            //set error and return
+            if error != nil {
+                print("Post failed: \(error)")
+            } else {
+                print("Post success")
             }
             
+        })
         
     }
     

@@ -14,6 +14,8 @@
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
+		9A1E2E4C1C118A490043CD29 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E2E4A1C118A490043CD29 /* Friend.swift */; };
+		9A1E2E4D1C118A490043CD29 /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */; };
 		9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */; };
 		9D1100461B81014100DED43D /* GetPeruzeItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */; };
 		9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */; };
@@ -247,6 +249,8 @@
 		3BE0B8CD1C0F00F300E3612B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		9A1E2E4A1C118A490043CD29 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GetItemOperation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D1100451B81014100DED43D /* GetPeruzeItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPeruzeItemOperation.swift; sourceTree = "<group>"; };
 		9D177AE21B54DDC2009CB9FA /* Peruze-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peruze-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -933,6 +937,8 @@
 				9D45D2231B5B5D8A00D555F3 /* Item.swift */,
 				9D45D2241B5B5D8A00D555F3 /* Message.swift */,
 				9D45D2251B5B5D8A00D555F3 /* Review.swift */,
+				9A1E2E4A1C118A490043CD29 /* Friend.swift */,
+				9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */,
 			);
 			name = NSManagedObjects;
 			sourceTree = "<group>";
@@ -1256,12 +1262,14 @@
 				9DC345851BA9F22B00B1CA2C /* OperationObserver.swift in Sources */,
 				9D177B9C1B54DDC3009CB9FA /* ProfileReviewsDataSource.swift in Sources */,
 				9DC3457B1BA9F22B00B1CA2C /* GroupOperation.swift in Sources */,
+				9A1E2E4C1C118A490043CD29 /* Friend.swift in Sources */,
 				9D177B951B54DDC3009CB9FA /* ProfileExchangesDataSource.swift in Sources */,
 				9DC345931BA9FC1100B1CA2C /* AsyncClosuresOperation.swift in Sources */,
 				9D177BA91B54DDC3009CB9FA /* RequestsTableViewController.swift in Sources */,
 				9D177B8C1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.swift in Sources */,
 				9D177BC11B54DDC3009CB9FA /* TGCameraAuthorizationViewController.m in Sources */,
 				9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */,
+				9A1E2E4D1C118A490043CD29 /* Friend+CoreDataProperties.swift in Sources */,
 				9D177BC41B54DDC3009CB9FA /* TGPhotoViewController.m in Sources */,
 				9D177BBE1B54DDC3009CB9FA /* ProfileSetupRangeViewController.swift in Sources */,
 				9DC345941BA9FC1100B1CA2C /* AsyncOperation.swift in Sources */,

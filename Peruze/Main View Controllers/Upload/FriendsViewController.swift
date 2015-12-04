@@ -148,6 +148,12 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func postInviteOnFacebook() {
         //perform tagging
+        let selectedFriendsIds : NSArray = selectedFriendsToInvite.valueForKey("id") as! NSArray
+        let idsString = selectedFriendsIds.componentsJoinedByString(",")
+        print("Ids = \(idsString)")
+        postOnFaceBook(idsString)
+        
+        
     }
     
     @IBAction func textFieldChanged(sender: UITextField) {
@@ -159,5 +165,40 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         self.tableView.reloadData()
+    }
+    
+    
+    
+    //MARK: - Post On facebook
+    func postOnFaceBook(idsString : String) {
+        if !FBSDKAccessToken.currentAccessToken().hasGranted("publish_actions") {
+            let manager = FBSDKLoginManager()
+            manager.logInWithPublishPermissions(["publish_actions"], handler: { (loginResult, error) -> Void in
+                if !loginResult.grantedPermissions.contains("publish_actions") {
+                    self.performPost(idsString)
+                } else {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            })
+        } else {
+            self.activityIndicatorView.startAnimating()
+            performPost(idsString)
+        }
+    }
+    
+    
+    func performPost(idsString : String) {
+        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : "www.google.com","picture": "AppIcon.png","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":idsString],  HTTPMethod:"POST")
+        request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
+            //set error and return
+            if error != nil {
+                print("Post failed: \(error)")
+            } else {
+                print("Post success")
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+            self.activityIndicatorView.stopAnimating()
+        })
+        
     }
 }

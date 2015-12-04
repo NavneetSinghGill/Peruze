@@ -201,7 +201,10 @@ class InitialViewController: UIViewController {
                 let defaults = NSUserDefaults.standardUserDefaults()
                 defaults.setObject(ids, forKey: "kFriends")
                 defaults.synchronize()
-            
+                
+                //Load loacal database for friends 
+                 Model.sharedInstance().getMutualFriendsWithMyFriends()
+                
                 if myPerson != nil {
                     for element in friends
                     {
@@ -210,6 +213,7 @@ class InitialViewController: UIViewController {
                             if isPresent == true {
                                 logw("\nFriend entry already present");
                             } else {
+                                self.addRecord(myPerson, element: element as! NSDictionary)
                                 predicate =  NSPredicate(format: "(FriendsFacebookIDs == %@ AND FacebookID == %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
                                 self.loadFriend(predicate, finishBlock: { isPresent in
                                     if isPresent == false {
@@ -246,6 +250,7 @@ class InitialViewController: UIViewController {
         
         operation.queryCompletionBlock = { (cursor, error) -> Void in
             finishBlock(isRecordpresent)
+            
             self.loadFriendOfFriends()
         }
         
@@ -366,5 +371,11 @@ class InitialViewController: UIViewController {
         }
     }
     
+    //Save friend in local DB
+    func saveFriendWith(facebookID : String, friendsFacebookIDs: String) {
+        let localFriend = Friend.MR_findFirstOrCreateByAttribute(facebookID,  withValue: true, inContext: managedConcurrentObjectContext)
+        localFriend.friendsFacebookIDs = friendsFacebookIDs
+        managedConcurrentObjectContext.MR_saveToPersistentStoreWithCompletion(nil)
+    }
     
 }

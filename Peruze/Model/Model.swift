@@ -51,61 +51,65 @@ struct RecordTypes {
     static let Friends = "Friends"
 }
 class Model: NSObject, CLLocationManagerDelegate {
-  private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-  private let locationAccuracy: CLLocationAccuracy = 200 //meters
-  class func sharedInstance() -> Model {
-    return modelSingletonGlobal
-  }
-  
-  func userPrivacySetting() -> FriendsPrivacy {
-    let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Int ?? FriendsPrivacy.Everyone.rawValue
-    switch value {
-    case FriendsPrivacy.Friends.rawValue:
-      return .Friends
-    case FriendsPrivacy.FriendsOfFriends.rawValue:
-      return .FriendsOfFriends
-    case FriendsPrivacy.Everyone.rawValue:
-      return .Everyone
-    default:
-      assertionFailure("Friends Privacy is not set to a corrrect value")
-      return .Everyone
-    }
-  }
-  
-  let opQueue = OperationQueue()
-  func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
-    //In most cases, we want to get the location
-    let getLocationOp = LocationOperation(accuracy: locationAccuracy) { (location) -> Void in
-      self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
-    }
-    opQueue.addOperation(getLocationOp)
-  }
-  //helper function for above function
-  private func performItemOperationWithLocation(location: CLLocation?, presentationContext: UIViewController, completion: (Void -> Void)) {
     
-    let getItems = GetPeruzeItemOperation(
-      presentationContext: presentationContext,
-      location: location,
-      context: managedConcurrentObjectContext,
-      database: self.publicDB
-    )
-    getItems.completionBlock = completion
-    opQueue.addOperation(getItems)
-  }
-  
-  //MARK: - Profile Setup
-  
-  func fetchMyMinimumProfileWithCompletion(presentationContext: UIViewController, completion: ((Person?, NSError?) -> Void)) {
-    let fetchMyProfileOp = GetCurrentUserOperation(presentationContext: presentationContext, database: publicDB)
-    fetchMyProfileOp.addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
-    fetchMyProfileOp
-    let blockCompletionOp = BlockOperation { () -> Void in
-      let fetchedPerson: Person? = Person.MR_findFirstByAttribute("me", withValue: true)
-      completion(fetchedPerson, nil)
+    var friendsRecords : NSMutableArray = []
+    private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    private let locationAccuracy: CLLocationAccuracy = 200 //meters
+    class func sharedInstance() -> Model {
+        return modelSingletonGlobal
     }
-    blockCompletionOp.addDependency(fetchMyProfileOp)
-    OperationQueue.mainQueue().addOperations([fetchMyProfileOp, blockCompletionOp], waitUntilFinished: false)
-  }
+    
+    func userPrivacySetting() -> FriendsPrivacy {
+        let value = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultsKeys.UsersFriendsPreference) as? Int ?? FriendsPrivacy.Everyone.rawValue
+        switch value {
+        case FriendsPrivacy.Friends.rawValue:
+            return .Friends
+        case FriendsPrivacy.FriendsOfFriends.rawValue:
+            return .FriendsOfFriends
+        case FriendsPrivacy.Everyone.rawValue:
+            return .Everyone
+        default:
+            assertionFailure("Friends Privacy is not set to a corrrect value")
+            return .Everyone
+        }
+    }
+    
+    let opQueue = OperationQueue()
+    func getPeruzeItems(presentationContext: UIViewController, completion: (Void -> Void) = {}) {
+        //In most cases, we want to get the location
+        let getLocationOp = LocationOperation(accuracy: locationAccuracy) { (location) -> Void in
+            self.performItemOperationWithLocation(location, presentationContext: presentationContext, completion: completion)
+        }
+        opQueue.addOperation(getLocationOp)
+    }
+    //helper function for above function
+    private func performItemOperationWithLocation(location: CLLocation?, presentationContext: UIViewController, completion: (Void -> Void)) {
+        
+        let getItems = GetPeruzeItemOperation(
+            presentationContext: presentationContext,
+            location: location,
+            context: managedConcurrentObjectContext,
+            database: self.publicDB
+        )
+        getItems.completionBlock = completion
+        opQueue.addOperation(getItems)
+    }
+    
+    //MARK: - Profile Setup
+    
+    func fetchMyMinimumProfileWithCompletion(presentationContext: UIViewController, completion: ((Person?, NSError?) -> Void)) {
+        let fetchMyProfileOp = GetCurrentUserOperation(presentationContext: presentationContext, database: publicDB)
+        fetchMyProfileOp.addCondition(CloudContainerCondition(container: CKContainer.defaultContainer()))
+        fetchMyProfileOp
+        let blockCompletionOp = BlockOperation { () -> Void in
+            let fetchedPerson: Person? = Person.MR_findFirstByAttribute("me", withValue: true)
+            completion(fetchedPerson, nil)
+        }
+        blockCompletionOp.addDependency(fetchMyProfileOp)
+        OperationQueue.mainQueue().addOperations([fetchMyProfileOp, blockCompletionOp], waitUntilFinished: false)
+    }
+    
+    
     
     
     
@@ -231,6 +235,71 @@ class Model: NSObject, CLLocationManagerDelegate {
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                 }
             }))
+    }
+    
+    
+    
+    
+    //Get friends of friends
+    func getMutualFriendsWithMyFriends() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+        let set = Set(friendsIds as! [String])
+        for friendsId in set {
+            getFriendsFor(friendsId)
+        }
+    }
+    
+    func getFriendsFor(id : String) {
+        self.friendsRecords.removeAllObjects()
+        var predicate =  NSPredicate(format: "(FacebookID == %@) ", argumentArray: [id])
+        loadFriend(predicate, finishBlock: { friendsRecords in
+            if friendsRecords.count > 0 {
+//                self.friendsRecords.addObjectsFromArray(friendsRecords.valueForKey("FriendsFacebookIDs") as! [AnyObject])
+            }
+            predicate =  NSPredicate(format: "(FriendsFacebookIDs == %@) ", argumentArray: [id])
+            self.loadFriend(predicate, finishBlock: { friendsRecords in
+//                self.friendsRecords.addObjectsFromArray(friendsRecords.valueForKey("FacebookID") as! [AnyObject])
+            })
+        })
+    }
+    func loadFriend(predicate : NSPredicate , finishBlock:NSArray -> Void) {
+        
+        //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
+        let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+        //        query.sortDescriptors = [sort]
+        let operation = CKQueryOperation(query: query)
+        //        operation.desiredKeys = ["genre", "comments"]
+        operation.resultsLimit = 5000
+        let friendsRecords: NSMutableArray = []
+        operation.recordFetchedBlock = { (record) in
+            print(record)
+//            friendsRecords.addObject(record)
+//            self.saveFriendWith((record.objectForKey("FacebookID") as? String)! , friendsFacebookIDs: (record.objectForKey("FriendsFacebookIDs") as? String)!)
+            let localFriend = Friend.MR_findFirstOrCreateByAttribute("recordIDName",  withValue: record.recordID.recordName, inContext: managedConcurrentObjectContext)
+            
+            if let facebookID = record.objectForKey("FacebookID") as? String {
+                localFriend.facebookID = facebookID
+            }
+            if let friendsFacebookIDs = record.objectForKey("FriendsFacebookIDs") as? String {
+                localFriend.friendsFacebookIDs = friendsFacebookIDs
+            }
+            managedConcurrentObjectContext.MR_saveToPersistentStoreWithCompletion(nil)
+        }
+        
+        operation.queryCompletionBlock = { (cursor, error) -> Void in
+            finishBlock(friendsRecords)
+        }
+        let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        //                saveItemRecordOp.qualityOfService = NSQualityOfService()
+        database.addOperation(operation)
+    }
+    //Save friend in local DB
+    func saveFriendWith(facebookID : String, friendsFacebookIDs: String) {
+            
+        let localFriend = Friend.MR_findFirstOrCreateByAttribute("recordIDName",  withValue: facebookID, inContext: managedConcurrentObjectContext)
+        localFriend.friendsFacebookIDs = friendsFacebookIDs
+        managedConcurrentObjectContext.MR_saveToPersistentStoreWithCompletion(nil)
     }
 }
 

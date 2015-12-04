@@ -176,6 +176,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     let profileVC = profileNav?.viewControllers[0] as? ProfileViewController
     if profileVC == nil { assertionFailure("profile view controller from storybaord is nil") }
     profileVC!.personForProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: ownerID)
+    profileVC!.isShowingMyProfile = false
     presentViewController(profileNav!, animated: true, completion: nil)
   }
   

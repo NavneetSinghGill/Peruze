@@ -37,6 +37,7 @@ class ProfileViewController: UIViewController {
   
   //MARK: - Variables
   var personForProfile: Person?
+    var isShowingMyProfile = false
   @IBOutlet weak var profileImageView: CircleImage!
   @IBOutlet weak var profileNameLabel: UILabel!
   @IBOutlet weak var numberOfExchangesLabel: UILabel!
@@ -49,6 +50,8 @@ class ProfileViewController: UIViewController {
   @IBOutlet weak var starView: StarView!
   @IBOutlet weak var containerView: UIView!
   private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+    
+    var friendsRecords : NSMutableArray = []
   
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
@@ -85,10 +88,11 @@ class ProfileViewController: UIViewController {
         self.containerSpinner.stopAnimating()
         UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
             self.updateChildViewControllers()
+             self.getMyFriendsFor()
         })
 
         self.updateViewAfterGettingResponse()
-        
+       
     }
     
     if tabBarController == nil {
@@ -245,5 +249,52 @@ class ProfileViewController: UIViewController {
     //MARK: - notification Obeserver method
     func fetchUserProfileIfNeeded() {
         checkForUserInfo()
+    }
+    
+    
+    
+    func getMyFriendsFor() {
+        
+        self.friendsRecords.removeAllObjects()
+        if let myPerson = Person.MR_findFirstByAttribute("me", withValue: true) {
+            var predicate =  NSPredicate(format: "(FacebookID == %@) ", argumentArray: [myPerson.facebookID!])
+            self.loadFriend(predicate, finishBlock: { friendsRecords in
+                if friendsRecords.count > 0 {
+                    self.friendsRecords.addObjectsFromArray(friendsRecords.valueForKey("FriendsFacebookIDs") as! [AnyObject])
+                }
+                predicate =  NSPredicate(format: "(FriendsFacebookIDs == %@) ", argumentArray: [myPerson.facebookID!])
+                self.loadFriend(predicate, finishBlock: { friendsRecords in
+                    self.friendsRecords.addObjectsFromArray(friendsRecords.valueForKey("FacebookID") as! [AnyObject])
+                })
+            })
+        }
+        
+    }
+   
+    
+    func loadFriend(predicate : NSPredicate , finishBlock:NSArray -> Void) {
+        
+        //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
+        let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+        //        query.sortDescriptors = [sort]
+        
+        let operation = CKQueryOperation(query: query)
+        //        operation.desiredKeys = ["genre", "comments"]
+        operation.resultsLimit = 5000
+        
+        let friendsRecords: NSMutableArray = []
+        
+        operation.recordFetchedBlock = { (record) in
+            print(record)
+            friendsRecords.addObject(record)
+        }
+        
+        operation.queryCompletionBlock = { (cursor, error) -> Void in
+            finishBlock(friendsRecords)
+        }
+        
+        let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        //                saveItemRecordOp.qualityOfService = NSQualityOfService()
+        database.addOperation(operation)
     }
 }
