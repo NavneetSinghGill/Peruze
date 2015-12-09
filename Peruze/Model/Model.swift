@@ -180,11 +180,11 @@ class Model: NSObject, CLLocationManagerDelegate {
                     let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
                     
                     let set = currentExchanges.setByAddingObject(localExchange)
-                    requestingPerson.setValue(set, forKey: "exchanges")
+//                    requestingPerson.setValue(set as NSSet, forKey: "exchanges")
                     
                     //save the context
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                    if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+                    if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
                         NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
                     }
                 }

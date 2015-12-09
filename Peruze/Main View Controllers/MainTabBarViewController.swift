@@ -53,7 +53,8 @@ class MainTabBarViewController: UITabBarController {
                         } else {
                             NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "no")
                         }
-                        let recordID = CKRecordID(recordName: NSUserDefaults.standardUserDefaults().valueForKey("recordID") as! String)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchChatWithRecord(recordID)
                     } else if alert == NotificationMessages.NewOfferMessage {
                         self.setRequestBadgeCount(Int(badge))
@@ -66,8 +67,9 @@ class MainTabBarViewController: UITabBarController {
                         } else {
                             NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "no")
                         }
+                        NSUserDefaults.standardUserDefaults().synchronize()
 //                        requestsTableViewController.refresh()
-                        let recordID = CKRecordID(recordName: NSUserDefaults.standardUserDefaults().valueForKey("recordID") as! String)
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID)
                     }
                 }

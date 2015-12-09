@@ -129,6 +129,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
         let recordID = owner.valueForKey("recordIDName") as? String
       {
         delegate?.segueToProfile(recordID)
+        NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "yes")
+        NSUserDefaults.standardUserDefaults().synchronize()
       }
     }
   }

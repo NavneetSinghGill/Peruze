@@ -25,13 +25,14 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     fetchData()
   }
     
-    func fetchData() {
+    func fetchData() -> Int{
         let recordIDName: String
         if profileOwner != nil && profileOwner.valueForKey("recordIDName") != nil{
             recordIDName = profileOwner.valueForKey("recordIDName") as! String
         } else {
-            let me = Person.MR_findFirstByAttribute("me", withValue: true)
-            recordIDName = me.valueForKey("recordIDName") as! String
+//            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+//            recordIDName = me.valueForKey("recordIDName") as! String
+            recordIDName = "__showNothing__"
         }
         let predicate = NSPredicate(format: "userBeingReviewed.recordIDName == %@", recordIDName)
         fetchedResultsController = Review.MR_fetchAllSortedBy(
@@ -47,6 +48,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
                 self.tableView.reloadData()
             }
         }
+        return fetchedResultsController.sections![0].numberOfObjects
     }
     
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

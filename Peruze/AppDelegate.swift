@@ -85,12 +85,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       logw("app did receive remote notification ")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
         
-        if let info = userInfo["aps"] as? Dictionary<String, AnyObject> {
+        if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
             // Default printout of info = userInfo["aps"]
             logw("All of info: \n\(info)\n")
             
             if  let alert = info["alert"] as? String {
-                NSUserDefaults.standardUserDefaults().setValue(notification.recordID?.recordName, forKey: "recordID")
+//                NSUserDefaults.standardUserDefaults().setValue(notification.recordID?.recordName, forKey: "recordID")
+                info["recordID"] = notification.recordID?.recordName
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }
             if  let badge = info["badge"] as? Int {

@@ -49,8 +49,21 @@ class ProfileViewController: UIViewController {
   @IBOutlet weak var exchangesButton: UIButton!
   @IBOutlet weak var starView: StarView!
   @IBOutlet weak var containerView: UIView!
-  private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     
+    //OU for other user
+    @IBOutlet weak var ouProfileImageView: CircleImage!
+    @IBOutlet weak var ouProfileNameLabel: UILabel!
+    @IBOutlet weak var ouNumberOfFriendsLabel: UILabel!
+    @IBOutlet weak var ouNumberOfUploadsLabel: UILabel!
+    @IBOutlet weak var ouUploadsButton: UIButton!
+    @IBOutlet weak var ouReviewsButton: UIButton!
+    @IBOutlet weak var ouFriendsButton: UIButton!
+    @IBOutlet weak var ouStarView: StarView!
+    
+    var isOtherUser: Bool!
+    
+  private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+    @IBOutlet weak var otherUserProfileSuperView: UIView!
     var friendsRecords : NSMutableArray = []
   
   //MARK: - UIViewController Lifecycle Methods
@@ -62,6 +75,8 @@ class ProfileViewController: UIViewController {
     numberOfExchangesLabel.text = "0"
     numberOfFavoritesLabel.text = "0"
     numberOfUploadsLabel.text = "0"
+    ouNumberOfFriendsLabel.text = "0"
+    ouNumberOfUploadsLabel.text = "0"
     
     
     //check for a person, if there's no person, then it's my profile
@@ -71,7 +86,9 @@ class ProfileViewController: UIViewController {
     //setup the known information about the person
     if (personForProfile?.valueForKey("image") as? NSData != nil) {
         profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
+        ouProfileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
         profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
+        ouProfileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
     }
     //TODO: set #ofStars
     
@@ -94,22 +111,32 @@ class ProfileViewController: UIViewController {
         self.updateViewAfterGettingResponse()
        
     }
-    
+    NSUserDefaults.standardUserDefaults().setValue("no", forKey: "isOtherUser")
     if tabBarController == nil {
       let done = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "done:")
       done.tintColor = UIColor.redColor()
       navigationItem.rightBarButtonItem = done
+      NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "isOtherUser")
     }
+    NSUserDefaults.standardUserDefaults().synchronize()
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
     reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     starView.backgroundColor = .clearColor()
+    ouStarView.backgroundColor = .clearColor()
     starView.numberOfStars = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileUpdate:", name: "profileUpdate", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "fetchUserProfileIfNeeded", name: "FetchUserProfileIfNeeded", object: nil)
+    if NSUserDefaults.standardUserDefaults().valueForKey("isOtherUser") == nil || NSUserDefaults.standardUserDefaults().valueForKey("isOtherUser") as? String == "no"{
+        isOtherUser = false
+        NSUserDefaults.standardUserDefaults().setValue("no", forKey: "isOtherUser")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    } else {
+        isOtherUser = true
+    }
+    otherUserProfileSuperView.hidden = !isOtherUser
   }
-    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -181,6 +208,8 @@ class ProfileViewController: UIViewController {
   
   func done(sender: UIBarButtonItem) {
     self.dismissViewControllerAnimated(true, completion: nil)
+    NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "no")
+    NSUserDefaults.standardUserDefaults().synchronize()
   }
   //MARK: - Setting Info for Child View Controllers
   private func updateChildViewControllers() {

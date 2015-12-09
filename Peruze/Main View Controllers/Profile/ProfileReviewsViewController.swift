@@ -33,12 +33,20 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
-    titleLabel.alpha = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonReviews", object: nil)
   }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.refresh()
+        let fetchCount = self.dataSource.fetchData()
+        if fetchCount == 0{
+            self.titleLabel.alpha = 1
+        } else {
+            self.titleLabel.alpha = 0
+        }
+        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(0) == 0) ||
+            (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(1) == 0){
+                self.refresh()
+        }
     }
   
   let opQueue = OperationQueue()
@@ -55,8 +63,11 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     reviewOp.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
         self.refreshControl.endRefreshing()
-        if self.tableView.numberOfRowsInSection(0) == 0 {
+        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(0) == 0) ||
+           (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(1) == 0){
           self.titleLabel.alpha = 1
+        } else {
+            self.titleLabel.alpha = 0 
         }
         self.dataSource.fetchData()
       }
