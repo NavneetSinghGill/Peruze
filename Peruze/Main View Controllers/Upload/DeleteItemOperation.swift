@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 
@@ -26,7 +27,7 @@ class DeleteItemOperation: GroupOperation{
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     completionHandler: (Void -> Void) = { },
     errorCompletionHandler: (Void -> Void) = { }) {
-      if logging { print("DeleteItemOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+      if logging { logw("DeleteItemOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       
       let item = Item.MR_findFirstByAttribute("recordIDName", withValue: recordIDName, inContext: context)
       
@@ -97,31 +98,31 @@ class DeleteItemFromLocalStorageOperation: Operation {
   
   init(objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-      if logging { print("DeleteItemFromLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+      if logging { logw("DeleteItemFromLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       self.context = context
       self.objectID = objectID
       super.init()
   }
   
   override func execute() {
-    if logging { print("DeleteItemFromLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("DeleteItemFromLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     do {
       let localItem = try context.existingObjectWithID(self.objectID)
         context.deleteObject(localItem)
     } catch {
-      print(error)
+      logw("\(error)")
     }
     
-    print("Deleting Item from Persistent Store and Waiting...")
+    logw("Deleting Item from Persistent Store and Waiting...")
     context.MR_saveToPersistentStoreAndWait()
     finish()
   }
   override func finished(errors: [NSError]) {
     if let firstError = errors.first {
-      print("DeleteItemFromLocalStorageOperation finished with an error: \(firstError)")
+      logw("DeleteItemFromLocalStorageOperation finished with an error: \(firstError)")
     } else {
-      print("DeleteItemFromLocalStorageOperation finished successfully")
+      logw("DeleteItemFromLocalStorageOperation finished successfully")
     }
   }
 }
@@ -133,7 +134,7 @@ class DeleteItemFromLocalStorageToCloudOperation: Operation {
   let objectID: NSManagedObjectID
   
   init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("DeleteItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("DeleteItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     self.database = database
     self.context = context
     self.objectID = objectID
@@ -142,7 +143,7 @@ class DeleteItemFromLocalStorageToCloudOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("DeleteItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("DeleteItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     do {
       let itemToDelete = try context.existingObjectWithID(objectID)
@@ -153,14 +154,14 @@ class DeleteItemFromLocalStorageToCloudOperation: Operation {
       let deleteItemRecordOp = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [CKRecordID(recordName: recordIDName!)])
       deleteItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
         //print any returned errors
-        if error != nil { print("UploadItem returned error: \(error)") }
+        if error != nil { logw("UploadItem returned error: \(error)") }
         self.finish()
       }
         
       deleteItemRecordOp.qualityOfService = qualityOfService
       database.addOperation(deleteItemRecordOp)
     } catch {
-      print(error)
+      logw("\(error)")
       self.finish()
     }
   }

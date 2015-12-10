@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CloudKit
+import SwiftLog
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView! {
@@ -40,7 +41,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
-                print("Taggable Friends are : \(result)")
+                logw("Taggable Friends are : \(result)")
                 let resultsArray = result.valueForKey("data") as! NSArray
                 self.taggableFriendsData = []
                 for friendData in resultsArray {
@@ -59,7 +60,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                 }
             } else {
-                print("Error Getting Friends \(error)");
+                logw("Error Getting Friends \(error)");
             }
         }
         dispatch_async(dispatch_get_main_queue()){

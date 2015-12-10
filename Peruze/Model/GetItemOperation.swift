@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 import CoreData
+import SwiftLog
 
 private let logging = true
 private var resultsLimit = 100 //the limit for the results from the server. The lower this is, the faster the speed :)
@@ -23,7 +24,7 @@ class GetItemInRangeOperation: GetItemOperation {
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     resultLimit : Int) {
-      if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+      if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
       
       self.range = range
       self.location = location
@@ -40,7 +41,7 @@ class GetItemInRangeOperation: GetItemOperation {
 //    }
     
     override func getPredicate() -> NSPredicate {
-        print("\n \(NSDate()) GetItemInRangeOperation getPredicate()")
+        logw("\n \(NSDate()) GetItemInRangeOperation getPredicate()")
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let myRecordID = CKRecordID(recordName: (me.valueForKey("recordIDName") as! String))
@@ -69,7 +70,7 @@ class GetItemInRangeOperation: GetItemOperation {
     }
   
 //  override func getPredicate() -> NSPredicate {
-//    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+//    if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
 //    
 //    //create predicates
 //    let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -127,7 +128,7 @@ class GetItemOperation: Operation {
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     resultLimit : Int) {
-      if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+      if logging { logw("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
       self.cursor = cursor
       self.database = database
       self.context = context
@@ -135,14 +136,14 @@ class GetItemOperation: Operation {
       super.init()
   }
   override func finished(errors: [NSError]) {
-    if logging { print("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     if errors.first != nil {
-      print(errors.first)
+      logw("\(errors.first)")
     }
   }
   
   override func execute() {
-    if logging { print("\n\(NSDate())\nExecute GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("\n\(NSDate())\nExecute GetItemOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //create operation for fetching relevant records
     var getItemsOperation: CKQueryOperation
@@ -150,13 +151,13 @@ class GetItemOperation: Operation {
       getItemsOperation = CKQueryOperation(cursor: cursor)
     } else {
     let predicate = getPredicate()
-        if logging { print("\n\(NSDate())\n Predicate for get Items::: \(predicate)") }
+        if logging { logw("\n\(NSDate())\n Predicate for get Items::: \(predicate)") }
       let getItemQuery = CKQuery(recordType: RecordTypes.Item, predicate: predicate/* NSPredicate(value: true)*/)
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-      if logging { print("\(NSDate())\nGetItemsOperation per record completion block \n \(record)") }
+      if logging { logw("\(NSDate())\nGetItemsOperation per record completion block \n \(record)") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
         withValue: record.recordID.recordName, inContext: self.context)
@@ -219,7 +220,7 @@ class GetItemOperation: Operation {
         let date = NSDate()
         NSUserDefaults.standardUserDefaults().setObject(date, forKey: "syncDate")
       if let error = error {
-        print("Get Uploads Finished With Error: \(error) ")
+        logw("Get Uploads Finished With Error: \(error) ")
         self.finishWithError(error)
       } else {
         self.cursor = cursor
@@ -246,7 +247,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     self.database = database
     self.context = context
@@ -254,13 +255,13 @@ class GetAllItemsWithMissingDataOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")
     
     let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     
-    if logging { print("\n\n\(NSDate()) MissingItemsDataCount : \( allItems.count)") }
+    if logging { logw("\n\n\(NSDate()) MissingItemsDataCount : \( allItems.count)") }
     
     let allRecordIDNames = allItems.map { $0.valueForKey("recordIDName") as? String }
     
@@ -274,7 +275,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-    if logging { print("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
         
       guard let recordsByID = recordsByID else {
         self.finishWithError(error)
@@ -284,7 +285,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
       //for each record that is returned
       for recordID in recordsByID.keys {
         guard let record = recordsByID[recordID] else {
-          print("A record in GetItemOperation was nil")
+          logw("A record in GetItemOperation was nil")
           continue
         }
         //get a local copy of the item to save
@@ -297,14 +298,14 @@ class GetAllItemsWithMissingDataOperation: Operation {
           let imageData = NSData(contentsOfURL: image.fileURL)
           localItem.setValue(imageData, forKey: "image")
         } else {
-          print("Image is not a CKAsset")
+          logw("Image is not a CKAsset")
         }
         
         //get title
         if let title = record.valueForKey("Title") as? String {
           localItem.setValue(title, forKey: "title")
         } else {
-          print("Title is not a String")
+          logw("Title is not a String")
         }
         
         
@@ -312,7 +313,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         if let detail = record.valueForKey("Description") as? String {
           localItem.setValue(detail, forKey: "detail")
         } else {
-          print("Description is not a String")
+          logw("Description is not a String")
         }
         
         

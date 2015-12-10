@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 
@@ -29,7 +30,7 @@ class PostItemOperation: GroupOperation {
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     completionHandler: (Void -> Void) = { },
     errorCompletionHandler: (Void -> Void) = { }) {
-      if logging { print("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+      if logging { logw("PostItemOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       
       //create the record if it doesn't exist
       let itemImageData = UIImagePNGRepresentation(image)
@@ -56,7 +57,7 @@ class PostItemOperation: GroupOperation {
       //ask the user for location permissio
       let locCondition = LocationCondition(usage: LocationCondition.Usage.WhenInUse)
       let getLocationOp = LocationOperation(accuracy: Constants.locationAccuracy) { (location) -> Void in
-        print("getLocationOp handler - - - - - - -  ")
+        logw("getLocationOp handler - - - - - - -  ")
         //save latitude and longitude to item and self
         let objectID = item.valueForKey("objectID") as! NSManagedObjectID
         do {
@@ -68,7 +69,7 @@ class PostItemOperation: GroupOperation {
           localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
           context.MR_saveToPersistentStoreAndWait()
         } catch {
-          print(error)
+          logw("\(error)")
         }
       }
       
@@ -108,7 +109,7 @@ class PostItemOperation: GroupOperation {
           operationsToInit = [ getLocationOp, saveItemOp, uploadItemOp, finishOp]
           break
         case .Failed(let error) :
-          print(error)
+          logw("\(error)")
           let finishWithErrorOp = BlockOperation(block: { (continueWithError) -> Void in
             errorCompletionHandler()
           })
@@ -154,7 +155,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
     image: NSData?,
     objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
-      if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+      if logging { logw("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       self.title = title
       self.detail = detail
       self.image = image
@@ -164,7 +165,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -178,18 +179,18 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
       
     } catch {
-      print(error)
+      logw("\(error)")
     }
     
-    print("Saving Item to Persistent Store and Waiting...")
+    logw("Saving Item to Persistent Store and Waiting...")
     context.MR_saveToPersistentStoreAndWait()
     finish()
   }
   override func finished(errors: [NSError]) {
     if let firstError = errors.first {
-      print("SaveItemInfoToLocalStorageOperation finished with an error: \(firstError)")
+      logw("SaveItemInfoToLocalStorageOperation finished with an error: \(firstError)")
     } else {
-      print("SaveItemInfoToLocalStorageOperation finished successfully")
+      logw("SaveItemInfoToLocalStorageOperation finished successfully")
     }
   }
 }
@@ -201,7 +202,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   let objectID: NSManagedObjectID
   
   init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     self.database = database
     self.context = context
     self.objectID = objectID
@@ -210,7 +211,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
   }
   
   override func execute() {
-    if logging { print("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
+    if logging { logw("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -257,12 +258,12 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
       saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
         //print any returned errors
-        if error != nil { print("UploadItem returned error: \(error)") }
+        if error != nil { logw("UploadItem returned error: \(error)") }
         
         do {
           try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
         } catch {
-          print(error)
+          logw("\(error)")
           return
         }
         
@@ -277,7 +278,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       saveItemRecordOp.qualityOfService = qualityOfService
       database.addOperation(saveItemRecordOp)
     } catch {
-      print(error)
+      logw("\(error)")
       self.finish()
     }
   }

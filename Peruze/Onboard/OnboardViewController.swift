@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class OnboardViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, FBSDKLoginButtonDelegate {
     
@@ -218,7 +219,7 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
                                 return
                             }
                         } else if error != nil {
-                            print(error.localizedDescription)
+                            logw("\(error.localizedDescription)")
                         }
                         FBSDKLoginManager().logOut()
                     })

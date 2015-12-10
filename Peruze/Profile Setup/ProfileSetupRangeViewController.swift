@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import SwiftLog
 
 struct UserDefaultsKeys {
   static let ProfileHasActiveProfileKey = "UserHasActiveProfile"
@@ -203,12 +204,12 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
   @IBAction func done(sender: UIButton) {
     //check location authorizations
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
-      print("authorization status not determined")
+      logw("authorization status not determined")
       locationManager.requestAlwaysAuthorization()
       return
     }
     if CLLocationManager.authorizationStatus() != .AuthorizedAlways && !userWarnedAboutLimitedFunction {
-      print("User hasn't been warned")
+      logw("User hasn't been warned")
       let alert = ErrorAlertFactory.locationEverywhereOnlyAccessAlert {
         self.userWarnedAboutLimitedFunction = true
         self.distanceSlider.setValue(self.distanceSlider.maximumValue, animated: true)
@@ -221,11 +222,11 @@ class ProfileSetupRangeViewController: UIViewController, CLLocationManagerDelega
     
     //check facebook access
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && !FBSDKAccessToken.currentAccessToken().declinedPermissions.contains("user_friends") {
-      print("checking facebook access for granted permission")
+      logw("checking facebook access for granted permission")
       let manager = FBSDKLoginManager()
       manager.logInWithReadPermissions(["user_friends"], handler: { (loginResult, error) -> Void in
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          print("login result retrieved with error \(error)")
+          logw("login result retrieved with error \(error)")
           if error != nil {
             let alert = ErrorAlertFactory.alertFromError(error, dismissCompletion: nil)
             self.presentViewController(alert, animated: true, completion: nil)

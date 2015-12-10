@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   private struct Constants {
@@ -60,7 +61,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
       let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
-      print("segue to write review")
+      logw("segue to write review")
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {
       var foundMatch: Int? = nil

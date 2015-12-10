@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -29,10 +30,10 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
         self.favorites = favoriteObjs
       } else {
-        print("me.valueForKey('favorites').allObjects was not an [NSManagedObject] ")
+        logw("me.valueForKey('favorites').allObjects was not an [NSManagedObject] ")
       }
     } else {
-      print("me.valueForKey('favorites') was not an NSSet ")
+      logw("me.valueForKey('favorites') was not an NSSet ")
     }
     if tableView != nil {
         tableView.reloadData()
@@ -60,10 +61,10 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
         cell.descriptionTextLabel.text = detail
         cell.circleImageView.image = UIImage(data: imageData)
       } else {
-        print("There was not enough non-nil data for the favorite item")
+        logw("There was not enough non-nil data for the favorite item")
       }
     } else {
-      print("There is no cell for NSIndexPath: \(indexPath)")
+      logw("There is no cell for NSIndexPath: \(indexPath)")
     }
     return cell
   }

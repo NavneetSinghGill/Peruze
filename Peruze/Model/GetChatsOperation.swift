@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 ///Retrieves all of the chats and their subsequent messages for the loggen in user
 class GetChatsOperation: GroupOperation {
@@ -45,7 +46,7 @@ class GetChatsOperation: GroupOperation {
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if let firstError = errors.first where
       ( operation === getExchangesOp || operation === getMessagesOp ) {
-        print("GetChatsOperation Failed With Error: \(firstError)")
+        logw("GetChatsOperation Failed With Error: \(firstError)")
     }
   }
 }
@@ -146,8 +147,8 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
     //Finish this operation
     messagesQueryOp.queryCompletionBlock = { (cursor, error) -> Void in
       if let error = error {
-        print("Get Chats For Accepted Exchanges Operation Finished with error: ")
-        print(error)
+        logw("Get Chats For Accepted Exchanges Operation Finished with error: ")
+        logw("\(error)")
       }
       self.finishWithError(error)
     }

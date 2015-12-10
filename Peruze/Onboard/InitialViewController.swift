@@ -85,7 +85,7 @@ class InitialViewController: UIViewController {
     //MARK: - Not logged into facebook
     private func setupAndSegueToOnboardVC() {
         FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
-        if presentedViewController == onboardVC && onboardVC != nil { print("pVC = onboard"); return }
+        if presentedViewController == onboardVC && onboardVC != nil { logw("pVC = onboard"); return }
         onboardVC = (storyboard!.instantiateViewControllerWithIdentifier(Constants.OnboardVCIdentifier) )
         if onboardVC == nil { assertionFailure("VC Pulled out of storyboard is not a UIViewController") }
         presentViewController(onboardVC!, animated: true, completion: nil)
@@ -97,7 +97,7 @@ class InitialViewController: UIViewController {
         getMyProfileOp.completionBlock = {
             
             self.spinner.stopAnimating()
-            print("\(NSDate()) \n Initial view Stopped spinner \n\n")
+            logw("\(NSDate()) \n Initial view Stopped spinner \n\n")
             if getMyProfileOp.cancelled {
                 return
             }
@@ -159,7 +159,7 @@ class InitialViewController: UIViewController {
     
     //MARK: - Logged into facebook and profile setup
     private func setupAndSegueToTabBarVC() {
-        print("\(NSDate()) setupAndSegueToTabBarVC()")
+        logw("\(NSDate()) setupAndSegueToTabBarVC()")
         tabBarVC = tabBarVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.TabBarVCIdentifier) as? UITabBarController
         if tabBarVC == nil { assertionFailure("VC Pulled out of storyboard is not a UITabBarController")}
         tabBarVC!.selectedIndex = profileSetupVC == nil ? 0 : 1
@@ -188,7 +188,7 @@ class InitialViewController: UIViewController {
         let request = FBSDKGraphRequest(graphPath:"/me/friends", parameters: nil);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
-                print("Friends are : \(result)")
+                logw("Friends are : \(result)")
                 
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 
@@ -208,7 +208,7 @@ class InitialViewController: UIViewController {
                         var predicate =  NSPredicate(format: "(FacebookID == %@ AND FriendsFacebookIDs == %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
                         self.loadFriend(predicate, finishBlock: { isPresent in
                             if isPresent == true {
-                                print("\nFriend entry already present");
+                                logw("\nFriend entry already present");
                             } else {
                                 predicate =  NSPredicate(format: "(FriendsFacebookIDs == %@ AND FacebookID == %@) ", argumentArray: [myPerson.facebookID!,(element["id"] as? String)!])
                                 self.loadFriend(predicate, finishBlock: { isPresent in
@@ -221,7 +221,7 @@ class InitialViewController: UIViewController {
                     }
                 }
             } else {
-                print("Error Getting Friends \(error)");
+                logw("Error Getting Friends \(error)");
             }
         }
     }
@@ -240,7 +240,7 @@ class InitialViewController: UIViewController {
         var isRecordpresent = false
         
         operation.recordFetchedBlock = { (record) in
-            print(record)
+            logw("\(record)")
             isRecordpresent = true
         }
         
@@ -268,8 +268,8 @@ class InitialViewController: UIViewController {
         let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [friendRecord], recordIDsToDelete: nil)
         saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
             //print any returned errors
-            if error != nil { print("UploadItem returned error: \(error)") }
-            print("Friend : UploadItem")
+            if error != nil { logw("UploadItem returned error: \(error)") }
+            logw("Friend : UploadItem")
         }
         
         let database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase
@@ -294,7 +294,7 @@ class InitialViewController: UIViewController {
             
             var friendsOfFriendsList = [String]()
             operation.recordFetchedBlock = { (record) in
-                print("friendsOfFriends : \(record)")
+                logw("friendsOfFriends : \(record)")
                 let fbId = record.objectForKey("FriendsFacebookIDs") as! String
                 if friendsOfFriendsList.indexOf(fbId) == nil{
                     friendsOfFriendsList.append(fbId)
@@ -314,7 +314,7 @@ class InitialViewController: UIViewController {
             
             var friendsOfFriendsList2 = [String]()
             operation2.recordFetchedBlock = { (record) in
-                print("friendsOfFriends : \(record)")
+                logw("friendsOfFriends : \(record)")
                 if record.objectForKey("FacebookID") != nil{
 //                    let friendsOfFriends = defaults.objectForKey("kFriendsOfFriend") as! [String]
                     let fbId = record.objectForKey("FacebookID") as! String

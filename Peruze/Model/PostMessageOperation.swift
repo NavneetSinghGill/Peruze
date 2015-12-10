@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 class PostMessageOperation: GroupOperation {
   
@@ -49,8 +50,8 @@ class PostMessageOperation: GroupOperation {
   }
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.count != 0 {
-      print("PostMessageOperation finished with errors:")
-      print(errors)
+      logw("PostMessageOperation finished with errors:")
+      logw("\(errors)")
     }
   }
 }

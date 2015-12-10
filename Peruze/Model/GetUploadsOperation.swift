@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 /**
 Retrieves the uploads of the specified person and stores them in the `uploads` property for that
 `Person` object
@@ -29,7 +30,7 @@ class GetUploadsOperation: GetItemOperation {
   }
   
   override func getPredicate() -> NSPredicate {
-    print("\n \(NSDate()) GetUploadItemOperation getPredicate()")
+    logw("\n \(NSDate()) GetUploadItemOperation getPredicate()")
     return NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personIDName))
   }
   

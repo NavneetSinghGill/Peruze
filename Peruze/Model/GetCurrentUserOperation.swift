@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private enum CurrentUserOperationError: ErrorType {
   case CloudKitError(NSError)
@@ -33,20 +34,20 @@ class GetCurrentUserOperation: Operation {
   
   override func execute() {
     
-    print("\n\n \(NSDate())\nExecute of Get Current User from iCloud Operation\n\n")
+    logw("\n\n \(NSDate())\nExecute of Get Current User from iCloud Operation\n\n")
     let fetchUser = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
     fetchUser.perRecordCompletionBlock = { (record, recordID, error) -> Void in
-      print("\n\n \(NSDate()) Fetched Current User from iCloud Operation \n \(record)")
+      logw("\n\n \(NSDate()) Fetched Current User from iCloud Operation \n \(record)")
       //make sure there were no errors
       if let error = error {
-        print("GetCurrentUserOperation failed with error:")
-        print(error)
+        logw("GetCurrentUserOperation failed with error:")
+        logw("\(error)")
         self.finishWithError(error)
         return
       }
       
       guard let record = record else {
-        print("The record returned from the server was nil")
+        logw("The record returned from the server was nil")
         return
       }
       

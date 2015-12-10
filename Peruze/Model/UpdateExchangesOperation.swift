@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 class UpdateAllExchangesOperation: Operation {
   let database: CKDatabase
@@ -35,7 +36,7 @@ class UpdateAllExchangesOperation: Operation {
     
     fetchUpdatedExchanges.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
       guard let recordsByID = recordsByID else {
-        print("Update Exchanges Operation recordsByID == nil")
+        logw("Update Exchanges Operation recordsByID == nil")
         self.finish()
         return
       }
@@ -73,7 +74,7 @@ class UpdateAllExchangesOperation: Operation {
       if let newExchangeStatus = record.objectForKey("ExchangeStatus") as? Int {
         localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
       } else {
-        print("Exchange Status was not set!!!")
+        logw("Exchange Status was not set!!!")
       }
 
       //set date
@@ -138,8 +139,8 @@ class UpdateExchangeWithIncrementalData: Operation {
     cloudOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     cloudOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       if let error = error {
-        print("UpdateExchangeWithIncrementalData finished with error:")
-        print(error)
+        logw("UpdateExchangeWithIncrementalData finished with error:")
+        logw("\(error)")
         self.finishWithError(error)
       } else {
         self.context.MR_saveToPersistentStoreAndWait()

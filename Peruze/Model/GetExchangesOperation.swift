@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 /*
@@ -22,13 +23,13 @@ try uploadFetch.performFetch()
 return NSPredicate(value: false)
 }
 
-print(person.uploads?.allObjects)
+logw(person.uploads?.allObjects)
 
 //gather a list of references to send to the cloud kit server
 var uploadRecordReferences = [CKReference]()
 for upload in person.uploads!.allObjects where uploadFetch.fetchedObjects != nil {
 if let uploadID = (upload as? Item)?.recordIDName {
-print("RECORD ID NAME::::::" + "\(uploadID)")
+logw("RECORD ID NAME::::::" + "\(uploadID)")
 //      let tempRecordID = CKRecordID(recordName: uploadID)
 //      uploadRecordReferences.append(CKReference(recordID: tempRecordID, action: .None))
 }
@@ -67,8 +68,8 @@ class GetAllParticipatingExchangesOperation: GroupOperation {
   }
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.first != nil {
-      print("GetAllParticipatingExchangesOperation finished with error:")
-      print(errors.first!)
+      logw("GetAllParticipatingExchangesOperation finished with error:")
+      logw("\(errors.first!)")
     }
   }
 }
@@ -132,11 +133,11 @@ class GetExchangesOperation: Operation {
   }
   
   override func execute() {
-    if logging { print(" " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw(" " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //make sure the predicate is valid
     if getPredicate() == NSPredicate(value: false) {
-      print("false predicate")
+      logw("false predicate")
       finish()
       return
     }
@@ -212,9 +213,9 @@ class GetExchangesOperation: Operation {
       
       //add this exchange to the requesting user's exchanges
       let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
-            print("Saving exchanges \(currentExchanges.count)")
-         print("\n requestingPerson \(requestingPerson)")
-        print("\n localExchange \(localExchange)")
+            logw("Saving exchanges \(currentExchanges.count)")
+         logw("\n requestingPerson \(requestingPerson)")
+        logw("\n localExchange \(localExchange)")
 
         let set = currentExchanges.setByAddingObject(localExchange)
         requestingPerson.setValue(set, forKey: "exchanges")
@@ -224,7 +225,7 @@ class GetExchangesOperation: Operation {
     }
     
     getExchangesOperation.queryCompletionBlock = { (cursor, error) -> Void in
-      if error != nil { print("Get Exchanges Completed with Error: \(error)") }
+      if error != nil { logw("Get Exchanges Completed with Error: \(error)") }
       self.finishWithError(error)
     }
     

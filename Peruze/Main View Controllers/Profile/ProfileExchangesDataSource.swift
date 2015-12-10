@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -51,21 +52,21 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
       let itemOffered = exchange.valueForKey("itemOffered") as? NSManagedObject,
       let itemRequested = exchange.valueForKey("itemRequested") as? NSManagedObject
       else {
-        print("could not get item Offered or item Requested")
+        logw("could not get item Offered or item Requested")
         return cell
     }
     guard
       let itemOfferedTitle = itemOffered.valueForKey("title") as? String,
       let itemRequestedTitle = itemRequested.valueForKey("title") as? String
       else {
-        print("could not get itemOfferedTitle or itemRequestedTitle")
+        logw("could not get itemOfferedTitle or itemRequestedTitle")
         return cell
     }
     guard
       let itemOfferedImage = itemOffered.valueForKey("image") as? NSData,
       let itemRequestedImage = itemRequested.valueForKey("image") as? NSData
       else {
-        print("could not get itemOfferedImage or itemRequestedImage")
+        logw("could not get itemOfferedImage or itemRequestedImage")
         return cell
     }
     guard
@@ -73,7 +74,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
       let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as? NSData,
       let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as? String
       else {
-        print("There was not enough data for this exchange to populate the table")
+        logw("There was not enough data for this exchange to populate the table")
         return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
     }
     

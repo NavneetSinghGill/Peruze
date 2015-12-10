@@ -9,6 +9,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //do stuff with notification
 //        NSLog([NSString stringWithFormat:@"Launched from push notification: %@", dictionary]);
 //        [[RemoteNotificationManager sharedInstance] sendLocalNotificationAfterRemoteNotification:dictionary andShowAlerts:YES];
-        print("notification \(notification)")
+        logw("notification \(notification)")
     }
     }
     
@@ -72,33 +73,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   //MARK: - Push Notifications
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>app did receive remote notification ")
+    logw(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>app did receive remote notification ")
     
 //    let dict = userInfo[0]
 //    let aps = userInfo.valueForKey("aps")
 //    let badgeValue = aps!.valueForKey("badge")
-//    print(badgeValue)
+//    logw(badgeValue)
     
     let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
     if let notification = cloudKitNotification as? CKQueryNotification {
-      print("app did receive remote notification ")
+      logw("app did receive remote notification ")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
         
         if let info = userInfo["aps"] as? Dictionary<String, AnyObject> {
             // Default printout of info = userInfo["aps"]
-            print("All of info: \n\(info)\n")
+            logw("All of info: \n\(info)\n")
             
             for (key, value) in info {
-                print("APS: \(key) —> \(value)")
+                logw("APS: \(key) —> \(value)")
             }
             
             if  let alert = info["alert"] as? String {
                 // Printout of (userInfo["aps"])["type"]
-                print("\nFrom APS-dictionary with key \"type\":  \( alert)")
+                logw("\nFrom APS-dictionary with key \"type\":  \( alert)")
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:info)
             }
             if  let badge = info["badge"] as? Int {
-                print("\nFrom APS-dictionary with key \"type\":  \( badge)")
+                logw("\nFrom APS-dictionary with key \"type\":  \( badge)")
             }
         }
 //        let viewController: ViewController =
@@ -113,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let recordID = queryNotification.recordID
                 
-                print("Query Added exchange recordId = \(recordID)")
+                logw("Query Added exchange recordId = \(recordID)")
 //                viewController.fetchRecord(recordID)
         } else if (cloudKitNotification.notificationType ==
             CKNotificationType.RecordZone) {
@@ -122,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let recordID = queryNotification.recordID
                 
-                print("RecordZone Added exchange recordId = \(recordID)")
+                logw("RecordZone Added exchange recordId = \(recordID)")
                 //                viewController.fetchRecord(recordID)
         } else if (cloudKitNotification.notificationType ==
             CKNotificationType.ReadNotification) {
@@ -131,17 +132,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let recordID = queryNotification.recordID
                 
-                print("ReadNotification Added exchange recordId = \(recordID)")
+                logw("ReadNotification Added exchange recordId = \(recordID)")
                 //                viewController.fetchRecord(recordID)
         }
         
     }
   }
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("app did register for remote notification ")
+    logw("app did register for remote notification ")
   }
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-    print(error.localizedDescription)
+    logw(error.localizedDescription)
   }
     
     

@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 import CoreData
+import SwiftLog
 
 /**
 Retrieves the reviews of the specified person and stores them in the `reviews` property for that
@@ -63,7 +64,7 @@ class GetReviewsOperation: Operation {
       
       if let userBeingReviewed = record.objectForKey("UserBeingReviewed") as? CKReference {
         let userReviewedIDName = userBeingReviewed.recordID.recordName
-        print(userReviewedIDName)
+        logw(userReviewedIDName)
         let reviewedUser = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: userReviewedIDName, inContext: self.context)
         self.context.MR_saveToPersistentStoreAndWait()
         localReview.userBeingReviewed = reviewedUser
@@ -82,7 +83,7 @@ class GetReviewsOperation: Operation {
     }
     getReviewsOperation.queryCompletionBlock = { (cursor: CKQueryCursor?, error: NSError?) -> Void in
       if error != nil {
-        print("getReviewsOperation finished with error")
+        logw("getReviewsOperation finished with error")
       }
       self.finish()
     }

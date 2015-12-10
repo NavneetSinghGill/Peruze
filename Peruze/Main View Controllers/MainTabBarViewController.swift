@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class MainTabBarViewController: UITabBarController {
   override func viewDidLoad() {
@@ -37,9 +38,9 @@ class MainTabBarViewController: UITabBarController {
         
         if  let alert = info["alert"] as? String {
             // Printout of (userInfo["aps"])["type"]
-            print("\nFrom APS-dictionary with key \"type\":  \( alert)")
+            logw("\nFrom APS-dictionary with key \"type\":  \( alert)")
             if  let badge = info["badge"] as? Int {
-                print("\nFrom APS-dictionary with key \"type\":  \( badge)")
+                logw("\nFrom APS-dictionary with key \"type\":  \( badge)")
                 if alert == NotificationMessages.NewChatMessage {
                     //refresh messages
                     self.setChatBadgeCount(Int(badge))
@@ -65,7 +66,7 @@ class MainTabBarViewController: UITabBarController {
         let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
         badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
             if error != nil {
-                print("Error resetting badge: \(error)")
+                logw("Error resetting badge: \(error)")
             }
             else {
                 self.setRequestBadgeCount(0)

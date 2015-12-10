@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, UIGestureRecognizerDelegate {
   //MARK: - Constants
@@ -293,7 +294,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     //make check if cell is upload new item cell
     if indexPath.item == collectionView.numberOfItemsInSection(0) - 1 {
       segueToUploadNewItem()
-      print("Segue to upload item")
+      logw("Segue to upload item")
       return
     }
     

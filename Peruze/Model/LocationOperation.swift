@@ -8,6 +8,7 @@ Shows how to retrieve the user's location with an operation.
 
 import Foundation
 import CoreLocation
+import SwiftLog
 
 /**
 `LocationOperation` is an `Operation` subclass to do a "one-shot" request to
@@ -28,13 +29,13 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
     self.accuracy = accuracy
     self.handler = locationHandler
     super.init()
-    print("LocationOperation Initialized.")
+    logw("LocationOperation Initialized.")
     addCondition(LocationCondition(usage: .Always))
     addCondition(MutuallyExclusive<CLLocationManager>())
   }
   
   override func execute() {
-    print("LocationOperation execute().")
+    logw("LocationOperation execute().")
     dispatch_async(dispatch_get_main_queue()) {
       /*
       `CLLocationManager` needs to be created on a thread with an active
@@ -71,13 +72,13 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
   }
   
   func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-    print("locationManagerDidFailWithError: \(error)")
+    logw("locationManagerDidFailWithError: \(error)")
     stopLocationUpdates()
     finishWithError(error)
   }
   override func finished(errors: [NSError]) {
     if let error = errors.first {
-      print(error)
+      logw("\(error)")
     }
   }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
   
@@ -98,12 +99,12 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
         do {
             try fetchedResultsController.performFetch()
             guard let objects = fetchedResultsController.fetchedObjects as? [NSManagedObject] else {
-                print("Issue in Peruze Exchange Item Data Source")
+                logw("Issue in Peruze Exchange Item Data Source")
                 return
             }
             exchangeItems = objects
         } catch {
-            print(error)
+            logw("\(error)")
         }
     }
 }

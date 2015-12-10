@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private enum RemoveFavoriteOperationError: ErrorType {
   case ExecutionFailed
@@ -61,7 +62,7 @@ class RemoveFavoriteOperation: Operation {
         let newRef = CKReference(recordID: itemObjectRecordID, action: CKReferenceAction.None)
         allReferences.append(newRef)
       } else {
-        print("Error: Favorite Item was not NSManagedObject")
+        logw("Error: Favorite Item was not NSManagedObject")
         finish()
       }
     }
@@ -74,14 +75,14 @@ class RemoveFavoriteOperation: Operation {
     saveMeOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     saveMeOp.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, operationError) -> Void in
       if operationError != nil {
-        print("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError) ")
+        logw("saveMeOp.modifyRecordsCompletionBlock in " + __FUNCTION__ + " in " + __FILE__ + " finished with error : \(operationError) ")
         self.finishWithError(operationError)
         return
       }
       
-      print("       Here is my saved records      ")
-      print(savedRecords?.first?.valueForKey("FavoriteItems"))
-      print("     ")
+      logw("       Here is my saved records      ")
+      logw("\(savedRecords?.first?.valueForKey("FavoriteItems"))")
+      logw("     ")
       if let mySavedRecordFavorites = savedRecords?.first?.valueForKey("FavoriteItems") as? NSSet {
         if let savedRecordArray = mySavedRecordFavorites.allObjects as? [CKReference] {
           let itemsFromRecordIDs = savedRecordArray.map {
@@ -89,10 +90,10 @@ class RemoveFavoriteOperation: Operation {
           }
           myPerson.setValue( NSSet(array: itemsFromRecordIDs), forKey: "favorites")
         } else {
-          print("mySavedRecords is not a [CKReference]  ")
+          logw("mySavedRecords is not a [CKReference]  ")
         }
       } else {
-        print("mySavedRecord is not an NSSet")
+        logw("mySavedRecord is not an NSSet")
       }
       
       self.context.MR_saveToPersistentStoreAndWait()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   private struct Constants {
@@ -65,7 +66,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
       //self.dataSource.items.removeAtIndex(indexPath.row)
 //      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-        print("OperationQueue().addOperation(DeleteItemOperation)")
+        logw("OperationQueue().addOperation(DeleteItemOperation)")
         let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) {
             if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
                 parentVC.updateViewAfterGettingResponse()

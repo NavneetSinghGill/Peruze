@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 
@@ -33,7 +34,7 @@ class PostUserOperation: Operation {
   }
   
   override func execute() {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
     
@@ -47,7 +48,7 @@ class PostUserOperation: Operation {
     
     if let imageData : NSData = myPerson.valueForKey("image") as? NSData {
         if !imageData.writeToURL(imageURL, atomically: true) {
-            print("imageData.writeToURL failed to write")
+            logw("imageData.writeToURL failed to write")
             self.finish()
             return
         }
@@ -66,12 +67,12 @@ class PostUserOperation: Operation {
       }
       
       guard let myRecordID = recordsByID?.keys.first else {
-        print("myRecordID from fetchRecordsCompletionBlock in Post User Operation was nil")
+        logw("myRecordID from fetchRecordsCompletionBlock in Post User Operation was nil")
         self.finish()
         return
       }
       guard let myRecord = recordsByID?[myRecordID] else {
-        print("myRecord from fetchRecordsCompletionBlock in Post User Operation was nil")
+        logw("myRecord from fetchRecordsCompletionBlock in Post User Operation was nil")
         self.finish()
         return
       }
@@ -82,7 +83,7 @@ class PostUserOperation: Operation {
       
       let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
       saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-        print("saveOp.modifyRecordsCompletionBlock called.  ")
+        logw("saveOp.modifyRecordsCompletionBlock called.  ")
         
         if let error = operationError {
           self.finishWithError(error)
@@ -93,13 +94,13 @@ class PostUserOperation: Operation {
         do {
           try NSFileManager.defaultManager().removeItemAtURL(imageURL)
         } catch {
-          print(error)
+          logw("\(error)")
           self.finish()
           return
         }
         
         if savedRecords?.first == nil {
-          print("saved records in PostUserOperation was nil")
+          logw("saved records in PostUserOperation was nil")
           self.finish()
           return
         }
@@ -112,7 +113,7 @@ class PostUserOperation: Operation {
     self.database.addOperation(fetchMyRecord)
   }
   override func finished(errors: [NSError]) {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let alert = AlertOperation(presentationContext: presentationContext)
     alert.title = "Oh No!"
@@ -148,7 +149,7 @@ class PostUserOperation: Operation {
   }
   
   private func cachePathForFileName(name: String) -> String {
-    if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
     let cachePath = paths.first!

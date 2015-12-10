@@ -9,6 +9,7 @@
 import UIKit
 import SystemConfiguration
 import CloudKit
+import SwiftLog
 
 class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, TGCameraDelegate {
   
@@ -166,7 +167,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
-      print("OperationQueue().addOperation(PostItemOperation)")
+      logw("OperationQueue().addOperation(PostItemOperation)")
       let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) {
         if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
 //            let per = self.parentVC as! PeruseExchangeViewController

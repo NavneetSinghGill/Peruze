@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 protocol FacebookProfilePictureRetrievalDelegate {
   var profileImages: [UIImage]? { get set }
@@ -71,7 +72,7 @@ class FacebookDataSource: NSObject {
     dispatch_async(dispatch_get_main_queue()) {
       request.startWithCompletionHandler {(connection, result, error) -> Void in
         if error != nil {
-          print(error.localizedDescription)
+          logw(error.localizedDescription)
           return
         }
         var profile: FBSDKProfile?
@@ -84,7 +85,7 @@ class FacebookDataSource: NSObject {
             linkURL: nil,
             refreshDate: nil)
         } else {
-          print("result is not a [String: AnyObject] dictionary")
+          logw("result is not a [String: AnyObject] dictionary")
         }
         dispatch_async(dispatch_get_main_queue()) {
           UIApplication.sharedApplication().networkActivityIndicatorVisible = false

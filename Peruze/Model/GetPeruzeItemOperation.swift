@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 
@@ -24,7 +25,7 @@ class GetPeruzeItemOperation: GroupOperation {
     location: CLLocation?,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase) {
-        if logging { print(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+        if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
         self.presentationContext = presentationContext
         var range = GetPeruzeItemOperation.userDistanceSettingInMeters()
         if location == nil {
@@ -42,20 +43,20 @@ class GetPeruzeItemOperation: GroupOperation {
         if defaults.objectForKey("kCursor") == nil && defaults.boolForKey("keyIsMoreItemsAvalable") == false {
             defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
         }
-        print("\n\n\(NSDate()) GroupOperation Start")
+        logw("\n\n\(NSDate()) GroupOperation Start")
         getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 10)
         getItems.completionBlock = {
-            print("\n\n\(NSDate()) GetItemInRangeOperation Completed")
+            logw("\n\n\(NSDate()) GetItemInRangeOperation Completed")
         }
         
         
         let fillMissingItemData = GetAllItemsWithMissingDataOperation(database: database, context: context)
         fillMissingItemData.completionBlock = {
-            print("\n\n\(NSDate()) fillMissingItemData Completed")
+            logw("\n\n\(NSDate()) fillMissingItemData Completed")
         }
         //      let fillMissingPeopleData = GetAllPersonsWithMissingData(database: database, context: context)
         //        fillMissingPeopleData.completionBlock = {
-        //            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+        //            logw("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
         //        }
         //add dependencies
         //      fillMissingPeopleData.addDependency(getItems)
@@ -64,7 +65,7 @@ class GetPeruzeItemOperation: GroupOperation {
         super.init(operations: [getItems, fillMissingItemData])
     }
   override func finished(errors: [NSError]) {
-    print("\n\n\(NSDate()) GroupOperation Completed")
+    logw("\n\n\(NSDate()) GroupOperation Completed")
     let defaults = NSUserDefaults.standardUserDefaults()
     if defaults.objectForKey("shouldCallWithSyncDate") != nil && defaults.objectForKey("shouldCallWithSyncDate") as! String == "yes" {
         defaults.setObject("no", forKey: "shouldCallWithSyncDate")
@@ -80,7 +81,7 @@ class GetPeruzeItemOperation: GroupOperation {
     defaults.synchronize()
     cursor = getItems.cursor
     if let error = errors.first {
-      print(error)
+      logw("\(error)")
       let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oops!"
       alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."

@@ -8,6 +8,8 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
+
 class ProfileViewController: UIViewController {
   
   private struct Constants {
@@ -178,7 +180,7 @@ class ProfileViewController: UIViewController {
   }
   //MARK: - Setting Info for Child View Controllers
   private func updateChildViewControllers() {
-    print(self.childViewControllers)
+    logw("\(self.childViewControllers)")
     
     for childVC in childViewControllers {
       if let container = childVC as? ProfileContainerViewController {
@@ -212,7 +214,7 @@ class ProfileViewController: UIViewController {
             context: managedConcurrentObjectContext,
             database: CKContainer.defaultContainer().publicCloudDatabase,
             completionHandler: {
-                print("\(NSDate())\nFinished GetFullProfileOperation")
+                logw("\(NSDate())\nFinished GetFullProfileOperation")
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     let completeProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfileRecordID)
                     self.personForProfile = completeProfile

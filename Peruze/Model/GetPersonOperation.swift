@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 private let logging = true
 class GetPersonOperation: Operation {
@@ -122,13 +123,13 @@ class GetAllPersonsWithMissingData: Operation {
   let database: CKDatabase
   
   init(database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
-    if logging { print("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("GetAllPersonsWithMissingData " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     self.database = database
     self.context = context
     super.init()
   }
   override func execute() {
-    if logging { print("\n\n\(NSDate()) GetAllPersonsWithMissingData exection start" + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
+    if logging { logw("\n\n\(NSDate()) GetAllPersonsWithMissingData exection start" + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
     //figure out what keys need to be fetched
     let missingPersonsPredicate = NSPredicate(value: true)//(format: "recordIDName != nil AND image == nil")
@@ -152,9 +153,9 @@ class GetAllPersonsWithMissingData: Operation {
     let getPersonOperation = CKFetchRecordsOperation(recordIDs: missingPersonsRecordIDs)
     getPersonOperation.desiredKeys = desiredKeys
     getPersonOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-        print("\n\n\(NSDate()) GetAllPersonsWithMissingData Per record completion======")
+        logw("\n\n\(NSDate()) GetAllPersonsWithMissingData Per record completion======")
       if let error = error {
-        print("Get All Persons With Missing Data Finished With Error: \(error)")
+        logw("Get All Persons With Missing Data Finished With Error: \(error)")
         self.finishWithError(error)
         return
       }
@@ -210,9 +211,9 @@ class GetAllPersonsWithMissingData: Operation {
 
   override func finished(errors: [NSError]) {
     if errors.count != 0 {
-      print("GetAllPersonsWithMissingData finished with an error ")
+      logw("GetAllPersonsWithMissingData finished with an error ")
     } else {
-      print("GetAllPersonsWithMissingData finished  ")
+      logw("GetAllPersonsWithMissingData finished  ")
     }
   }
 }

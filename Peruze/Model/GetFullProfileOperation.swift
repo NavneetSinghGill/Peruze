@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 
 ///A group operation to fetch all aspects of a user's profile
 class GetFullProfileOperation: GroupOperation {
@@ -45,24 +46,24 @@ class GetFullProfileOperation: GroupOperation {
     */
     fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: database , context: context)
       fetchPersonOperation.completionBlock = {
-        print("Finished FetchPersonOperation")
+        logw("Finished FetchPersonOperation")
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPerson", object: nil, userInfo: nil))
       }
     fetchReviewsOperation = GetReviewsOperation(recordID: personRecordID, database: database, context: context)
       fetchReviewsOperation.completionBlock = {
-        print("Finished fetchReviewsOperation")
+        logw("Finished fetchReviewsOperation")
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonReviews", object: nil, userInfo: nil))
       }
     fetchUploadsOperation = GetUploadsOperation(recordID: personRecordID, database: database, context: context)
       fetchUploadsOperation.completionBlock = {
-        print("\n \(NSDate()) \nFinished fetchUploadsOperation")
+        logw("\n \(NSDate()) \nFinished fetchUploadsOperation")
 //        let recordId : String = personRecordID.recordName
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonUploads", object: recordId, userInfo: nil))
       }
     fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
       status: ExchangeStatus.Pending, database: database, context: context)
       fetchExchangesOperation.completionBlock = {
-        print("Finished fetchExchangesOperation")
+        logw("Finished fetchExchangesOperation")
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchedPersonExchanges", object: nil, userInfo: nil))
       }
     
@@ -80,7 +81,7 @@ class GetFullProfileOperation: GroupOperation {
   }
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if let firstError = errors.first {
-      print("Get Full Profile Operation Failed With Error: \(firstError)")
+      logw("Get Full Profile Operation Failed With Error: \(firstError)")
       //produceAlert(firstError)
     }
   }

@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 ///whether or not verbose print statements should be called for each function
 private let logging = true
@@ -57,7 +58,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
       if !success {
-        print(error)
+        logw("\(error)")
         self.profilePictureFetchingError()
       }
       dispatch_async(dispatch_get_main_queue()) {
@@ -156,7 +157,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     
     //saves the user's image to the local database
     let saveImageOp = NSBlockOperation {
-        if logging { print("saveImageOp called.  ") }
+        if logging { logw("saveImageOp called.  ") }
         if let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext) {
             let imageData = UIImagePNGRepresentation(self.center.image!)
             me.setValue(imageData, forKey: "image")
@@ -164,12 +165,12 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
         }
     }
     saveImageOp.completionBlock = {
-      print("saveImageOp.completionBlock ")
+      logw("saveImageOp.completionBlock ")
     }
     
     //operation that performs the segue to the next VC
     let performSegueOp = NSBlockOperation {
-      if logging { print("performSeugeOp called.  ") }
+      if logging { logw("performSeugeOp called.  ") }
       dispatch_async(dispatch_get_main_queue()) {
         self.nextLoadingTearDown()
         sender.userInteractionEnabled = true
@@ -212,7 +213,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   private func handleError(error: NSError?, handler:(Void -> Void)? = nil) {
     dispatch_async(dispatch_get_main_queue()){
       if error != nil {
-        print(error!.localizedDescription)
+        logw(error!.localizedDescription)
         let alert = ErrorAlertFactory.alertFromError(error!)
         self.presentViewController(alert, animated: true, completion: nil)
         self.view.userInteractionEnabled = true

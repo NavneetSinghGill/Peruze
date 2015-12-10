@@ -8,6 +8,7 @@
 
 import UIKit
 import SystemConfiguration
+import SwiftLog
 
 ///domain for a network connection error
 let NetworkErrorDomain = "NetworkErrorDomain"
@@ -35,14 +36,14 @@ class NetworkConnection: NSObject {
     do {
     let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) as? NSData
     } catch {
-      print(error)
+      logw("\(error)")
     }
     if let httpResponse = response as? NSHTTPURLResponse {
       if httpResponse.statusCode == 200 {
         status = true
       }
     }
-    print(status)
+    logw("\(status)")
     return status
   }
   

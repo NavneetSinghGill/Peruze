@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 public class JSON: NSObject {
   /**
@@ -24,7 +25,7 @@ public class JSON: NSObject {
         if let value: AnyObject = node[pathEdge] {
           currentNode = value
         } else {
-          print("There is no \(pathEdge) directory in given data")
+          logw("There is no \(pathEdge) directory in given data")
         }
       }
     }

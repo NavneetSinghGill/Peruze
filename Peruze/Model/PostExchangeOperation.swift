@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import SwiftLog
 /**
 Saves an exchange with the given informaiton to the local server and then to the cloudkit
 database. This also sets the creator of the exchange to the
@@ -60,8 +61,8 @@ class PostExchangeOperation: GroupOperation {
   }
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.first != nil {
-      print("PostExchangeOperation finished with the following first error: ")
-      print(errors.first!)
+      logw("PostExchangeOperation finished with the following first error: ")
+      logw("\(errors.first!)")
     }
   }
 }

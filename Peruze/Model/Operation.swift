@@ -7,6 +7,7 @@ This file contains the foundational subclass of NSOperation.
 */
 
 import Foundation
+import SwiftLog
 
 /**
     The subclass of `NSOperation` from which all other operations should be derived.
@@ -210,7 +211,7 @@ class Operation: NSOperation {
         their readiness state.
     */
     func execute() {
-        print("\(self.dynamicType) must override `execute()`.")
+        logw("\(self.dynamicType) must override `execute()`.")
 
         finish()
     }

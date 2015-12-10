@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
   private struct Constants {
@@ -119,16 +120,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     let insertedObjects: NSArray? = notification.userInfo?[NSInsertedObjectsKey] as? NSArray
     
     if updatedObjects != nil {
-      print("- - - - - updated objects - - - - - ")
-      print("\(updatedObjects!) " )
+      logw("- - - - - updated objects - - - - - ")
+      logw("\(updatedObjects!) " )
     }
     if deletedObjects != nil {
-      print("- - - - - deleted objects - - - - - ")
-      print("\(deletedObjects) ")
+      logw("- - - - - deleted objects - - - - - ")
+      logw("\(deletedObjects) ")
     }
     if insertedObjects != nil {
-      print("- - - - - inserted objects - - - - - ")
-      print("\(insertedObjects) ")
+      logw("- - - - - inserted objects - - - - - ")
+      logw("\(insertedObjects) ")
     }
 //    dispatch_async(dispatch_get_main_queue()) {
 //        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
@@ -186,11 +187,11 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   func itemFavorited(item: NSManagedObject, favorite: Bool) {
     //favorite data
-    print("item started favorite! ")
+    logw("item started favorite! ")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
     let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
     favoriteOp.completionBlock = {
-      print("favorite completed successfully")
+      logw("favorite completed successfully")
       self.dataSource.getFavorites()
     }
     OperationQueue().addOperation(favoriteOp)
@@ -202,7 +203,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
 //        if  self.isGetItemsInProgress == false {
 //            self.isGetItemsInProgress = true
 //            Model.sharedInstance().getPeruzeItems(self, completion: {
-//                print("-------------GetPeruzeItems Finish-----------------")
+//                logw("-------------GetPeruzeItems Finish-----------------")
 //                self.isGetItemsInProgress = false
 //                self.dataSource.performFetchWithPresentationContext(self)
 //            })
@@ -240,12 +241,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         //fetch exchanges, items
         let fetchPersonOperation = GetPersonOperation(recordID: personRecordID, database: CKContainer.defaultContainer().publicCloudDatabase , context: managedConcurrentObjectContext)
         fetchPersonOperation.completionBlock = {
-            print("Finished FetchPersonOperation")
+            logw("Finished FetchPersonOperation")
             let fetchExchangesOperation: GetAllParticipatingExchangesOperation
             fetchExchangesOperation = GetAllParticipatingExchangesOperation(personRecordIDName: personRecordID.recordName,
                 status: ExchangeStatus.Pending, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
             fetchExchangesOperation.completionBlock = {
-                print("Finished fetchExchangesOperation \(personForProfileRecordID)")
+                logw("Finished fetchExchangesOperation \(personForProfileRecordID)")
                 personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
                 //                self.dataSource.performFetchWithPresentationContext(self)
                 self.getAllItems()
@@ -258,12 +259,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func getAllItems() {
         isGetItemsInProgress = true
-        print("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
+        logw("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             
             self.isGetItemsInProgress = false
             self.dataSource.refreshData(self)
-            print("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
+            logw("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchUserProfileIfNeeded", object: nil, userInfo: nil))
             self.getAllPersonsMissingData()
             
@@ -273,7 +274,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     func getAllPersonsMissingData() {
         let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
         fillMissingPeopleData.completionBlock = {
-            print("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+            logw("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
         }
         OperationQueue().addOperation(fillMissingPeopleData)
     }
@@ -284,15 +285,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
          if  self.isGetItemsInProgress == false {
             if isMoreItemsAvailable == true {
                 self.isGetItemsInProgress = true
-                print("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
+                logw("\(NSDate()) Peruze view - GetPeruzeItems called for more items")
                 Model.sharedInstance().getPeruzeItems(self, completion: {
-                    print("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
+                    logw("\(NSDate()) Peruze view - More GetPeruzeItems completed!")
                     self.isGetItemsInProgress = false
 //                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "reload", object: nil, userInfo: nil))
                     self.dataSource.refreshData(self)
                 })
             } else {
-//                print("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
+//                logw("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
 //                timer!.invalidate()
                 NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
                 self.getAllItems()
@@ -312,7 +313,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func update() {
-        print("\n\n\(NSDate()) ----------------  Timer started ----------------------")
+        logw("\n\n\(NSDate()) ----------------  Timer started ----------------------")
         getMoreItems()
     }
     
@@ -347,10 +348,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             publicDatabase.saveSubscription(subscription,
                 completionHandler: ({returnRecord, error in
                     if let err = error {
-                        print("subscription failed %@",
-                            err.localizedDescription)
+                        logw("subscription failed \(err.localizedDescription)")
                     } else {
-                        print("subscription success")
+                        logw("subscription success")
 //                        dispatch_async(dispatch_get_main_queue()) {
 //                            self.notifyUser("Success", 
 //                                message: "Subscription set up successfully")
@@ -382,10 +382,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
-                    print("subscription failed %@",
-                        err.localizedDescription)
+                    logw("subscription failed \(err.localizedDescription)")
                 } else {
-                    print("subscription success")
+                    logw("subscription success")
                     //                        dispatch_async(dispatch_get_main_queue()) {
                     //                            self.notifyUser("Success",
                     //                                message: "Subscription set up successfully")
@@ -430,10 +429,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
-                    print("subscription failed %@",
-                        err.localizedDescription)
+                    logw("subscription failed \(err.localizedDescription)")
                 } else {
-                    print("subscription success")
+                    logw("subscription success")
                     //                        dispatch_async(dispatch_get_main_queue()) {
                     //                            self.notifyUser("Success",
                     //                                message: "Subscription set up successfully")

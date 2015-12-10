@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 struct NotificationCenterKeys {
   static let PeruzeItemsDidFinishUpdate = "PeruseItemsDidFinishUpdate"
@@ -117,7 +118,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                     dispatch_async(dispatch_get_main_queue()) {
 //                        self.notifyUser("Fetch Error", message:
 //                            err.localizedDescription)
-                        print("Error while fetching Exchange : \(err)")
+                        logw("Error while fetching Exchange : \(err)")
                     }
                 } else {
                     let requestingPerson = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -191,7 +192,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                     dispatch_async(dispatch_get_main_queue()) {
                         //                        self.notifyUser("Fetch Error", message:
                         //                            err.localizedDescription)
-                        print("Error while fetching Exchange : \(err)")
+                        logw("Error while fetching Exchange : \(err)")
                     }
                 } else {
                     let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftLog
 
 class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -37,7 +38,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     do {
       try self.fetchedResultsController.performFetch()
     } catch {
-      print(error)
+      logw("\(error)")
     }
   }
   

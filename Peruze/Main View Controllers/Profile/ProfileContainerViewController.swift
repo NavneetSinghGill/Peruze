@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileContainerViewController: UITabBarController {
   var viewControllerNumber: Int? {
@@ -27,8 +28,8 @@ class ProfileContainerViewController: UITabBarController {
     self.setChildViewControllerData()
   }
   private func setChildViewControllerData() {
-    print("Container VC With Person:")
-    print(profileOwner)
+    logw("Container VC With Person:")
+    logw("\(profileOwner)")
     for childVC in childViewControllers {
       switch childVC {
       case let uploadsVC as ProfileUploadsViewController:

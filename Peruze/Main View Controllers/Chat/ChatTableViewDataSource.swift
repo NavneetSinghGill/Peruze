@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -30,7 +31,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     do {
       try self.fetchedResultsController.performFetch()
     } catch {
-      print(error)
+      logw("\(error)")
     }
   }
   

@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
   private struct Constants {
@@ -96,8 +97,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
             try self.dataSource.fetchedResultsController.performFetch()
             self.tableView.reloadData()
           } catch {
-            print("Fetch threw an error. Not updating")
-            print(error)
+            logw("Fetch threw an error. Not updating")
+            logw("\(error)")
           }
           
         }
@@ -134,8 +135,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
             try self.dataSource.fetchedResultsController.performFetch()
             self.tableView.reloadData()
           } catch {
-            print("Fetch threw an error. Not updating")
-            print(error)
+            logw("Fetch threw an error. Not updating")
+            logw("\(error)")
           }
           
         }

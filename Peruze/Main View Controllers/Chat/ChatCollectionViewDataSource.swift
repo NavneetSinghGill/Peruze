@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSource, NSFetchedResultsControllerDelegate {
   private struct Constants {
@@ -139,7 +140,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     //      let senderId = sender.valueForKey("recordIDName") as? String,
     //      let senderDisplayName = sender.valueForKey("firstName") as? String
     //      else {
-    //        print("Error: Vital message information was nil.")
+    //        logw("Error: Vital message information was nil.")
     //        return JSQMessage()
     //    }
     
@@ -166,7 +167,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
         text: text)
       return message
     }
-    print("Error: There was no text or imageData.")
+    logw("Error: There was no text or imageData.")
     return JSQMessage()
   }
 }

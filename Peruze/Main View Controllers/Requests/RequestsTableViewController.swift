@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import SwiftLog
 
 class RequestsTableViewController: UIViewController, UITableViewDelegate, RequestCollectionViewCellDelegate {
   let dataSource = RequestsDataSource()
@@ -58,7 +59,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
       do {
         try self.dataSource.fetchedResultsController.performFetch()
       } catch {
-           print(error)
+           logw("\(error)")
         
       }
       dispatch_async(dispatch_get_main_queue()){
@@ -139,7 +140,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
           do {
             try self.dataSource.fetchedResultsController.performFetch()
           } catch {
-            print(error)
+            logw("\(error)")
           }
           self.tableView.reloadData()
         }
@@ -170,7 +171,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
           do {
             try self.dataSource.fetchedResultsController.performFetch()
           } catch {
-            print(error)
+            logw("\(error)")
           }
           self.tableView.reloadData()
         }

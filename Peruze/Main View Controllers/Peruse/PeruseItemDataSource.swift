@@ -8,6 +8,7 @@
 
 import UIKit
 import Darwin
+import SwiftLog
 
 struct ItemStruct {
   var image: UIImage
@@ -60,7 +61,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       try self.fetchedResultsController.performFetch()
         
     } catch {
-      print(error)
+      logw("\(error)")
     }
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
   }
@@ -72,7 +73,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     
   ///fetches the results from the fetchedResultsController
   func performFetchWithPresentationContext(presentationContext: UIViewController) {
-    print("Perform Fetch")
+    logw("Perform Fetch")
     dispatch_async(dispatch_get_main_queue()) {
       do {
         try self.fetchedResultsController.performFetch()
@@ -80,7 +81,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //        self.refreshData(presentationContext)
       } catch {
         
-        print(error)
+        logw("\(error)")
         let alert = UIAlertController(
           title: "Oops!",
           message: ("There was an issue fetching results from your device. Error: \(error)"),
@@ -135,7 +136,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let predicate: NSPredicate = NSPredicate { (Item item, NSDictionary bindings) -> Bool in
             
             let itemLocation: CLLocation = CLLocation(latitude: Double( (item as! Item).latitude!),longitude: Double( (item as! Item).longitude!))
-            print( (itemLocation.distanceFromLocation(targetLocation)))
+            logw("\( (itemLocation.distanceFromLocation(targetLocation)))")
             return itemLocation.distanceFromLocation(targetLocation) <= maxRadius
             
         }
@@ -153,7 +154,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
             self.location = location
             let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
             self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
-            print("Filtered items = \(self.items)")
+            logw("Filtered items = \(self.items)")
             dispatch_async(dispatch_get_main_queue()) {
                 self.collectionView.reloadData()
             }
@@ -185,7 +186,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
             try self.fetchedResultsController.performFetch()
             
         } catch {
-            print(error)
+            logw("\(error)")
         }
     }
     
@@ -214,7 +215,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
       self.favorites = favorites.map { $0.valueForKey("recordIDName") as! String }
     } else {
-      print("me.valueForKey('favorites') was not an NSSet ")
+      logw("me.valueForKey('favorites') was not an NSSet ")
     }
   }
     
