@@ -2537,18 +2537,31 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Feedback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0o-M3-fIa">
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Send Logs" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0o-M3-fIa">
                                                     <rect key="frame" x="264" y="17" width="74" height="20"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6e-Ym-Xha" userLabel="Send Logs">
+                                                    <rect key="frame" x="197" y="11" width="172" height="32"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <state key="normal" title="Send Logs">
+                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="sendLogs:" destination="JaR-yA-1li" eventType="touchUpInside" id="U1g-3L-UQS"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="centerX" secondItem="g0o-M3-fIa" secondAttribute="centerX" constant="-16.5" id="8fD-jI-ZgX"/>
+                                                <constraint firstItem="V6e-Ym-Xha" firstAttribute="centerY" secondItem="hjP-vk-EDu" secondAttribute="centerY" id="BMu-gT-XG8"/>
                                                 <constraint firstAttribute="centerY" secondItem="g0o-M3-fIa" secondAttribute="centerY" constant="0.25" id="LdY-gd-i3C"/>
+                                                <constraint firstItem="V6e-Ym-Xha" firstAttribute="centerX" secondItem="hjP-vk-EDu" secondAttribute="centerX" constant="16" id="hDn-u8-uCL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <animations/>
@@ -3699,6 +3712,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xoQ-gx-uPK"/>
-        <segue reference="6TZ-FQ-lfY"/>
+        <segue reference="yke-5P-fFJ"/>
     </inferredMetricsTieBreakers>
 </document>

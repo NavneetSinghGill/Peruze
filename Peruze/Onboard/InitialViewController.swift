@@ -10,6 +10,7 @@ import UIKit
 import SystemConfiguration
 import CloudKit
 import CoreLocation
+import SwiftLog
 
 class InitialViewController: UIViewController {
     
@@ -91,6 +92,7 @@ class InitialViewController: UIViewController {
     }
     
     private func setupLoggedInUser() {
+        logw("write to the log! \(__FUNCTION__)")
         let getMyProfileOp = GetCurrentUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase)
         getMyProfileOp.completionBlock = {
             

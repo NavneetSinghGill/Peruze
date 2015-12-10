@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */; };
 		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
+		3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BCA63911C18298300CFA976 /* SwiftLog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
@@ -178,6 +179,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3BCA63901C18298300CFA976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5CA8C9851A5AF63F0089A692;
+			remoteInfo = SwiftLog;
+		};
+		3BCA63921C18298300CFA976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5CA8C9901A5AF63F0089A692;
+			remoteInfo = SwiftLogTests;
+		};
+		3BCA63941C18298300CFA976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5CA8C9DB1A5AFDEF0089A692;
+			remoteInfo = SwiftLogOSX;
+		};
+		3BCA63961C18298300CFA976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5CA8C9E51A5AFDEF0089A692;
+			remoteInfo = SwiftLogOSXTests;
+		};
+		3BCA63A01C18387600CFA976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5CA8C9841A5AF63F0089A692;
+			remoteInfo = SwiftLog;
+		};
 		9D449C9C1B54D9F9005C7CC0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D449C7E1B54D9F9005C7CC0 /* Project object */;
@@ -187,11 +223,26 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3BCA63A21C18387600CFA976 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
 		3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableViewCell.xib; sourceTree = "<group>"; };
+		3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftLog.xcodeproj; path = "../../../Downloads/SwiftLog-master/SwiftLog.xcodeproj"; sourceTree = "<group>"; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GetItemOperation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -440,6 +491,17 @@
 			);
 			name = Friends;
 			path = Upload;
+			sourceTree = "<group>";
+		};
+		3BCA638A1C18298300CFA976 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3BCA63911C18298300CFA976 /* SwiftLog.framework */,
+				3BCA63931C18298300CFA976 /* SwiftLogTests.xctest */,
+				3BCA63951C18298300CFA976 /* SwiftLog.framework */,
+				3BCA63971C18298300CFA976 /* SwiftLogOSXTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9D177AE41B54DDC3009CB9FA /* Base.lproj */ = {
@@ -805,6 +867,7 @@
 		9D449C881B54D9F9005C7CC0 /* Peruze */ = {
 			isa = PBXGroup;
 			children = (
+				3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */,
 				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
 				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
@@ -984,10 +1047,12 @@
 				9D449C831B54D9F9005C7CC0 /* Frameworks */,
 				9D449C841B54D9F9005C7CC0 /* Resources */,
 				A47F96391088B6E97B84CEAB /* Copy Pods Resources */,
+				3BCA63A21C18387600CFA976 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3BCA63A11C18387600CFA976 /* PBXTargetDependency */,
 			);
 			name = Peruze;
 			productName = Peruze;
@@ -1052,6 +1117,12 @@
 			mainGroup = 9D449C7D1B54D9F9005C7CC0;
 			productRefGroup = 9D449C871B54D9F9005C7CC0 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3BCA638A1C18298300CFA976 /* Products */;
+					ProjectRef = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9D449C851B54D9F9005C7CC0 /* Peruze */,
@@ -1059,6 +1130,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3BCA63911C18298300CFA976 /* SwiftLog.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftLog.framework;
+			remoteRef = 3BCA63901C18298300CFA976 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3BCA63931C18298300CFA976 /* SwiftLogTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftLogTests.xctest;
+			remoteRef = 3BCA63921C18298300CFA976 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3BCA63951C18298300CFA976 /* SwiftLog.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftLog.framework;
+			remoteRef = 3BCA63941C18298300CFA976 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3BCA63971C18298300CFA976 /* SwiftLogOSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftLogOSXTests.xctest;
+			remoteRef = 3BCA63961C18298300CFA976 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9D449C841B54D9F9005C7CC0 /* Resources */ = {
@@ -1293,6 +1395,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3BCA63A11C18387600CFA976 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftLog;
+			targetProxy = 3BCA63A01C18387600CFA976 /* PBXContainerItemProxy */;
+		};
 		9D449C9D1B54D9F9005C7CC0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9D449C851B54D9F9005C7CC0 /* Peruze */;
@@ -1441,6 +1548,7 @@
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Nilesh Rathi (NY29G8GK9X)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nilesh Rathi (NY29G8GK9X)";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,
@@ -1467,6 +1575,7 @@
 				CODE_SIGN_ENTITLEMENTS = Peruze/Peruze.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Nilesh Rathi (NY29G8GK9X)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nilesh Rathi (NY29G8GK9X)";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/philliptrent/Developer/FacebookSDK,

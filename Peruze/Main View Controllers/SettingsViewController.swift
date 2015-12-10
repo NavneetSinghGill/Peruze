@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreLocation
+import MessageUI
+import SwiftLog
 
-class SettingsViewController: UITableViewController, FacebookProfilePictureRetrievalDelegate {
+class SettingsViewController: UITableViewController, FacebookProfilePictureRetrievalDelegate ,MFMailComposeViewControllerDelegate{
   
   private struct Constants {
     static let NumberOfProfilePictures = 4
@@ -73,7 +75,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
       if !success {
-        print(error)
+        logw("\(error)")
         self.profilePictureFetchingError()
       }
       self.loadingCircle?.stop()
@@ -204,7 +206,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
   @IBAction func deleteProfile(sender: UIButton) {
-    FBSDKAccessToken.setCurrentAccessToken(nil)
+    return
+//    FBSDKAccessToken.setCurrentAccessToken(nil)
     NSUserDefaults.standardUserDefaults().setObject(false, forKey: UserDefaultsKeys.ProfileHasActiveProfileKey)
     dismissViewControllerAnimated(true, completion: nil)
   }
@@ -233,6 +236,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   
     @IBAction func inviteFacebookFriendsButtonTapped(sender: UIButton) {
 //        performSegueWithIdentifier(Constants.friendsViewControllerSegueIdentifier, sender: self)
+    }
+    
+    @IBAction func sendLogs(sender: UIButton) {
+        sendReportWithAttachment()
     }
     
   //MARK: - Handling Sliders
@@ -370,5 +377,78 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     alert.addAction(cancelAction)
     presentViewController(alert, animated: true, completion: nil)
   }
+    
+    
+    func sendReportWithAttachment() {
+        logw("\(__FUNCTION__)")
+        if( MFMailComposeViewController.canSendMail() ) {
+            logw("Can send email.")
+            
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            
+            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+            //Set the subject and message of the email
+            mailComposer.setSubject("Peruze log.")
+            mailComposer.setMessageBody("Hello, I am \(me.valueForKey("firstName")!) \(me.valueForKey("lastName")!).", isHTML: false)
+            mailComposer.setToRecipients(["navneet105gill@gmail.com"])
+            
+            let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+            do {
+                let directoryUrls = try  NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsUrl, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
+                logw("\(directoryUrls)")
+                let logFilePaths = directoryUrls.filter(){ $0.pathExtension == "log" }
+//                let logFiles = directoryUrls.filter(){ $0.pathExtension == "log" }.map{ $0.lastPathComponent }
+                let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+                let pathString = "\(path)"
+                let files = NSFileManager.defaultManager().enumeratorAtPath("\(pathString)")
+                while let file = files?.nextObject() {
+                    logw("\(file)")
+//                }
+//                for logFile in logFiles {
+                    if file.hasSuffix(".log") == true {
+                        if let fileData = NSData(contentsOfFile: "\(pathString)/\(file.description!)") {
+                            logw("File data loaded.")
+                            mailComposer.addAttachmentData(fileData, mimeType: "text/rtf", fileName: "Logs")
+                        }
+                        logw("Log FILES:\n" + logFilePaths.description)
+                    }
+                }
+            } catch let error as NSError {
+                logw(error.localizedDescription)
+            }
+            //                var getImagePath1 = paths1.stringByAppendingPathComponent("\(logFiles[0])")
+            //                for paths in logFilePaths {
+            //                    if let fileData = NSData(contentsOfFile: "\(paths)".stringByReplacingOccurrencesOfString("file://", withString: "").stringByReplacingOccurrencesOfString("var://", withString: "")) {
+            //                        logw("File data loaded.")
+            //                        mailComposer.addAttachmentData(fileData, mimeType: "text/rtf", fileName: "Logs")
+            //                    }
+            //                    logw("Log FILES:\n" + paths.description)
+            //                }
+            
+//            if let filePath = NSBundle.mainBundle().pathForResource("swifts", ofType: "wav") {
+//                logw("File path loaded.")
+//                
+//                if let fileData = NSData(contentsOfFile: filePath) {
+//                    logw("File data loaded.")
+//                    mailComposer.addAttachmentData(fileData, mimeType: "audio/wav", fileName: "swifts")
+//                }
+//            }
+            self.presentViewController(mailComposer, animated: true, completion: nil)
+        }
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        if error != nil{
+            let alertController = UIAlertController(title: "Peruzr", message: "There was an error while sending mail. Please try again later.", preferredStyle: .Alert)
+            
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+        
+    }
   
 }
