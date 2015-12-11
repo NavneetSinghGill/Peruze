@@ -19,11 +19,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private struct Constants {
     static let AppDidBecomeActiveNotificationName = "applicationDidBecomeActive"
   }
-  
+    func resetBadgeCounter() {
+        let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
+        badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
+            if error != nil {
+                logw("Error resetting badge: \(error)")
+                self.resetBadgeCounter()
+            }
+            else {
+                //                self.setRequestBadgeCount(0)
+            }
+        }
+        CKContainer.defaultContainer().addOperation(badgeResetOperation)
+    }
+    
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     // Setup CoreData with MagicalRecord
-    
+    if NSUserDefaults.standardUserDefaults().valueForKey("appLaunchedOnce") == nil{
+       NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "appLaunchedOnce")
+       UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+       resetBadgeCounter()
+    }
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     

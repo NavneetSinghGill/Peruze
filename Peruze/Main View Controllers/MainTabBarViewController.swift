@@ -71,9 +71,33 @@ class MainTabBarViewController: UITabBarController {
 //                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID)
+                    } else if alert == NotificationMessages.ItemAdditionOrUpdation {
+                        let navController = self.viewControllers![0] as! UINavigationController
+                        let peruseViewController = navController.viewControllers[0] as! PeruseViewController
+                        if peruseViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isPeruseShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isPeruseShowing", forKey: "no")
+                        }
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
+                        Model.sharedInstance().fetchItemWithRecord(recordID)
+                    } else if alert == NotificationMessages.ItemDeletion {
+                        let navController = self.viewControllers![0] as! UINavigationController
+                        let peruseViewController = navController.viewControllers[0] as! PeruseViewController
+                        if peruseViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isPeruseShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isPeruseShowing", forKey: "no")
+                        }
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        let recordID = info["recordID"] as! String
+                        NSNotificationCenter.defaultCenter().postNotificationName("removeItemFromLocalDB", object: nil, userInfo: ["recordID":recordID])
                     }
                 }
-                resetBadgeCounter()
+                resetBadgeValue()
             }
         }
     }
@@ -81,12 +105,12 @@ class MainTabBarViewController: UITabBarController {
     
     //MARK: - reset cloudkit badge value
     func resetBadgeValue() {
-        resetBadgeCounter()
+        setBadgeCounter(0)
     }
     //MARK: - reset cloudkit badge value
-    func resetBadgeCounter() {
-        let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
-        badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
+    func setBadgeCounter(count: Int) {
+        let badgeOperation = CKModifyBadgeOperation(badgeValue: count)
+        badgeOperation.modifyBadgeCompletionBlock = { (error) -> Void in
             if error != nil {
                 logw("Error resetting badge: \(error)")
             }
@@ -94,15 +118,21 @@ class MainTabBarViewController: UITabBarController {
 //                self.setRequestBadgeCount(0)
             }
         }
-        CKContainer.defaultContainer().addOperation(badgeResetOperation)
+        CKContainer.defaultContainer().addOperation(badgeOperation)
     }
     
     func setRequestBadgeCount(count:Int) {
         if self.selectedIndex != 3 {
             dispatch_async(dispatch_get_main_queue()) {
                 let requestTab = self.tabBar.items![3]
-                requestTab.badgeValue = String(count)
-                UIApplication.sharedApplication().applicationIconBadgeNumber = count
+                let currentRequestTabBadgeNumber: Int
+                if requestTab.badgeValue == nil {
+                    currentRequestTabBadgeNumber = 0
+                } else {
+                    currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
+                }
+                requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
+                UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
             }
         }
     }
@@ -111,8 +141,47 @@ class MainTabBarViewController: UITabBarController {
         if self.selectedIndex != 2 {
             dispatch_async(dispatch_get_main_queue()) {
                 let requestTab = self.tabBar.items![2]
-                requestTab.badgeValue = String(count)
-                UIApplication.sharedApplication().applicationIconBadgeNumber = count
+                let currentRequestTabBadgeNumber: Int
+                if requestTab.badgeValue == nil {
+                    currentRequestTabBadgeNumber = 0
+                } else {
+                    currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
+                }
+                requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
+                UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue()) {
+//                self.setBadgeCounter(<#T##count: Int##Int#>)
+            }
+        }
+    }
+    override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        if item.tag == 2 {
+            dispatch_async(dispatch_get_main_queue()) {
+                let requestTab = self.tabBar.items![2]
+                let requestTabBadgeValue:Int
+                if requestTab.badgeValue == nil {
+                    requestTabBadgeValue = 0
+                } else {
+                    requestTabBadgeValue = Int(requestTab.badgeValue!)!
+                }
+                let number = UIApplication.sharedApplication().applicationIconBadgeNumber - requestTabBadgeValue
+                requestTab.badgeValue = nil
+                UIApplication.sharedApplication().applicationIconBadgeNumber = number
+            }
+        } else if item.tag == 3 {
+            dispatch_async(dispatch_get_main_queue()) {
+                let requestTab = self.tabBar.items![3]
+                let requestTabBadgeValue:Int
+                if requestTab.badgeValue == nil {
+                    requestTabBadgeValue = 0
+                } else {
+                    requestTabBadgeValue = Int(requestTab.badgeValue!)!
+                }
+                let number = UIApplication.sharedApplication().applicationIconBadgeNumber - requestTabBadgeValue
+                requestTab.badgeValue = nil
+                UIApplication.sharedApplication().applicationIconBadgeNumber = number
             }
         }
     }

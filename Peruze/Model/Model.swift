@@ -36,6 +36,8 @@ struct NotificationMessages {
     static let NewOfferMessage = "A new offer made for you"
     static let NewChatMessage = "A new message for you"
     static let ExchangeRecall = "Did you complete your exchange"
+    static let ItemAdditionOrUpdation = "A new item has been added"
+    static let ItemDeletion = "An item has been deleted"
 }
 
 
@@ -53,7 +55,7 @@ struct RecordTypes {
 class Model: NSObject, CLLocationManagerDelegate {
     
     var friendsRecords : NSMutableArray = []
-    private let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+    private var publicDB = CKContainer.defaultContainer().publicCloudDatabase
     private let locationAccuracy: CLLocationAccuracy = 200 //meters
     class func sharedInstance() -> Model {
         return modelSingletonGlobal
@@ -109,10 +111,79 @@ class Model: NSObject, CLLocationManagerDelegate {
         OperationQueue.mainQueue().addOperations([fetchMyProfileOp, blockCompletionOp], waitUntilFinished: false)
     }
     
-    
-    
-    
-    
+    func fetchItemWithRecord(recordID: CKRecordID) -> Void
+    {
+        self.publicDB.fetchRecordWithID(recordID,
+            completionHandler: ({record, error in
+                if let err = error {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        //                        self.notifyUser("Fetch Error", message:
+                        //                            err.localizedDescription)
+                        logw("Error while fetching Item : \(err)")
+                    }
+                } else {
+                    if record?.recordType == RecordTypes.Item {
+                        
+                        let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
+                        
+                        localUpload.setValue(record!.recordID.recordName, forKey: "recordIDName")
+                        
+                        let ownerRecordIDName = record!.creatorUserRecordID!.recordName
+                        
+                        if ownerRecordIDName == "__defaultOwner__" {
+                            let owner = Person.MR_findFirstByAttribute("me",
+                                withValue: true,
+                                inContext: managedConcurrentObjectContext)
+                            localUpload.setValue(owner, forKey: "owner")
+                        } else {
+                            let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: ownerRecordIDName,
+                                inContext: managedConcurrentObjectContext)
+                            localUpload.setValue(owner, forKey: "owner")
+                        }
+                        
+                        if let title = record!.objectForKey("Title") as? String {
+                            localUpload.setValue(title, forKey: "title")
+                        }
+                        
+                        if let detail = record!.objectForKey("Description") as? String {
+                            localUpload.setValue(detail, forKey: "detail")
+                        }
+                        
+                        if let ownerFacebookID = record!.objectForKey("OwnerFacebookID") as? String {
+                            localUpload.setValue(ownerFacebookID, forKey: "ownerFacebookID")
+                        } else {
+                            localUpload.setValue("noId", forKey: "ownerFacebookID")
+                        }
+                        
+                        if let imageAsset = record!.objectForKey("Image") as? CKAsset {
+                            let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+                            localUpload.setValue(imageData, forKey: "image")
+                        }
+                        
+                        if let itemLocation = record!.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
+                            
+                            if let latitude : Double = Double(itemLocation.coordinate.latitude) {
+                                localUpload.setValue(latitude, forKey: "latitude")
+                            }
+                            
+                            if let longitude : Double = Double(itemLocation.coordinate.longitude) {
+                                localUpload.setValue(longitude, forKey: "longitude")
+                            }
+                        }
+                        
+                        if localUpload.hasRequested != "yes" {
+                            localUpload.setValue("no", forKey: "hasRequested")
+                        }
+                        
+                        //save the context
+                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+                    }
+                }
+        }))
+    }
     
     func fetchExchangeWithRecord(recordID: CKRecordID) -> Void
     {
@@ -125,74 +196,76 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Error while fetching Exchange : \(err)")
                     }
                 } else {
-                    let requestingPerson = Person.MR_findFirstByAttribute("me", withValue: true)
-                    
-                    let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
-                        withValue: record!.recordID.recordName,
-                        inContext: managedConcurrentObjectContext)
-                    
-                    //set creator
-                    if record!.creatorUserRecordID!.recordName == "__defaultOwner__" {
-                        let creator = Person.MR_findFirstOrCreateByAttribute("me",
-                            withValue: true,
-                            inContext: managedConcurrentObjectContext)
-                        localExchange.setValue(creator, forKey: "creator")
-                    } else {
-                        let creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: record!.creatorUserRecordID?.recordName,
-                            inContext: managedConcurrentObjectContext)
-                        localExchange.setValue(creator, forKey: "creator")
-                    }
-                    
-                    //set exchange status
-                    if let newExchangeStatus = record!.objectForKey("ExchangeStatus") as? Int {
-                        localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
-                    }
-                    
-                    //set date
-                    if let newDate = record!.objectForKey("DateExchanged") as? NSDate {
-                        let date = localExchange.valueForKey("date") as? NSDate
-                        localExchange.setValue((date ?? newDate), forKey: "date")
-                    }
-                    
-                    //set item offered
-                    if let itemOfferedReference = record!.objectForKey("OfferedItem") as? CKReference {
-                        let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: itemOfferedReference.recordID.recordName,
-                            inContext: managedConcurrentObjectContext)
-                        itemOffered.setValue("yes", forKey: "hasRequested")
-                        localExchange.setValue(itemOffered, forKey: "itemOffered")
-                    }
-                    
-                    //set item requested
-                    if let itemRequestedReference = record!.objectForKey("RequestedItem") as? CKReference {
-                        let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: itemRequestedReference.recordID.recordName,
-                            inContext: managedConcurrentObjectContext)
-                        itemRequested.setValue("no", forKey: "hasRequested")
-                        localExchange.setValue(itemRequested, forKey: "itemRequested")
+                    if record?.recordType == RecordTypes.Exchange {
+                        let requestingPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                         
-                    }
-                    
-                    
-                    
-                    //add this exchange to the requesting user's exchanges
-                    let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
-                    
-                    let set = currentExchanges.setByAddingObject(localExchange)
-//                    requestingPerson.setValue(set as NSSet, forKey: "exchanges")
-                    
-                    //save the context
-                    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                    if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
-                        NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                        let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+                            withValue: record!.recordID.recordName,
+                            inContext: managedConcurrentObjectContext)
+                        
+                        //set creator
+                        if record!.creatorUserRecordID!.recordName == "__defaultOwner__" {
+                            let creator = Person.MR_findFirstOrCreateByAttribute("me",
+                                withValue: true,
+                                inContext: managedConcurrentObjectContext)
+                            localExchange.setValue(creator, forKey: "creator")
+                        } else {
+                            let creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: record!.creatorUserRecordID?.recordName,
+                                inContext: managedConcurrentObjectContext)
+                            localExchange.setValue(creator, forKey: "creator")
+                        }
+                        
+                        //set exchange status
+                        if let newExchangeStatus = record!.objectForKey("ExchangeStatus") as? Int {
+                            localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
+                        }
+                        
+                        //set date
+                        if let newDate = record!.objectForKey("DateExchanged") as? NSDate {
+                            let date = localExchange.valueForKey("date") as? NSDate
+                            localExchange.setValue((date ?? newDate), forKey: "date")
+                        }
+                        
+                        //set item offered
+                        if let itemOfferedReference = record!.objectForKey("OfferedItem") as? CKReference {
+                            let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: itemOfferedReference.recordID.recordName,
+                                inContext: managedConcurrentObjectContext)
+                            itemOffered.setValue("yes", forKey: "hasRequested")
+                            localExchange.setValue(itemOffered, forKey: "itemOffered")
+                        }
+                        
+                        //set item requested
+                        if let itemRequestedReference = record!.objectForKey("RequestedItem") as? CKReference {
+                            let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: itemRequestedReference.recordID.recordName,
+                                inContext: managedConcurrentObjectContext)
+                            itemRequested.setValue("no", forKey: "hasRequested")
+                            localExchange.setValue(itemRequested, forKey: "itemRequested")
+                            
+                        }
+                        
+                        
+                        
+                        //add this exchange to the requesting user's exchanges
+                        let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
+                        
+                        let set = currentExchanges.setByAddingObject(localExchange)
+                        //                    requestingPerson.setValue(set as NSSet, forKey: "exchanges")
+                        
+                        //save the context
+                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+                            NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                        }
                     }
                 }
             }))
     }
     
     func fetchChatWithRecord(recordID: CKRecordID) -> Void
-    {
+    {   self.publicDB = CKContainer.defaultContainer().publicCloudDatabase
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
                 if let err = error {
@@ -202,41 +275,44 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Error while fetching Exchange : \(err)")
                     }
                 } else {
-                    let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",
-                        withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
-                    
-                    if let messageText = record!.objectForKey("Text") as? String {
-                        localMessage.setValue(messageText, forKey: "text")
-                    }
-                    
-                    if let messageImage = record!.objectForKey("Image") as? CKAsset {
-                        localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
-                    }
-                    
-                    localMessage.setValue(record!.objectForKey("Date") as? NSDate, forKey: "date")
-                    
-                    if let exchange = record!.objectForKey("Exchange") as? CKReference {
-                        let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: exchange.recordID.recordName,
-                            inContext: managedConcurrentObjectContext)
-                        localMessage.setValue(messageExchange, forKey: "exchange")
-                    }
-                    
-                    if record!.creatorUserRecordID?.recordName == "__defaultOwner__" {
+                    if record?.recordType == RecordTypes.Message {
+                        let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",
+                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
+                        
+                        if let messageText = record!.objectForKey("Text") as? String {
+                            localMessage.setValue(messageText, forKey: "text")
+                        }
+                        
+                        if let messageImage = record!.objectForKey("Image") as? CKAsset {
+                            localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
+                        }
+                        
+                        localMessage.setValue(record!.objectForKey("Date") as? NSDate, forKey: "date")
+                        
+                        if let exchange = record!.objectForKey("Exchange") as? CKReference {
+                            let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: exchange.recordID.recordName,
+                                inContext: managedConcurrentObjectContext)
+                            localMessage.setValue(messageExchange, forKey: "exchange")
+                        }
+                        
                         let sender = Person.MR_findFirstOrCreateByAttribute("me",
                             withValue: true,
                             inContext: managedConcurrentObjectContext)
-                        localMessage.setValue(sender, forKey: "sender")
-                    } else {
-                        let sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: record!.creatorUserRecordID?.recordName,
-                            inContext:managedConcurrentObjectContext)
-                        localMessage.setValue(sender, forKey: "sender")
+                        if (record!.creatorUserRecordID?.recordName == "__defaultOwner__") ||
+                            (record!.creatorUserRecordID?.recordName == sender?.valueForKey("recordIDName") as! String) {
+                                localMessage.setValue(sender, forKey: "sender")
+                        } else {
+                            let sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+                                withValue: record!.creatorUserRecordID?.recordName,
+                                inContext:managedConcurrentObjectContext)
+                            localMessage.setValue(sender, forKey: "sender")
+                        }
+                        
+                        //save the context
+                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        NSNotificationCenter.defaultCenter().postNotificationName("getChat", object: nil)
                     }
-                    
-                    //save the context
-                    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                    NSNotificationCenter.defaultCenter().postNotificationName("getChat", object: nil)
                 }
             }))
     }
@@ -267,6 +343,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             })
         })
     }
+                    
     func loadFriend(predicate : NSPredicate , finishBlock:NSArray -> Void) {
         
         //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)

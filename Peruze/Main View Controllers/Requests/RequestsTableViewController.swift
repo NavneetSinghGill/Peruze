@@ -217,7 +217,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     
     //MARK: - reset cloudkit badge value
     func resetBadgeCounter() {
-        NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("ResetBadgeValue", object:nil)
     }
   
 }

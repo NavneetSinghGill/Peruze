@@ -89,6 +89,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeItemFromLocalDB:", name: "removeItemFromLocalDB", object: nil)
     
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
         self.getMyExchanges()
@@ -101,12 +102,33 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     //APNS
     subscribeForNewOffer()
     subscribeForChat()
+    subscribeForItemAdditionUpdation()
+    subscribeForItemDeletion()
   }
     
     func reloadPeruseItemMainScreen(){
         self.dataSource.refreshData(self)
     }
     
+    func removeItemFromLocalDB(notification:NSNotification) {
+        if notification.userInfo != nil {
+            let userInfo : NSDictionary = notification.userInfo!
+            let recordID = userInfo.valueForKey("recordID")
+            if recordID != nil {
+                let itemToDelete = Item.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: managedConcurrentObjectContext)
+                do {
+                    let localItem = try managedConcurrentObjectContext.existingObjectWithID(itemToDelete.objectID)
+                    managedConcurrentObjectContext.deleteObject(localItem)
+                } catch {
+                    logw("\(error)")
+                }
+                
+                logw("Deleting Single Item from Persistent Store and Waiting...")
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                reloadPeruseItemMainScreen()
+            }
+        }
+    }
     
   func receivedNotification(notification: NSNotification) {
     let updatedObjects: NSArray? = notification.userInfo?[NSUpdatedObjectsKey] as? NSArray
@@ -314,6 +336,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
   }
     
+    //MARK: - Subscription methods
     
     func subscribeForNewOffer() {
             let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
@@ -335,9 +358,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             publicDatabase.saveSubscription(subscription,
                 completionHandler: ({returnRecord, error in
                     if let err = error {
-                        logw("subscription failed \(err.localizedDescription)")
+                        logw("NewOffer subscription failed \(err.localizedDescription)")
                     } else {
-                        logw("subscription success")
+                        logw("NewOffer subscription success")
 //                        dispatch_async(dispatch_get_main_queue()) {
 //                            self.notifyUser("Success", 
 //                                message: "Subscription set up successfully")
@@ -369,9 +392,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
-                    logw("subscription failed \(err.localizedDescription)")
+                    logw("Chat subscription failed \(err.localizedDescription)")
                 } else {
-                    logw("subscription success")
+                    logw("Chat subscription success")
                     //                        dispatch_async(dispatch_get_main_queue()) {
                     //                            self.notifyUser("Success",
                     //                                message: "Subscription set up successfully")
@@ -380,7 +403,67 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             }))
     }
     
+    func subscribeForItemAdditionUpdation() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        //            let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
+        let subscription = CKSubscription(recordType: "Item",
+            predicate: predicate,
+            options: [.FiresOnRecordCreation, .FiresOnRecordUpdate])
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ItemAdditionOrUpdation
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("ItemAdditionUpdation subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("ItemAdditionUpdation subscription success")
+                    //                        dispatch_async(dispatch_get_main_queue()) {
+                    //                            self.notifyUser("Success",
+                    //                                message: "Subscription set up successfully")
+                    //                        }
+                }
+            }))
+    }
     
+    func subscribeForItemDeletion() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        //            let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
+        let subscription = CKSubscription(recordType: "Item",
+            predicate: predicate,
+            options: .FiresOnRecordDeletion)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ItemDeletion
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("ItemDeletion subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("ItemDeletion subscription success")
+                    //                        dispatch_async(dispatch_get_main_queue()) {
+                    //                            self.notifyUser("Success",
+                    //                                message: "Subscription set up successfully")
+                    //                        }
+                }
+            }))
+    }
     
     func subscribeForOfferRecall() {
         

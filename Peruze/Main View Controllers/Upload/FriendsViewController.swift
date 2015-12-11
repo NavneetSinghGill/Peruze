@@ -56,18 +56,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
-<<<<<<< HEAD
                 logw("Taggable Friends are : \(result)")
-                let resultsArray = result.valueForKey("data") as! NSArray
-=======
-                print("Taggable Friends are : \(result)")
                 
                 var resultsArray = result.valueForKey("data") as! NSArray
                 resultsArray = resultsArray.sort { (element1, element2) -> Bool in
                     return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
                 }
                 
->>>>>>> Friends tag screen implemented, notifications implemented with issue solving.
                 self.taggableFriendsData = []
                 self.searchedFriendsData = []
                 for friendData in resultsArray {
