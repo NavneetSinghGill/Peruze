@@ -1678,7 +1678,7 @@
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="M6K-HE-ouW" appends="YES" id="goQ-bs-cqW"/>
+                                    <outletCollection property="gestureRecognizers" destination="M6K-HE-ouW" appends="YES" id="zcO-Kd-fWA"/>
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2EB-VP-Uc3" userLabel="Favorites Touch View">
@@ -1718,10 +1718,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zff-HY-AYm" userLabel="MiddleRightSpacer">
-                                        <rect key="frame" x="325" y="249" width="152" height="26"/>
+                                        <rect key="frame" x="325" y="223" width="152" height="52"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuX-vM-Ju1" userLabel="FarRightSpacer">
-                                        <rect key="frame" x="516" y="249" width="76" height="26"/>
+                                        <rect key="frame" x="516" y="223" width="76" height="52"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-IA-bM4">
                                         <rect key="frame" x="84" y="225" width="44" height="52"/>
@@ -1730,6 +1730,9 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="uploadsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="MNV-nw-72P"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2DQ-0g-2oa">
                                         <rect key="frame" x="281" y="225" width="44" height="52"/>
@@ -1738,14 +1741,20 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="gWc-Zp-BCa"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-PO-Fv1">
-                                        <rect key="frame" x="477" y="251" width="39" height="26"/>
+                                        <rect key="frame" x="477" y="225" width="39" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <state key="normal" title="Friends">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="friendsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="L5U-5U-W7r"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Phillip H. Trent III" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKm-ys-wLB">
                                         <rect key="frame" x="239" y="38" width="353" height="20"/>
@@ -1766,6 +1775,9 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="M6K-HE-ouW" appends="YES" id="WIU-BG-uLP"/>
+                                        </connections>
                                     </label>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J16-mL-4rp" userLabel="Friends">
                                         <rect key="frame" x="445" y="173" width="39" height="14"/>
@@ -1808,6 +1820,9 @@
                                             <constraint firstAttribute="width" secondItem="x5V-UF-epw" secondAttribute="height" multiplier="1:1" id="Jv7-EX-sGc"/>
                                         </constraints>
                                         <state key="normal" image="Profile_Upload_Filled"/>
+                                        <connections>
+                                            <action selector="uploadsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="V88-7Y-thl"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BkC-vl-gE1" userLabel="Star">
                                         <rect key="frame" x="286" y="225" width="34" height="34"/>
@@ -1815,6 +1830,9 @@
                                             <constraint firstAttribute="width" secondItem="BkC-vl-gE1" secondAttribute="height" multiplier="1:1" id="xcT-2L-Zqd"/>
                                         </constraints>
                                         <state key="normal" image="Profile_Star"/>
+                                        <connections>
+                                            <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="HOX-F0-A1W"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MND-WX-XoD" userLabel="Dollar Sign">
                                         <rect key="frame" x="480" y="225" width="34" height="34"/>
@@ -1822,6 +1840,9 @@
                                             <constraint firstAttribute="width" secondItem="MND-WX-XoD" secondAttribute="height" multiplier="1:1" id="mfM-IP-9Tk"/>
                                         </constraints>
                                         <state key="normal" image="Profile_Exchange"/>
+                                        <connections>
+                                            <action selector="friendsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="0pf-ag-B26"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kbW-tU-RVy" userLabel="Top Middle Spacer">
                                         <rect key="frame" x="239" y="58" width="353" height="38"/>
@@ -1864,6 +1885,7 @@
                                     <constraint firstItem="MND-WX-XoD" firstAttribute="centerX" secondItem="MrF-PO-Fv1" secondAttribute="centerX" id="33H-Gx-GUL"/>
                                     <constraint firstItem="MrF-PO-Fv1" firstAttribute="leading" secondItem="Zff-HY-AYm" secondAttribute="trailing" id="3Rp-vS-ym8"/>
                                     <constraint firstItem="ECo-hm-mr7" firstAttribute="centerX" secondItem="QZz-eD-Ehu" secondAttribute="centerX" id="3jk-6T-J81"/>
+                                    <constraint firstItem="Zff-HY-AYm" firstAttribute="height" secondItem="rKY-Xr-4TI" secondAttribute="height" id="4mw-IO-j0B"/>
                                     <constraint firstItem="ECo-hm-mr7" firstAttribute="centerX" secondItem="2tF-cj-tFY" secondAttribute="centerX" id="5dn-9C-U19"/>
                                     <constraint firstItem="Zff-HY-AYm" firstAttribute="height" secondItem="MrF-PO-Fv1" secondAttribute="height" id="6Zk-y8-bcP"/>
                                     <constraint firstItem="IcU-OX-xTU" firstAttribute="leading" secondItem="kbW-tU-RVy" secondAttribute="leading" id="79G-Pq-Ugk"/>
@@ -3061,6 +3083,7 @@
                         <segue destination="Hvn-9x-4Dg" kind="relationship" relationship="viewControllers" id="EvM-GI-a5u"/>
                         <segue destination="zvV-Hz-E3d" kind="relationship" relationship="viewControllers" id="14I-K6-V81"/>
                         <segue destination="jEb-r7-XHe" kind="relationship" relationship="viewControllers" id="sS0-J8-1yj"/>
+                        <segue destination="yqP-Vx-NjE" kind="relationship" relationship="viewControllers" id="AVU-Sb-l98"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTC-YA-WN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3624,7 +3647,7 @@
                                     <constraint firstAttribute="width" secondItem="u9b-Ai-Dpq" secondAttribute="height" multiplier="1:1" id="pUn-0e-a3b"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" text="Satchel and T-Shirts" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IJq-pb-Bvn">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IJq-pb-Bvn">
                                 <rect key="frame" x="325" y="412" width="149" height="20"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -4011,6 +4034,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8t-CC-prj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6621" y="-1113"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="Wse-HW-KZa">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="crossDissolve" hidesBottomBarWhenPushed="YES" id="yqP-Vx-NjE" customClass="ProfileFriendsViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wpH-lR-Y86"/>
+                        <viewControllerLayoutGuide type="bottom" id="0mL-1A-7BF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Gcw-cF-vFZ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="209"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="sel-Xc-7zz">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="209"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Mutual Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azM-zc-YYl" userLabel="No Mutual Friends">
+                                <rect key="frame" x="231" y="95" width="138" height="20"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="azM-zc-YYl" secondAttribute="centerX" id="7va-vJ-hsh"/>
+                            <constraint firstItem="sel-Xc-7zz" firstAttribute="leading" secondItem="Gcw-cF-vFZ" secondAttribute="leading" id="BXT-qD-WR2"/>
+                            <constraint firstAttribute="trailing" secondItem="sel-Xc-7zz" secondAttribute="trailing" id="HSK-YI-xC4"/>
+                            <constraint firstAttribute="centerY" secondItem="azM-zc-YYl" secondAttribute="centerY" id="Lwz-BY-EDn"/>
+                            <constraint firstAttribute="bottom" secondItem="sel-Xc-7zz" secondAttribute="bottom" id="a4M-2n-so1"/>
+                            <constraint firstItem="sel-Xc-7zz" firstAttribute="top" secondItem="wpH-lR-Y86" secondAttribute="bottom" id="gi2-13-P8E"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="qLT-7V-sk2"/>
+                    <connections>
+                        <outlet property="tableView" destination="sel-Xc-7zz" id="z69-ER-e3S"/>
+                        <outlet property="titleLabel" destination="azM-zc-YYl" id="UIT-go-wEp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hNw-Nl-6Hm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4876" y="-157.5"/>
         </scene>
     </scenes>
     <resources>

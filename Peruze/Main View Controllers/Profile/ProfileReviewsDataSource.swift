@@ -18,7 +18,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   var fetchedResultsController: NSFetchedResultsController!
   var tableView: UITableView!
   var profileOwner: Person!
-  
+  var totalStars: Int!
+  var numberOfReviews: Int!
   
   override init() {
     super.init()
@@ -45,9 +46,29 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         )
         if self.tableView != nil{
             dispatch_async(dispatch_get_main_queue()){
+                self.totalStars = 0
                 self.tableView.reloadData()
             }
         }
+        totalStars = 0
+        numberOfReviews = fetchedResultsController.sections![0].numberOfObjects
+        for review in (fetchedResultsController?.sections?[0].objects)! {
+            totalStars = totalStars + ((review.valueForKey("starRating") as? NSNumber)?.integerValue)! ?? 0
+        }
+        
+        if totalStars > 0 {
+            let average = totalStars/numberOfReviews
+            if profileOwner != nil {
+                profileOwner.setValue(average, forKey: "averageRating")
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName("LNReviewsCountUpdation", object: nil, userInfo: ["count":average])
+        } else {
+            if profileOwner != nil {
+                profileOwner.setValue(0, forKey: "averageRating")
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName("LNReviewsCountUpdation", object: nil, userInfo: ["count":0])
+        }
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
         return fetchedResultsController.sections![0].numberOfObjects
     }
     
@@ -66,17 +87,19 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       guard
         let title = review.valueForKey("title") as? String,
         let reviewer = review.valueForKey("reviewer") as? NSManagedObject,
-        let firstName = reviewer.valueForKey("firstName") as? String,
+//        let firstName = reviewer.valueForKey("firstName") as? String,
         let detail = review.valueForKey("detail") as? String,
         let date = review.valueForKey("date") as? NSDate
         else {
           return cell
       }
-      
+      let firstName = reviewer.valueForKey("firstName") as? String
       cell.titleLabel.text = "\(indexPath.row + 1). \(title)"
       cell.starView.numberOfStars = (review.valueForKey("starRating") as? NSNumber)?.floatValue ?? 0
       let dateString = NSDateFormatter.localizedStringFromDate(date, dateStyle: .LongStyle, timeStyle: .NoStyle)
-      cell.subtitleLabel.text = firstName + " - " + dateString
+        if firstName != nil{
+            cell.subtitleLabel.text = firstName! + " - " + dateString
+        }
       cell.review.text = detail
       return cell
     }

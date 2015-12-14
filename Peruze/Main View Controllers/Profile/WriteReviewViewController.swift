@@ -84,18 +84,16 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
             alert.addAction(cancel)
             presentViewController(alert, animated: true, completion: nil)
         } else {
-            dismissViewControllerAnimated(true){
-                //TODO: save review
-                let postReviewOperation = PostReviewOperation(
-                    title: self.titleTextField.text!,
-                    review: self.detailTextView.text,
-                    starRating: self.starRatingCount,
-                    userBeingReviewRecordIDName: self.profileOwner!.valueForKey("recordIDName") as! String,
-                    presentationContext: self){
-                        //Completion block
-                }
-                OperationQueue().addOperation(postReviewOperation)
+            let postReviewOperation = PostReviewOperation(
+                title: self.titleTextField.text!,
+                review: self.detailTextView.text == Constants.ReviewPlaceholder ? "" : self.detailTextView.text,
+                starRating: self.starRatingCount,
+                userBeingReviewRecordIDName: self.profileOwner!.valueForKey("recordIDName") as! String,
+                presentationContext: self){
+                    //Completion block
+                    self.dismissViewControllerAnimated(true, completion: nil)
             }
+            OperationQueue().addOperation(postReviewOperation)
         }
     }
     private func updateTextViewSize(textView: UITextView) {

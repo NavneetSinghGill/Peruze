@@ -46,6 +46,9 @@ class ProfileContainerViewController: UITabBarController {
       case let exchangesVC as ProfileExchangesViewController:
         //exchangesVC.dataSource.exchanges = profileOwner!.completedExchanges
         break
+      case let mutualFriendsVC as  ProfileFriendsViewController:
+        mutualFriendsVC.dataSource.profileOwner = profileOwner
+        break
       default:
         //do nothing
         break

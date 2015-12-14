@@ -26,5 +26,6 @@ extension Person {
     @NSManaged var favorites: NSSet?
     @NSManaged var reviews: NSSet?
     @NSManaged var uploads: NSSet?
+    @NSManaged var averageRating: NSNumber?
 
 }

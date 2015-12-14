@@ -18,6 +18,7 @@ class ProfileViewController: UIViewController {
       static let Reviews = 1
       static let Favorites = 2
       static let Exchanges = 3
+      static let MutualFriends = 4
     }
     struct SegueIdentifiers {
       static let Upload = "toUpload"
@@ -69,7 +70,9 @@ class ProfileViewController: UIViewController {
   //MARK: - UIViewController Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "friendsCountUpdation:", name: "LNMutualFriendsCountUpdation", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reviewsCountUpdation:", name: "LNReviewsCountUpdation", object: nil)
     
     
     numberOfExchangesLabel.text = "0"
@@ -121,11 +124,13 @@ class ProfileViewController: UIViewController {
     NSUserDefaults.standardUserDefaults().synchronize()
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
     reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
+    ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     starView.backgroundColor = .clearColor()
     ouStarView.backgroundColor = .clearColor()
     starView.numberOfStars = 0
+    ouStarView.numberOfStars = 0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileUpdate:", name: "profileUpdate", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "fetchUserProfileIfNeeded", name: "FetchUserProfileIfNeeded", object: nil)
     if NSUserDefaults.standardUserDefaults().valueForKey("isOtherUser") == nil || NSUserDefaults.standardUserDefaults().valueForKey("isOtherUser") as? String == "no"{
@@ -163,23 +168,31 @@ class ProfileViewController: UIViewController {
   //MARK: - Handling Tab Segues
   @IBAction func uploadsTapped(sender: AnyObject) {
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
+    ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
     reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
+    ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
+    ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     for viewController in childViewControllers {
       if let vc = viewController as? ProfileContainerViewController {
+        vc.profileOwner = personForProfile
         vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
       }
     }
   }
   @IBAction func reviewsTapped(sender: AnyObject) {
     uploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
+    ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
     reviewsButton.imageView!.image = UIImage(named: Constants.Images.ReviewsFilled)
+    ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.ReviewsFilled)
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
+    ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     for viewController in childViewControllers {
-      if let vc = viewController as? ProfileContainerViewController {
-        vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
+        if let vc = viewController as? ProfileContainerViewController {
+            vc.profileOwner = personForProfile
+            vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
       }
     }
   }
@@ -189,8 +202,9 @@ class ProfileViewController: UIViewController {
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.FavoritesFilled)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
     for viewController in childViewControllers {
-      if let vc = viewController as? ProfileContainerViewController {
-        vc.viewControllerNumber = Constants.ViewControllerIndexes.Favorites
+        if let vc = viewController as? ProfileContainerViewController {
+            vc.profileOwner = personForProfile
+            vc.viewControllerNumber = Constants.ViewControllerIndexes.Favorites
       }
     }
   }
@@ -200,11 +214,23 @@ class ProfileViewController: UIViewController {
     favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
     exchangesButton.imageView!.image = UIImage(named: Constants.Images.ExchangesFilled)
     for viewController in childViewControllers {
-      if let vc = viewController as? ProfileContainerViewController {
-        vc.viewControllerNumber = Constants.ViewControllerIndexes.Exchanges
+        if let vc = viewController as? ProfileContainerViewController {
+            vc.profileOwner = personForProfile
+            vc.viewControllerNumber = Constants.ViewControllerIndexes.Exchanges
       }
     }
   }
+    @IBAction func friendsTapped(sender: AnyObject) {
+        ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
+        ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
+        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.ExchangesFilled)
+        for viewController in childViewControllers {
+            if let vc = viewController as? ProfileContainerViewController {
+                vc.profileOwner = personForProfile
+                vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
+            }
+        }
+    }
   
   func done(sender: UIBarButtonItem) {
     self.dismissViewControllerAnimated(true, completion: nil)
@@ -229,6 +255,7 @@ class ProfileViewController: UIViewController {
 //        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
         numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
         numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+        ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
     }
     
     func getAllDataOfCurentUser() {
@@ -326,4 +353,22 @@ class ProfileViewController: UIViewController {
         //                saveItemRecordOp.qualityOfService = NSQualityOfService()
         database.addOperation(operation)
     }
+    
+    func friendsCountUpdation(notification: NSNotification) {
+        if notification.userInfo != nil {
+            let userInfo: NSDictionary = notification.userInfo!
+            let count = userInfo.valueForKey("count") as! Int
+            self.ouNumberOfFriendsLabel.text = "\(count)"
+        }
+    }
+    
+    func reviewsCountUpdation(notification: NSNotification) {
+        if notification.userInfo != nil {
+            let userInfo: NSDictionary = notification.userInfo!
+            let count = userInfo.valueForKey("count") as! Float
+            self.starView.numberOfStars = count
+            self.ouStarView.numberOfStars = count
+        }
+    }
+    
 }

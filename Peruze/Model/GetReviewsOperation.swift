@@ -44,7 +44,9 @@ class GetReviewsOperation: Operation {
     let getReviewsPredicate = NSPredicate(format: "UserBeingReviewed == %@", personReference)
     let getReviewsQuery     = CKQuery(recordType: RecordTypes.Review, predicate: getReviewsPredicate)
     let getReviewsOperation = CKQueryOperation(query: getReviewsQuery)
-
+    var totalReviewStars = 0
+    var numberOfReviews = 0
+    
     getReviewsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
 
       let localReview = Review.MR_findFirstOrCreateByAttribute("recordIDName",
@@ -56,8 +58,10 @@ class GetReviewsOperation: Operation {
       
       if let starRating = record.objectForKey("StarRating") as? NSNumber {
         localReview.starRating = starRating
+        numberOfReviews++
+        totalReviewStars = totalReviewStars + Int(starRating)
       }
-      
+        
       if let title = record.objectForKey("Title") as? String {
         localReview.title = title
       }
@@ -68,6 +72,7 @@ class GetReviewsOperation: Operation {
         let reviewedUser = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: userReviewedIDName, inContext: self.context)
         self.context.MR_saveToPersistentStoreAndWait()
         localReview.userBeingReviewed = reviewedUser
+        localReview.userBeingReviewed?.setValue(totalReviewStars/numberOfReviews, forKey: "averageRating")
       }
       
       localReview.date = record.creationDate

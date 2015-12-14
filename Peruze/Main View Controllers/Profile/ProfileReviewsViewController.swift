@@ -43,17 +43,17 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
         } else {
             self.titleLabel.alpha = 0
         }
-        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(0) == 0) ||
-            (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(1) == 0){
+        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(self.tableView.numberOfSections - 1) == 0) ||
+            (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(self.tableView.numberOfSections - 1) == 0){
                 self.refresh()
         }
     }
-  
+    
   let opQueue = OperationQueue()
   func refresh() {
 //    let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let recordIDName: String
-    if dataSource.profileOwner.valueForKey("recordIDName") != nil{
+    if dataSource.profileOwner != nil && dataSource.profileOwner.valueForKey("recordIDName") != nil{
         recordIDName = dataSource.profileOwner.valueForKey("recordIDName") as! String
     } else {
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -63,6 +63,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     reviewOp.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
         self.refreshControl.endRefreshing()
+        self.titleLabel.alpha = 1
         if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(0) == 0) ||
            (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(1) == 0){
           self.titleLabel.alpha = 1
