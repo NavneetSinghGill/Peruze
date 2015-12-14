@@ -26,8 +26,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
   private var titleTextField: UITextField!
   private var descriptionLabel: UILabel!
   private var descriptionTextView: UITextView!
+    private var gg: UIButton!
   private var uploadButton: UIButton!
-  @IBOutlet weak var doneButton: UIButton!
+  private var cancelButton: UIButton!
   private var keyboardOnScreen = false
   var image: UIImage?
   var itemTitle: String?
@@ -40,10 +41,10 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     navigationController?.navigationBar.tintColor = .redColor()
     
     //setup done button
-    if navigationController != nil {
-      doneButton.enabled = false
-      doneButton.hidden = true
-    }
+//    if navigationController != nil {
+//      cancelButton.enabled = true
+//      cancelButton.hidden = false
+//    }
     
     //setup main image view
     mainImageView = UIImageView()
@@ -73,12 +74,25 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     descriptionTextView.layer.borderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.8).CGColor
     descriptionTextView.layer.cornerRadius = 5
     
+    cancelButton = UIButton()
+    cancelButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+    cancelButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Disabled)
+    cancelButton.titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+    cancelButton.setTitle("Cancel", forState: UIControlState.Normal)
+    cancelButton.sizeToFit()
+    cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+    cancelButton.enabled = true
+    
     //setup upload button
     uploadButton = UIButton()
-    uploadButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+    uploadButton.setTitleColor(UIColor.greenColor(), forState: UIControlState.Normal)
     uploadButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Disabled)
     uploadButton.titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    uploadButton.setTitle("Upload", forState: UIControlState.Normal)
+    if self.navigationController != nil{
+        uploadButton.setTitle("Upload", forState: UIControlState.Normal)
+    } else {
+        uploadButton.setTitle("Done", forState: UIControlState.Normal)
+    }
     uploadButton.sizeToFit()
     uploadButton.addTarget(self, action: "upload:", forControlEvents: UIControlEvents.TouchUpInside)
     uploadButton.enabled = false
@@ -158,6 +172,11 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     let uploadY = descrFrame.maxY + Constants.BufferSize
     uploadButton.frame.origin = CGPointMake(uploadX, uploadY)
     scrollView.addSubview(uploadButton)
+    
+    let cancelX = view.frame.width - cancelButton.frame.width - 16
+    let cancelY = uploadButton.frame.origin.y
+    cancelButton.frame.origin = CGPointMake(cancelX, cancelY)
+    scrollView.addSubview(cancelButton)
   }
   
   //MARK: - Upload
@@ -195,8 +214,15 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
   }
   
-  @IBAction func done(sender: UIButton) {
-    dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func cancelButtonTapped(sender: UIButton) {
+    if navigationController == nil {
+        dismissViewControllerAnimated(true, completion: nil)
+    } else {
+        self.mainImageView.image! = Constants.DefaultImage!
+        self.titleTextField.text = ""
+        self.descriptionLabel.text = ""
+        self.tabBarController?.selectedIndex = 0
+    }
   }
   
   //MARK: - Gesture Recognizers

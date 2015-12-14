@@ -384,27 +384,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V00-8I-FDA">
-                                <rect key="frame" x="540" y="516" width="40" height="32"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Done">
-                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="done:" destination="k3R-bm-ed0" eventType="touchUpInside" id="CNp-C8-zGw"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="V00-8I-FDA" secondAttribute="trailing" id="3qv-kz-1ai"/>
                             <constraint firstAttribute="trailing" secondItem="fmT-co-maJ" secondAttribute="trailing" id="As2-a0-mvT"/>
                             <constraint firstItem="fmT-co-maJ" firstAttribute="top" secondItem="lGh-fI-nCx" secondAttribute="top" id="CQn-qR-KgF"/>
                             <constraint firstItem="fmT-co-maJ" firstAttribute="leading" secondItem="lGh-fI-nCx" secondAttribute="leading" id="a8p-ry-d9O"/>
-                            <constraint firstItem="nkv-Id-QYd" firstAttribute="top" secondItem="V00-8I-FDA" secondAttribute="bottom" constant="8" symbolic="YES" id="fxC-Z5-KXl"/>
                             <constraint firstAttribute="bottom" secondItem="fmT-co-maJ" secondAttribute="bottom" id="sri-HU-70n"/>
                             <constraint firstItem="fmT-co-maJ" firstAttribute="top" secondItem="dho-3t-oVH" secondAttribute="bottom" id="zJg-mb-fMP"/>
                         </constraints>
@@ -418,7 +404,6 @@
                     <navigationItem key="navigationItem" title="Upload" id="wLo-6W-u0g"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="doneButton" destination="V00-8I-FDA" id="c7w-p0-cmo"/>
                         <outlet property="scrollView" destination="fmT-co-maJ" id="6Mi-bE-BP4"/>
                     </connections>
                 </viewController>
