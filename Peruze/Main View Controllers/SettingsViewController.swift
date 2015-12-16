@@ -52,7 +52,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBOutlet weak var loadingViewContainer: UIView!
   @IBOutlet weak var versionLabel: UILabel!
   @IBOutlet weak var inviteFacebookFriendsButton: UIButton!
-  
+    @IBOutlet weak var pushNotificationSwitch: UISwitch!
   //MARK: Local Vars
   private var facebookData = FacebookDataSource()
   private var locationManager = CLLocationManager()
@@ -241,7 +241,12 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     @IBAction func sendLogs(sender: UIButton) {
         sendReportWithAttachment()
     }
-    
+
+    @IBAction func pushNotificationSwitchTapped(sender: UISwitch) {
+        if sender.on == true{
+        } else {
+        }
+    }
   //MARK: - Handling Sliders
   
   private var distanceValues: [Float] = [1, 5, 10, 15, 20, 25]
@@ -391,7 +396,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             //Set the subject and message of the email
             mailComposer.setSubject("Peruze log.")
             mailComposer.setMessageBody("Hello, I am \(me.valueForKey("firstName")!) \(me.valueForKey("lastName")!).", isHTML: false)
-            mailComposer.setToRecipients(["navneet105gill@gmail.com"])
+            mailComposer.setToRecipients(["vijay@systematixtechnocrates.com"])
             
             let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             do {

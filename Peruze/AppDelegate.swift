@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
        resetBadgeCounter()
     }
+    
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     

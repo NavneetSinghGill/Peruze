@@ -30,6 +30,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
+    refresh()
   }
   
   override func viewWillAppear(animated: Bool) {

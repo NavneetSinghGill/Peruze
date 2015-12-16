@@ -44,6 +44,7 @@
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="me" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mutualFriends" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exchanges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exchange" syncable="YES"/>
         <relationship name="favorites" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" syncable="YES"/>
@@ -61,10 +62,10 @@
     </entity>
     <elements>
         <element name="Exchange" positionX="97" positionY="-804" width="128" height="150"/>
-        <element name="Friend" positionX="36" positionY="-657" width="128" height="90"/>
-        <element name="Item" positionX="-9" positionY="-495" width="128" height="178"/>
+        <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
+        <element name="Item" positionX="-36" positionY="-421" width="128" height="178"/>
         <element name="Message" positionX="-164" positionY="-762" width="128" height="163"/>
-        <element name="Person" positionX="252" positionY="-594" width="128" height="238"/>
+        <element name="Person" positionX="252" positionY="-594" width="128" height="253"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>
     </elements>
 </model>

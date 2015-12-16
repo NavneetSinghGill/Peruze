@@ -382,6 +382,40 @@ class Model: NSObject, CLLocationManagerDelegate {
         localFriend.friendsFacebookIDs = friendsFacebookIDs
         managedConcurrentObjectContext.MR_saveToPersistentStoreWithCompletion(nil)
     }
+    
+    func getMutualFriendsFromLocal(owner: NSManagedObject!, context: NSManagedObjectContext!) -> NSMutableArray {
+        if owner == nil{
+            return []
+        }
+        if let fbId = owner.valueForKey("facebookID") as? String {
+            var predicate = NSPredicate(format: "facebookID == %@", fbId)
+            let otherUserFriends = Friend.MR_findAllWithPredicate(predicate)
+            let otherUserFriendsIDs:NSMutableArray = []
+            for id in otherUserFriends{
+                otherUserFriendsIDs.addObject(id.valueForKey("friendsFacebookIDs")!)
+            }
+            
+            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+            predicate = NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String)
+            let myFriends = Friend.MR_findAllWithPredicate(predicate)
+            let myFriendsIDs:NSMutableArray = []
+            for id in myFriends{
+                myFriendsIDs.addObject(id.valueForKey("friendsFacebookIDs")!)
+            }
+            
+            //        let mutualFriendIds = Set(arrayLiteral: myFriendsIDs).intersect(Set(arrayLiteral: otherUserFriendsIDs))
+            let mutualFriends: NSMutableArray = []
+            for id in myFriendsIDs{
+                if otherUserFriendsIDs.containsObject(id) {
+                    mutualFriends.addObject(id)
+                }
+            }
+            owner.setValue(mutualFriends.count, forKey: "mutualFriends")
+            context.MR_saveToPersistentStoreAndWait()
+            return mutualFriends
+        }
+        return []
+    }
 }
 
 

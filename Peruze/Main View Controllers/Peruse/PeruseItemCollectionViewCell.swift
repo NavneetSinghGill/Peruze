@@ -169,11 +169,54 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       } else {
         ownerProfileImage.image = UIImage()
       }
+        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(owner,context: managedConcurrentObjectContext)
+        
+        if mutualFriends.count == 1{
+            
+        }
+        if mutualFriends.count <= 1{
+            self.mutualFriendsLabel.text = "\(mutualFriends.count) mutual friend"
+        } else {
+            self.mutualFriendsLabel.text = "\(mutualFriends.count) mutual friends"
+        }
+        
     }
     //      mutualFriendsLabel.hidden = (item.owner.mutualFriends == 0 || item.owner.mutualFriends == nil)
     //      mutualFriendsLabel.text = "\(item.owner.mutualFriends) mutual friends"
   }
-  
+//    resultsArray = resultsArray.sort { (element1, element2) -> Bool in
+//    return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
+//    }
+//    func getMutualFriendsCount(owner: NSManagedObject!) -> Int {
+//        if let ownerFbId = owner.valueForKey("facebookID") as? String {
+//            var predicate = NSPredicate(format: "facebookID == %@", ownerFbId)
+//            let otherUserFriends = Friend.MR_findAllWithPredicate(predicate)
+//            let otherUserFriendsIDs:NSMutableArray = []
+//            for id in otherUserFriends{
+//                otherUserFriendsIDs.addObject(id.valueForKey("friendsFacebookIDs")!)
+//            }
+//            
+//            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+//            predicate = NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String)
+//            let myFriends = Friend.MR_findAllWithPredicate(predicate)
+//            let myFriendsIDs:NSMutableArray = []
+//            for id in myFriends{
+//                myFriendsIDs.addObject(id.valueForKey("friendsFacebookIDs")!)
+//            }
+//            
+//            //        let mutualFriendIds = Set(arrayLiteral: myFriendsIDs).intersect(Set(arrayLiteral: otherUserFriendsIDs))
+//            var mutualFriendsCount = 0
+//            for id in myFriendsIDs{
+//                if otherUserFriendsIDs.containsObject(id) {
+//                    mutualFriendsCount++
+//                }
+//            }
+//            
+//            return mutualFriendsCount
+//        }
+//        return 0
+//    }
+    
   private func heartFlash() {
     let heart = UIImageView()
     heart.frame = ownerProfileImage.frame

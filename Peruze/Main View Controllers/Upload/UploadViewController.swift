@@ -214,7 +214,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
   }
   
-  @IBAction func cancelButtonTapped(sender: UIButton) {
+  func cancelButtonTapped(sender: UIButton) {
     if navigationController == nil {
         dismissViewControllerAnimated(true, completion: nil)
     } else {

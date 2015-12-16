@@ -183,6 +183,10 @@ class MainTabBarViewController: UITabBarController {
                 requestTab.badgeValue = nil
                 UIApplication.sharedApplication().applicationIconBadgeNumber = number
             }
+        } else if item.tag == 4 {
+            if let profileViewController = (self.viewControllers![4] as? UINavigationController)?.viewControllers[0] as? ProfileViewController {
+                profileViewController.isShowingMyProfile = true
+            }
         }
     }
 }

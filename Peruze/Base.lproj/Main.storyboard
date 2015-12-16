@@ -1791,6 +1791,9 @@
                                                 <exclude reference="8fc-EI-iEY"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="w0V-Ld-lQN" appends="YES" id="Ddb-BR-IQe"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ubw-By-o00" userLabel="Black Line">
                                         <rect key="frame" x="0.0" y="276" width="600" height="1"/>
@@ -1847,10 +1850,16 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2tF-cj-tFY" userLabel="Favorites Touch View">
                                         <rect key="frame" x="393" y="153" width="44" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="KUJ-5w-nWn" appends="YES" id="0Rx-jp-9Xy"/>
+                                        </connections>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VQs-aA-FJs" userLabel="Exchanges Touch View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VQs-aA-FJs" userLabel="Friends Touch View">
                                         <rect key="frame" x="445" y="153" width="39" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="exp-h5-OHU" appends="YES" id="5fn-pg-KN7"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r5A-Jb-FoA" userLabel="Bottom Spacer">
                                         <rect key="frame" x="239" y="187" width="353" height="38"/>
@@ -2195,6 +2204,21 @@
                 <tapGestureRecognizer id="M6K-HE-ouW" userLabel="Uploads Tap">
                     <connections>
                         <action selector="uploadsTapped:" destination="k06-Ue-L8P" id="AM3-Yc-VHG"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="KUJ-5w-nWn" userLabel="Other user Uploads Tap">
+                    <connections>
+                        <action selector="uploadsTapped:" destination="k06-Ue-L8P" id="OtS-t9-MAg"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="exp-h5-OHU" userLabel="Other user Friends Tap">
+                    <connections>
+                        <action selector="friendsTapped:" destination="k06-Ue-L8P" id="9sC-FO-rPN"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="w0V-Ld-lQN" userLabel="Other user Star Tap">
+                    <connections>
+                        <action selector="reviewsTapped:" destination="k06-Ue-L8P" id="DLv-V6-M7O"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -2670,6 +2694,9 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vFc-Wp-njf">
                                                     <rect key="frame" x="543" y="7" width="51" height="31"/>
                                                     <animations/>
+                                                    <connections>
+                                                        <action selector="pushNotificationSwitchTapped:" destination="JaR-yA-1li" eventType="valueChanged" id="4Uh-45-iJs"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <animations/>
@@ -2828,7 +2855,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6e-Ym-Xha" userLabel="Send Logs">
                                                     <rect key="frame" x="197" y="11" width="172" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <state key="normal" title="Send Logs">
+                                                    <state key="normal" title="Report Issue">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -2973,6 +3000,7 @@
                         <outlet property="loadingViewContainer" destination="hUs-WQ-DW5" id="f4e-lx-9t5"/>
                         <outlet property="lowerLeft" destination="jeM-tQ-8zk" id="UeV-jo-wsJ"/>
                         <outlet property="lowerRight" destination="OdV-DP-Oom" id="AIG-xg-bWJ"/>
+                        <outlet property="pushNotificationSwitch" destination="vFc-Wp-njf" id="Pny-Pm-MNq"/>
                         <outlet property="rangeLabel" destination="dI8-ur-rcd" id="o9n-hY-G25"/>
                         <outlet property="upperLeft" destination="4U7-7i-jBK" id="Lto-N4-d6s"/>
                         <outlet property="upperRight" destination="3fW-bc-XpO" id="6DB-xa-2Sd"/>
@@ -3126,20 +3154,26 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="cXM-M3-V8v">
+                                <rect key="frame" x="290" y="95" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Z6o-Rt-nPh" secondAttribute="trailing" id="0Xi-cH-9tZ"/>
+                            <constraint firstItem="cXM-M3-V8v" firstAttribute="centerX" secondItem="d9y-30-1IR" secondAttribute="centerX" id="1jT-5f-hik"/>
                             <constraint firstItem="Z6o-Rt-nPh" firstAttribute="leading" secondItem="d9y-30-1IR" secondAttribute="leading" id="EnV-KA-zWY"/>
                             <constraint firstAttribute="centerX" secondItem="e37-QH-Coh" secondAttribute="centerX" id="F6c-PU-rH1"/>
                             <constraint firstAttribute="centerY" secondItem="e37-QH-Coh" secondAttribute="centerY" id="VTI-nx-jGO"/>
+                            <constraint firstItem="cXM-M3-V8v" firstAttribute="centerY" secondItem="d9y-30-1IR" secondAttribute="centerY" id="Wpe-dn-BiG"/>
                             <constraint firstAttribute="bottom" secondItem="Z6o-Rt-nPh" secondAttribute="bottom" id="xor-UL-jIy"/>
                             <constraint firstItem="Z6o-Rt-nPh" firstAttribute="top" secondItem="eSZ-aI-Dgz" secondAttribute="bottom" id="zrB-hU-cDM"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="Aem-dZ-lSx"/>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="cXM-M3-V8v" id="lOM-tB-zvn"/>
                         <outlet property="tableView" destination="Z6o-Rt-nPh" id="Ial-NH-IvS"/>
                         <outlet property="titleLabel" destination="e37-QH-Coh" id="u9D-QI-rwi"/>
                     </connections>
@@ -4085,6 +4119,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xoQ-gx-uPK"/>
-        <segue reference="yke-5P-fFJ"/>
+        <segue reference="6TZ-FQ-lfY"/>
     </inferredMetricsTieBreakers>
 </document>

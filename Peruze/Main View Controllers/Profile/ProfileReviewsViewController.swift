@@ -28,12 +28,15 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
       dataSource.tableView = tableView
     }
   }
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonReviews", object: nil)
+    
   }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -43,9 +46,8 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
         } else {
             self.titleLabel.alpha = 0
         }
-        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(self.tableView.numberOfSections - 1) == 0) ||
-            (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(self.tableView.numberOfSections - 1) == 0){
-                self.refresh()
+        if tabBarController == nil {
+            self.refresh()
         }
     }
     
@@ -62,17 +64,16 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     let reviewOp = GetReviewsOperation(recordID: CKRecordID(recordName: recordIDName))
     reviewOp.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
+        self.activityIndicatorView.stopAnimating()
         self.refreshControl.endRefreshing()
-        self.titleLabel.alpha = 1
-        if (self.tableView.numberOfSections == 1 && self.tableView.numberOfRowsInSection(0) == 0) ||
-           (self.tableView.numberOfSections == 2 && self.tableView.numberOfRowsInSection(1) == 0){
-          self.titleLabel.alpha = 1
+        if self.dataSource.fetchData() > 0 {
+            self.titleLabel.alpha = 0
         } else {
-            self.titleLabel.alpha = 0 
+            self.titleLabel.alpha = 1
         }
-        self.dataSource.fetchData()
       }
     }
+    self.activityIndicatorView.startAnimating()
     opQueue.addOperation(reviewOp)
   }
   

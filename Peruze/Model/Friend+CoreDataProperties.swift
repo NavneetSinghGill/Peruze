@@ -15,4 +15,5 @@ import CoreData
 extension Friend {
     @NSManaged var friendsFacebookIDs: String?
     @NSManaged var facebookID: String?
+    @NSManaged var owner: Person?
 }

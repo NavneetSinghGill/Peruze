@@ -12,7 +12,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     private struct Constants {
         static let TableViewCellHeight: CGFloat = 50
     }
-    private var refreshControl: UIRefreshControl!
+//    private var refreshControl: UIRefreshControl!
     lazy var dataSource = ProfileFriendsDataSource()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView! {
@@ -25,24 +25,28 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.alpha = 0.0
-        refreshControl = UIRefreshControl()
+//        refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
-        tableView.addSubview(refreshControl)
+//        tableView.addSubview(refreshControl)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.dataSource.getMutualFriends()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 //        checkForEmptyData(true)
-        self.dataSource.getMutualFriends()
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return Constants.TableViewCellHeight
     }
-    func refresh() {
-        refreshControl.endRefreshing()
-    }
+//    func refresh() {
+//        refreshControl.endRefreshing()
+//    }
     
     private func checkForEmptyData(animated: Bool) {
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {

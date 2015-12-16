@@ -95,7 +95,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
       let title = itemSelectedForExchange.valueForKey("title") as? String,
       let itemSelectedForExchangeOwner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject,
       let ownerName = itemSelectedForExchangeOwner.valueForKey("firstName") as? String,
-      let ownerImageData = itemSelectedForExchangeOwner.valueForKey("image") as? NSData {
+      let ownerImageData = itemSelectedForExchangeOwner.valueForKey("image") as? NSData,
+      let mutualFriendsCount = itemSelectedForExchangeOwner.valueForKey("mutualFriends") as? Int {
         
         //mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
         rightCircleImageView.image = UIImage(data: imageData)
@@ -103,6 +104,11 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
         otherPersonsFirstNameLabel.text = "for \(ownerName)'s"
         otherPersonsItemLabel.text = title
         otherPersonsProfileImageView.image = UIImage(data: ownerImageData)
+        if mutualFriendsCount <= 1{
+            mutualFriendsLabel.text = "\(mutualFriendsCount) mutual friend"
+        } else{
+            mutualFriendsLabel.text = "\(mutualFriendsCount) mutual friends"
+        }
     }
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionViewManually", name: "reloadPeruzeExchangeScreen", object: nil)
   }

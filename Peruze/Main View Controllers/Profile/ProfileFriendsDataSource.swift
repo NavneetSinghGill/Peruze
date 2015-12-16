@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftLog
+import CloudKit
 
 class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private struct Constants {
@@ -20,22 +21,26 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     var tableView: UITableView!
     var profileOwner: Person!
     var fetchedResultsController: NSFetchedResultsController!
+    var mutualFriendIds: NSMutableArray!
     
     struct FriendsDataAndProfilePic {
         var friendData: NSDictionary!
         var profileImage: CircleImage?
     }
     var taggableFriendsData = [FriendsDataAndProfilePic]()
+    var sortedFriendsData = [FriendsDataAndProfilePic]()
     var selectedFriendsToInvite: NSMutableArray = []
     
     override init() {
         super.init()
         //    let predicate = NSPredicate(value: true)
-        getMutualFriends()
+        mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
+        getTaggableFriends()
+//        getMutualFriendsFromCloud()
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.taggableFriendsData.count
+        return self.sortedFriendsData.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -45,7 +50,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: Constants.kFriendsTableViewCellIdentifier) as? FriendsTableViewCell
         }
-        let parsedObject = self.taggableFriendsData[indexPath.row]
+        let parsedObject = self.sortedFriendsData[indexPath.row]
         let userDict =  parsedObject.friendData
         cell!.nameLabel.text = userDict?.valueForKey("name") as? String
         cell!.friendDataDict = userDict
@@ -56,14 +61,55 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         return cell!
     }
     
-    //MARK: Get mutual friends
     func getMutualFriends() {
-//        self.activityIndicatorView.startAnimating()
-//        @"fields": @"context.fields(mutual_friends)"
-        if profileOwner == nil || profileOwner.facebookID == nil {
-            return
+        mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
+        var newSortedFriendsData = [FriendsDataAndProfilePic]()
+        var person: NSManagedObject!
+        var data: NSDictionary!
+        let profileImage = CircleImage()
+        
+//        if {
+//            
+//        }
+        for id in mutualFriendIds {
+            person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: id as! String)
+            if person != nil {
+                data = [:]
+                profileImage.image = nil
+                if person.valueForKey("firstName") != nil && person.valueForKey("lastName") != nil {
+                    data = ["name": "\(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!)"]
+                }
+                if person.valueForKey("image") != nil {
+                    profileImage.image = UIImage(data: person.valueForKey("image") as! NSData)
+                }
+                newSortedFriendsData.append(FriendsDataAndProfilePic(friendData: data, profileImage: profileImage))
+            } else {
+                let personPredicate = NSPredicate(format: "FacebookID == %@", id as! String)
+                let personQuery = CKQuery(recordType: RecordTypes.User, predicate: personPredicate)
+                let personQueryOp = CKQueryOperation(query: personQuery)
+                logw("abcdefgh")
+                
+                personQueryOp.recordFetchedBlock = {
+                    (record: CKRecord!) -> Void in
+                    
+                }
+                personQueryOp.queryCompletionBlock = { (cursor: CKQueryCursor?, error: NSError?) -> Void in
+                
+                }
+                CKContainer.defaultContainer().publicCloudDatabase.addOperation(personQueryOp)
+            }
         }
-        let request = FBSDKGraphRequest(graphPath:profileOwner.facebookID, parameters: ["fields":"context.fields(mutual_friends)"]);
+        self.sortedFriendsData = newSortedFriendsData
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.tableView != nil {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func getTaggableFriends() {
+//        self.activityIndicatorView.startAnimating()
+        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Taggable Friends are : \(result)")
@@ -72,8 +118,9 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
                 resultsArray = resultsArray.sort { (element1, element2) -> Bool in
                     return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
                 }
-                NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":resultsArray.count])
+                
                 self.taggableFriendsData = []
+                let newSortedFriendsData = [FriendsDataAndProfilePic]()
                 for friendData in resultsArray {
                     let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImage: CircleImage())
                     newFriendData.profileImage?.image = nil
@@ -101,6 +148,36 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             if self.tableView != nil {
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    //MARK: Get mutual friends
+    func getMutualFriendsFromCloud() {
+        if profileOwner != nil && profileOwner.facebookID != nil {
+            let database = CKContainer.defaultContainer().publicCloudDatabase
+            let predicate = NSPredicate(format: "FacebookID == %@", profileOwner.facebookID!)
+            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+            database.performQuery(query, inZoneWithID: nil, completionHandler: {
+                (friends: [CKRecord]?, error) -> Void in
+                logw("GetMissingPersonOperation Friends block")
+                for friend in friends! {
+                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: managedConcurrentObjectContext)
+                    if let facebookID = friend.objectForKey("FacebookID") {
+                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
+                    }
+                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
+                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
+                    }
+                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localFriendRecord, context: managedConcurrentObjectContext)
+                    localFriendRecord.setValue(mutualFriends.count, forKey: "mutualFriends")
+                }
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                dispatch_async(dispatch_get_main_queue()){
+                    if self.tableView != nil {
+                        self.tableView.reloadData()
+                    }
+                }
+            })
         }
     }
 }
