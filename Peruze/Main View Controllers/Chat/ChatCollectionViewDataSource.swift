@@ -26,6 +26,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   var fetchedResultsController: NSFetchedResultsController!
   var otherPerson: Person?
   var exchange: NSManagedObject
+  var latestMessageDate: NSDate!
   
   func senderDisplayName() -> String! {
     return delegate?.senderDisplayName
@@ -40,6 +41,9 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     self.exchange = exchange
     super.init()
     self.getChatData()
+    if self.latestMessageDate != nil {
+       self.getChatAfterDate(self.latestMessageDate)
+    }
   }
     
     func removeNoti() {
@@ -64,8 +68,89 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
             delegate: self,
             inContext: managedConcurrentObjectContext
         )
+        let numberOfMessages = fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        dispatch_async(dispatch_get_main_queue()){
+            self.delegate?.collectionView?.reloadData()
+        }
+        if numberOfMessages >= 1 {
+            let indexPath = NSIndexPath(forItem: numberOfMessages - 1, inSection: 0)
+            let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+            self.latestMessageDate = message.valueForKey("date") as! NSDate
+        }
     }
     
+    func getChatAfterDate(messageDate: NSDate) {
+        //Fetching all chat after date
+        var exchangeReferences = [CKReference]()
+        let recordID = CKRecordID(recordName: self.exchange.valueForKey("recordIDName") as! String)
+        let recordRef = CKReference(recordID: recordID, action: .None)
+        exchangeReferences.append(recordRef)
+        
+        let messagesPredicate = NSPredicate(format: "Exchange IN %@", exchangeReferences)
+        let datePredicate = NSPredicate(format: "modificationDate > %@", messageDate)
+        let messagesQuery = CKQuery(recordType: RecordTypes.Message, predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [messagesPredicate, datePredicate]))
+        let messagesQueryOp = CKQueryOperation(query: messagesQuery)
+        
+        
+        //Add the messages to the database and save the context
+        messagesQueryOp.recordFetchedBlock = { (record: CKRecord!) -> Void in
+            
+            let localMessage = Message.MR_findFirstOrCreateByAttribute("recordIDName",
+                withValue: record.recordID.recordName, inContext: managedConcurrentObjectContext)
+            
+            if let messageText = record.objectForKey("Text") as? String {
+                localMessage.setValue(messageText, forKey: "text")
+            }
+            
+            if let messageImage = record.objectForKey("Image") as? CKAsset {
+                localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
+            }
+            
+            localMessage.setValue(record.objectForKey("Date") as? NSDate, forKey: "date")
+            
+            if let exchange = record.objectForKey("Exchange") as? CKReference {
+                let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
+                    withValue: exchange.recordID.recordName,
+                    inContext: managedConcurrentObjectContext)
+                localMessage.setValue(messageExchange, forKey: "exchange")
+            }
+            
+            if let receiverRecordIDName = record.objectForKey("ReceiverRecordIDName") as? String {
+                localMessage.setValue(receiverRecordIDName, forKey: "receiverRecordIDName")
+            }
+            
+            if let senderRecordIDName = record.objectForKey("SenderRecordIDName") as? String {
+                localMessage.setValue(senderRecordIDName, forKey: "senderRecordIDName")
+            }
+            
+            if record.creatorUserRecordID?.recordName == "__defaultOwner__" {
+                let sender = Person.MR_findFirstOrCreateByAttribute("me",
+                    withValue: true,
+                    inContext: managedConcurrentObjectContext)
+                localMessage.setValue(sender, forKey: "sender")
+            } else {
+                let sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+                    withValue: record.creatorUserRecordID?.recordName,
+                    inContext: managedConcurrentObjectContext)
+                localMessage.setValue(sender, forKey: "sender")
+            }
+            
+            managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+            self.getChatData()
+        }
+        
+        //Finish this operation
+        messagesQueryOp.queryCompletionBlock = { (cursor, error) -> Void in
+            if let error = error {
+                logw("Get Chats For Accepted Exchanges Operation Finished with error: ")
+                logw("\(error)")
+            }
+        }
+        
+        //add the operation to the database
+        CKContainer.defaultContainer().publicCloudDatabase.addOperation(messagesQueryOp)
+    }
+
   //Setting up the labels around the bubble
   func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
     let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)

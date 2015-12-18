@@ -23,12 +23,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
   }
   @IBOutlet weak var noChatsLabel: UILabel!
-  
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
   //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
     refresh()
   }
@@ -51,15 +51,24 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath)
     performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
   }
+    
+    func refreshWithoutActivityIndicator() {
+        activityIndicatorView.alpha = 0
+        refresh()
+    }
+    
   func refresh() {
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
       dispatch_async(dispatch_get_main_queue()) {
         self.refreshControl.endRefreshing()
-        self.tableView.reloadData()
+        self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.alpha = 1
+        self.dataSource.tableView.reloadData()
       }
     }
     OperationQueue().addOperation(chatOp)
+    activityIndicatorView.startAnimating()
   }
   //MARK: Editing
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {

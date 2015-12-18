@@ -40,6 +40,10 @@ struct NotificationMessages {
     static let ItemDeletion = "An item has been deleted"
 }
 
+struct UniversalConstants {
+    static let kIsPushNotificationOn = "isPushNotificationOn"
+    static let kIsPostingToFacebookOn = "isPostingToFacebookOn"
+}
 
 struct SubscritionTypes {
   static let PeruzeItemUpdates = "PeruzeItemUpdates"
@@ -415,6 +419,159 @@ class Model: NSObject, CLLocationManagerDelegate {
             return mutualFriends
         }
         return []
+    }
+    
+    //MARK: - Subscription methods
+    
+    func subscribeForNewOffer() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let subscription = CKSubscription(recordType: "Exchange",
+            predicate: predicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.alertLocalizationKey = "Crop subs offer"
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = ""
+        notificationInfo.shouldSendContentAvailable = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("NewOffer subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("NewOffer subscription success")
+                }
+                self.subscribeForChat()
+                
+            }))
+    }
+    
+    
+    
+    func subscribeForChat() {
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "ReceiverRecordIDName == %@", me.recordIDName!)
+        let subscription = CKSubscription(recordType: "Message",
+            predicate: predicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.alertLocalizationKey = "Crop subs Chat"
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = ""
+        notificationInfo.shouldSendContentAvailable = true
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("Chat subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("Chat subscription success")
+                }
+                self.subscribeForItemAdditionUpdation()
+            }))
+    }
+    
+    func subscribeForItemAdditionUpdation() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
+        let subscription = CKSubscription(recordType: "Item",
+            predicate: predicate,
+            options: [.FiresOnRecordCreation, .FiresOnRecordUpdate])
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ItemAdditionOrUpdation
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("ItemAdditionUpdation subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("ItemAdditionUpdation subscription success")
+                }
+                self.subscribeForItemDeletion()
+            }))
+    }
+    
+    func subscribeForItemDeletion() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
+        let subscription = CKSubscription(recordType: "Item",
+            predicate: predicate,
+            options: .FiresOnRecordDeletion)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ItemDeletion
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("ItemDeletion subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("ItemDeletion subscription success")
+                }
+            }))
+    }
+    
+    func subscribeForOfferRecall() {
+        
+        
+        //        var reminderDate = dueDate.addDays(1)
+        
+        //        //Check if reminderDate is Greater than Right now
+        //        if(reminderDate.isGreaterThanDate(currentDateTime))
+        //        {
+        //            //Do Something...
+        //        }
+        
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        //            let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let myExchangePredicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let datePredicate = NSPredicate(format: "modificationDate < %@", me)
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[myExchangePredicate,datePredicate])
+        
+        let subscription = CKSubscription(recordType: "Exchange",
+            predicate: compoundPredicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.alertBody = NotificationMessages.ExchangeRecall
+        notificationInfo.shouldBadge = true
+        
+        subscription.notificationInfo = notificationInfo
+        
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("subscription success")
+                }
+            }))
     }
 }
 

@@ -23,6 +23,8 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   var refreshControl: UIRefreshControl?
   var titleLabel = UILabel()
+  @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var noRequetsLabel: UILabel!
   private struct Constants {
     static let TableViewRowHeight: CGFloat = 100
     static let CollectionViewSegueIdentifier = "toRequestCollectionView"
@@ -30,7 +32,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    refreshControl?.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl?.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl!, atIndex: 0)
     title = "Requests"
     navigationController?.navigationBar.tintColor = .redColor()
@@ -52,8 +54,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "getRequestedExchange", object: nil)
     }
     
+    func refreshWithoutActivityIndicator() {
+        self.activityIndicatorView.alpha = 0
+        self.refresh()
+    }
+    
   func refresh() {
     //reload the data
+    self.noRequetsLabel.alpha = 0
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let myRecordIDName = me.valueForKey("recordIDName") as! String
@@ -68,13 +76,19 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let updateExchanges = UpdateAllExchangesOperation(database: publicDB)
     updateExchanges.completionBlock = {
       do {
+        self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.alpha = 1
         try self.dataSource.fetchedResultsController.performFetch()
       } catch {
            logw("\(error)")
-        
       }
       dispatch_async(dispatch_get_main_queue()){
         self.tableView.reloadData()
+        if self.tableView.numberOfRowsInSection(0) > 0 {
+            self.noRequetsLabel.alpha = 0
+        } else {
+            self.noRequetsLabel.alpha = 1
+        }
         self.refreshControl?.endRefreshing()
       }
     }
@@ -86,6 +100,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     let operationQueue = OperationQueue()
     operationQueue.qualityOfService = NSQualityOfService.Utility
     operationQueue.addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
+    self.activityIndicatorView.startAnimating()
   }
   
   override func viewDidLayoutSubviews() {
@@ -97,7 +112,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     titleLabel.font = .preferredFontForTextStyle(UIFontTextStyleBody)
     titleLabel.textColor = .lightGrayColor()
     view.addSubview(titleLabel)
-//    checkForEmptyData(true)
+    checkForEmptyData(true)
   }
   
 //  private func checkForEmptyData(animated: Bool) {
@@ -109,14 +124,18 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
 //    }
 //  }
     private func checkForEmptyData(animated: Bool) {
+        if self.activityIndicatorView.isAnimating() {
+            self.noRequetsLabel.alpha = 0
+            return
+        }
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-                self.titleLabel.alpha = 1.0
-                self.tableView.alpha = 0.2
+                self.noRequetsLabel.alpha = 1.0
+//                self.tableView.alpha = 0.2
             }
         } else {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-                self.titleLabel.alpha = 0.0
+                self.noRequetsLabel.alpha = 0.0
                 self.tableView.alpha = 1.0
             }
         }

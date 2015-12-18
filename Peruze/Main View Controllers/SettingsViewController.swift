@@ -243,10 +243,24 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
 
     @IBAction func pushNotificationSwitchTapped(sender: UISwitch) {
-        if sender.on == true{
+        if sender.on == false{
+            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "no")
         } else {
+            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "yes")
         }
     }
+    @IBAction func postToFacebookSwitchTapped(sender: UISwitch) {
+        if sender.on == false{
+            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "no")
+        } else {
+            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "yes")
+        }
+    }
+    @IBAction func termsAndConditionsButtonTapped(sender: UIButton) {
+        let termsAndConditionViewController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionViewController") as! TermsConditionViewController
+        presentViewController(termsAndConditionViewController, animated: true, completion: nil)
+    }
+    
   //MARK: - Handling Sliders
   
   private var distanceValues: [Float] = [1, 5, 10, 15, 20, 25]

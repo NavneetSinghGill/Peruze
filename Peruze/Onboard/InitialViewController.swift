@@ -168,6 +168,9 @@ class InitialViewController: UIViewController {
             
             if let nc : UINavigationController = childVC as? UINavigationController {
                 let root = nc.viewControllers[0] as UIViewController
+                if let profileVC = root as? ProfileViewController{
+                    profileVC.isShowingMyProfile = true
+                }
                 _ = root.view
             }
         }

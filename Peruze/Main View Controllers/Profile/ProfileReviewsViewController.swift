@@ -33,11 +33,29 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
+    refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonReviews", object: nil)
     
+    let fetchCount = self.dataSource.fetchData()
+    if fetchCount == 0{
+        self.titleLabel.alpha = 1
+    } else {
+        self.titleLabel.alpha = 0
+    }
+    if tabBarController == nil {
+        self.refresh()
+    }
   }
+    
+    override func viewWillLayoutSubviews() {
+        let fetchCount = self.dataSource.fetchData()
+        if fetchCount == 0{
+            self.titleLabel.alpha = 1
+        } else {
+            self.titleLabel.alpha = 0
+        }
+    }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         let fetchCount = self.dataSource.fetchData()
@@ -46,9 +64,11 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
         } else {
             self.titleLabel.alpha = 0
         }
-        if tabBarController == nil {
-            self.refresh()
-        }
+    }
+    
+    func refreshWithoutActivityIndicator() {
+        self.activityIndicatorView.alpha = 0
+        self.refresh()
     }
     
   let opQueue = OperationQueue()
@@ -65,6 +85,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     reviewOp.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
         self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.alpha = 1
         self.refreshControl.endRefreshing()
         if self.dataSource.fetchData() > 0 {
             self.titleLabel.alpha = 0

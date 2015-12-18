@@ -41,6 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
        resetBadgeCounter()
     }
+    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
+        NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "yes")
+    }
+    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil {
+        NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "yes")
+    }
     
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
@@ -113,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }
             if  let badge = info["badge"] as? Int {
-                logw("\nFrom APS-dictionary with key \"type\":  \( badge)")
+                logw("\nFrom APS-dictionary with key \"type\":  \( badge)")     
             }
         }
 //        let viewController: ViewController =

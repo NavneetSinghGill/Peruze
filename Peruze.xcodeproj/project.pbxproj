@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0093C11C2188D1008D3339 /* Terms.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3B0093C01C2188D1008D3339 /* Terms.rtf */; };
+		3B0093CA1C218F73008D3339 /* TermsConditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */; };
 		3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */; };
 		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
 		3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */; };
@@ -244,6 +246,8 @@
 /* Begin PBXFileReference section */
 		06A7D5049F24E5B89EF336E4 /* Pods-Peruze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.debug.xcconfig"; sourceTree = "<group>"; };
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
+		3B0093C01C2188D1008D3339 /* Terms.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Terms.rtf; sourceTree = "<group>"; };
+		3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsConditionViewController.swift; sourceTree = "<group>"; };
 		3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableViewCell.xib; sourceTree = "<group>"; };
 		3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -891,8 +895,10 @@
 			children = (
 				3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */,
 				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
+				3B0093C01C2188D1008D3339 /* Terms.rtf */,
 				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
+				3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */,
 				9D177AF41B54DDC3009CB9FA /* Main View Controllers */,
 				9D177AE91B54DDC3009CB9FA /* Custom Classes */,
 				9D177B221B54DDC3009CB9FA /* Model */,
@@ -1203,6 +1209,7 @@
 				9D177B8D1B54DDC3009CB9FA /* PeruseExchangeItemCollectionViewCell.xib in Resources */,
 				9D177B911B54DDC3009CB9FA /* PeruseItemCollectionViewCell.xib in Resources */,
 				3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */,
+				3B0093C11C2188D1008D3339 /* Terms.rtf in Resources */,
 				9DF505A21B69D6AE00404BD4 /* EmptyCell.xib in Resources */,
 				9D5C3A721B82C6B100663601 /* PeruseLoadingCollectionViewCell.xib in Resources */,
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
@@ -1335,6 +1342,7 @@
 				9DEB96E01B5B56DA00273677 /* PeruzeDataModel.xcdatamodeld in Sources */,
 				3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */,
 				9D177B9D1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.swift in Sources */,
+				3B0093CA1C218F73008D3339 /* TermsConditionViewController.swift in Sources */,
 				9D177B9A1B54DDC3009CB9FA /* ProfileFavoritesDataSource.swift in Sources */,
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */,

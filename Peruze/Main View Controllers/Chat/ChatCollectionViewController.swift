@@ -63,11 +63,14 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     inputToolbar?.contentView?.leftBarButtonItem?.enabled = true
     inputToolbar?.contentView?.rightBarButtonItem = completeButton
     inputToolbar?.contentView?.rightBarButtonItem?.enabled = true
+    NSNotificationCenter.defaultCenter().addObserver(dataSource!, selector: "getChat", name: "getChat", object: nil)
   }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(dataSource!, selector: "getChat", name: "getChat", object: nil)
+        if self.dataSource?.latestMessageDate != nil {
+            self.dataSource?.getChatAfterDate((self.dataSource?.latestMessageDate)!)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

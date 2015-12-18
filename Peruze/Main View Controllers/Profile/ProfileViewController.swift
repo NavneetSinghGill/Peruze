@@ -143,6 +143,19 @@ class ProfileViewController: UIViewController {
     otherUserProfileSuperView.hidden = !isOtherUser
   }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        for superChildVC in childViewControllers {
+            if let profileContainerVC = superChildVC as? ProfileContainerViewController {
+                for childVC in profileContainerVC.childViewControllers{
+                    if let profileReviewsVC = childVC as? ProfileReviewsViewController {
+                        profileReviewsVC.dataSource.fetchData()
+                    }
+                }
+            }
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.updateViewAfterGettingResponse()
@@ -244,6 +257,10 @@ class ProfileViewController: UIViewController {
     for childVC in childViewControllers {
       if let container = childVC as? ProfileContainerViewController {
         container.profileOwner = personForProfile
+        for childVC in container.childViewControllers {
+            _ = childVC.view
+            
+        }
       }
     }
   }
@@ -366,8 +383,11 @@ class ProfileViewController: UIViewController {
         if notification.userInfo != nil {
             let userInfo: NSDictionary = notification.userInfo!
             let count = userInfo.valueForKey("count") as! Float
-            self.starView.numberOfStars = count
-            self.ouStarView.numberOfStars = count
+            if self.isShowingMyProfile {
+                self.starView.numberOfStars = count
+            } else {
+                self.ouStarView.numberOfStars = count
+            }
         }
     }
     

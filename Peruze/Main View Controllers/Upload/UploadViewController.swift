@@ -117,8 +117,6 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     mainImageView.image = image ?? mainImageView.image
     titleTextField.text = itemTitle
     descriptionTextView.text = itemDescription
-    
-    postOnFaceBook()
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -189,12 +187,21 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
       beginUpload()
       logw("OperationQueue().addOperation(PostItemOperation)")
-      let allCompletionHandlers = { dispatch_async(dispatch_get_main_queue()) {
+      let successCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
         if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
 //            let per = self.parentVC as! PeruseExchangeViewController
             NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
         }
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
+            self.postOnFaceBook()
+        }
         self.endUpload() } }
+        let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+            if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                //            let per = self.parentVC as! PeruseExchangeViewController
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+            }
+            self.endUpload() } }
             OperationQueue().addOperation(
                 PostItemOperation(
                     image: mainImageView.image!,
@@ -202,8 +209,8 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                     detail: descriptionTextView.text,
                     recordIDName: recordIDName,
                     presentationContext: self,
-                    completionHandler: allCompletionHandlers,
-                    errorCompletionHandler: allCompletionHandlers
+                    completionHandler: successCompletionHandler,
+                    errorCompletionHandler: failureCompletionHandler
                 )
             )
 
@@ -356,7 +363,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     func performPost() {
 //        let image : UIImage = UIImage(named: "Check_Mark")!
-        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "hello world!", "link" : "www.google.com","picture": "Check_Mark.png","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":""],  HTTPMethod:"POST")
+        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(titleTextField.text!)\'", "link" : "www.google.com","picture": "http://www.keenthemes.com/preview/metronic/theme/assets/global/plugins/jcrop/demos/demo_files/image1.jpg","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":""],  HTTPMethod:"POST")
         request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
             //set error and return
             if error != nil {
