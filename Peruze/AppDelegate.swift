@@ -43,9 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
         NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "yes")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil {
         NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "yes")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")

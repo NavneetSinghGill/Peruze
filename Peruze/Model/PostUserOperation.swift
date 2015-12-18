@@ -159,3 +159,66 @@ class PostUserOperation: Operation {
   
 }
 
+class UpdateUserOperation: Operation {
+    let user: NSManagedObject!
+    init(personToUpdate : NSManagedObject!) {
+        user = personToUpdate
+    }
+    override func execute() {
+        logw(__FUNCTION__ + " of " + __FILE__ + " called.  ")
+        if let recordIDName = user.valueForKey("recordIDName") as? String {
+            
+            let firstName = user.valueForKey("firstName") as! String
+            let lastName = user.valueForKey("lastName") as! String
+            
+            let facebookID = user.valueForKey("facebookID") as! String
+            let isDelete = user.valueForKey("isDelete") as! String
+            
+            //save the image to disk and create the asset for the image
+            let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
+            
+            if let imageData : NSData = user.valueForKey("image") as? NSData {
+                if !imageData.writeToURL(imageURL, atomically: true) {
+                    logw("imageData.writeToURL failed to write")
+                    self.finish()
+                    return
+                }
+            }
+            
+            let imageAsset = CKAsset(fileURL: imageURL)
+            let record = CKRecord(recordType: RecordTypes.User, recordID: CKRecordID(recordName: recordIDName))
+            record.setObject(firstName, forKey: "FirstName")
+            record.setObject(lastName, forKey: "LastName")
+            record.setObject(facebookID, forKey: "FacebookID")
+            record.setObject(isDelete, forKey: "IsDeleted")
+            
+            let updateUserOp = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+            updateUserOp.modifyRecordsCompletionBlock = {
+                (records, recordIDs, error) -> Void in
+                if error == nil {
+                    for record in records! {
+                        let recordID = record.recordID.recordName
+                        let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID)
+                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+            }
+            updateUserOp.savePolicy = .ChangedKeys
+            updateUserOp.qualityOfService = qualityOfService
+            CKContainer.defaultContainer().publicCloudDatabase.addOperation(updateUserOp)
+        }
+    }
+    override func finished(errors: [NSError]) {
+        logw("\(errors)")
+    }
+    
+    private func cachePathForFileName(name: String) -> String {
+        if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
+        let cachePath = paths.first!
+        let cacheURL : NSURL = (NSURL(string: cachePath)?.URLByAppendingPathComponent(name))!
+        return (cacheURL.absoluteString)
+    }
+}
+

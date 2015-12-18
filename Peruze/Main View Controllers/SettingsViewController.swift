@@ -206,10 +206,15 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
   @IBAction func deleteProfile(sender: UIButton) {
-    return
 //    FBSDKAccessToken.setCurrentAccessToken(nil)
-    NSUserDefaults.standardUserDefaults().setObject(false, forKey: UserDefaultsKeys.ProfileHasActiveProfileKey)
-    dismissViewControllerAnimated(true, completion: nil)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    me.setValue("1", forKey: "isDelete")
+    let modifyUserOperation = UpdateUserOperation(personToUpdate: (me))
+    modifyUserOperation.completionBlock = {
+        NSUserDefaults.standardUserDefaults().setObject(false, forKey: UserDefaultsKeys.ProfileHasActiveProfileKey)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+      OperationQueue().addOperation(modifyUserOperation)
   }
   
   @IBAction func done(sender: UIBarButtonItem) {
@@ -248,6 +253,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         } else {
             NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "yes")
         }
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     @IBAction func postToFacebookSwitchTapped(sender: UISwitch) {
         if sender.on == false{
@@ -255,6 +261,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         } else {
             NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "yes")
         }
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     @IBAction func termsAndConditionsButtonTapped(sender: UIButton) {
         let termsAndConditionViewController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionViewController") as! TermsConditionViewController

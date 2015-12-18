@@ -40,6 +40,7 @@
         <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="isDelete" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -65,7 +66,7 @@
         <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
         <element name="Item" positionX="-36" positionY="-421" width="128" height="178"/>
         <element name="Message" positionX="-164" positionY="-762" width="128" height="163"/>
-        <element name="Person" positionX="252" positionY="-594" width="128" height="253"/>
+        <element name="Person" positionX="252" positionY="-594" width="128" height="270"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>
     </elements>
 </model>

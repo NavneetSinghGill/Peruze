@@ -192,7 +192,8 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 //            let per = self.parentVC as! PeruseExchangeViewController
             NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
         }
-        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
+            NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
             self.postOnFaceBook()
         }
         self.endUpload() } }
