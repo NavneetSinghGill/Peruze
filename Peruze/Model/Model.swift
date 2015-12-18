@@ -499,7 +499,60 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     //MARK: - Subscription methods
     
+    
+//    - (void)unsubscribe {
+//    if (self.subscribed == YES) {
+//    
+//    NSString *subscriptionID = [[NSUserDefaults standardUserDefaults] objectForKey:subscriptionIDkey];
+//    
+//    // Create an operation to modify the subscription with the subscriptionID.
+//    CKModifySubscriptionsOperation *modifyOperation = [[CKModifySubscriptionsOperation alloc] init];
+//    modifyOperation.subscriptionIDsToDelete = @[subscriptionID];
+//    
+//    // The completion block will be executed after the modify operation is executed.
+//    modifyOperation.modifySubscriptionsCompletionBlock = ^(NSArray *savedSubscriptions, NSArray *deletedSubscriptionIDs, NSError *error) {
+//    if (error) {
+//    // In your app, handle this error beautifully.
+//    NSLog(@"An error occured in %@: %@", NSStringFromSelector(_cmd), error);
+//    abort();
+//    } else {
+//    NSLog(@"Unsubscribed to Item");
+//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:subscriptionIDkey];
+//    }
+//    };
+//    
+//    // Add the operation to the private database. The operation will be executed immediately.
+//    [self.privateDatabase addOperation:modifyOperation];
+//    }
+//    }
+    
+    
+    
+    func getAllSubscription() {
+        
+        let database = CKContainer.defaultContainer().publicCloudDatabase
+        database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
+            
+//            let modifyOperation = CKModifySubscriptionsOperation()
+////            let deleteSubscriptions = (subscriptions! as NSArray).valueForKey("subscriptionID") as! [String]
+////            let deleteSubscriptions = ["B004E6B2-ACF4-4B99-994F-5A41C646C765"]
+//            modifyOperation.subscriptionIDsToDelete = ["B004E6B2-ACF4-4B99-994F-5A41C646C765"]//deleteSubscriptions
+//            modifyOperation.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
+//                logw("Deleted : \(deletedSubscriptions)")
+//            }
+            for subscriptionObject in subscriptions! {
+                let subscription: CKSubscription = subscriptionObject as CKSubscription
+                logw("Subscription :\(subscription)")
+                
+                database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
+                        logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
+                })
+            }
+        })
+    }
+    
     func subscribeForNewOffer() {
+        
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -509,13 +562,14 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertLocalizationKey = "Crop subs offer"
+//        notificationInfo.alertLocalizationKey = "Crop subs offer"
+        notificationInfo.alertBody = "New exchange for you."
         notificationInfo.shouldBadge = true
         notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
         
         subscription.notificationInfo = notificationInfo
-        
+        notificationInfo.alertLocalizationArgs = ["NewOffer"]
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -523,14 +577,15 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("NewOffer subscription success")
                 }
-                self.subscribeForChat()
-                
+//                self.subscribeForChat()
             }))
     }
     
     
     
     func subscribeForChat() {
+//        getAllSubscription()
+//        return
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -543,9 +598,11 @@ class Model: NSObject, CLLocationManagerDelegate {
         let notificationInfo = CKNotificationInfo()
         notificationInfo.alertLocalizationArgs = ["CHAT...."]
         notificationInfo.alertLocalizationKey = NotificationMessages.NewOfferMessage
+
         notificationInfo.shouldBadge = true
-        notificationInfo.soundName = ""
+//        notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.alertLocalizationArgs = ["NewMessage"]
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
