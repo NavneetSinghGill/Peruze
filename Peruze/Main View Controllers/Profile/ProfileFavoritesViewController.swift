@@ -24,6 +24,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
         dataSource.tableView = tableView
     }
   }
+    var indexOfSelectedTableViewRow: Int!
   override func viewDidLoad() {
     super.viewDidLoad()
     titleLabel.alpha = 0.0
@@ -43,17 +44,21 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//    if let parentVC = parentViewController as? ProfileContainerViewController {
-//      if let originVC = parentVC.parentViewController as? ProfileViewController {
-//        originVC.performSegueWithIdentifier("toFavorite", sender:dataSource)
-//      }
-//    }
-    let alert = UIAlertController(title: "Peruze", message: "Not implemented yet.", preferredStyle: UIAlertControllerStyle.Alert)
-    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-    self.presentViewController(alert, animated: true, completion: nil)
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    if let parentVC = parentViewController as? ProfileContainerViewController {
+      if let originVC = parentVC.parentViewController as? ProfileViewController {
+        self.indexOfSelectedTableViewRow = indexPath.row
+        NSUserDefaults.standardUserDefaults().setInteger(indexPath.row, forKey: "FavouriteIndex")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        originVC.performSegueWithIdentifier("toFavorite", sender:dataSource)
+      }
+    }
+//    let alert = UIAlertController(title: "Peruze", message: "Not implemented yet.", preferredStyle: UIAlertControllerStyle.Alert)
+//    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+//    self.presentViewController(alert, animated: true, completion: nil)
+//    tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
+    
   //MARK: Editing
   private func checkForEmptyData(animated: Bool) {
     if dataSource.favorites.count == 0 {

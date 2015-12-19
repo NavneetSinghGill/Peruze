@@ -23,6 +23,11 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
   var editableCells = true
     var tableView: UITableView!
   
+    override init() {
+        super.init()
+        refresh()
+    }
+    
   ///fetch current user profile and set `favorites` to the favorites of my profile
   func refresh() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
@@ -37,6 +42,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     }
     if tableView != nil {
         tableView.reloadData()
+        //NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex")
     }
   }
   //MARK: - UITableViewDataSource methods
@@ -83,13 +89,17 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
     collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+    let cell = (collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell)
     
-    let item = NSManagedObject()
+//    if cell == nil {
+//        cell = PeruseItemCollectionViewCell()
+//    }
     
-    cell.item = item
+//    let item = NSManagedObject()
+    
+    cell.item = favorites[indexPath.row]
     cell.delegate = itemDelegate
-    cell.setNeedsDisplay()
+//    cell.setNeedsDisplay()
     return cell
   }
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -16,15 +16,15 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="411" height="650"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bag" translatesAutoresizingMaskIntoConstraints="NO" id="pZi-1G-DCd" userLabel="Item Image">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pZi-1G-DCd" userLabel="Item Image">
                         <rect key="frame" x="8" y="56" width="395" height="395"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="pZi-1G-DCd" secondAttribute="height" multiplier="1:1" id="pp3-Ox-9kT"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alison Weiss" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v6m-PV-671">
-                        <rect key="frame" x="111" y="31" width="82" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v6m-PV-671">
+                        <rect key="frame" x="111" y="31" width="0.0" height="0.0"/>
                         <animations/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,19 +39,18 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atW-1V-LPr" userLabel="Profile Picture" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="95" height="95"/>
+                        <subviews>
+                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm9-Lc-yVH">
+                                <rect key="frame" x="-8" y="-8" width="411" height="650"/>
+                                <animations/>
+                            </scrollView>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="atW-1V-LPr" secondAttribute="height" multiplier="1:1" id="vCv-HJ-zc9"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="Alison"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
-                    <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm9-Lc-yVH">
-                        <rect key="frame" x="0.0" y="0.0" width="411" height="650"/>
-                        <animations/>
-                    </scrollView>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -59,8 +58,6 @@
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="gm9-Lc-yVH" secondAttribute="bottom" id="67W-eA-jH5"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Az6-sU-ldp"/>
                 <constraint firstItem="atW-1V-LPr" firstAttribute="leading" secondItem="pZi-1G-DCd" secondAttribute="leading" id="INv-80-pKX"/>
                 <constraint firstItem="atW-1V-LPr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="ImM-Cf-UF9"/>
                 <constraint firstAttribute="trailing" secondItem="IfS-Ih-PKu" secondAttribute="trailing" id="Lcs-2E-6FA"/>
@@ -68,31 +65,17 @@
                 <constraint firstItem="IfS-Ih-PKu" firstAttribute="baseline" secondItem="v6m-PV-671" secondAttribute="baseline" id="VYr-qy-hWB"/>
                 <constraint firstAttribute="centerX" secondItem="atW-1V-LPr" secondAttribute="trailing" multiplier="2" id="YVw-ke-mtx"/>
                 <constraint firstAttribute="trailing" secondItem="pZi-1G-DCd" secondAttribute="trailing" priority="800" constant="8" id="ZdX-6P-9bl"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="avK-pH-CBe"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="byB-r5-tAD"/>
                 <constraint firstItem="v6m-PV-671" firstAttribute="leading" secondItem="atW-1V-LPr" secondAttribute="trailing" constant="8" symbolic="YES" id="c7P-pL-xjX"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="trailing" secondItem="IfS-Ih-PKu" secondAttribute="trailing" id="cjf-26-30I"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="top" secondItem="v6m-PV-671" secondAttribute="bottom" constant="8" symbolic="YES" id="dQl-Op-R1A"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="e2E-mO-4Ew"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="top" secondItem="atW-1V-LPr" secondAttribute="top" constant="-8" id="efy-Tf-rqR"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="top" secondItem="atW-1V-LPr" secondAttribute="centerY" id="et3-bV-iJo"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" priority="800" constant="8" id="f5V-Oh-Zn9"/>
-                <constraint firstAttribute="trailing" secondItem="gm9-Lc-yVH" secondAttribute="trailing" id="ftA-dk-bsY"/>
                 <constraint firstItem="IfS-Ih-PKu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="v6m-PV-671" secondAttribute="trailing" constant="8" symbolic="YES" id="h4T-rH-TxL"/>
-                <constraint firstAttribute="bottom" secondItem="gm9-Lc-yVH" secondAttribute="bottom" id="hB7-eA-idR"/>
-                <constraint firstAttribute="trailing" secondItem="gm9-Lc-yVH" secondAttribute="trailing" id="pWh-Kb-8ow"/>
                 <constraint firstAttribute="centerX" secondItem="pZi-1G-DCd" secondAttribute="centerX" id="seA-bN-tKJ"/>
-                <constraint firstItem="gm9-Lc-yVH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="zp2-4k-ztS"/>
             </constraints>
             <size key="customSize" width="411" height="650"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="67W-eA-jH5"/>
-                    <exclude reference="Az6-sU-ldp"/>
-                    <exclude reference="byB-r5-tAD"/>
-                    <exclude reference="e2E-mO-4Ew"/>
-                    <exclude reference="efy-Tf-rqR"/>
-                    <exclude reference="ftA-dk-bsY"/>
                     <exclude reference="Pa4-gE-ial"/>
                     <exclude reference="Lcs-2E-6FA"/>
                 </mask>
@@ -107,8 +90,4 @@
             <point key="canvasLocation" x="339.5" y="511"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="Alison" width="2048" height="1536"/>
-        <image name="Bag" width="3264" height="2448"/>
-    </resources>
 </document>

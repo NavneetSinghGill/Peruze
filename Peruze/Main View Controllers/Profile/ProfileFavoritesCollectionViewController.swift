@@ -14,6 +14,7 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     static let ExchangeSegueIdentifier = "toOfferToExchangeView"
   }
   var dataSource: ProfileFavoritesDataSource?
+    var indexOfItemToShow: Int!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,6 +26,14 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     dataSource!.itemDelegate = self
     collectionView.dataSource = dataSource
   }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.reloadData()
+        let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex") as! Int, inSection: 0)
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: false)
+    }
+    
   var storedTop: CGFloat = 0
   var storedBottom: CGFloat = 0
   override func viewDidLayoutSubviews() {
