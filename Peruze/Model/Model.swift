@@ -361,7 +361,14 @@ class Model: NSObject, CLLocationManagerDelegate {
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                         if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
-                            NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                            if localExchange.valueForKey("status") != nil &&
+                            localExchange.valueForKey("status") as? NSNumber == 1 {
+                                NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                            }
+                        }
+                        if localExchange.valueForKey("status") != nil &&
+                            localExchange.valueForKey("status") as? NSNumber == 2 {
+                                NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
                         }
                     }
                 }
@@ -546,7 +553,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                 
                 database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
                         logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
+                    if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
+                        self.subscribeForNewOffer()
+                    }
                 })
+            }
+            if subscriptions?.count == 0{
+                self.subscribeForNewOffer()
             }
         })
     }
@@ -577,11 +590,39 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("NewOffer subscription success")
                 }
-//                self.subscribeForChat()
+                self.subscribeForUpdatedOffer()
             }))
     }
     
-    
+    func subscribeForUpdatedOffer() {
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let subscription = CKSubscription(recordType: "Exchange",
+            predicate: predicate,
+            options: .FiresOnRecordUpdate)
+        
+        let notificationInfo = CKNotificationInfo()
+        //        notificationInfo.alertLocalizationKey = "Crop subs offer"
+        notificationInfo.alertBody = "Updated exchange for you."
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = ""
+        notificationInfo.shouldSendContentAvailable = true
+        
+        subscription.notificationInfo = notificationInfo
+        notificationInfo.alertLocalizationArgs = ["UpdateOffer"]
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("UpdateOffer subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("UpdateOffer subscription success")
+                }
+                self.subscribeForChat()
+            }))
+    }
     
     func subscribeForChat() {
 //        getAllSubscription()
@@ -596,13 +637,12 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertLocalizationArgs = ["CHAT...."]
-        notificationInfo.alertLocalizationKey = NotificationMessages.NewOfferMessage
-
+        notificationInfo.alertLocalizationKey = "Chat"
+        notificationInfo.alertBody = NotificationMessages.NewChatMessage
         notificationInfo.shouldBadge = true
 //        notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertLocalizationArgs = ["NewMessage"]
+        notificationInfo.alertLocalizationArgs = ["Chat"]
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {

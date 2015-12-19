@@ -101,7 +101,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 0.0
     self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 0.0
     
-    self.inputToolbar?.contentView?.leftBarButtonItem = self.attachmentButton
+    self.inputToolbar?.contentView?.leftBarButtonItem = nil//self.attachmentButton
     self.inputToolbar?.contentView?.rightBarButtonItem = self.sendButton
     self.inputToolbar?.contentView?.rightBarButtonItem?.enabled = !self.keyboardController!.textView!.text!.isEmpty
     
@@ -169,7 +169,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
       self.presentViewController(alert, animated: true, completion: nil)
       break
     case attachmentButton!:
-      presentImagePicker()
+//      presentImagePicker()
       break
     default: break
     }

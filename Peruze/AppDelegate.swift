@@ -97,26 +97,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MagicalRecord.cleanUp()
     NSFetchedResultsController.deleteCacheWithName("PeruzeDataModel")
   }
+    
+    
   //MARK: - Push Notifications
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
     logw(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>app did receive remote notification ")
-    
-//    let dict = userInfo[0]
-//    let aps = userInfo.valueForKey("aps")
-//    let badgeValue = aps!.valueForKey("badge")
-//    logw(badgeValue)
     
     let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
     if let notification = cloudKitNotification as? CKQueryNotification {
       logw("app did receive remote notification ")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-        
+        logw("\(userInfo)")
         if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
-            // Default printout of info = userInfo["aps"]
             logw("All of info: \n\(info)\n")
             
-            if  let alert = info["alert"] as? String {
-//                NSUserDefaults.standardUserDefaults().setValue(notification.recordID?.recordName, forKey: "recordID")
+            if let _ = info["alert"] as? String {
                 info["recordID"] = notification.recordID?.recordName
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }
@@ -124,80 +119,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 logw("\nFrom APS-dictionary with key \"type\":  \( badge)")     
             }
         }
-//        let viewController: ViewController =
-//        self.window?.rootViewController as! ViewController
-        
-        
-        
-        if (cloudKitNotification.notificationType ==
-            CKNotificationType.Query) {
-                
-                let queryNotification = notification 
-                
-                let recordID = queryNotification.recordID
-                
-                logw("Query Added exchange recordId = \(recordID)")
-//                viewController.fetchRecord(recordID)
-        } else if (cloudKitNotification.notificationType ==
-            CKNotificationType.RecordZone) {
-                
-                let queryNotification = notification
-                
-                let recordID = queryNotification.recordID
-                
-                logw("RecordZone Added exchange recordId = \(recordID)")
-                //                viewController.fetchRecord(recordID)
-        } else if (cloudKitNotification.notificationType ==
-            CKNotificationType.ReadNotification) {
-                
-                let queryNotification = notification
-                
-                let recordID = queryNotification.recordID
-                
-                logw("ReadNotification Added exchange recordId = \(recordID)")
-                //                viewController.fetchRecord(recordID)
-        }
-        
     }
   }
+    
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
     logw("app did register for remote notification ")
   }
+    
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     logw(error.localizedDescription)
   }
-    
-    
-//    func fetchRecord(recordID: CKRecordID) -> Void
-//    {
-//        publicDatabase = container.publicCloudDatabase
-//        
-//        publicDatabase?.fetchRecordWithID(recordID,
-//            completionHandler: ({record, error in
-//                if let err = error {
-//                    dispatch_async(dispatch_get_main_queue()) {
-//                        self.notifyUser("Fetch Error", message:
-//                            err.localizedDescription)
-//                    }
-//                } else {
-//                    dispatch_async(dispatch_get_main_queue()) {
-//                        self.currentRecord = record
-//                        self.addressField.text =
-//                            record.objectForKey("address") as! String
-//                        self.commentsField.text =
-//                            record.objectForKey("comment") as! String
-//                        let photo =
-//                        record.objectForKey("photo") as! CKAsset
-//                        
-//                        let image = UIImage(contentsOfFile:
-//                            photo.fileURL.path!)
-//                        self.imageView.image = image
-//                        self.photoURL = self.saveImageToFile(image!)
-//                    }
-//                }
-//            }))
-//    }
-
     
 }
 

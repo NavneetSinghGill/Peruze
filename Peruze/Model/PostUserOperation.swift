@@ -159,7 +159,18 @@ class PostUserOperation: Operation {
   
 }
 
-class UpdateUserOperation: Operation {
+class UpdateUserOperation: GroupOperation {
+    init(personToUpdate : NSManagedObject!,
+        completion: (Void -> Void) = {}) {
+        let updateUserOperation = UpdateUserOnCloudOperation(personToUpdate: personToUpdate)
+            
+            let finishOp = NSBlockOperation(block: completion)
+            finishOp.addDependency(updateUserOperation)
+            super.init(operations: [updateUserOperation, finishOp])
+    }
+}
+
+class UpdateUserOnCloudOperation: Operation {
     let user: NSManagedObject!
     init(personToUpdate : NSManagedObject!) {
         user = personToUpdate
@@ -198,8 +209,10 @@ class UpdateUserOperation: Operation {
                 if error == nil {
                     for record in records! {
                         let recordID = record.recordID.recordName
-                        let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID)
-                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        let context = NSManagedObjectContext()
+                        let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
+                        person.setValue("2", forKey: "isDelete")
+                        context.MR_saveToPersistentStoreAndWait()
                     }
                 }
             }

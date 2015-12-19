@@ -209,10 +209,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
 //    FBSDKAccessToken.setCurrentAccessToken(nil)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     me.setValue("1", forKey: "isDelete")
-    let modifyUserOperation = UpdateUserOperation(personToUpdate: (me))
-    modifyUserOperation.completionBlock = {
+    let modifyUserOperation = UpdateUserOperation(personToUpdate: (me)){
+        logw("Profile deleted.")
         NSUserDefaults.standardUserDefaults().setObject(false, forKey: UserDefaultsKeys.ProfileHasActiveProfileKey)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.logOutOfFacebook(UIButton())
     }
       OperationQueue().addOperation(modifyUserOperation)
   }
@@ -264,7 +264,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     @IBAction func termsAndConditionsButtonTapped(sender: UIButton) {
-        let termsAndConditionViewController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionViewController") as! TermsConditionViewController
+        let termsAndConditionViewController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
         presentViewController(termsAndConditionViewController, animated: true, completion: nil)
     }
     
