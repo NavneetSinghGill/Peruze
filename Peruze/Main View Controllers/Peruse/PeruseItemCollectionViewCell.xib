@@ -39,18 +39,16 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atW-1V-LPr" userLabel="Profile Picture" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="95" height="95"/>
-                        <subviews>
-                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm9-Lc-yVH">
-                                <rect key="frame" x="-8" y="-8" width="411" height="650"/>
-                                <animations/>
-                            </scrollView>
-                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="atW-1V-LPr" secondAttribute="height" multiplier="1:1" id="vCv-HJ-zc9"/>
                         </constraints>
                     </view>
+                    <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm9-Lc-yVH">
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="650"/>
+                        <animations/>
+                    </scrollView>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,11 +63,15 @@
                 <constraint firstItem="IfS-Ih-PKu" firstAttribute="baseline" secondItem="v6m-PV-671" secondAttribute="baseline" id="VYr-qy-hWB"/>
                 <constraint firstAttribute="centerX" secondItem="atW-1V-LPr" secondAttribute="trailing" multiplier="2" id="YVw-ke-mtx"/>
                 <constraint firstAttribute="trailing" secondItem="pZi-1G-DCd" secondAttribute="trailing" priority="800" constant="8" id="ZdX-6P-9bl"/>
+                <constraint firstItem="gm9-Lc-yVH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="aVL-Mx-k6A"/>
                 <constraint firstItem="v6m-PV-671" firstAttribute="leading" secondItem="atW-1V-LPr" secondAttribute="trailing" constant="8" symbolic="YES" id="c7P-pL-xjX"/>
+                <constraint firstItem="gm9-Lc-yVH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="c9X-aU-wQF"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="trailing" secondItem="IfS-Ih-PKu" secondAttribute="trailing" id="cjf-26-30I"/>
+                <constraint firstAttribute="trailing" secondItem="gm9-Lc-yVH" secondAttribute="trailing" id="clf-sb-9hj"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="top" secondItem="v6m-PV-671" secondAttribute="bottom" constant="8" symbolic="YES" id="dQl-Op-R1A"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="top" secondItem="atW-1V-LPr" secondAttribute="centerY" id="et3-bV-iJo"/>
                 <constraint firstItem="pZi-1G-DCd" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" priority="800" constant="8" id="f5V-Oh-Zn9"/>
+                <constraint firstAttribute="bottom" secondItem="gm9-Lc-yVH" secondAttribute="bottom" id="fLc-dh-VdK"/>
                 <constraint firstItem="IfS-Ih-PKu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="v6m-PV-671" secondAttribute="trailing" constant="8" symbolic="YES" id="h4T-rH-TxL"/>
                 <constraint firstAttribute="centerX" secondItem="pZi-1G-DCd" secondAttribute="centerX" id="seA-bN-tKJ"/>
             </constraints>

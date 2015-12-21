@@ -46,10 +46,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.setRightBarButtonItem(rightBarButton, animated: true)
         self.searchTextField.placeholder = "Search for friend.."
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
     }
     
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.searchTextField.resignFirstResponder()
+    }
     
     func getTaggableFriends() {
         self.activityIndicatorView.startAnimating()
@@ -183,16 +186,29 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func performPost(idsString : String) {
-        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : "www.google.com","picture": "AppIcon.png","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":idsString],  HTTPMethod:"POST")
-        request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-            //set error and return
-            if error != nil {
-                print("Post failed: \(error)")
-            } else {
-                print("Post success")
-                self.dismissViewControllerAnimated(true, completion: nil)
+        let params: NSMutableDictionary = [:]
+        params.setValue("1", forKey: "setdebug")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
+        params.setValue("facebook", forKey: "shareType")
+        //        params[@"shareIds"] = self.eventsIdsString;
+        Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
+            if (error == nil) {
+                // Now we can do something with the URL...
+                logw("url: \(url)")
+                let urlString = "\(url)"
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : urlString,"picture": "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg","caption":"Build great social apps and get more installs.","description":"Trade on Peruze now.", "tags":idsString],  HTTPMethod:"POST")
+                request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
+                    //set error and return
+                    if error != nil {
+                        print("Post failed: \(error)")
+                    } else {
+                        print("Post success")
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                    self.activityIndicatorView.stopAnimating()
+                })
             }
-            self.activityIndicatorView.stopAnimating()
         })
         
     }

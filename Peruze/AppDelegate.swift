@@ -62,14 +62,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     }
     
-
+    //Branch.io
+    let branch: Branch = Branch.getInstance()
+    branch.setDebug()
+    branch.initSessionWithLaunchOptions(launchOptions, andRegisterDeepLinkHandler: { params, error in
+        if (error == nil) {
+            NSLog("params: %@", params.description)
+        }
+    })
     
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }
   func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    Branch.getInstance().handleDeepLink(url);
     return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
   }
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        // pass the url to the handle deep link call
+        
+        return Branch.getInstance().continueUserActivity(userActivity)
+    }
   
   func applicationWillResignActive(application: UIApplication) {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -97,7 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MagicalRecord.cleanUp()
     NSFetchedResultsController.deleteCacheWithName("PeruzeDataModel")
   }
-    
     
   //MARK: - Push Notifications
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

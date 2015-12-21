@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B0093C11C2188D1008D3339 /* Terms.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3B0093C01C2188D1008D3339 /* Terms.rtf */; };
 		3B0093CA1C218F73008D3339 /* TermsConditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */; };
+		3B0290CB1C27EBDB00CDF59F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0290CA1C27EBDB00CDF59F /* CloudKit.framework */; };
 		3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */; };
 		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
 		3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */; };
@@ -119,7 +120,6 @@
 		9D19173E1B5606B500DA16D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D19173D1B5606B500DA16D1 /* Images.xcassets */; };
 		9D2890251B8CF309006B9626 /* PostReviewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2890241B8CF309006B9626 /* PostReviewOperation.swift */; };
 		9D3405981B7993160021B3A7 /* GetReviewsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */; };
-		9D38FA611B8394D600D15B28 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D38FA601B8394D600D15B28 /* CloudKit.framework */; };
 		9D3B34AB1B60179B00EBFB87 /* UpdateExchangesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */; };
 		9D3B34B01B60184E00EBFB87 /* PostItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */; };
 		9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */; };
@@ -249,6 +249,7 @@
 		1A8BEFE6BFB3AA956A23C442 /* Pods-Peruze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Peruze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Peruze/Pods-Peruze.release.xcconfig"; sourceTree = "<group>"; };
 		3B0093C01C2188D1008D3339 /* Terms.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Terms.rtf; sourceTree = "<group>"; };
 		3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsConditionViewController.swift; sourceTree = "<group>"; };
+		3B0290CA1C27EBDB00CDF59F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableViewCell.xib; sourceTree = "<group>"; };
 		3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -384,7 +385,6 @@
 		9D19173D1B5606B500DA16D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D2890241B8CF309006B9626 /* PostReviewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostReviewOperation.swift; sourceTree = "<group>"; };
 		9D3405971B7993160021B3A7 /* GetReviewsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReviewsOperation.swift; sourceTree = "<group>"; };
-		9D38FA601B8394D600D15B28 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9D3B34AA1B60179B00EBFB87 /* UpdateExchangesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateExchangesOperation.swift; sourceTree = "<group>"; };
 		9D3B34AF1B60184E00EBFB87 /* PostItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemOperation.swift; sourceTree = "<group>"; };
 		9D3B34B11B60195200EBFB87 /* UpdateItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateItemOperation.swift; sourceTree = "<group>"; };
@@ -463,8 +463,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B0290CB1C27EBDB00CDF59F /* CloudKit.framework in Frameworks */,
 				3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */,
-				9D38FA611B8394D600D15B28 /* CloudKit.framework in Frameworks */,
 				5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,9 +491,9 @@
 		09319F61AB54682857F4A9F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B0290CA1C27EBDB00CDF59F /* CloudKit.framework */,
 				3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */,
 				3BE0B8CD1C0F00F300E3612B /* Social.framework */,
-				9D38FA601B8394D600D15B28 /* CloudKit.framework */,
 				9D58BF431B7BD7F2006C40FC /* CoreData.framework */,
 				FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */,
 			);
@@ -1081,6 +1081,7 @@
 				9D449C841B54D9F9005C7CC0 /* Resources */,
 				A47F96391088B6E97B84CEAB /* Copy Pods Resources */,
 				3BCA63A21C18387600CFA976 /* Embed Frameworks */,
+				D0AA37EEBC35BC646C35BFC7 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1127,6 +1128,9 @@
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -1248,6 +1252,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Peruze/Pods-Peruze-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0AA37EEBC35BC646C35BFC7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Peruze/Pods-Peruze-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DA645AAAEAE895B1A08DB1A0 /* Check Pods Manifest.lock */ = {

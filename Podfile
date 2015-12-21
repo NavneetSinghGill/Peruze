@@ -8,4 +8,5 @@ target 'Peruze' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKShareKit'
   pod 'FBSDKLoginKit'
+  pod 'Branch'
 end

@@ -5,6 +5,7 @@ PODS:
   - Bolts/AppLinks (1.2.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
+  - Branch (0.11.13)
   - FBSDKCoreKit (4.5.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc (= 4.5.0)
@@ -24,6 +25,7 @@ PODS:
   - MagicalRecord (2.3.0)
 
 DEPENDENCIES:
+  - Branch
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -33,6 +35,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
+  Branch: 37553775450de2d844b03a0854c37d6271d967e7
   FBSDKCoreKit: ba4ca18ecae56af01e1b8c4faa889ef21d68bea2
   FBSDKLoginKit: 8327c9aa7c6afd13cdcd0a6f9aebe585ed39c82a
   FBSDKShareKit: 06f569e09f2b99c23df17da129ec3aa01d9c2fb4
@@ -40,4 +43,4 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

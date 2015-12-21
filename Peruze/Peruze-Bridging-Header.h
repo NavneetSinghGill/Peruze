@@ -8,4 +8,5 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import <Branch/Branch.h>
 #define MR_SHORTHAND
