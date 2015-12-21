@@ -22,6 +22,7 @@ struct NotificationCenterKeys {
   static let ExchangesDidFinishUpdate = "ExchangesDidFinishUpdate"
   static let LocationDidStartUpdates = "LocationDidStartUpdates"
   static let LocationDidFinishUpdates = "LocationDidFinishUpdates"
+  static let LNRefreshChatScreenForUpdatedExchanges = "RefreshChatScreenForUpdatedExchanges"
   struct Error {
     static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
@@ -34,6 +35,7 @@ struct NotificationCenterKeys {
 
 struct NotificationMessages {
     static let NewOfferMessage = "A new offer made for you"
+    static let UpdateOfferMessage = "An offer updated for you"
     static let NewChatMessage = "A new message for you"
     static let ExchangeRecall = "Did you complete your exchange"
     static let ItemAdditionOrUpdation = "A new item has been added"
@@ -289,7 +291,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func fetchExchangeWithRecord(recordID: CKRecordID) -> Void
+    func fetchExchangeWithRecord(recordID: CKRecordID, message: String) -> Void
     {
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
@@ -301,7 +303,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                     }
                 } else {
                     if record?.recordType == RecordTypes.Exchange {
-                        let requestingPerson = Person.MR_findFirstByAttribute("me", withValue: true)
+                        let requestingPerson = Person.MR_findFirstOrCreateByAttribute("me", withValue: true)
                         
                         let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
                             withValue: record!.recordID.recordName,
@@ -360,15 +362,21 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                        if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
-                            if localExchange.valueForKey("status") != nil &&
-                            localExchange.valueForKey("status") as? NSNumber == 1 {
-                                NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                        if message == NotificationMessages.NewOfferMessage {
+                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+                                if localExchange.valueForKey("status") != nil &&
+                                    localExchange.valueForKey("status") as? NSNumber == 1 {
+                                        NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                                }
                             }
                         }
-                        if localExchange.valueForKey("status") != nil &&
-                            localExchange.valueForKey("status") as? NSNumber == 2 {
-                                NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                        if message == NotificationMessages.UpdateOfferMessage {
+                            if NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") as! String == "yes"{
+                                if localExchange.valueForKey("status") != nil &&
+                                    localExchange.valueForKey("status") as? NSNumber == 2 {
+                                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+                                }
+                            }
                         }
                     }
                 }
@@ -584,7 +592,8 @@ class Model: NSObject, CLLocationManagerDelegate {
                 })
             }
             if subscriptions?.count == 0{
-                self.subscribeForNewOffer()
+                self.subscribeForChat()
+//                self.subscribeForNewOffer()
             }
         })
     }
@@ -601,9 +610,8 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
 //        notificationInfo.alertLocalizationKey = "Crop subs offer"
-        notificationInfo.alertBody = "New exchange for you."
+        notificationInfo.alertBody = NotificationMessages.NewOfferMessage
         notificationInfo.shouldBadge = true
-        notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
         
         subscription.notificationInfo = notificationInfo
@@ -631,9 +639,8 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         //        notificationInfo.alertLocalizationKey = "Crop subs offer"
-        notificationInfo.alertBody = "Updated exchange for you."
+        notificationInfo.alertBody = NotificationMessages.UpdateOfferMessage
         notificationInfo.shouldBadge = true
-        notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
         
         subscription.notificationInfo = notificationInfo
@@ -665,6 +672,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         notificationInfo.alertLocalizationKey = "Chat"
         notificationInfo.alertBody = NotificationMessages.NewChatMessage
         notificationInfo.shouldBadge = true
+        notificationInfo.alertLocalizationArgs = ["Chat localiztionargs","hi"]
 //        notificationInfo.soundName = ""
         notificationInfo.shouldSendContentAvailable = true
         notificationInfo.alertLocalizationArgs = ["Chat"]
@@ -675,7 +683,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("Chat subscription success")
                 }
-                self.subscribeForDisablingProfile()
+//                self.subscribeForDisablingProfile()
             }))
     }
     

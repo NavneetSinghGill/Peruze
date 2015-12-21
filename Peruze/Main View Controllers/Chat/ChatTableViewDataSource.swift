@@ -21,19 +21,24 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   //MARK: - Lifecycle Methods
   override init() {
     super.init()
-    let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
-    fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
-      ascending: true,
-      withPredicate: chatPredicate,
-      groupBy: nil,
-      delegate: self)
-    
-    do {
-      try self.fetchedResultsController.performFetch()
-    } catch {
-      logw("\(error)")
-    }
+    getLocalAcceptedExchanges()
   }
+    
+    func getLocalAcceptedExchanges() {
+        let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
+        fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
+            ascending: true,
+            withPredicate: chatPredicate,
+            groupBy: nil,
+            delegate: self)
+        
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            logw("\(error)")
+        }
+    }
+    
   
   //MARK: - UITableViewDataSource Methods
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

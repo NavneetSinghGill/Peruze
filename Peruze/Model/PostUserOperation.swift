@@ -43,7 +43,10 @@ class PostUserOperation: Operation {
 
     let facebookID = myPerson.valueForKey("facebookID") as! String
     
-    let isDelete = myPerson.valueForKey("isDelete") as! String
+    var isDelete = "yes"
+    if myPerson.valueForKey("isDelete") as? String == nil {
+        isDelete = "no"
+    }
     
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
@@ -214,7 +217,7 @@ class UpdateUserOnCloudOperation: Operation {
                         let recordID = record.recordID.recordName
                         let context = NSManagedObjectContext()
                         let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
-                        person.setValue("2", forKey: "isDelete")
+                        person.setValue(isDelete, forKey: "isDelete")
                         context.MR_saveToPersistentStoreAndWait()
                     }
                 }

@@ -49,9 +49,9 @@ class MainTabBarViewController: UITabBarController {
 //                        chatTableViewController.refresh()
                         if chatTableViewController.view.window != nil {
                             // viewController is visible
-                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "yes")
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "yes")
                         } else {
-                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "no")
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "no")
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
@@ -70,7 +70,7 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
 //                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationMessages.NewOfferMessage)
                     } else if alert == NotificationMessages.ItemAdditionOrUpdation {
                         let navController = self.viewControllers![0] as! UINavigationController
                         let peruseViewController = navController.viewControllers[0] as! PeruseViewController
@@ -98,6 +98,30 @@ class MainTabBarViewController: UITabBarController {
                     } else if alert == NotificationMessages.UserUpdate {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchUserWithRecord(recordID)
+                    } else if alert == NotificationMessages.UpdateOfferMessage {
+                        var navController = self.viewControllers![3] as! UINavigationController
+                        let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
+                        if requestsTableViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "no")
+                        }
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        //                        requestsTableViewController.refresh()
+                        
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
+                        navController = self.viewControllers![2] as! UINavigationController
+                        let chatTableViewController = navController.viewControllers[0] as! ChatTableViewController
+                        if chatTableViewController.view.window != nil {
+                            // viewController is visible
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "yes")
+                        } else {
+                            NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "no")
+                        }
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        //                        requestsTableViewController.refresh()
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationMessages.UpdateOfferMessage)
                     }
                 }
                 resetBadgeValue()
