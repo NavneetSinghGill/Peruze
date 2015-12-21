@@ -191,10 +191,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
         params.setValue("facebook", forKey: "shareType")
-        //        params[@"shareIds"] = self.eventsIdsString;
         Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
             if (error == nil) {
-                // Now we can do something with the URL...
                 logw("url: \(url)")
                 let urlString = "\(url)"
                 let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "Peruze invite", "link" : urlString,"picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":"Peruze is an exciting new mobile marketplace where you can find what you want in exchange for stuff you no longer need.", "tags":idsString],  HTTPMethod:"POST")
@@ -209,7 +207,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.activityIndicatorView.stopAnimating()
                 })
             }
-
         })
         
     }

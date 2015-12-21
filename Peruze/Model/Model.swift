@@ -838,23 +838,6 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
 }
 
-
-
-//MARK: Share
-
-    func share() {
-        let params: NSMutableDictionary = [:]
-        params.setValue("1", forKey: "setdebug")
-        let me = Person.MR_findFirstByAttribute("me", withValue: true)
-        params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
-        params.setValue("facebook", forKey: "shareType")
-        Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
-            if (error == nil) {
-                NSLog("url: %@", url);
-            }
-        })
-    }
-
 let modelSingletonGlobal = Model()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 
