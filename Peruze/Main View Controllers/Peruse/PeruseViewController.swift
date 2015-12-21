@@ -100,8 +100,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     //APNS
-    Model.sharedInstance().getAllSubscription()
-//    Model.sharedInstance().subscribeForChat()
+//    Model.sharedInstance().getAllSubscription()
+    Model.sharedInstance().subscribeForChat()
 //    Model.sharedInstance().subscribeForItemAdditionUpdation()
 //    Model.sharedInstance().subscribeForItemDeletion()
   }
@@ -290,7 +290,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     func getAllPersonsMissingData() {
         let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
         fillMissingPeopleData.completionBlock = {
-            logw("\n\n\(NSDate())===== fillMissingPeopleData Comp======")
+            logw("\n\n\(NSDate())===== fillMissingPeopleData Completed======")
         }
         OperationQueue().addOperation(fillMissingPeopleData)
     }

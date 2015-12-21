@@ -197,7 +197,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 // Now we can do something with the URL...
                 logw("url: \(url)")
                 let urlString = "\(url)"
-                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : urlString,"picture": "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg","caption":"Build great social apps and get more installs.","description":"Trade on Peruze now.", "tags":idsString],  HTTPMethod:"POST")
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "hello world!", "link" : urlString,"picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":"Peruze is an exciting new mobile marketplace where you can find what you want in exchange for stuff you no longer need.", "tags":idsString],  HTTPMethod:"POST")
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {
@@ -209,6 +209,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.activityIndicatorView.stopAnimating()
                 })
             }
+
         })
         
     }

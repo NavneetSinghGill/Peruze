@@ -67,6 +67,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       logw("\(error)")
     }
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem", name: "ScrollTOShowSharedItem", object: nil)
   }
     func reloadCollectionView(){
         dispatch_async(dispatch_get_main_queue()) {
@@ -355,9 +356,33 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
     return 2
   }
+    
+    
+    //MARK: - Notification observer methods
+    
     func reloadPeruseItemMainScreen() {
         dispatch_async(dispatch_get_main_queue()){
             self.collectionView.reloadData()
+        }
+    }
+    
+    
+    func scrollTOShowSharedItem(notification:NSNotification) {
+        if notification.userInfo != nil {
+            let userInfo : NSDictionary = notification.userInfo!
+            let recordIDName = userInfo.valueForKey("recordID") as! String
+            var index = 0
+            for item in self.items {
+                if item.recordIDName == recordIDName {
+                    break;
+                }
+                index++
+            }
+            if index != self.items.count {
+                dispatch_async(dispatch_get_main_queue()){
+                    self.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: .CenteredVertically, animated: true)
+                }
+            }
         }
     }
 

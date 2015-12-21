@@ -363,8 +363,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     
     func performPost() {
-//        let image : UIImage = UIImage(named: "Check_Mark")!
-        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(titleTextField.text!)\'", "link" : "www.google.com","picture": "http://www.keenthemes.com/preview/metronic/theme/assets/global/plugins/jcrop/demos/demo_files/image1.jpg","caption":"Build great social apps and get more installs.","description":"The Facebook SDK for iOS makes it easier and faster to develop Facebook integrated iOS apps.", "tags":""],  HTTPMethod:"POST")
+        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(titleTextField.text!)\'", "link" : "http://www.peruzenow.com/","picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
         request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
             //set error and return
             if error != nil {

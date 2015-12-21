@@ -172,10 +172,11 @@ class GetItemOperation: Operation {
           inContext: self.context)
         localUpload.setValue(owner, forKey: "owner")
       } else {
-        let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+        if let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: ownerRecordIDName,
-          inContext: self.context)
+            inContext: self.context){
         localUpload.setValue(owner, forKey: "owner")
+        }
       }
       
       if let title = record.objectForKey("Title") as? String {
