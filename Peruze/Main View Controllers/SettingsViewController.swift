@@ -208,7 +208,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBAction func deleteProfile(sender: UIButton) {
 //    FBSDKAccessToken.setCurrentAccessToken(nil)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    me.setValue("1", forKey: "isDelete")
+    me.setValue("yes", forKey: "isDelete")
     let modifyUserOperation = UpdateUserOperation(personToUpdate: (me)){
         logw("Profile deleted.")
         NSUserDefaults.standardUserDefaults().setObject(false, forKey: UserDefaultsKeys.ProfileHasActiveProfileKey)

@@ -504,6 +504,31 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
+    func getAllDeletedUsers() {
+//        let recordID = CKRecordID(recordName: "_fc2e5f4c552544554720e8a893c82ead")
+        let predicate = NSPredicate(format: "FacebookID == %@", "1736097609951899")
+        let getUsersQuery = CKQuery(recordType: RecordTypes.User, predicate: predicate)
+//        let getUsersOperation = CKQueryOperation(query: getUsersQuery)
+//        
+//        //handle returned objects
+//        getUsersOperation.recordFetchedBlock = {
+//            (record: CKRecord!) -> Void in
+//            
+//        }
+//        getUsersOperation.queryCompletionBlock = {
+//            (cursor, error) -> Void in
+//            
+//        }
+//        OperationQueue().addOperation(getUsersOperation)
+        CKContainer.defaultContainer().publicCloudDatabase.performQuery(getUsersQuery, inZoneWithID: nil) {
+            (records, error) -> Void in
+            for record in records! {
+                logw("zAAz: \(record)")
+            }
+            error?.localizedDescription
+        }
+    }
+    
     //MARK: - Subscription methods
     
     

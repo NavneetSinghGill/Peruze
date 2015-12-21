@@ -121,7 +121,9 @@ class GetPersonOperation: Operation {
             let image = NSData(contentsOfURL: imageAsset.fileURL)
             localPerson.setValue(image, forKey: "image")
           }
-          
+            if let isDelete = recordsByID[recordID]?.objectForKey("IsDeleted") as? String {
+                localPerson.setValue(isDelete, forKey: "isDelete")
+            }
           self.context.MR_saveToPersistentStoreAndWait()
         }
         
@@ -155,7 +157,7 @@ class GetAllPersonsWithMissingData: Operation {
     
     let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as! [NSManagedObject]
     let allMissingPersonsRecordNameID = allMissingPersons.map { $0.valueForKey("recordIDName") as? String }
-    let desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
+    let desiredKeys = ["FirstName", "LastName", "Image", "FacebookID","IsDeleted"]
     var missingPersonsRecordIDs = [CKRecordID]()
     for recordIDName in allMissingPersonsRecordNameID {
       if recordIDName != nil {
@@ -232,7 +234,9 @@ class GetAllPersonsWithMissingData: Operation {
         if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
           localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
         }
-        
+        if let isDelete = recordsByID![recordID]?.objectForKey("IsDeleted") as? String {
+            localPerson.setValue(isDelete, forKey: "isDelete")
+        }
         self.context.MR_saveToPersistentStoreAndWait()
       }
       

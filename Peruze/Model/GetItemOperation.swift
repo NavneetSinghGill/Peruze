@@ -180,6 +180,9 @@ class GetItemOperation: Operation {
       
       if let title = record.objectForKey("Title") as? String {
         localUpload.setValue(title, forKey: "title")
+        if title == "Crop Mobile"{
+            
+        }
       }
       
       if let detail = record.objectForKey("Description") as? String {

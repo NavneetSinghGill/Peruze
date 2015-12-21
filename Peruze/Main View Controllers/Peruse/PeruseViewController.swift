@@ -85,7 +85,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       object: managedConcurrentObjectContext)
     
     //call on settings itmes filter change
-    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "updateItemsOnFilterChange",
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange",
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)

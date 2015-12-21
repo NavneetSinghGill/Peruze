@@ -43,6 +43,8 @@ class PostUserOperation: Operation {
 
     let facebookID = myPerson.valueForKey("facebookID") as! String
     
+    let isDelete = myPerson.valueForKey("isDelete") as! String
+    
     //save the image to disk and create the asset for the image
     let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
     
@@ -80,6 +82,7 @@ class PostUserOperation: Operation {
       myRecord.setObject(lastName, forKey: "LastName")
       myRecord.setObject(facebookID, forKey: "FacebookID")
       myRecord.setObject(imageAsset, forKey: "Image")
+        myRecord.setObject(isDelete, forKey: "IsDeleted")
       
       let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
       saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
