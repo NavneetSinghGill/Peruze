@@ -190,12 +190,14 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
     let uploadOp = CKModifyRecordsOperation(recordsToSave: [exchangeRecord], recordIDsToDelete: nil)
     uploadOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       
-      let uploadedRecord = savedRecords!.first!
-      
-      localExchange.setValue(uploadedRecord.recordID.recordName, forKey: "recordIDName")
-      
-      self.context.MR_saveToPersistentStoreAndWait()
-      self.finishWithError(error)      
+        if savedRecords!.count > 0 {
+            let uploadedRecord = savedRecords!.first!
+            
+            localExchange.setValue(uploadedRecord.recordID.recordName, forKey: "recordIDName")
+            
+            self.context.MR_saveToPersistentStoreAndWait()
+            self.finishWithError(error)
+        }
     }
     uploadOp.qualityOfService = qualityOfService
     database.addOperation(uploadOp)

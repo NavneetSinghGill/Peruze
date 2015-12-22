@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     if let notification = cloudKitNotification as? CKQueryNotification {
       logw("app did receive remote notification ")
       NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-        logw("\(userInfo)")
+        logw("Notification: \(notification) \n UserInfo: \(userInfo)")
         if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
             logw("All of info: \n\(info)\n")
             

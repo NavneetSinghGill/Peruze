@@ -56,7 +56,7 @@ struct RecordTypes {
   static let Exchange = "Exchange"
   static let Review = "Review"
   static let User = "Users"
-  static let Message = "Message"
+  static let Message = "Chat"
     static let Friends = "Friends"
 }
 class Model: NSObject, CLLocationManagerDelegate {
@@ -588,12 +588,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
                     if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
                         self.subscribeForNewOffer()
+//                        self.subscribeForChat()
                     }
                 })
             }
             if subscriptions?.count == 0{
-                self.subscribeForChat()
-//                self.subscribeForNewOffer()
+//                self.subscribeForChat()
+                self.subscribeForNewOffer()
             }
         })
     }
@@ -611,11 +612,15 @@ class Model: NSObject, CLLocationManagerDelegate {
         let notificationInfo = CKNotificationInfo()
 //        notificationInfo.alertLocalizationKey = "Crop subs offer"
         notificationInfo.alertBody = NotificationMessages.NewOfferMessage
+//        notificationInfo.alertLocalizationArgs = ["NewOffer"]
         notificationInfo.shouldBadge = true
         notificationInfo.shouldSendContentAvailable = true
-        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = "categoryOffer"
+        } else {
+            // Fallback on earlier versions
+        }
         subscription.notificationInfo = notificationInfo
-        notificationInfo.alertLocalizationArgs = ["NewOffer"]
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -639,12 +644,15 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         //        notificationInfo.alertLocalizationKey = "Crop subs offer"
-        notificationInfo.alertBody = NotificationMessages.UpdateOfferMessage
-        notificationInfo.shouldBadge = true
+//        notificationInfo.alertLocalizationArgs = ["UpdateOffer"]
         notificationInfo.shouldSendContentAvailable = true
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = "categoryOfferUpdate"
+        } else {
+            // Fallback on earlier versions
+        }
         
         subscription.notificationInfo = notificationInfo
-        notificationInfo.alertLocalizationArgs = ["UpdateOffer"]
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -657,25 +665,26 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForChat() {
-//        getAllSubscription()
-//        return
-        
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "ReceiverRecordIDName == %@", me.recordIDName!)
-        let subscription = CKSubscription(recordType: "Message",
+        //        let predicate = NSPredicate(value: true)
+        let subscription = CKSubscription(recordType: RecordTypes.Message,
             predicate: predicate,
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertLocalizationKey = "Chat"
         notificationInfo.alertBody = NotificationMessages.NewChatMessage
+//        notificationInfo.alertLocalizationArgs = ["NewMessage","NewMessageBody"]
         notificationInfo.shouldBadge = true
-        notificationInfo.alertLocalizationArgs = ["Chat localiztionargs","hi"]
-//        notificationInfo.soundName = ""
-        notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertLocalizationArgs = ["Chat"]
+//        notificationInfo.shouldSendContentAvailable = true
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = "categoryMessage"
+        } else {
+            // Fallback on earlier versions
+        }
+        subscription.notificationInfo = notificationInfo
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -683,7 +692,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("Chat subscription success")
                 }
-//                self.subscribeForDisablingProfile()
+                self.subscribeForItemAdditionUpdation()
             }))
     }
     
