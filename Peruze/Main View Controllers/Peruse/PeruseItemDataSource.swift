@@ -373,7 +373,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
             let recordIDName = userInfo.valueForKey("recordID") as! String
             var index = 0
             for item in self.items {
-                if item.recordIDName == recordIDName {
+                if item.title == recordIDName {
                     break;
                 }
                 index++

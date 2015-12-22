@@ -35,6 +35,8 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
   var itemDescription: String?
     var recordIDName: String?
     var parentVC: UIViewController?
+    
+    var newUploadedItemTitle = ""
   //MARK: - View Controller Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -363,7 +365,23 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     
     func performPost() {
-        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(titleTextField.text!)\'", "link" : "http://www.peruzenow.com/","picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
+        
+        
+        let params: NSMutableDictionary = [:]
+        params.setValue("1", forKey: "setdebug")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
+        params.setValue("facebook", forKey: "shareType")
+        params.setValue(self.titleTextField.text!, forKey: "recordID")
+        //        params[@"shareIds"] = self.eventsIdsString;
+        Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
+            if (error == nil) {
+                // Now we can do something with the URL...
+                logw("url: \(url)")
+                let urlString = "\(url)"
+        
+        
+        let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(self.titleTextField.text!)\'", "link" :urlString,"picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
         request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
             //set error and return
             if error != nil {
@@ -371,9 +389,10 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             } else {
                 print("Post success")
             }
+        })
+            }
             
         })
-        
     }
     
 }

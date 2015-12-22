@@ -67,7 +67,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     branch.setDebug()
     branch.initSessionWithLaunchOptions(launchOptions, andRegisterDeepLinkHandler: { params, error in
         if (error == nil) {
-            NSLog("params: %@", params.description)
+            logw("params:\(params.description)")
+            if let recordID = params["recordID"] as? String {
+                NSNotificationCenter.defaultCenter().postNotificationName("ScrollTOShowSharedItem", object: nil, userInfo: ["recordID":recordID])
+            }
         }
     })
     

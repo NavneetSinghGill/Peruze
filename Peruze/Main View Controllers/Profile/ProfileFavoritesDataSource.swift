@@ -94,12 +94,13 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
 //    if cell == nil {
 //        cell = PeruseItemCollectionViewCell()
 //    }
-    
-//    let item = NSManagedObject()
+    let item = favorites[indexPath.row]
     
     cell.item = favorites[indexPath.row]
     cell.delegate = itemDelegate
-//    cell.setNeedsDisplay()
+    //      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+    cell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+    cell.setNeedsDisplay()
     return cell
   }
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
