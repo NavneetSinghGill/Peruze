@@ -49,8 +49,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
     let defaultOwnerString = "__defaultOwner__"
     let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
-//    let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != %@","yes")
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3])
+    let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != %@","yes")
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser])
     fetchRequest.predicate = compoundPredicate
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
@@ -178,8 +178,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
         let defaultOwnerString = "__defaultOwner__"
         let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
-//        let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != %@","yes")
-        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3])
+        let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != %@","yes")
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser])
         fetchRequest.predicate = compoundPredicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
         fetchRequest.includesSubentities = true

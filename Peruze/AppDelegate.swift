@@ -127,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
             logw("All of info: \n\(info)\n")
             
-            if let _ = info["alert"] as? String {
+            if let _ = info["category"] as? String {
                 info["recordID"] = notification.recordID?.recordName
                 NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
             }

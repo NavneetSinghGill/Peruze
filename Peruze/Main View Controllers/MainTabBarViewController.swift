@@ -36,12 +36,15 @@ class MainTabBarViewController: UITabBarController {
     func showBadgeOnRequestTab(notification: NSNotification){
         if notification.userInfo != nil{
             let info : NSDictionary = notification.userInfo!
-            if  let alert = info["alert"] as? String {
+            if  let category = info["category"] as? String {
                 // Printout of (userInfo["aps"])["type"]
-                print("\nFrom APS-dictionary with key \"type\":  \( alert)")
-                if  let badge = info["badge"] as? Int {
-                    print("\nFrom APS-dictionary with key \"type\":  \( badge)")
-                    if alert == NotificationMessages.NewChatMessage {
+                print("\nFrom APS-dictionary with key \"type\":  \( category)")
+                var badge = 0
+                if  let badgeCount = info["badge"] as? Int {
+                    badge = badgeCount
+                }
+//                    print("\nFrom APS-dictionary with key \"type\":  \( badge)")
+                    if category == NotificationCategoryMessages.NewChatMessage {
                         //refresh messages
                         self.setChatBadgeCount(Int(badge))
                         let navController = self.viewControllers![2] as! UINavigationController
@@ -56,7 +59,7 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchChatWithRecord(recordID)
-                    } else if alert == NotificationMessages.NewOfferMessage {
+                    } else if category == NotificationCategoryMessages.NewOfferMessage {
                         self.setRequestBadgeCount(Int(badge))
                         //refresh Exchanges
                         let navController = self.viewControllers![3] as! UINavigationController
@@ -70,8 +73,8 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
 //                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationMessages.NewOfferMessage)
-                    } else if alert == NotificationMessages.ItemAdditionOrUpdation {
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage)
+                    } else if category == NotificationCategoryMessages.ItemAdditionOrUpdation {
                         let navController = self.viewControllers![0] as! UINavigationController
                         let peruseViewController = navController.viewControllers[0] as! PeruseViewController
                         if peruseViewController.view.window != nil {
@@ -83,7 +86,7 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchItemWithRecord(recordID)
-                    } else if alert == NotificationMessages.ItemDeletion {
+                    } else if category == NotificationCategoryMessages.ItemDeletion {
                         let navController = self.viewControllers![0] as! UINavigationController
                         let peruseViewController = navController.viewControllers[0] as! PeruseViewController
                         if peruseViewController.view.window != nil {
@@ -95,10 +98,10 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = info["recordID"] as! String
                         NSNotificationCenter.defaultCenter().postNotificationName("removeItemFromLocalDB", object: nil, userInfo: ["recordID":recordID])
-                    } else if alert == NotificationMessages.UserUpdate {
+                    } else if category == NotificationCategoryMessages.UserUpdate {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchUserWithRecord(recordID)
-                    } else if alert == NotificationMessages.UpdateOfferMessage {
+                    } else if category == NotificationCategoryMessages.UpdateOfferMessage {
                         var navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
                         if requestsTableViewController.view.window != nil {
@@ -121,9 +124,9 @@ class MainTabBarViewController: UITabBarController {
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
                         //                        requestsTableViewController.refresh()
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationMessages.UpdateOfferMessage)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationCategoryMessages.UpdateOfferMessage)
                     }
-                }
+//                }
                 resetBadgeValue()
             }
         }

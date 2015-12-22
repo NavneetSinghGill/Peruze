@@ -160,7 +160,22 @@ class InitialViewController: UIViewController {
     //MARK: - Logged into facebook and profile setup
     private func setupAndSegueToTabBarVC() {
         logw("\(NSDate()) setupAndSegueToTabBarVC()")
-        tabBarVC = tabBarVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.TabBarVCIdentifier) as? UITabBarController
+        let me  = Person.MR_findFirstByAttribute("me", withValue: true)
+        if me != nil && me.isDelete != "no"{
+            me.setValue("no", forKey: "isDelete")
+            managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+            let modifyUserOperation = UpdateUserOperation(personToUpdate: (me)){
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.executeTabBar()
+                }
+            }
+            OperationQueue().addOperation(modifyUserOperation)
+        } else {
+            self.executeTabBar()
+        }
+    }
+    
+    func executeTabBar() {tabBarVC = tabBarVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.TabBarVCIdentifier) as? UITabBarController
         if tabBarVC == nil { assertionFailure("VC Pulled out of storyboard is not a UITabBarController")}
         tabBarVC!.selectedIndex = profileSetupVC == nil ? 0 : 1
         for childVC in (tabBarVC?.viewControllers)! {

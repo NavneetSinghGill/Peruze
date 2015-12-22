@@ -201,6 +201,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBAction func logOutOfFacebook(sender: UIButton) {
     FBSDKAccessToken.setCurrentAccessToken(nil)
     FBSDKLoginManager().logOut()
+    Model.sharedInstance().deleteAllSubscription()
+    logw("Logged out of account.")
     dismissViewControllerAnimated(false, completion: nil)
     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))
   }

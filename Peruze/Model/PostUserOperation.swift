@@ -168,7 +168,9 @@ class PostUserOperation: Operation {
 class UpdateUserOperation: GroupOperation {
     init(personToUpdate : NSManagedObject!,
         completion: (Void -> Void) = {}) {
-        let updateUserOperation = UpdateUserOnCloudOperation(personToUpdate: personToUpdate)
+            let updateUserOperation = UpdateUserOnCloudOperation(personToUpdate: personToUpdate){
+                completion()
+            }
             
             let finishOp = NSBlockOperation(block: completion)
             finishOp.addDependency(updateUserOperation)
@@ -178,7 +180,9 @@ class UpdateUserOperation: GroupOperation {
 
 class UpdateUserOnCloudOperation: Operation {
     let user: NSManagedObject!
-    init(personToUpdate : NSManagedObject!) {
+    let finishBlock = {}
+    init(personToUpdate : NSManagedObject!,
+        completion: (Void -> Void) = {}) {
         user = personToUpdate
     }
     override func execute() {
@@ -215,12 +219,13 @@ class UpdateUserOnCloudOperation: Operation {
                 if error == nil {
                     for record in records! {
                         let recordID = record.recordID.recordName
-                        let context = NSManagedObjectContext()
+                        let context = NSManagedObjectContext.MR_context()
                         let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
-                        person.setValue(isDelete, forKey: "isDelete")
+                        person.setValue(record.valueForKey("IsDeleted") as! String, forKey: "isDelete")
                         context.MR_saveToPersistentStoreAndWait()
                     }
                 }
+                self.finish()
             }
             updateUserOp.savePolicy = .ChangedKeys
             updateUserOp.qualityOfService = qualityOfService
@@ -229,6 +234,9 @@ class UpdateUserOnCloudOperation: Operation {
     }
     override func finished(errors: [NSError]) {
         logw("\(errors)")
+        if errors.count == 0{
+            finishBlock()
+        }
     }
     
     private func cachePathForFileName(name: String) -> String {

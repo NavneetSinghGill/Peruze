@@ -61,6 +61,7 @@ class GetCurrentUserOperation: Operation {
       let firstName  = (record.objectForKey("FirstName")  as? String)
       let lastName   = (record.objectForKey("LastName")   as? String)
       let facebookID = (record.objectForKey("FacebookID") as? String)
+      let isDelete = (record.objectForKey("IsDeleted") as? String)
         
         // if firstName == nil it means it's the very first time any user is logging to device
         if (person?.valueForKey("FacebookID") as? String) != facebookID && firstName != nil{
@@ -80,6 +81,9 @@ class GetCurrentUserOperation: Operation {
       person.setValue(firstName, forKey: "firstName")
       person.setValue(lastName, forKey: "lastName")
       person.setValue(facebookID, forKey: "facebookID")
+        if isDelete == nil {
+           person.setValue("no", forKey: "isDelete")
+        }
       
       //check for image property and set the data
       if let imageAsset = record.objectForKey("Image") as? CKAsset {

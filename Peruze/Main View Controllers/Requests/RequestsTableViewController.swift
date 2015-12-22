@@ -39,7 +39,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     view.backgroundColor = .whiteColor()
     refresh()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "getRequestedExchange", name: "getRequestedExchange", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "localRefresh", name: NotificationCenterKeys.LNRefreshRequestScreenWithLocalData, object: nil)
   }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        localRefresh()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         resetBadgeCounter()
@@ -102,6 +109,25 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     operationQueue.addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
     self.activityIndicatorView.startAnimating()
   }
+    
+    func localRefresh() {
+        do {
+            self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.alpha = 1
+            try self.dataSource.fetchedResultsController.performFetch()
+        } catch {
+            logw("\(error)")
+        }
+        dispatch_async(dispatch_get_main_queue()){
+            self.tableView.reloadData()
+            if self.tableView.numberOfRowsInSection(0) > 0 {
+                self.noRequetsLabel.alpha = 0
+            } else {
+                self.noRequetsLabel.alpha = 1
+            }
+            self.refreshControl?.endRefreshing()
+        }
+    }
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()

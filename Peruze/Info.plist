@@ -53,6 +53,10 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Peruze uses your location so that people near you can see what you upload.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -23,6 +23,7 @@ struct NotificationCenterKeys {
   static let LocationDidStartUpdates = "LocationDidStartUpdates"
   static let LocationDidFinishUpdates = "LocationDidFinishUpdates"
   static let LNRefreshChatScreenForUpdatedExchanges = "RefreshChatScreenForUpdatedExchanges"
+  static let LNRefreshRequestScreenWithLocalData = "RefreshRequestScreenWithLocalData"
   struct Error {
     static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
@@ -41,6 +42,16 @@ struct NotificationMessages {
     static let ItemAdditionOrUpdation = "A new item has been added"
     static let ItemDeletion = "An item has been deleted"
     static let UserUpdate = "An User updated"
+}
+
+struct NotificationCategoryMessages {
+    static let NewOfferMessage = "categoryOffer"
+    static let UpdateOfferMessage = "categoryOfferUpdate"
+    static let NewChatMessage = "categoryMessage"
+    static let ExchangeRecall = "Did you complete your exchange.."
+    static let ItemAdditionOrUpdation = "Item added or updated"
+    static let ItemDeletion = "Item Deleted"
+    static let UserUpdate = "User update"
 }
 
 struct UniversalConstants {
@@ -362,7 +373,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                        if message == NotificationMessages.NewOfferMessage {
+                        if message == NotificationCategoryMessages.NewOfferMessage {
                             if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
                                 if localExchange.valueForKey("status") != nil &&
                                     localExchange.valueForKey("status") as? NSNumber == 1 {
@@ -370,7 +381,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                                 }
                             }
                         }
-                        if message == NotificationMessages.UpdateOfferMessage {
+                        if message == NotificationCategoryMessages.UpdateOfferMessage {
                             if NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") as! String == "yes"{
                                 if localExchange.valueForKey("status") != nil &&
                                     localExchange.valueForKey("status") as? NSNumber == 2 {
@@ -588,12 +599,10 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
                     if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
                         self.subscribeForNewOffer()
-//                        self.subscribeForChat()
                     }
                 })
             }
-            if subscriptions?.count == 0{
-//                self.subscribeForChat()
+            if subscriptions?.count == 0 {
                 self.subscribeForNewOffer()
             }
         })
@@ -610,15 +619,12 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-//        notificationInfo.alertLocalizationKey = "Crop subs offer"
         notificationInfo.alertBody = NotificationMessages.NewOfferMessage
-//        notificationInfo.alertLocalizationArgs = ["NewOffer"]
         notificationInfo.shouldBadge = true
-        notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.soundName = "default"
+        
         if #available(iOS 9.0, *) {
-            notificationInfo.category = "categoryOffer"
-        } else {
-            // Fallback on earlier versions
+            notificationInfo.category = NotificationCategoryMessages.NewOfferMessage
         }
         subscription.notificationInfo = notificationInfo
         publicDatabase.saveSubscription(subscription,
@@ -643,13 +649,10 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordUpdate)
         
         let notificationInfo = CKNotificationInfo()
-        //        notificationInfo.alertLocalizationKey = "Crop subs offer"
-//        notificationInfo.alertLocalizationArgs = ["UpdateOffer"]
         notificationInfo.shouldSendContentAvailable = true
+        
         if #available(iOS 9.0, *) {
-            notificationInfo.category = "categoryOfferUpdate"
-        } else {
-            // Fallback on earlier versions
+            notificationInfo.category = NotificationCategoryMessages.UpdateOfferMessage
         }
         
         subscription.notificationInfo = notificationInfo
@@ -676,13 +679,11 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         notificationInfo.alertBody = NotificationMessages.NewChatMessage
-//        notificationInfo.alertLocalizationArgs = ["NewMessage","NewMessageBody"]
         notificationInfo.shouldBadge = true
-//        notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.soundName = "default"
+        
         if #available(iOS 9.0, *) {
-            notificationInfo.category = "categoryMessage"
-        } else {
-            // Fallback on earlier versions
+            notificationInfo.category = NotificationCategoryMessages.NewChatMessage
         }
         subscription.notificationInfo = notificationInfo
         publicDatabase.saveSubscription(subscription,
@@ -707,11 +708,13 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         
-        notificationInfo.alertBody = NotificationMessages.ItemAdditionOrUpdation
-        notificationInfo.shouldBadge = true
+        notificationInfo.shouldSendContentAvailable = true
+        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = NotificationCategoryMessages.ItemAdditionOrUpdation
+        }
         
         subscription.notificationInfo = notificationInfo
-        
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -734,11 +737,13 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         
-        notificationInfo.alertBody = NotificationMessages.ItemDeletion
-        notificationInfo.shouldBadge = true
+        notificationInfo.shouldSendContentAvailable = true
+        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = NotificationCategoryMessages.ItemDeletion
+        }
         
         subscription.notificationInfo = notificationInfo
-        
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -746,6 +751,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("ItemDeletion subscription success")
                 }
+                self.subscribeForDisablingProfile()
             }))
     }
     
@@ -759,12 +765,13 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordUpdate)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertLocalizationArgs = ["deleteUser"]
-        notificationInfo.alertLocalizationKey = NotificationMessages.UserUpdate
-        notificationInfo.shouldBadge = true
+        notificationInfo.shouldSendContentAvailable = true
+        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = NotificationCategoryMessages.UserUpdate
+        }
         
         subscription.notificationInfo = notificationInfo
-        
         publicDatabase.saveSubscription(subscription,
             completionHandler: ({returnRecord, error in
                 if let err = error {
@@ -772,7 +779,6 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("DisablingProfile subscription success")
                 }
-                self.subscribeForItemAdditionUpdation()
             }))
     }
     
@@ -816,7 +822,23 @@ class Model: NSObject, CLLocationManagerDelegate {
                 }
             }))
     }
+    
+    func deleteAllSubscription() {
+        let database = CKContainer.defaultContainer().publicCloudDatabase
+        database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
+            for subscriptionObject in subscriptions! {
+                let subscription: CKSubscription = subscriptionObject as CKSubscription
+                logw("Subscription :\(subscription)")
+                
+                database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
+                    logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
+                })
+            }
+        })
+    }
 }
+
+
 
 //MARK: Share
 
@@ -826,10 +848,8 @@ class Model: NSObject, CLLocationManagerDelegate {
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
         params.setValue("facebook", forKey: "shareType")
-//        params[@"shareIds"] = self.eventsIdsString;
         Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
             if (error == nil) {
-                // Now we can do something with the URL...
                 NSLog("url: %@", url);
             }
         })
