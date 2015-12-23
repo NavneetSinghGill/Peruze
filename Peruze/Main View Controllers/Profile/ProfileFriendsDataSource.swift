@@ -21,7 +21,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     var tableView: UITableView!
     var profileOwner: Person!
     var fetchedResultsController: NSFetchedResultsController!
-    var mutualFriendIds: NSMutableArray!
+    var mutualFriendIds: NSMutableSet!
     
     struct FriendsDataAndProfilePic {
         var friendData: NSDictionary!
@@ -67,12 +67,12 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!
-        var data: NSDictionary!
         let profileImage = CircleImage()
         
 //        if {
 //            
 //        }
+        NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":mutualFriendIds.count])
         for id in mutualFriendIds {
             person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: id as! String)
             if person != nil {

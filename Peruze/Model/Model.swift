@@ -193,7 +193,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         managedConcurrentObjectContext.MR_saveToPersistentStoreWithCompletion(nil)
     }
     
-    func getMutualFriendsFromLocal(owner: NSManagedObject!, context: NSManagedObjectContext!) -> NSMutableArray {
+    func getMutualFriendsFromLocal(owner: NSManagedObject!, context: NSManagedObjectContext!) -> NSMutableSet {
         if owner == nil{
             return []
         }
@@ -214,7 +214,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }
             
             //        let mutualFriendIds = Set(arrayLiteral: myFriendsIDs).intersect(Set(arrayLiteral: otherUserFriendsIDs))
-            let mutualFriends: NSMutableArray = []
+            let mutualFriends: NSMutableSet = []
             for id in myFriendsIDs{
                 if otherUserFriendsIDs.containsObject(id) {
                     mutualFriends.addObject(id)
@@ -222,6 +222,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }
             owner.setValue(mutualFriends.count, forKey: "mutualFriends")
             context.MR_saveToPersistentStoreAndWait()
+            
             return mutualFriends
         }
         return []

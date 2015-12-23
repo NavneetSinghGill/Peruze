@@ -414,13 +414,7 @@ class ProfileViewController: UIViewController {
                     if let vc = viewController as? ProfileContainerViewController {
                         vc.profileOwner = self.personForProfile
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
-                    }
-                    if let vc = viewController as? ProfileContainerViewController {
-                        vc.profileOwner = self.personForProfile
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
-                    }
-                    if let vc = viewController as? ProfileContainerViewController {
-                        vc.profileOwner = self.personForProfile
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
                     }
                 }

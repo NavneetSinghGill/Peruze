@@ -48,6 +48,7 @@ class ProfileContainerViewController: UITabBarController {
         break
       case let mutualFriendsVC as  ProfileFriendsViewController:
         mutualFriendsVC.dataSource.profileOwner = profileOwner
+        _ = mutualFriendsVC.view
         break
       default:
         //do nothing
