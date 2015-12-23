@@ -33,7 +33,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     //get notifications from keyboard
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
-    
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive", name: "applicationDidBecomeActive", object: nil)
     dataSource = ChatCollectionViewDataSource(exchange: exchange)
     
     //set the properties of the input toolbar
@@ -76,6 +76,12 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.dataSource?.removeNoti()
+    }
+    
+    func appDidBecomeActive() {
+        if self.isViewLoaded() && self.view.window != nil {
+            
+        }
     }
     
   //MARK: - Required Subclassing Methods for Collection View and Layout

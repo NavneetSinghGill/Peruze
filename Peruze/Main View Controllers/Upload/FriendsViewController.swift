@@ -124,7 +124,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell?.inviteButton.layer.cornerRadius = 5
         cell?.inviteButton.layer.borderWidth = 1
         cell?.inviteButton.layer.borderColor = UIColor(red: 188/255, green: 188/255, blue: 188/255, alpha: 0.5).CGColor
-        cell?.inviteButton.layer.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1).CGColor
+        cell?.inviteButton.layer.backgroundColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1).CGColor
         if parsedObject.isInvited == false {
             cell?.inviteButton.setTitle("Invite", forState: UIControlState.Normal)
             cell?.inviteButton.hidden = false

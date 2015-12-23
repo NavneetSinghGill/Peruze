@@ -23,7 +23,8 @@ struct NotificationCenterKeys {
   static let LocationDidStartUpdates = "LocationDidStartUpdates"
   static let LocationDidFinishUpdates = "LocationDidFinishUpdates"
   static let LNRefreshChatScreenForUpdatedExchanges = "RefreshChatScreenForUpdatedExchanges"
-  static let LNRefreshRequestScreenWithLocalData = "RefreshRequestScreenWithLocalData"
+    static let LNRefreshRequestScreenWithLocalData = "RefreshRequestScreenWithLocalData"
+    static let AppDidBecomeActiveNotificationName = "applicationDidBecomeActive"
   struct Error {
     static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"
@@ -628,6 +629,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         notificationInfo.alertBody = NotificationMessages.NewOfferMessage
         notificationInfo.shouldBadge = true
         notificationInfo.soundName = "default"
+        notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
             notificationInfo.category = NotificationCategoryMessages.NewOfferMessage
@@ -687,6 +689,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         notificationInfo.alertBody = NotificationMessages.NewChatMessage
         notificationInfo.shouldBadge = true
         notificationInfo.soundName = "default"
+        notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
             notificationInfo.category = NotificationCategoryMessages.NewChatMessage

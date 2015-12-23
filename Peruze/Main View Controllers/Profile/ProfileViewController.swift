@@ -259,9 +259,13 @@ class ProfileViewController: UIViewController {
         
         for childVC in childViewControllers {
             if let container = childVC as? ProfileContainerViewController {
+                _ = container.view
                 container.profileOwner = personForProfile
                 for childVC in container.childViewControllers {
                     _ = childVC.view
+                    if let friendsVC = childVC as? ProfileFriendsViewController {
+                        friendsVC.dataSource.profileOwner = personForProfile
+                    }
                     
                 }
             }
@@ -276,6 +280,7 @@ class ProfileViewController: UIViewController {
         numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
         numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
         ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+        ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
     }
     
     func getAllDataOfCurentUser() {
@@ -404,9 +409,7 @@ class ProfileViewController: UIViewController {
                 let userId = userDictionary!.valueForKey("recordIDName") as? String
                 self.personForProfile = Person.MR_findFirstWithPredicate(NSPredicate(format: "recordIDName = %@",userId!))
                 if (self.personForProfile?.valueForKey("image") as? NSData != nil) {
-                    self.profileImageView.image = UIImage(data: self.personForProfile!.valueForKey("image") as! NSData)
                     self.ouProfileImageView.image = UIImage(data: self.personForProfile!.valueForKey("image") as! NSData)
-                    self.profileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
                     self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
                 }
                 self.updateViewAfterGettingResponse()
@@ -416,9 +419,9 @@ class ProfileViewController: UIViewController {
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
+                        vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
                     }
                 }
-                
             }
         }
     }

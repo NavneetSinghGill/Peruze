@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   
   private struct Constants {
-    static let AppDidBecomeActiveNotificationName = "applicationDidBecomeActive"
   }
     func resetBadgeCounter() {
         let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
@@ -105,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationDidBecomeActive(application: UIApplication) {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     FBSDKAppEvents.activateApp()
-    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: Constants.AppDidBecomeActiveNotificationName, object: true))
+    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "applicationDidBecomeActive", object: true))
   }
   
   func applicationWillTerminate(application: UIApplication) {
