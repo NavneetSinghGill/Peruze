@@ -21,7 +21,7 @@ public class CircleImage: UIView {
     public var strokeWidth: CGFloat = 0 { didSet { setNeedsDisplay() } }
     public var selected = false { didSet { setNeedsDisplay() } }
     private var imageView: UIImageView?
-    private var circleView: UIView?
+    var circleView: UIView?
     
     // MARK: - Init
     public override init(frame: CGRect) {

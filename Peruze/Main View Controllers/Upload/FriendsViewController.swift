@@ -24,6 +24,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     struct FriendsDataAndProfilePic {
         var friendData: NSDictionary!
         var profileImage: CircleImage?
+        var isInvited: Bool!
     }
     var taggableFriendsData = [FriendsDataAndProfilePic]()
     var searchedFriendsData = [FriendsDataAndProfilePic]()
@@ -31,20 +32,20 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     private struct Constants {
         static let TableViewRowHeight: CGFloat = 50
-        static let kFriendsTableViewCellIdentifier = "FriendsTableViewCellIdentifier"
+        static let kFriendsTableViewCellIdentifier = "TableViewCellIdentifier"
         static let FriendsTableViewNibName = "FriendsTableViewCell"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Friends"
+        title = "Invite Friends"
         navigationController?.navigationBar.tintColor = .redColor()
         view.backgroundColor = .whiteColor()
         getTaggableFriends()
         self.navigationItem.setLeftBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "backButtonTapped"), animated: true)
-        let rightBarButton = UIBarButtonItem(title: "Invite", style: .Plain, target: self, action: "postInviteOnFacebook")
-        self.navigationItem.setRightBarButtonItem(rightBarButton, animated: true)
-        self.searchTextField.placeholder = "Search for friend.."
+//        let rightBarButton = UIBarButtonItem(title: "Invite", style: .Plain, target: self, action: "postInviteOnFacebook")
+//        self.navigationItem.setRightBarButtonItem(rightBarButton, animated: true)
+        self.searchTextField.placeholder = "Search for friends"
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
@@ -69,12 +70,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.taggableFriendsData = []
                 self.searchedFriendsData = []
                 for friendData in resultsArray {
-                    let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImage: CircleImage())
+                    let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImage: CircleImage(),isInvited: false)
                     newFriendData.profileImage?.image = nil
 
                     let facebookProfileUrl = ((friendData.valueForKey("picture") as! NSDictionary).valueForKey("data") as! NSDictionary).valueForKey("url") as! String
                         let url = NSURL(string: facebookProfileUrl)
                         if let data = NSData(contentsOfURL: url!) {
+                            newFriendData.profileImage?.circleView?.layer.cornerRadius = 0
                             newFriendData.profileImage?.image = UIImage(data: data)
                         }
 
@@ -105,13 +107,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let nib = UINib(nibName: Constants.FriendsTableViewNibName, bundle: nil)
-        tableView.registerNib(nib, forCellReuseIdentifier: Constants.kFriendsTableViewCellIdentifier)
+//        let nib = UINib(nibName: Constants.FriendsTableViewNibName, bundle: nil)
+//        tableView.registerNib(nib, forCellReuseIdentifier: Constants.kFriendsTableViewCellIdentifier)
         var cell = tableView.dequeueReusableCellWithIdentifier(Constants.kFriendsTableViewCellIdentifier, forIndexPath: indexPath) as? FriendsTableViewCell
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: Constants.kFriendsTableViewCellIdentifier) as? FriendsTableViewCell
         }
-        let parsedObject = self.searchedFriendsData[indexPath.row]
+        var parsedObject = self.searchedFriendsData[indexPath.row]
         let userDict =  parsedObject.friendData
         cell!.nameLabel.text = userDict?.valueForKey("name") as? String
         cell!.friendDataDict = userDict
@@ -119,24 +121,47 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         if parsedObject.profileImage?.image != nil {
             cell?.profileImageView.image = parsedObject.profileImage?.image
         }
-        if selectedFriendsToInvite.containsObject(cell!.friendDataDict) {
-            cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        cell?.inviteButton.layer.cornerRadius = 5
+        cell?.inviteButton.layer.borderWidth = 1
+        cell?.inviteButton.layer.borderColor = UIColor(red: 188/255, green: 188/255, blue: 188/255, alpha: 0.5).CGColor
+        cell?.inviteButton.layer.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1).CGColor
+        if parsedObject.isInvited == false {
+            cell?.inviteButton.setTitle("Invite", forState: UIControlState.Normal)
+            cell?.inviteButton.hidden = false
+            cell?.inviteButton.enabled = true
         } else {
-            cell?.accessoryType = UITableViewCellAccessoryType.None
+            cell?.inviteButton.setTitle("Invited", forState: UIControlState.Normal)
+            cell?.inviteButton.hidden = true
+            cell?.inviteButton.enabled = false
         }
+        
+        if selectedFriendsToInvite.containsObject(cell!.friendDataDict) {
+            cell?.inviteButton.setTitle("Invited", forState: UIControlState.Normal)
+        }
+        
+        cell?.inviteTapBlock = {
+            if parsedObject.isInvited == false {
+                cell?.inviteButton.setTitle("Invited", forState: UIControlState.Normal)
+                self.selectedFriendsToInvite = []
+                self.selectedFriendsToInvite.addObject((cell?.friendDataDict)!)
+                self.postInviteOnFacebook()
+            }
+            parsedObject.isInvited = true
+        }
+        
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! FriendsTableViewCell
-        if cell.accessoryType == UITableViewCellAccessoryType.None {
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            selectedFriendsToInvite.addObject(cell.friendDataDict)
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryType.None
-            selectedFriendsToInvite.removeObject(cell.friendDataDict)
-        }
+//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+//        let cell = tableView.cellForRowAtIndexPath(indexPath) as! FriendsTableViewCell
+//        if cell.accessoryType == UITableViewCellAccessoryType.None {
+//            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            selectedFriendsToInvite.addObject(cell.friendDataDict)
+//        } else {
+//            cell.accessoryType = UITableViewCellAccessoryType.None
+//            selectedFriendsToInvite.removeObject(cell.friendDataDict)
+//        }
     }
     
     func backButtonTapped() {
@@ -179,7 +204,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             })
         } else {
-            self.activityIndicatorView.startAnimating()
+//            self.activityIndicatorView.startAnimating()
             performPost(idsString)
         }
     }
@@ -202,7 +227,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                         print("Post failed: \(error)")
                     } else {
                         print("Post success")
-                        self.dismissViewControllerAnimated(true, completion: nil)
+//                        self.dismissViewControllerAnimated(true, completion: nil)
                     }
                     self.activityIndicatorView.stopAnimating()
                 })

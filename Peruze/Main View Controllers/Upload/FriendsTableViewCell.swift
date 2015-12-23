@@ -11,5 +11,10 @@ import UIKit
 class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: CircleImage!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var inviteButton: UIButton!
     var friendDataDict: NSDictionary!
+    var inviteTapBlock = {}
+    @IBAction func inviteButtonTapped(sender: UIButton!) {
+        self.inviteTapBlock()
+    }
 }
