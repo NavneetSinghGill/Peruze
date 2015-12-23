@@ -99,7 +99,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     cell.item = favorites[indexPath.row]
     cell.delegate = itemDelegate
     //      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-    cell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+    cell.itemFavorited = true
     cell.setNeedsDisplay()
     return cell
   }

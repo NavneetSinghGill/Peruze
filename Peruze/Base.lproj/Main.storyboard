@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9058" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nkL-Xf-2bm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nkL-Xf-2bm">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9048"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -3700,9 +3700,37 @@
                             </visualEffectView>
                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rDS-oA-B20">
                                 <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FDU-y9-fGf">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="WB5-pF-jxp"/>
+                                            <constraint firstAttribute="width" constant="100" id="a82-nW-I4q"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="closeTap:" destination="lTZ-tG-NW0" eventType="touchUpInside" id="IYP-Uz-ZH0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKu-QU-i4N">
+                                        <rect key="frame" x="500" y="0.0" width="100" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="4d8-Q7-vyV"/>
+                                            <constraint firstAttribute="height" constant="50" id="Uks-TR-beh"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="checkTap:" destination="lTZ-tG-NW0" eventType="touchUpInside" id="Wjp-NM-dcB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="FDU-y9-fGf" secondAttribute="bottom" id="FZz-3W-Yhq"/>
+                                    <constraint firstItem="FDU-y9-fGf" firstAttribute="leading" secondItem="rDS-oA-B20" secondAttribute="leading" id="fAV-h6-2Bb"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZKu-QU-i4N" secondAttribute="trailing" id="out-od-EVu"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZKu-QU-i4N" secondAttribute="bottom" id="rPj-so-sL3"/>
+                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="IZ1-tP-7QD" appends="YES" id="Ne5-2k-RK5"/>
                                     <outletCollection property="gestureRecognizers" destination="IZ1-tP-7QD" appends="YES" id="p1H-Am-NHj"/>

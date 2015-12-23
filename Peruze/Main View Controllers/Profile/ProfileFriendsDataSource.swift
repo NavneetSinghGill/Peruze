@@ -61,6 +61,8 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         return cell!
     }
     
+    
+    
     func getMutualFriends() {
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
@@ -74,13 +76,16 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         for id in mutualFriendIds {
             person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: id as! String)
             if person != nil {
-                data = [:]
+                var data : NSMutableDictionary = [:]
                 profileImage.image = nil
                 if person.valueForKey("firstName") != nil && person.valueForKey("lastName") != nil {
                     data = ["name": "\(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!)"]
                 }
                 if person.valueForKey("image") != nil {
                     profileImage.image = UIImage(data: person.valueForKey("image") as! NSData)
+                }
+                if person.valueForKey("recordIDName") != nil {
+                    data.addEntriesFromDictionary(["recordIDName": person.valueForKey("recordIDName")!])
                 }
                 newSortedFriendsData.append(FriendsDataAndProfilePic(friendData: data, profileImage: profileImage))
             } else {

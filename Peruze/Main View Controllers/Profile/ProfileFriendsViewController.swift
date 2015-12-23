@@ -48,9 +48,12 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return Constants.TableViewCellHeight
     }
-//    func refresh() {
-//        refreshControl.endRefreshing()
-//    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let parsedObject = dataSource.sortedFriendsData[indexPath.row]
+        NSNotificationCenter.defaultCenter().postNotificationName("RefreshUser", object: nil, userInfo: ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage!])
+    }
+
     
     private func checkForEmptyData(animated: Bool) {
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {

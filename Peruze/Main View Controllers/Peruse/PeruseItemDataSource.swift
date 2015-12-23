@@ -67,7 +67,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       logw("\(error)")
     }
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem", name: "ScrollTOShowSharedItem", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem:", name: "ScrollTOShowSharedItem", object: nil)
   }
     func reloadCollectionView(){
         dispatch_async(dispatch_get_main_queue()) {
@@ -380,7 +380,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
             }
             if index != self.items.count {
                 dispatch_async(dispatch_get_main_queue()){
-                    self.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: .CenteredVertically, animated: true)
+                    self.collectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: .CenteredHorizontally, animated: true)
                 }
             }
         }
