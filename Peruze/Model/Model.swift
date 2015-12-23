@@ -51,7 +51,7 @@ struct NotificationCategoryMessages {
     static let ExchangeRecall = "Did you complete your exchange.."
     static let ItemAdditionOrUpdation = "Item added or updated"
     static let ItemDeletion = "Item Deleted"
-    static let UserUpdate = "User update"
+    static let UserStatusUpdate = "User update"
 }
 
 struct UniversalConstants {
@@ -66,9 +66,10 @@ struct RecordTypes {
   static let Item = "Item"
   static let Exchange = "Exchange"
   static let Review = "Review"
-  static let User = "Users"
+  static let Users = "Users"
   static let Message = "Chat"
-    static let Friends = "Friends"
+  static let Friends = "Friends"
+  static let UsersStatus = "UsersStatus"
 }
 class Model: NSObject, CLLocationManagerDelegate {
     
@@ -455,65 +456,67 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Error while fetching User : \(err)")
                     }
                 } else {
-                    if record?.recordType == RecordTypes.User {
+                    if record?.recordType == RecordTypes.UsersStatus {
                         logw ("Fetch user ")
-                        let localPerson = Person.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
-                        
-                        if let personFbId = record!.objectForKey("FacebookID") as? String {
-                            localPerson.setValue(personFbId, forKey: "facebookID")
-                            
-                            let predicate = NSPredicate(format: "FacebookID == %@", record!.objectForKey("FacebookID") as! String)
-                            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
-                            let context = NSManagedObjectContext()
-                            CKContainer.defaultContainer().publicCloudDatabase.performQuery(query, inZoneWithID: nil, completionHandler: {
-                                (friends: [CKRecord]?, error) -> Void in
-                                logw("Fetch User by notification Friends block")
-                                for friend in friends! {
-                                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: context)
-                                    if let facebookID = friend.objectForKey("FacebookID") {
-                                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
-                                    }
-                                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
-                                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
-                                    }
-                                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: context)
-                                    localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
-                                }
-                                context.MR_saveToPersistentStoreAndWait()
-                            })
+                        let localPerson = Person.MR_findFirstByAttribute("recordIDName",
+                            withValue: record!.valueForKey("UserRecordIDName")!.recordID.recordName, inContext: managedConcurrentObjectContext)
+                        if let isDelete = record?.valueForKey("IsDeleted") as? Int{
+                            localPerson.setValue(isDelete , forKey: "isDelete")
                         }
-                        if let firstName = record!.objectForKey("FirstName") as? String {
-                            localPerson.setValue(firstName, forKey: "firstName")
-                        }
-                        if let lastName = record!.objectForKey("LastName") as? String {
-                            localPerson.setValue(lastName, forKey: "lastName")
-                        }
-                        
-                        if let personImage = record!.objectForKey("Image") as? CKAsset {
-                            localPerson.setValue(NSData(contentsOfURL: personImage.fileURL), forKey: "image")
-                        }
-                        
-                        if let isDelete = record!.objectForKey("IsDeleted") as? String {
-                            localPerson.setValue(isDelete, forKey: "isDelete")
-                        }
-                        
-                        let me = Person.MR_findFirstByAttribute("me", withValue: true)
-                        if me.recordIDName == record!.recordID.recordName {
-                            localPerson.setValue(true, forKey: "me")
-                        } else {
-                            localPerson.setValue(false, forKey: "me")
-                        }
+//                        if let personFbId = record!.objectForKey("FacebookID") as? String {
+//                            localPerson.setValue(personFbId, forKey: "facebookID")
+//                            
+//                            let predicate = NSPredicate(format: "FacebookID == %@", record!.objectForKey("FacebookID") as! String)
+//                            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+//                            let context = NSManagedObjectContext()
+//                            CKContainer.defaultContainer().publicCloudDatabase.performQuery(query, inZoneWithID: nil, completionHandler: {
+//                                (friends: [CKRecord]?, error) -> Void in
+//                                logw("Fetch User by notification Friends block")
+//                                for friend in friends! {
+//                                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: context)
+//                                    if let facebookID = friend.objectForKey("FacebookID") {
+//                                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
+//                                    }
+//                                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
+//                                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
+//                                    }
+//                                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: context)
+//                                    localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
+//                                }
+//                                context.MR_saveToPersistentStoreAndWait()
+//                            })
+//                        }
+//                        if let firstName = record!.objectForKey("FirstName") as? String {
+//                            localPerson.setValue(firstName, forKey: "firstName")
+//                        }
+//                        if let lastName = record!.objectForKey("LastName") as? String {
+//                            localPerson.setValue(lastName, forKey: "lastName")
+//                        }
+//                        
+//                        if let personImage = record!.objectForKey("Image") as? CKAsset {
+//                            localPerson.setValue(NSData(contentsOfURL: personImage.fileURL), forKey: "image")
+//                        }
+//                        
+//                        if let isDelete = record!.objectForKey("IsDeleted") as? Int {
+//                            localPerson.setValue(isDelete, forKey: "isDelete")
+//                        }
+//                        
+//                        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+//                        if me.recordIDName == record!.recordID.recordName {
+//                            localPerson.setValue(true, forKey: "me")
+//                        } else {
+//                            localPerson.setValue(false, forKey: "me")
+//                        }
                         
                         //check for favorites
-                        if let favoriteReferences = record!.objectForKey("FavoriteItems") as? [CKReference] {
-                            let favorites = favoriteReferences.map {
-                                Item.MR_findFirstOrCreateByAttribute("recordIDName",
-                                    withValue: $0.recordID.recordName , inContext: managedConcurrentObjectContext)
-                            }
-                            let favoritesSet = NSSet(array: favorites)
-                            localPerson.setValue(favoritesSet, forKey: "favorites")
-                        }
+//                        if let favoriteReferences = record!.objectForKey("FavoriteItems") as? [CKReference] {
+//                            let favorites = favoriteReferences.map {
+//                                Item.MR_findFirstOrCreateByAttribute("recordIDName",
+//                                    withValue: $0.recordID.recordName , inContext: managedConcurrentObjectContext)
+//                            }
+//                            let favoritesSet = NSSet(array: favorites)
+//                            localPerson.setValue(favoritesSet, forKey: "favorites")
+//                        }
                         
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
@@ -523,26 +526,28 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func getAllDeletedUsers() {
-//        let recordID = CKRecordID(recordName: "_fc2e5f4c552544554720e8a893c82ead")
-        let predicate = NSPredicate(format: "FacebookID == %@", "1736097609951899")
-        let getUsersQuery = CKQuery(recordType: RecordTypes.User, predicate: predicate)
-//        let getUsersOperation = CKQueryOperation(query: getUsersQuery)
-//        
-//        //handle returned objects
-//        getUsersOperation.recordFetchedBlock = {
-//            (record: CKRecord!) -> Void in
-//            
-//        }
-//        getUsersOperation.queryCompletionBlock = {
-//            (cursor, error) -> Void in
-//            
-//        }
-//        OperationQueue().addOperation(getUsersOperation)
+    func getAllDeleteUsers() {
+        let predicate = NSPredicate(value: true)
+        let getUsersQuery = CKQuery(recordType: RecordTypes.UsersStatus, predicate: predicate)
+                let getAllDeletedUsersOperation = CKQueryOperation(query: getUsersQuery)
+        
+                //handle returned objects
+                getAllDeletedUsersOperation.recordFetchedBlock = {
+                    (record: CKRecord!) -> Void in
+                    let person = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: record.recordID.recordName)
+                    person.setValue(record.creatorUserRecordID?.recordName, forKey: "recordIDName")
+                    person.setValue(record.valueForKey("IsDeleted"), forKey: "isDelete")
+                    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                }
+                getAllDeletedUsersOperation.queryCompletionBlock = {
+                    (cursor, error) -> Void in
+        
+                }
+                OperationQueue().addOperation(getAllDeletedUsersOperation)
         CKContainer.defaultContainer().publicCloudDatabase.performQuery(getUsersQuery, inZoneWithID: nil) {
             (records, error) -> Void in
             for record in records! {
-                logw("zAAz: \(record)")
+                logw(" \(record)")
             }
             error?.localizedDescription
         }
@@ -759,16 +764,16 @@ class Model: NSObject, CLLocationManagerDelegate {
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
-        let predicate = NSPredicate(format: "FacebookID != %@", me.valueForKey("facebookID") as! String)
-        let subscription = CKSubscription(recordType: "Users",
+        let predicate = NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: me.recordIDName!))
+        let subscription = CKSubscription(recordType: RecordTypes.UsersStatus,
             predicate: predicate,
-            options: .FiresOnRecordUpdate)
+            options: [.FiresOnRecordUpdate, .FiresOnRecordCreation])
         
         let notificationInfo = CKNotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
-            notificationInfo.category = NotificationCategoryMessages.UserUpdate
+            notificationInfo.category = NotificationCategoryMessages.UserStatusUpdate
         }
         
         subscription.notificationInfo = notificationInfo
@@ -836,6 +841,8 @@ class Model: NSObject, CLLocationManagerDelegate {
             }
         })
     }
+    
+    
 }
 
 let modelSingletonGlobal = Model()

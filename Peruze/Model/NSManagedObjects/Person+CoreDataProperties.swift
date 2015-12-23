@@ -28,6 +28,6 @@ extension Person {
     @NSManaged var uploads: NSSet?
     @NSManaged var averageRating: NSNumber?
     @NSManaged var mutualFriends: NSNumber?
-    @NSManaged var isDelete: String?
+    @NSManaged var isDelete: NSNumber?
 
 }

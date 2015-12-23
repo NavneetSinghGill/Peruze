@@ -73,7 +73,7 @@ class PostFavoriteOperation: Operation {
     }
     
     let myRecordID = CKRecordID(recordName: myRecordIDName)
-    let myNewRecord = CKRecord(recordType: RecordTypes.User, recordID: myRecordID)
+    let myNewRecord = CKRecord(recordType: RecordTypes.Users, recordID: myRecordID)
     myNewRecord.setObject(allReferences, forKey: "FavoriteItems")
     
     let saveMeOp = CKModifyRecordsOperation(recordsToSave: [myNewRecord], recordIDsToDelete: nil)

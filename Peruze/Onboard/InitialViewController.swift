@@ -162,7 +162,7 @@ class InitialViewController: UIViewController {
         logw("\(NSDate()) setupAndSegueToTabBarVC()")
         let me  = Person.MR_findFirstByAttribute("me", withValue: true)
         if me != nil && me.isDelete != "no"{
-            me.setValue("no", forKey: "isDelete")
+            me.setValue(0, forKey: "isDelete")
             managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
             let modifyUserOperation = UpdateUserOperation(personToUpdate: (me)){
                 dispatch_async(dispatch_get_main_queue()) {

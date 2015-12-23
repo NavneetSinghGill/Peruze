@@ -98,7 +98,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
-    
+    Model.sharedInstance().getAllDeleteUsers()
     //APNS
 //    Model.sharedInstance().getAllSubscription()
     Model.sharedInstance().subscribeForChat()

@@ -98,7 +98,7 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = info["recordID"] as! String
                         NSNotificationCenter.defaultCenter().postNotificationName("removeItemFromLocalDB", object: nil, userInfo: ["recordID":recordID])
-                    } else if category == NotificationCategoryMessages.UserUpdate {
+                    } else if category == NotificationCategoryMessages.UserStatusUpdate {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchUserWithRecord(recordID)
                     } else if category == NotificationCategoryMessages.UpdateOfferMessage {

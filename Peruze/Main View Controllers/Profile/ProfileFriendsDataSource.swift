@@ -90,7 +90,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
                 newSortedFriendsData.append(FriendsDataAndProfilePic(friendData: data, profileImage: profileImage))
             } else {
                 let personPredicate = NSPredicate(format: "FacebookID == %@", id as! String)
-                let personQuery = CKQuery(recordType: RecordTypes.User, predicate: personPredicate)
+                let personQuery = CKQuery(recordType: RecordTypes.Users, predicate: personPredicate)
                 let personQueryOp = CKQueryOperation(query: personQuery)
                 logw("abcdefgh")
                 

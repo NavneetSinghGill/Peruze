@@ -43,9 +43,9 @@ class PostUserOperation: Operation {
 
     let facebookID = myPerson.valueForKey("facebookID") as! String
     
-    var isDelete = "yes"
-    if myPerson.valueForKey("isDelete") as? String == nil {
-        isDelete = "no"
+    var isDelete = 1
+    if myPerson.valueForKey("isDelete") as? Int == nil {
+        isDelete = 0
     }
     
     //save the image to disk and create the asset for the image
@@ -167,8 +167,9 @@ class PostUserOperation: Operation {
 
 class UpdateUserOperation: GroupOperation {
     init(personToUpdate : NSManagedObject!,
+        context: NSManagedObjectContext = managedConcurrentObjectContext,
         completion: (Void -> Void) = {}) {
-            let updateUserOperation = UpdateUserOnCloudOperation(personToUpdate: personToUpdate){
+            let updateUserOperation = UpdateUserOnCloudOperation(personToUpdate: personToUpdate, context: context){
                 completion()
             }
             
@@ -179,57 +180,96 @@ class UpdateUserOperation: GroupOperation {
 }
 
 class UpdateUserOnCloudOperation: Operation {
-    let user: NSManagedObject!
+    var user: NSManagedObject!
+    let context: NSManagedObjectContext!
     let finishBlock = {}
+    var fetchCount: Int!
     init(personToUpdate : NSManagedObject!,
+        context: NSManagedObjectContext = managedConcurrentObjectContext,
         completion: (Void -> Void) = {}) {
+        self.context = context
         user = personToUpdate
     }
     override func execute() {
         logw(__FUNCTION__ + " of " + __FILE__ + " called.  ")
         if let recordIDName = user.valueForKey("recordIDName") as? String {
-            
-            let firstName = user.valueForKey("firstName") as! String
-            let lastName = user.valueForKey("lastName") as! String
-            
-            let facebookID = user.valueForKey("facebookID") as! String
-            let isDelete = user.valueForKey("isDelete") as! String
-            
-            //save the image to disk and create the asset for the image
-            let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
-            
-            if let imageData : NSData = user.valueForKey("image") as? NSData {
-                if !imageData.writeToURL(imageURL, atomically: true) {
-                    logw("imageData.writeToURL failed to write")
-                    self.finish()
-                    return
-                }
-            }
-            
-            let imageAsset = CKAsset(fileURL: imageURL)
-            let record = CKRecord(recordType: RecordTypes.User, recordID: CKRecordID(recordName: recordIDName))
-            record.setObject(firstName, forKey: "FirstName")
-            record.setObject(lastName, forKey: "LastName")
-            record.setObject(facebookID, forKey: "FacebookID")
-            record.setObject(isDelete, forKey: "IsDeleted")
-            
-            let updateUserOp = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
-            updateUserOp.modifyRecordsCompletionBlock = {
-                (records, recordIDs, error) -> Void in
-                if error == nil {
-                    for record in records! {
-                        let recordID = record.recordID.recordName
-                        let context = NSManagedObjectContext.MR_context()
-                        let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: context)
-                        person.setValue(record.valueForKey("IsDeleted") as! String, forKey: "isDelete")
-                        context.MR_saveToPersistentStoreAndWait()
+            self.fetchCount = 0
+            //Fetch UserStatus record
+            let predicate = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: recordIDName))
+            let query = CKQuery(recordType: RecordTypes.UsersStatus, predicate: predicate)
+            let getUserStatusOp = CKQueryOperation(query: query)
+            getUserStatusOp.recordFetchedBlock = { record -> Void in
+                self.fetchCount = self.fetchCount + 1
+                
+                //Update record if record exists on cloud
+                let isDelete = self.user.valueForKey("isDelete") as! Int
+                
+                var recordID = CKRecordID(recordName: recordIDName)
+                let userIDRef = CKReference(recordID: recordID, action: CKReferenceAction.None)
+                record.setObject(userIDRef, forKey: "UserRecordIDName")
+                record.setObject(isDelete, forKey: "IsDeleted")
+                
+                let updateUserOp = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+                updateUserOp.modifyRecordsCompletionBlock = {
+                    (records, recordIDs, error) -> Void in
+                    if error == nil {
+                        for record in records! {
+                            if record.recordID.recordName == "_3632277db1c1d5d442724c76603b4c17"{
+                                
+                            }
+                            let recordID = record.recordID.recordName
+                            let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
+                            if person != nil {
+                                person.setValue(record.valueForKey("IsDeleted") as! Int, forKey: "isDelete")
+                                self.context.MR_saveToPersistentStoreAndWait()
+                            }
+                        }
                     }
+                    self.finish()
                 }
-                self.finish()
+                updateUserOp.savePolicy = .ChangedKeys
+                updateUserOp.qualityOfService = self.qualityOfService
+                CKContainer.defaultContainer().publicCloudDatabase.addOperation(updateUserOp)
             }
-            updateUserOp.savePolicy = .ChangedKeys
-            updateUserOp.qualityOfService = qualityOfService
-            CKContainer.defaultContainer().publicCloudDatabase.addOperation(updateUserOp)
+            
+            getUserStatusOp.completionBlock = {
+                if self.fetchCount == 0 {
+                    //Create record if there is no record on cloud
+                    let isDelete = self.user.valueForKey("isDelete") as! Int
+                    
+                    let usersStatusRecord = CKRecord(recordType: RecordTypes.UsersStatus)
+                    
+                    let recordID = CKRecordID(recordName: recordIDName)
+                    let userIDRef = CKReference(recordID: recordID, action: CKReferenceAction.None)
+                    usersStatusRecord.setObject(userIDRef, forKey: "UserRecordIDName")
+                    usersStatusRecord.setObject(isDelete, forKey: "IsDeleted")
+                    
+                    let updateUserOp = CKModifyRecordsOperation(recordsToSave: [usersStatusRecord], recordIDsToDelete: nil)
+                    updateUserOp.modifyRecordsCompletionBlock = {
+                        (records, recordIDs, error) -> Void in
+                        if error == nil {
+                            for record in records! {
+                                if record.recordID.recordName == "_3632277db1c1d5d442724c76603b4c17"{
+                                    
+                                }
+                                let recordID = record.recordID.recordName
+                                let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
+                                if person != nil {
+                                    person.setValue(record.valueForKey("IsDeleted") as! Int, forKey: "isDelete")
+                                    self.context.MR_saveToPersistentStoreAndWait()
+                                }
+                            }
+                        }
+                        self.finish()
+                    }
+                    updateUserOp.savePolicy = .ChangedKeys
+                    updateUserOp.qualityOfService = self.qualityOfService
+                    CKContainer.defaultContainer().publicCloudDatabase.addOperation(updateUserOp)
+                }
+            }
+            
+            CKContainer.defaultContainer().publicCloudDatabase.addOperation(getUserStatusOp)
+            
         }
     }
     override func finished(errors: [NSError]) {
@@ -246,6 +286,19 @@ class UpdateUserOnCloudOperation: Operation {
         let cachePath = paths.first!
         let cacheURL : NSURL = (NSURL(string: cachePath)?.URLByAppendingPathComponent(name))!
         return (cacheURL.absoluteString)
+    }
+}
+
+class GetUserFromUserStatusOperation: Operation {
+    var userStatusRecordID: String
+    init(userStatusRecordID: String) {
+        self.userStatusRecordID = userStatusRecordID
+    }
+    override func execute() {
+        let predicate = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: userStatusRecordID))
+        let query = CKQuery(recordType: RecordTypes.UsersStatus, predicate: predicate)
+        let getUserStatusOp = CKQueryOperation(query: query)
+        
     }
 }
 
