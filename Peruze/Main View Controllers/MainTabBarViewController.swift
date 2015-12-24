@@ -46,17 +46,17 @@ class MainTabBarViewController: UITabBarController {
 //                    print("\nFrom APS-dictionary with key \"type\":  \( badge)")
                     if category == NotificationCategoryMessages.NewChatMessage {
                         //refresh messages
-                        self.setChatBadgeCount(Int(badge))
-                        let navController = self.viewControllers![2] as! UINavigationController
-                        let chatTableViewController = navController.viewControllers[0] as! ChatTableViewController
-//                        chatTableViewController.refresh()
-                        if chatTableViewController.view.window != nil {
-                            // viewController is visible
-                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "yes")
-                        } else {
-                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "no")
-                        }
-                        NSUserDefaults.standardUserDefaults().synchronize()
+//                        self.setChatBadgeCount(Int(badge))
+//                        let navController = self.viewControllers![2] as! UINavigationController
+//                        let chatTableViewController = navController.viewControllers[0] as! ChatTableViewController
+////                        chatTableViewController.refresh()
+//                        if chatTableViewController.view.window != nil {
+//                            // viewController is visible
+//                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "yes")
+//                        } else {
+//                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "no")
+//                        }
+//                        NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchChatWithRecord(recordID)
                     } else if category == NotificationCategoryMessages.NewOfferMessage {
@@ -125,6 +125,10 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         //                        requestsTableViewController.refresh()
                         Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationCategoryMessages.UpdateOfferMessage)
+                    } else if category == NotificationCategoryMessages.AcceptedOfferMessage {
+                        self.setChatBadgeCount(Int(badge))
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category)
                     }
 //                }
                 resetBadgeValue()

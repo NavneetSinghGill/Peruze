@@ -44,6 +44,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     tableView.rowHeight = UITableViewAutomaticDimension
     navigationController!.navigationBar.tintColor = .redColor()
     tableView.reloadData()
+    self.dataSource.getLocalAcceptedExchanges()
     checkForEmptyData(false)
   }
   
@@ -217,13 +218,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   private func checkForEmptyData(animated: Bool) {
-    //        if tableView.visibleCells.count == 0 {
-    //            UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-    //                self.noChatsLabel.alpha = 1.0
-    //                self.tableView.alpha = 0.0
-    //
-    //            }
-    //        }
+//            if tableView.visibleCells.count == 0 {
+//                UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+//                    self.noChatsLabel.alpha = 1.0
+//                    self.tableView.alpha = 0.0
+//    
+//                }
+//            }
   }
   
   //MARK: - Navigation

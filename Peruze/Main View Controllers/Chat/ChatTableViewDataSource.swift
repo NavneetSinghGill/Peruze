@@ -26,9 +26,15 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     
     func getLocalAcceptedExchanges() {
         let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
+        let itemOfferedNotNil = NSPredicate(format: "itemOffered.recordIDName != nil")
+        let itemRequestedNotNil = NSPredicate(format: "itemRequested.recordIDName != nil")
+        let itemOfferedImageNotNil = NSPredicate(format: "itemOffered.image != nil")
+        let itemRequestedImageNotNil = NSPredicate(format: "itemRequested.image != nil")
+        let itemOfferedTitleNotNil = NSPredicate(format: "itemOffered.title != nil")
+        let itemRequestedTitleNotNil = NSPredicate(format: "itemRequested.title != nil")
         fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
             ascending: true,
-            withPredicate: chatPredicate,
+            withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [chatPredicate, itemOfferedNotNil, itemRequestedNotNil, itemOfferedImageNotNil, itemRequestedImageNotNil, itemOfferedTitleNotNil, itemRequestedTitleNotNil]),
             groupBy: nil,
             delegate: self)
         

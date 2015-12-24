@@ -43,6 +43,7 @@ struct NotificationMessages {
     static let ItemAdditionOrUpdation = "A new item has been added"
     static let ItemDeletion = "An item has been deleted"
     static let UserUpdate = "An User updated"
+    static let AcceptedOfferMessage = "An offer has been accepted."
 }
 
 struct NotificationCategoryMessages {
@@ -53,6 +54,7 @@ struct NotificationCategoryMessages {
     static let ItemAdditionOrUpdation = "Item added or updated"
     static let ItemDeletion = "Item Deleted"
     static let UserStatusUpdate = "User update"
+    static let AcceptedOfferMessage = "acceptedOfferMessage"
 }
 
 struct UniversalConstants {
@@ -376,20 +378,27 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        
                         if message == NotificationCategoryMessages.NewOfferMessage {
                             if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
                                 if localExchange.valueForKey("status") != nil &&
-                                    localExchange.valueForKey("status") as? NSNumber == 1 {
+                                    localExchange.valueForKey("status") as? NSNumber == 0 {
                                         NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
                                 }
                             }
                         }
                         if message == NotificationCategoryMessages.UpdateOfferMessage {
-                            if NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") as! String == "yes"{
-                                if localExchange.valueForKey("status") != nil &&
-                                    localExchange.valueForKey("status") as? NSNumber == 2 {
-                                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
-                                }
+//                            if NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") as! String == "yes"{
+//                                if localExchange.valueForKey("status") != nil &&
+//                                    localExchange.valueForKey("status") as? NSNumber == 2 {
+//                                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+//                                }
+//                            }
+                        }
+                        if message == NotificationCategoryMessages.AcceptedOfferMessage {
+                            if localExchange.valueForKey("status") != nil &&
+                                localExchange.valueForKey("status") as? NSNumber == 1 {
+                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
                             }
                         }
                     }
@@ -605,11 +614,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                 database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
                         logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
                     if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
+                        logw("Subscriptions added after deleting.")
                         self.subscribeForNewOffer()
                     }
                 })
             }
             if subscriptions?.count == 0 {
+                logw("Subscriptions added with no previous subscriptions.")
                 self.subscribeForNewOffer()
             }
         })
@@ -652,8 +663,9 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "RequestedItemOwnerRecordIDName == %@", me.recordIDName!)
+        let statusPredicate = NSPredicate(format: "ExchangeStatus != 1")
         let subscription = CKSubscription(recordType: "Exchange",
-            predicate: predicate,
+            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, statusPredicate]),
             options: .FiresOnRecordUpdate)
         
         let notificationInfo = CKNotificationInfo()
@@ -671,6 +683,39 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     logw("UpdateOffer subscription success")
                 }
+                self.subscribeForAcceptedOffer()
+            }))
+    }
+    
+    func subscribeForAcceptedOffer() {
+        
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "OfferedItemOwnerRecordIDName == %@", me.recordIDName!)
+//        let statusPredicate = NSPredicate(format: "ExchangeStatus == 1")
+        let subscription = CKSubscription(recordType: "Exchange",
+            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate]),
+            options: .FiresOnRecordUpdate)
+        
+        let notificationInfo = CKNotificationInfo()
+        notificationInfo.alertBody = NotificationMessages.AcceptedOfferMessage
+        notificationInfo.shouldBadge = true
+        notificationInfo.soundName = "default"
+        notificationInfo.shouldSendContentAvailable = true
+        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = NotificationCategoryMessages.AcceptedOfferMessage
+        }
+        
+        subscription.notificationInfo = notificationInfo
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("AcceptedOffer subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("AcceptedOffer subscription success")
+                }
                 self.subscribeForChat()
             }))
     }
@@ -686,9 +731,9 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertBody = NotificationMessages.NewChatMessage
-        notificationInfo.shouldBadge = true
-        notificationInfo.soundName = "default"
+//        notificationInfo.alertBody = NotificationMessages.NewChatMessage
+//        notificationInfo.shouldBadge = true
+//        notificationInfo.soundName = "default"
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {

@@ -100,8 +100,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     Model.sharedInstance().getAllDeleteUsers()
     //APNS
-//    Model.sharedInstance().getAllSubscription()
-    Model.sharedInstance().subscribeForChat()
+    Model.sharedInstance().getAllSubscription()
+//    Model.sharedInstance().subscribeForChat()
 //    Model.sharedInstance().subscribeForItemAdditionUpdation()
 //    Model.sharedInstance().subscribeForItemDeletion()
   }
@@ -117,8 +117,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             if recordID != nil {
                 let itemToDelete = Item.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: managedConcurrentObjectContext)
                 do {
-                    let localItem = try managedConcurrentObjectContext.existingObjectWithID(itemToDelete.objectID)
-                    managedConcurrentObjectContext.deleteObject(localItem)
+                    if itemToDelete != nil {
+                        let localItem = try managedConcurrentObjectContext.existingObjectWithID(itemToDelete.objectID)
+                        managedConcurrentObjectContext.deleteObject(localItem)
+                    }
                 } catch {
                     logw("\(error)")
                 }

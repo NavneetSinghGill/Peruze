@@ -80,7 +80,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     
     func appDidBecomeActive() {
         if self.isViewLoaded() && self.view.window != nil {
-            
+            self.dataSource?.getChatAfterDate(NSDate(timeIntervalSince1970: 0 ))
         }
     }
     

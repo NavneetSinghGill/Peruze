@@ -167,6 +167,13 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
         let offeredID = CKRecordID(recordName: offeredItemID)
         let offeredRef = CKReference(recordID: offeredID, action: CKReferenceAction.None)
         exchangeRecord.setObject(offeredRef, forKey: "OfferedItem")
+        
+        //set OfferedItemOwnerRecordIDName
+        if
+            let offeredItemOwner = offeredItem.valueForKey("owner") as? NSManagedObject,
+            let ownerRecordIDName = offeredItemOwner.valueForKey("recordIDName") as? String {
+                exchangeRecord.setObject(ownerRecordIDName, forKey: "OfferedItemOwnerRecordIDName")
+        }
       }
     }
     

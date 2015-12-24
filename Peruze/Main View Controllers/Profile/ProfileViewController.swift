@@ -73,7 +73,7 @@ class ProfileViewController: UIViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "friendsCountUpdation:", name: "LNMutualFriendsCountUpdation", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reviewsCountUpdation:", name: "LNReviewsCountUpdation", object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshProfileVCData", name: "refreshProfileVCData", object: nil)
         
         numberOfExchangesLabel.text = "0"
         numberOfFavoritesLabel.text = "0"
@@ -161,7 +161,93 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.getMyUploadedItems()
         self.updateViewAfterGettingResponse()
+    }
+    
+    func getMyUploadedItems() {
+        let personRecordID = CKRecordID(recordName: self.personForProfile?.valueForKey("recordIDName") as! String)
+        
+        let predicate = NSPredicate(format: "creatorUserRecordID == %@", personRecordID)
+        let getItemsQuery = CKQuery(recordType: RecordTypes.Item, predicate: predicate)
+        let getItemsOperation = CKQueryOperation(query: getItemsQuery)
+        
+        //handle returned objects
+        getItemsOperation.recordFetchedBlock = {
+            (record: CKRecord!) -> Void in
+            
+            let context = NSManagedObjectContext.MR_context()
+            let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                withValue: record.recordID.recordName, inContext: context)
+            
+            localUpload.setValue(record.recordID.recordName, forKey: "recordIDName")
+            
+            let ownerRecordIDName = record.creatorUserRecordID!.recordName
+            
+            if ownerRecordIDName == "__defaultOwner__" {
+                let owner = Person.MR_findFirstByAttribute("me",
+                    withValue: true,
+                    inContext: context)
+                localUpload.setValue(owner, forKey: "owner")
+            } else {
+                if let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
+                    withValue: ownerRecordIDName,
+                    inContext: context){
+                        localUpload.setValue(owner, forKey: "owner")
+                }
+            }
+            
+            if let title = record.objectForKey("Title") as? String {
+                localUpload.setValue(title, forKey: "title")
+                if title == "Crop Mobile"{
+                    
+                }
+            }
+            
+            if let detail = record.objectForKey("Description") as? String {
+                localUpload.setValue(detail, forKey: "detail")
+            }
+            
+            if let ownerFacebookID = record.objectForKey("OwnerFacebookID") as? String {
+                localUpload.setValue(ownerFacebookID, forKey: "ownerFacebookID")
+            } else {
+                localUpload.setValue("noId", forKey: "ownerFacebookID")
+            }
+            
+            if let imageAsset = record.objectForKey("Image") as? CKAsset {
+                let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+                localUpload.setValue(imageData, forKey: "image")
+            }
+            
+            if let itemLocation = record.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
+                
+                if let latitude : Double = Double(itemLocation.coordinate.latitude) {
+                    localUpload.setValue(latitude, forKey: "latitude")
+                }
+                
+                if let longitude : Double = Double(itemLocation.coordinate.longitude) {
+                    localUpload.setValue(longitude, forKey: "longitude")
+                }
+            }
+            
+            if localUpload.hasRequested != "yes" {
+                localUpload.setValue("no", forKey: "hasRequested")
+            }
+            
+            //save the context
+            context.MR_saveToPersistentStoreAndWait()
+        }
+        getItemsOperation.queryCompletionBlock = {
+            (cursor, error) -> Void in
+            if error == nil {
+                logw("Fetched all upload items in Profile uploads VC")
+            } else {
+                logw("Error Fetching all upload items in Profile uploads VC")
+            }
+        }
+        OperationQueue().addOperation(getItemsOperation)
+        
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -181,6 +267,12 @@ class ProfileViewController: UIViewController {
             self.profileImageView.image = UIImage(data: me!.valueForKey("image") as! NSData)
         }
     }
+    
+    func refreshProfileVCData() {
+        ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+        ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
+    }
+    
     //MARK: - Handling Tab Segues
     @IBAction func uploadsTapped(sender: AnyObject) {
         uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)

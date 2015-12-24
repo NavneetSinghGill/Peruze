@@ -124,6 +124,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
       break
     }
+    
   }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
@@ -131,6 +132,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         if self.tableView != nil {
             self.tableView.endUpdates()
         }
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
     }
   }
 }

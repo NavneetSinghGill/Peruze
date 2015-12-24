@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
   
-  private struct Constants {
-  }
     func resetBadgeCounter() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        
         let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
         badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
             if error != nil {

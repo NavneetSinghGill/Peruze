@@ -3356,6 +3356,9 @@
                                     </mask>
                                 </variation>
                             </scrollView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UkV-fh-zif">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3381,6 +3384,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="UkV-fh-zif" id="Q2G-k9-HH2"/>
                         <outlet property="farLeftStar" destination="FvF-hE-AJd" id="2g2-KC-qpw"/>
                         <outlet property="farRightStar" destination="4lJ-rT-QXb" id="6RB-kS-Nyg"/>
                         <outlet property="middleLeftStar" destination="Qtm-Bc-QhR" id="sI8-ZJ-Lrl"/>
@@ -4121,13 +4125,13 @@
                                 <attributedString key="attributedText">
                                     <fragment content="Invite Friends to Like">
                                         <attributes>
-                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="13" name="HelveticaNeue"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" Peruze">
                                         <attributes>
-                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="13" name="HelveticaNeue-Bold"/>
                                         </attributes>
                                     </fragment>

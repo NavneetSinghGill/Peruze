@@ -31,6 +31,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var farRightStar: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     private var starRatingCount: Int = 0
     var profileOwner: Person?
     private var detailTextView: UITextView!
@@ -84,6 +85,8 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
             alert.addAction(cancel)
             presentViewController(alert, animated: true, completion: nil)
         } else {
+            self.navigationItem.rightBarButtonItem?.enabled = false
+            self.activityIndicatorView.startAnimating()
             let postReviewOperation = PostReviewOperation(
                 title: self.titleTextField.text!,
                 review: self.detailTextView.text == Constants.ReviewPlaceholder ? "" : self.detailTextView.text,
@@ -91,6 +94,8 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
                 userBeingReviewRecordIDName: self.profileOwner!.valueForKey("recordIDName") as! String,
                 presentationContext: self){
                     //Completion block
+                    self.activityIndicatorView.stopAnimating()
+                    self.navigationItem.rightBarButtonItem?.enabled = true
                     self.dismissViewControllerAnimated(true, completion: nil)
             }
             OperationQueue().addOperation(postReviewOperation)
