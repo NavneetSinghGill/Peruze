@@ -279,11 +279,11 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         logw("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             self.isGetItemsInProgress = false
-            self.dataSource.refreshData(self)
+//            self.dataSource.refreshData(self)
+            self.refreshItemsIfRetrivedFromCloud()
             logw("\(NSDate())<<<<< Peruze view - GetPeruzeItems completed!")
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "FetchUserProfileIfNeeded", object: nil, userInfo: nil))
             self.getAllPersonsMissingData()
-            
         })
     }
     
@@ -308,11 +308,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.getAllItems()
             }
         }
-        
-        
     }
-    
-    
     
     // Method calls when filter changed from the setting screen
     func updateItemsOnFilterChange() {
@@ -324,6 +320,13 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     func update() {
         logw("\n\n\(NSDate()) ----------------  Timer started ----------------------")
         getMoreItems()
+    }
+    
+    func refreshItemsIfRetrivedFromCloud() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if (defaults.boolForKey("keyHasDataRetrivedFromCloud")) {
+            self.dataSource.refreshData(self)
+        }
     }
     
   

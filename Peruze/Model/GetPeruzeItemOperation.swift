@@ -78,6 +78,9 @@ class GetPeruzeItemOperation: GroupOperation {
         defaults.setBool(false, forKey: "keyIsMoreItemsAvalable")
         defaults.synchronize()
     }
+    
+    defaults.setBool(getItems.hasDataRetrivedFromCloud, forKey: "keyHasDataRetrivedFromCloud")
+    
     defaults.synchronize()
     cursor = getItems.cursor
     if let error = errors.first {

@@ -123,7 +123,7 @@ class GetItemOperation: Operation {
   let database: CKDatabase
   let context: NSManagedObjectContext
   var cursor: CKQueryCursor?
-  
+  var hasDataRetrivedFromCloud = false
   init(cursor: CKQueryCursor? = nil,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
@@ -157,6 +157,7 @@ class GetItemOperation: Operation {
     }
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
+        self.hasDataRetrivedFromCloud = true
       if logging { logw("\(NSDate())\nGetItemsOperation per record completion block \n \(record)") }
       
       let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
