@@ -93,6 +93,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         else {
           return cell
       }
+        cell.userInteractionEnabled = false
       let firstName = reviewer.valueForKey("firstName") as? String
       cell.titleLabel.text = "\(indexPath.row + 1). \(title)"
       cell.starView.numberOfStars = (review.valueForKey("starRating") as? NSNumber)?.floatValue ?? 0

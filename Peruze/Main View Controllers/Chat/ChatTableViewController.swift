@@ -60,9 +60,11 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
     
   func refresh() {
+    logw("ChatTableview getAllChats")
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
       dispatch_async(dispatch_get_main_queue()) {
+        logw("ChatTableview getAllChats completion block")
         self.refreshControl.endRefreshing()
         self.activityIndicatorView.stopAnimating()
         self.activityIndicatorView.alpha = 1
@@ -86,7 +88,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   private func cancelEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
-      
+      logw("Accepted exchange Cancel tapped.")
       //Swift 2.0
       //get the recordIDName for the exchange at that index path
       guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
@@ -124,7 +126,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   private func completeEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
-      
+      logw("Accepted exchange Complete tapped.")
       //get the recordIDName for the exchange at that index path
       //Swift 2.0
       guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
@@ -218,13 +220,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   private func checkForEmptyData(animated: Bool) {
-//            if tableView.visibleCells.count == 0 {
-//                UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-//                    self.noChatsLabel.alpha = 1.0
+            if tableView.visibleCells.count == 0 {
+                UIView.animateWithDuration(animated ? 0.5 : 0.0) {
+                    self.noChatsLabel.alpha = 1.0
 //                    self.tableView.alpha = 0.0
-//    
-//                }
-//            }
+    
+                }
+            }
   }
   
   //MARK: - Navigation

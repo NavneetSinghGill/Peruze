@@ -112,6 +112,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     
     func localRefresh() {
         do {
+            logw("Requests Table VC local refresh.")
             self.activityIndicatorView.stopAnimating()
             self.activityIndicatorView.alpha = 1
             try self.dataSource.fetchedResultsController.performFetch()
@@ -168,6 +169,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
+    logw("Requests Table cell tapped of indexpath: \(indexPath)")
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
@@ -179,7 +181,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   
   private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
-      
+      logw("Requests Table cell Deny tapped.")
       //get the recordIDName for the exchange at that index path
       let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
@@ -209,7 +211,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   
   private func acceptEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
-      
+      logw("Requests Table cell Accept tapped.")
       //get the recordIDName for the exchange at that index path
       let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
       
@@ -254,6 +256,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if let indexPath = sender as? NSIndexPath {
       if let destVC = segue.destinationViewController as? RequestsViewController {
+        logw("Requests Table segue")
         destVC.indexPathToScrollToOnInit = indexPath
         destVC.dataSource = dataSource
       }

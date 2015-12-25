@@ -29,7 +29,9 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate])
+    let itemsTitleNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil")
+//    let requestedItemTitleNotNil = NSPredicate(format: "itemRequested.title != nil")
+    let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate, itemsTitleNotNil])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
       ascending: true,
       withPredicate: fetchedResultsPredicate,
@@ -76,6 +78,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
       let theirItemImage = theirItem.valueForKey("image") as? NSData,
       let myItemImage = myItem.valueForKey("image") as? NSData else {
+        logw("Requests datasource failure.")
         return cell
     }
     

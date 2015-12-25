@@ -110,21 +110,21 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
         }
       presentViewController(reviewVC!, animated: true, completion: nil)
     } else {
-      var foundMatch: Int? = nil
-      for index in 0..<tallRowsIndexPaths.count {
-        if indexPath == tallRowsIndexPaths[index] {
-          foundMatch = index
-          break
-        }
-      }
-      if foundMatch != nil {
-        tallRowsIndexPaths.removeAtIndex(foundMatch!)
-      } else {
-        tallRowsIndexPaths.append(indexPath)
-      }
-      tableView.beginUpdates()
-      tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      tableView.endUpdates()
+//      var foundMatch: Int? = nil
+//      for index in 0..<tallRowsIndexPaths.count {
+//        if indexPath == tallRowsIndexPaths[index] {
+//          foundMatch = index
+//          break
+//        }
+//      }
+//      if foundMatch != nil {
+//        tallRowsIndexPaths.removeAtIndex(foundMatch!)
+//      } else {
+//        tallRowsIndexPaths.append(indexPath)
+//      }
+//      tableView.beginUpdates()
+//      tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+//      tableView.endUpdates()
     }
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }

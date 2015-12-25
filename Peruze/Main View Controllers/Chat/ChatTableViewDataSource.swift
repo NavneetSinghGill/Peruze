@@ -39,9 +39,10 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
             delegate: self)
         
         do {
+            logw("Fetching local Chat.")
             try self.fetchedResultsController.performFetch()
         } catch {
-            logw("\(error)")
+            logw("Fetching local Chat failed with error: \(error)")
         }
     }
     
@@ -53,7 +54,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
     cell!.data = (fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-    
+    logw("Accepted exchange table cell data: \(cell?.data)")
     return cell!
   }
   
