@@ -33,7 +33,12 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     if let favorites = me.valueForKey("favorites") as? NSSet {
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
-        self.favorites = favoriteObjs
+        self.favorites = []
+        for favoriteObj in favoriteObjs{
+            if favoriteObj.valueForKey("title") != nil {
+                self.favorites.append(favoriteObj)
+            }
+        }
       } else {
         logw("me.valueForKey('favorites').allObjects was not an [NSManagedObject] ")
       }

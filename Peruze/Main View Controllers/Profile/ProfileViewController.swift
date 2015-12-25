@@ -161,8 +161,10 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.getMyUploadedItems()
         self.updateViewAfterGettingResponse()
+        if self.tabBarController == nil {
+            self.getMyUploadedItems()
+        }
     }
     
     func getMyUploadedItems() {
@@ -229,10 +231,10 @@ class ProfileViewController: UIViewController {
                     localUpload.setValue(longitude, forKey: "longitude")
                 }
             }
-            
-            if localUpload.hasRequested != "yes" {
-                localUpload.setValue("no", forKey: "hasRequested")
-            }
+//            
+//            if localUpload.hasRequested != "yes" {
+//                localUpload.setValue("no", forKey: "hasRequested")
+//            }
             
             //save the context
             context.MR_saveToPersistentStoreAndWait()
@@ -369,7 +371,28 @@ class ProfileViewController: UIViewController {
         let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
         numberOfExchangesLabel.text = String(ex.count)
         //        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
-        numberOfFavoritesLabel.text = String(self.personForProfile!.favorites!.count)
+        var fav = NSSet(array: [])
+        if let favorites = self.personForProfile!.favorites! as? NSSet {
+            if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
+                for favoriteObj in favoriteObjs{
+                    if favoriteObj.valueForKey("title") != nil {
+                        //                                        fav.append(favoriteObj)
+                        if fav.count == 0 {
+                            fav = NSSet(array: [favoriteObj])
+                        } else {
+                            fav = NSSet(array: fav.allObjects + [favoriteObj])
+                        }
+                    }
+                }
+            }
+        }
+        let favoriteCount: Int!
+        if fav.count == 0{
+            favoriteCount = 0
+        } else {
+            favoriteCount = fav.count
+        }
+        numberOfFavoritesLabel.text = String(favoriteCount)
         numberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
         ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
         ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)

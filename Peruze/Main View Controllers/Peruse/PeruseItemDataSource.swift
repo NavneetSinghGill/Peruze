@@ -219,8 +219,14 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
   
   func getFavorites() {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    var trueFavorites = [NSManagedObject]()
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
-      self.favorites = favorites.map { $0.valueForKey("recordIDName") as! String }
+        for favoriteObj in favorites {
+            if favoriteObj.valueForKey("title") != nil {
+                trueFavorites.append(favoriteObj)
+            }
+        }
+      self.favorites = trueFavorites.map { $0.valueForKey("recordIDName") as! String }
     } else {
       logw("me.valueForKey('favorites') was not an NSSet ")
     }

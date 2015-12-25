@@ -3356,15 +3356,17 @@
                                     </mask>
                                 </variation>
                             </scrollView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UkV-fh-zif">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UkV-fh-zif">
                                 <rect key="frame" x="290" y="290" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="UkV-fh-zif" firstAttribute="centerY" secondItem="k5g-lI-0Up" secondAttribute="centerY" id="FKo-37-F9l"/>
                             <constraint firstAttribute="trailing" secondItem="WCG-0D-cxz" secondAttribute="trailing" id="HFJ-Xm-IgY"/>
                             <constraint firstItem="WCG-0D-cxz" firstAttribute="top" secondItem="k5g-lI-0Up" secondAttribute="top" id="KXv-gA-9bS"/>
+                            <constraint firstItem="UkV-fh-zif" firstAttribute="centerX" secondItem="k5g-lI-0Up" secondAttribute="centerX" id="NBQ-Id-tUt"/>
                             <constraint firstItem="WCG-0D-cxz" firstAttribute="bottom" secondItem="D56-0d-tCP" secondAttribute="top" id="dLO-B1-ipm"/>
                             <constraint firstItem="WCG-0D-cxz" firstAttribute="leading" secondItem="k5g-lI-0Up" secondAttribute="leading" id="tsY-4s-82a"/>
                         </constraints>

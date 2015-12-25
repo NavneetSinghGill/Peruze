@@ -118,6 +118,20 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                 let itemToDelete = Item.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: managedConcurrentObjectContext)
                 do {
                     if itemToDelete != nil {
+                        let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+                        var fav: NSSet!
+                        if let favorites = me.valueForKey("favorites") as? NSSet {
+                            if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
+                                for favoriteObj in favoriteObjs{
+                                    if favoriteObj.valueForKey("title") != nil {
+//                                        fav.append(favoriteObj)
+                                        fav = NSSet(array: fav.allObjects + [favoriteObj])
+                                    }
+                                }
+                            }
+                        }
+                        let newFavorites = NSSet(array: fav.allObjects)
+                        me.setValue(newFavorites, forKey: "favorites")
                         let localItem = try managedConcurrentObjectContext.existingObjectWithID(itemToDelete.objectID)
                         managedConcurrentObjectContext.deleteObject(localItem)
                     }
