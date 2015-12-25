@@ -44,6 +44,11 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
         } catch {
             logw("Fetching local Chat failed with error: \(error)")
         }
+        dispatch_async(dispatch_get_main_queue()){
+            if self.tableView != nil {
+                self.tableView.reloadData()
+            }
+        }
     }
     
   

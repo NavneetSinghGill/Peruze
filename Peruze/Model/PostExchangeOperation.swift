@@ -19,15 +19,16 @@ class PostExchangeOperation: GroupOperation {
   1. Create the exchange and save it to the local database
   2. Upload the exchange to the CloudKit database
   */
-  
+  var errorBlockk: (Void -> Void) = { }
   init(date: NSDate,
     status: ExchangeStatus,
     itemOfferedRecordIDName: String,
     itemRequestedRecordIDName: String,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
+    errorBlock: (Void -> Void) = { },
     completion: (Void -> Void) = { }) {
-      
+      self.errorBlockk = errorBlock
       //create the temporary ID
       let tempId = NSUUID().UUIDString
       
@@ -62,7 +63,8 @@ class PostExchangeOperation: GroupOperation {
   override func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
     if errors.first != nil {
       logw("PostExchangeOperation finished with the following first error: ")
-      logw("\(errors.first!)")
+        logw("\(errors.first!)")
+        self.errorBlockk()
     }
   }
 }

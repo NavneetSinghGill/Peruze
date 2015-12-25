@@ -191,7 +191,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         recordIDName: idName,
         exchangeStatus: ExchangeStatus.Denied,
         database: publicDB,
-        context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Denying exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+      })
       //add completion
       operation.completionBlock = {
         dispatch_async(dispatch_get_main_queue()) {
@@ -201,10 +208,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
             logw("\(error)")
           }
           self.tableView.reloadData()
+            self.activityIndicatorView.stopAnimating()
         }
       }
       
       //add operation to the queue
+        self.activityIndicatorView.startAnimating()
       OperationQueue().addOperation(operation)
     }
   }
@@ -221,7 +230,14 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         recordIDName: idName,
         exchangeStatus: ExchangeStatus.Accepted,
         database: publicDB,
-        context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Accepting exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+      })
       
       //add completion
       operation.completionBlock = { () -> Void in
@@ -232,10 +248,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
             logw("\(error)")
           }
           self.tableView.reloadData()
+            self.activityIndicatorView.stopAnimating()
         }
       }
       
       //add operation to the queue
+        self.activityIndicatorView.startAnimating()
       OperationQueue().addOperation(operation)
     }
     accept.backgroundColor = .greenColor()

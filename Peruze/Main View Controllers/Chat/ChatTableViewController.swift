@@ -68,7 +68,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.refreshControl.endRefreshing()
         self.activityIndicatorView.stopAnimating()
         self.activityIndicatorView.alpha = 1
-        self.dataSource.tableView.reloadData()
+        self.dataSource.getLocalAcceptedExchanges()
       }
     }
     OperationQueue().addOperation(chatOp)
@@ -102,7 +102,14 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         recordIDName: idName,
         exchangeStatus: ExchangeStatus.Cancelled,
         database: publicDB,
-        context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Canceling exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+      })
       
       //add completion
       operation.completionBlock = { () -> Void in
@@ -114,12 +121,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
             logw("Fetch threw an error. Not updating")
             logw("\(error)")
           }
-          
+          self.activityIndicatorView.stopAnimating()
         }
       }
       
       
       //add operation to the queue
+        self.activityIndicatorView.startAnimating()
       OperationQueue().addOperation(operation)
     }
   }
@@ -140,7 +148,14 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         recordIDName: idName,
         exchangeStatus: ExchangeStatus.Completed,
         database: publicDB,
-        context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Completing exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+      })
       
       //add completion
       operation.completionBlock = {
@@ -152,11 +167,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
             logw("Fetch threw an error. Not updating")
             logw("\(error)")
           }
-          
+          self.activityIndicatorView.stopAnimating()
         }
       }
       
       //add operation to the queue
+        self.activityIndicatorView.startAnimating()
       OperationQueue().addOperation(operation)
     }
     accept.backgroundColor = .greenColor()
@@ -178,16 +194,25 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       recordIDName: idName,
       exchangeStatus: ExchangeStatus.Cancelled,
       database: publicDB,
-      context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Canceling exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+    })
     
     //add completion
     operation.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
         self.tableView.reloadData()
+        self.activityIndicatorView.stopAnimating()
       }
     }
     
     //add operation to the queue
+    self.activityIndicatorView.startAnimating()
     OperationQueue().addOperation(operation)
     
   }
@@ -206,16 +231,25 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       recordIDName: idName,
       exchangeStatus: ExchangeStatus.Completed,
       database: publicDB,
-      context: managedConcurrentObjectContext)
+        context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Completing exchange.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+    })
     
     //add completion
     operation.completionBlock = {
       dispatch_async(dispatch_get_main_queue()) {
+        self.activityIndicatorView.stopAnimating()
         self.tableView.reloadData()
       }
     }
     
     //add operation to the queue
+    self.activityIndicatorView.startAnimating()
     OperationQueue().addOperation(operation)
   }
   
@@ -226,7 +260,9 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
 //                    self.tableView.alpha = 0.0
     
                 }
-            }
+            } else {
+                self.noChatsLabel.alpha = 0.0
+    }
   }
   
   //MARK: - Navigation

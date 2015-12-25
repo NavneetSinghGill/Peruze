@@ -66,7 +66,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.timer = NSTimer.scheduledTimerWithTimeInterval(3*60, target: self, selector: "update", userInfo: nil, repeats: true)
+    self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "update", userInfo: nil, repeats: true)
     
     //Register for push notifications
     let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
@@ -100,7 +100,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     Model.sharedInstance().getAllDeleteUsers()
     //APNS
-    Model.sharedInstance().getAllSubscription()
+    Model.sharedInstance().subscribeForNewOffer()
 //    Model.sharedInstance().subscribeForChat()
 //    Model.sharedInstance().subscribeForItemAdditionUpdation()
 //    Model.sharedInstance().subscribeForItemDeletion()
@@ -193,18 +193,22 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   private func exchangeInitiated() {
     //TODO: create an exchange and pass it to the data model
-    let postExchange = PostExchangeOperation(
-      date: NSDate(timeIntervalSinceNow: 0),
+    let postExchange = PostExchangeOperation(date: NSDate(timeIntervalSinceNow: 0),
       status: ExchangeStatus.Pending,
       itemOfferedRecordIDName: itemChosenToExchange!.valueForKey("recordIDName") as! String,
       itemRequestedRecordIDName: itemToForwardToExchange!.valueForKey("recordIDName") as! String,
       database: CKContainer.defaultContainer().publicCloudDatabase,
-      context: managedConcurrentObjectContext) { /* Completion */
+      context: managedConcurrentObjectContext,
+        errorBlock: {
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while exchanging item.", preferredStyle: .Alert)
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)}) { /* Completion */
         dispatch_async(dispatch_get_main_queue()){
             self.dataSource.collectionView.reloadData()
         }
     }
-    
     OperationQueue().addOperation(postExchange)
   }
   
@@ -320,6 +324,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
             } else {
 //                logw("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
 //                timer!.invalidate()
+                self.timer = NSTimer.scheduledTimerWithTimeInterval(5*60, target: self, selector: "update", userInfo: nil, repeats: true)
                 NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
                 self.getAllItems()
             }

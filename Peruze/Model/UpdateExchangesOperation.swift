@@ -108,23 +108,26 @@ class UpdateExchangeWithIncrementalData: Operation {
   let exchangeStatus: ExchangeStatus?
   let database: CKDatabase
   let context: NSManagedObjectContext
-  
+  var mainErrorBlock : (Void -> Void) = {}
+    
   init(recordIDName: String,
     exchangeStatus: ExchangeStatus?,
     database: CKDatabase,
-    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext,
+    errorBlock: (Void -> Void)) {
       self.recordIDName = recordIDName
       self.exchangeStatus = exchangeStatus
       self.database = database
       self.context = context
+        self.mainErrorBlock = errorBlock
       super.init()
   }
   override func execute() {
     let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: recordIDName, inContext: context)
     let offeredItem = Item.MR_findFirstByAttribute("recordIDName", withValue: localExchange.itemOffered?.recordIDName, inContext: context)
     let requestedItem = Item.MR_findFirstByAttribute("recordIDName", withValue: localExchange.itemRequested?.recordIDName, inContext: context)
-    offeredItem.hasRequested = "no"
-    requestedItem.hasRequested = "no"
+//    offeredItem.hasRequested = "no"
+//    requestedItem.hasRequested = "no"
 //    context.MR_saveToPersistentStoreAndWait()
     
     let exchangeRecordID = CKRecordID(recordName: recordIDName)
@@ -150,4 +153,10 @@ class UpdateExchangeWithIncrementalData: Operation {
     cloudOp.qualityOfService = qualityOfService
     database.addOperation(cloudOp)
   }
+    
+    override func finished(errors: [NSError]) {
+        if errors.count != 0 {
+            self.mainErrorBlock()
+        }
+    }
 }

@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472643225.240678"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
+            startingLineNumber = "401"
+            endingLineNumber = "401"
             landmarkName = "fetchExchangeWithRecord(_:message:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Main View Controllers/MainTabBarViewController.swift"
-            timestampString = "472643541.073018"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "showBadgeOnRequestTab(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "715"
-            endingLineNumber = "715"
+            startingLineNumber = "719"
+            endingLineNumber = "719"
             landmarkName = "subscribeForAcceptedOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "717"
-            endingLineNumber = "717"
+            startingLineNumber = "721"
+            endingLineNumber = "721"
             landmarkName = "subscribeForAcceptedOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "652"
-            endingLineNumber = "652"
+            startingLineNumber = "656"
+            endingLineNumber = "656"
             landmarkName = "subscribeForNewOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "654"
-            endingLineNumber = "654"
+            startingLineNumber = "658"
+            endingLineNumber = "658"
             landmarkName = "subscribeForNewOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
+            startingLineNumber = "750"
+            endingLineNumber = "750"
             landmarkName = "subscribeForChat()"
             landmarkType = "5">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "748"
-            endingLineNumber = "748"
+            startingLineNumber = "752"
+            endingLineNumber = "752"
             landmarkName = "subscribeForChat()"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "775"
-            endingLineNumber = "775"
+            startingLineNumber = "779"
+            endingLineNumber = "779"
             landmarkName = "subscribeForItemAdditionUpdation()"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "777"
-            endingLineNumber = "777"
+            startingLineNumber = "781"
+            endingLineNumber = "781"
             landmarkName = "subscribeForItemAdditionUpdation()"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,13 +266,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "832"
-            endingLineNumber = "832"
+            startingLineNumber = "836"
+            endingLineNumber = "836"
             landmarkName = "subscribeForDisablingProfile()"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Peruze.Model.subscribeForDisablingProfile (Peruze.Model)() -&gt; ()"
+                  moduleName = "Peruze"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/systango/Projects/Peruze/Peruze/Model/Model.swift"
+                  timestampString = "472741659.691839"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "836"
+                  endingLineNumber = "836"
+                  offsetFromSymbolStart = "2224">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Peruze.Model.(subscribeForDisablingProfile (Peruze.Model) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "Peruze"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/systango/Projects/Peruze/Peruze/Model/Model.swift"
+                  timestampString = "472741659.692137"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "836"
+                  endingLineNumber = "836"
+                  offsetFromSymbolStart = "372">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -282,13 +314,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "834"
-            endingLineNumber = "834"
-            landmarkName = "subscribeForDisablingProfile()"
-            landmarkType = "5">
+            startingLineNumber = "838"
+            endingLineNumber = "838"
+            landmarkName = "Model"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -298,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "618"
-            endingLineNumber = "618"
+            startingLineNumber = "622"
+            endingLineNumber = "622"
             landmarkName = "getAllSubscription()"
             landmarkType = "5">
          </BreakpointContent>
@@ -314,13 +346,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472658272.02906"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "624"
-            endingLineNumber = "624"
-            landmarkName = "getAllSubscription()"
-            landmarkType = "5">
+            startingLineNumber = "628"
+            endingLineNumber = "628"
+            landmarkName = "Model"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472659770.943502"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "682"
-            endingLineNumber = "682"
+            startingLineNumber = "686"
+            endingLineNumber = "686"
             landmarkName = "subscribeForUpdatedOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -346,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472659771.758203"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "684"
-            endingLineNumber = "684"
+            startingLineNumber = "688"
+            endingLineNumber = "688"
             landmarkName = "subscribeForUpdatedOffer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -362,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472659778.765667"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "804"
-            endingLineNumber = "804"
+            startingLineNumber = "808"
+            endingLineNumber = "808"
             landmarkName = "subscribeForItemDeletion()"
             landmarkType = "5">
          </BreakpointContent>
@@ -378,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472659779.638629"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "806"
-            endingLineNumber = "806"
+            startingLineNumber = "810"
+            endingLineNumber = "810"
             landmarkName = "subscribeForItemDeletion()"
             landmarkType = "5">
          </BreakpointContent>
@@ -394,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Model/Model.swift"
-            timestampString = "472665901.621621"
+            timestampString = "472733772.310188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "393"
+            endingLineNumber = "393"
             landmarkName = "fetchExchangeWithRecord(_:message:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -416,22 +448,6 @@
             startingLineNumber = "96"
             endingLineNumber = "96"
             landmarkName = "controller(_:didChangeSection:atIndex:forChangeType:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Peruze/Main View Controllers/Profile/ProfileUploadsDataSource.swift"
-            timestampString = "472668804.700857"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -474,7 +490,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
-            timestampString = "472728746.142238"
+            timestampString = "472741658.049086"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
@@ -496,6 +512,118 @@
             startingLineNumber = "85"
             endingLineNumber = "85"
             landmarkName = "refresh()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Model/Model.swift"
+            timestampString = "472734699.133199"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "fetchExchangeWithRecord(_:message:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Model/Model.swift"
+            timestampString = "472734701.909103"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "fetchExchangeWithRecord(_:message:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
+            timestampString = "472741658.049086"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "controller(_:didChangeSection:atIndex:forChangeType:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
+            timestampString = "472740008.001124"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "getLocalAcceptedExchanges()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
+            timestampString = "472741658.049086"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
+            timestampString = "472741502.365303"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "getLocalAcceptedExchanges()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Peruze/Main View Controllers/Chat/ChatTableViewDataSource.swift"
+            timestampString = "472741503.301376"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "getLocalAcceptedExchanges()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
