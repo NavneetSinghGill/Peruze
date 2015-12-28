@@ -91,7 +91,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeItemFromLocalDB:", name: "removeItemFromLocalDB", object: nil)
     
-    if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0{
+    let logo = UIImage(named: "Peruse_Typography_With_Eye.jpeg")
+    let imageView = UIImageView(image:logo)
+    imageView.frame.size.width = 100;
+    imageView.frame.size.height = 35;
+    imageView.contentMode = UIViewContentMode.ScaleAspectFit
+    self.navigationItem.titleView = imageView
+    self.navigationController!.navigationBar.barTintColor = UIColor.whiteColor()
+    
+    if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0 {
         self.getMyExchanges()
     } else {
         updateItemsOnFilterChange()
