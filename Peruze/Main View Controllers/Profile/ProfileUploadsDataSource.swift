@@ -22,9 +22,10 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     didSet {
       if personRecordID == nil { return }
       let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
+      let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
       fetchedResultsController = Item.MR_fetchAllSortedBy("title",
         ascending: true,
-        withPredicate: predicate,
+        withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
         groupBy: nil, delegate: self,
         inContext: managedConcurrentObjectContext)
         if tableView != nil {
@@ -40,9 +41,10 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     }
 
     let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
+    let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
     fetchedResultsController = Item.MR_fetchAllSortedBy("title",
       ascending: true,
-      withPredicate: predicate,
+      withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
       groupBy: nil, delegate: self,
       inContext: managedConcurrentObjectContext)
   }

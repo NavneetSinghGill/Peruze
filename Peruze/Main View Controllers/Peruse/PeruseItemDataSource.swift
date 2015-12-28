@@ -50,7 +50,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let defaultOwnerString = "__defaultOwner__"
     let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
     let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != 1")
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser])
+    let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
     fetchRequest.predicate = compoundPredicate
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
@@ -179,7 +180,8 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let defaultOwnerString = "__defaultOwner__"
         let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
         let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != 1")
-        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser])
+        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
         fetchRequest.predicate = compoundPredicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
         fetchRequest.includesSubentities = true

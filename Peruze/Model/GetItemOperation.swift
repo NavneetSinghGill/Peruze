@@ -213,6 +213,10 @@ class GetItemOperation: Operation {
             }
         }
         
+        if let isDelete = record.objectForKey("IsDeleted") as? Int {
+            localUpload.setValue(isDelete, forKey: "isDelete")
+        }
+        
         if localUpload.hasRequested != "yes" {
             localUpload.setValue("no", forKey: "hasRequested")
         }
@@ -321,6 +325,9 @@ class GetAllItemsWithMissingDataOperation: Operation {
           logw("Description is not a String")
         }
         
+        if let isDelete = record.objectForKey("IsDeleted") as? Int {
+            localItem.setValue(isDelete, forKey: "isDelete")
+        }
         
         //fill in creator details
         let creatorIDName = record.creatorUserRecordID!.recordName
@@ -335,6 +342,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
         } else {
             localOwner.setValue("noId", forKey: "ownerFacebookID")
         }
+        
         self.context.MR_saveToPersistentStoreAndWait()
 
       }

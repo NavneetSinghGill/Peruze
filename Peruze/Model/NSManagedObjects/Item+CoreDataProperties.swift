@@ -22,6 +22,7 @@ extension Item {
   @NSManaged var recordIDName: String?
   @NSManaged var title: String?
   @NSManaged var hasRequested: String?
+  @NSManaged var isDelete: NSNumber?
   @NSManaged var owner: Person?
   
 }

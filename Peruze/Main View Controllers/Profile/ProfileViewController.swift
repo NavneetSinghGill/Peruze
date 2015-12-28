@@ -231,6 +231,10 @@ class ProfileViewController: UIViewController {
                     localUpload.setValue(longitude, forKey: "longitude")
                 }
             }
+            
+            if let isDelete = record.objectForKey("IsDeleted") as? Int {
+                localUpload.setValue(isDelete, forKey: "isDelete")
+            }
 //            
 //            if localUpload.hasRequested != "yes" {
 //                localUpload.setValue("no", forKey: "hasRequested")

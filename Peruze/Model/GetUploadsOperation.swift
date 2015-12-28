@@ -31,7 +31,9 @@ class GetUploadsOperation: GetItemOperation {
   
   override func getPredicate() -> NSPredicate {
     logw("\n \(NSDate()) GetUploadItemOperation getPredicate()")
-    return NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personIDName))
+    let creatorPredicate = NSPredicate(format: "creatorUserRecordID == %@", CKRecordID(recordName: personIDName))
+    let noDeletedItemPredicate = NSPredicate(format: "IsDeleted != 1")
+    return NSCompoundPredicate(andPredicateWithSubpredicates: [creatorPredicate, noDeletedItemPredicate])
   }
   
 }

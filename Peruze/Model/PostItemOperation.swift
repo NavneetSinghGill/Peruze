@@ -25,6 +25,7 @@ class PostItemOperation: GroupOperation {
     title: String,
     detail: String,
     recordIDName: String? = nil,
+    isDelete: Int? = 0,
     presentationContext: UIViewController,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext,
@@ -40,6 +41,7 @@ class PostItemOperation: GroupOperation {
       tempItem.setValue(detail, forKey: "detail")
       tempItem.setValue((recordIDName ?? "tempID"), forKey: "recordIDName")
       tempItem.setValue("no", forKey: "hasRequested")
+      tempItem.setValue(isDelete, forKey: "isDelete")
       
       context.MR_saveToPersistentStoreAndWait()
       
@@ -77,6 +79,7 @@ class PostItemOperation: GroupOperation {
         title: title,
         detail: detail,
         image: itemImageData,
+        isDelete: isDelete,
         objectID: item.objectID,
         context: context
       )
@@ -149,16 +152,19 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   let title: String?
   let detail: String?
   let image: NSData?
+  let isDelete: Int?
   
   init(title: String?,
     detail: String?,
     image: NSData?,
+    isDelete: Int?,
     objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       if logging { logw("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       self.title = title
       self.detail = detail
       self.image = image
+      self.isDelete = isDelete
       self.context = context
       self.objectID = objectID
       super.init()
@@ -177,6 +183,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       localItem.setValue(self.detail, forKey: "detail")
       localItem.setValue(self.image, forKey: "image")
       localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
+      localItem.setValue(self.isDelete, forKey: "isDelete")
       
     } catch {
       logw("\(error)")
@@ -230,11 +237,13 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       //set immediately available keys
       let itemTitle = itemToSave.valueForKey("title") as? String
       let itemDetail = itemToSave.valueForKey("detail") as? String
+      let itemIsDeleted = itemToSave.valueForKey("isDelete") as? Int
       
       itemRecord.setObject(itemTitle, forKey: "Title")
       itemRecord.setObject(itemDetail, forKey: "Description")
       itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
-      
+      itemRecord.setObject(itemIsDeleted, forKey: "IsDeleted")
+        
       //retrieve location
       if let itemLat = itemToSave.valueForKey("latitude") as? NSNumber,
         let itemLong = itemToSave.valueForKey("longitude") as? NSNumber {
