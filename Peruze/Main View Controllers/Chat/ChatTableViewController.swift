@@ -27,7 +27,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
-    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "getLocalAcceptedExchanges", name: NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchanges", name: NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
@@ -54,8 +54,11 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
   }
     
+    //MARK: Refresh methods
+    
     func refreshWithoutActivityIndicator() {
         activityIndicatorView.alpha = 0
+        self.noChatsLabel.alpha = 0
         refresh()
     }
     
@@ -68,12 +71,25 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.refreshControl.endRefreshing()
         self.activityIndicatorView.stopAnimating()
         self.activityIndicatorView.alpha = 1
-        self.dataSource.getLocalAcceptedExchanges()
+        if self.dataSource.getLocalAcceptedExchanges() == 0 {
+            self.noChatsLabel.alpha = 1
+        } else {
+            self.noChatsLabel.alpha = 0
+        }
       }
     }
     OperationQueue().addOperation(chatOp)
     activityIndicatorView.startAnimating()
   }
+    
+    func getLocalAcceptedExchanges() {
+        if self.dataSource.getLocalAcceptedExchanges() == 0 {
+            self.noChatsLabel.alpha = 1.0
+        } else {
+            self.noChatsLabel.alpha = 0.0
+        }
+    }
+    
   //MARK: Editing
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete

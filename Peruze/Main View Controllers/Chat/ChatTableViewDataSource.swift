@@ -24,7 +24,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     getLocalAcceptedExchanges()
   }
     
-    func getLocalAcceptedExchanges() {
+    func getLocalAcceptedExchanges() -> Int {
         let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
         let itemOfferedNotNil = NSPredicate(format: "itemOffered.recordIDName != nil")
         let itemRequestedNotNil = NSPredicate(format: "itemRequested.recordIDName != nil")
@@ -49,6 +49,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
                 self.tableView.reloadData()
             }
         }
+        return fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }
     
   

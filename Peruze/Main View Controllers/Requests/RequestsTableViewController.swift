@@ -38,7 +38,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     navigationController?.navigationBar.tintColor = .redColor()
     view.backgroundColor = .whiteColor()
     refresh()
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "getRequestedExchange", name: "getRequestedExchange", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "localRefresh", name: "getRequestedExchange", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "localRefresh", name: NotificationCenterKeys.LNRefreshRequestScreenWithLocalData, object: nil)
   }
     

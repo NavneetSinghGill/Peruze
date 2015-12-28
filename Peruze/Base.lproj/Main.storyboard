@@ -3055,6 +3055,7 @@
                     <connections>
                         <outlet property="distanceSlider" destination="Vfu-j1-aAI" id="Qet-Yl-yV2"/>
                         <outlet property="friendsSlider" destination="hl6-4s-vRD" id="4de-Ou-VfH"/>
+                        <outlet property="kIsPostingToFacebookOn" destination="0VG-6F-L0F" id="3cC-Gv-DZb"/>
                         <outlet property="loadingViewContainer" destination="hUs-WQ-DW5" id="f4e-lx-9t5"/>
                         <outlet property="lowerLeft" destination="jeM-tQ-8zk" id="UeV-jo-wsJ"/>
                         <outlet property="lowerRight" destination="OdV-DP-Oom" id="AIG-xg-bWJ"/>

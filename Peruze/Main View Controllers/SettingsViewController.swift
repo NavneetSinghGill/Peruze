@@ -53,6 +53,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBOutlet weak var versionLabel: UILabel!
   @IBOutlet weak var inviteFacebookFriendsButton: UIButton!
     @IBOutlet weak var pushNotificationSwitch: UISwitch!
+    @IBOutlet weak var kIsPostingToFacebookOn: UISwitch!
   //MARK: Local Vars
   private var facebookData = FacebookDataSource()
   private var locationManager = CLLocationManager()
@@ -105,6 +106,18 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     versionLabel.text = "Version " + version
     if selectedCircleImage == nil{
         selectedCircleImage = upperLeft
+    }
+    
+    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) as? String == "yes" {
+        self.pushNotificationSwitch.on = true
+    } else {
+        self.pushNotificationSwitch.on = false
+    }
+    
+    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as? String == "yes" {
+        self.kIsPostingToFacebookOn.on = true
+    } else {
+        self.kIsPostingToFacebookOn.on = false
     }
   }
   
@@ -250,18 +263,30 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
 
     @IBAction func pushNotificationSwitchTapped(sender: UISwitch) {
-        if sender.on == false{
-            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "no")
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if sender.on == false {
+            defaults.setValue("no", forKey: UniversalConstants.kIsPushNotificationOn)
+            defaults.synchronize()
+            
         } else {
-            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPushNotificationOn, forKey: "yes")
+            defaults.setValue("yes", forKey: UniversalConstants.kIsPushNotificationOn)
+            defaults.synchronize()
         }
-        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        self.pushNotificationSwitch.userInteractionEnabled = false
+        Model.sharedInstance().deleteSubscriptionsWithIDs([defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) as! String])
+        
+        Model.sharedInstance().subscribeForNewOffer(false, completionHandler: {
+            Model.sharedInstance().subscribeForAcceptedOffer(false,completionHandler: {
+                self.pushNotificationSwitch.userInteractionEnabled = true
+            })
+        })
     }
     @IBAction func postToFacebookSwitchTapped(sender: UISwitch) {
         if sender.on == false{
-            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "no")
+            NSUserDefaults.standardUserDefaults().setValue("no", forKey: UniversalConstants.kIsPostingToFacebookOn)
         } else {
-            NSUserDefaults.standardUserDefaults().setValue(UniversalConstants.kIsPostingToFacebookOn, forKey: "yes")
+            NSUserDefaults.standardUserDefaults().setValue("yes", forKey: UniversalConstants.kIsPostingToFacebookOn)
         }
         NSUserDefaults.standardUserDefaults().synchronize()
     }

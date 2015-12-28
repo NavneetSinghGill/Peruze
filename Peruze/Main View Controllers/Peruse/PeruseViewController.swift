@@ -108,6 +108,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     Model.sharedInstance().getAllDeleteUsers()
     //APNS
+//    Model.sharedInstance().deleteAllSubscription()
     Model.sharedInstance().subscribeForNewOffer()
 //    Model.sharedInstance().subscribeForChat()
 //    Model.sharedInstance().subscribeForItemAdditionUpdation()

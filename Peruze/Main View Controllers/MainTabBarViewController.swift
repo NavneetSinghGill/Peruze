@@ -59,8 +59,11 @@ class MainTabBarViewController: UITabBarController {
 //                        NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchChatWithRecord(recordID)
-                    } else if category == NotificationCategoryMessages.NewOfferMessage {
-                        self.setRequestBadgeCount(Int(badge))
+                    }
+                    else if category == NotificationCategoryMessages.NewOfferMessage {
+                        if Int(badge) != 0{
+                            self.setRequestBadgeCount(Int(badge))
+                        }
                         //refresh Exchanges
                         let navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
@@ -74,7 +77,8 @@ class MainTabBarViewController: UITabBarController {
 //                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage)
-                    } else if category == NotificationCategoryMessages.ItemAdditionOrUpdation {
+                    }
+                    else if category == NotificationCategoryMessages.ItemAdditionOrUpdation {
                         let navController = self.viewControllers![0] as! UINavigationController
                         let peruseViewController = navController.viewControllers[0] as! PeruseViewController
                         if peruseViewController.view.window != nil {
@@ -86,7 +90,8 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchItemWithRecord(recordID)
-                    } else if category == NotificationCategoryMessages.ItemDeletion {
+                    }
+                    else if category == NotificationCategoryMessages.ItemDeletion {
                         let navController = self.viewControllers![0] as! UINavigationController
                         let peruseViewController = navController.viewControllers[0] as! PeruseViewController
                         if peruseViewController.view.window != nil {
@@ -98,10 +103,12 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = info["recordID"] as! String
                         NSNotificationCenter.defaultCenter().postNotificationName("removeItemFromLocalDB", object: nil, userInfo: ["recordID":recordID])
-                    } else if category == NotificationCategoryMessages.UserStatusUpdate {
+                    }
+                    else if category == NotificationCategoryMessages.UserStatusUpdate {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchUserWithRecord(recordID)
-                    } else if category == NotificationCategoryMessages.UpdateOfferMessage {
+                    }
+                    else if category == NotificationCategoryMessages.UpdateOfferMessage {
                         var navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
                         if requestsTableViewController.view.window != nil {
@@ -125,8 +132,11 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         //                        requestsTableViewController.refresh()
                         Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationCategoryMessages.UpdateOfferMessage)
-                    } else if category == NotificationCategoryMessages.AcceptedOfferMessage {
-                        self.setChatBadgeCount(Int(badge))
+                    }
+                    else if category == NotificationCategoryMessages.AcceptedOfferMessage {
+                        if Int(badge) != 0 {
+                            self.setChatBadgeCount(Int(badge))
+                        }
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category)
                     }

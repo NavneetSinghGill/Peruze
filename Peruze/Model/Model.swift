@@ -74,6 +74,12 @@ struct RecordTypes {
   static let Friends = "Friends"
   static let UsersStatus = "UsersStatus"
 }
+
+struct SubscriptionIDs {
+    static let NewOfferSubscriptionID = "newOfferSubscriptionID"
+    static let AcceptedOfferSubscriptionID = "acceptedOfferSubscriptionID"
+}
+
 class Model: NSObject, CLLocationManagerDelegate {
     
     var friendsRecords : NSMutableArray = []
@@ -473,10 +479,16 @@ class Model: NSObject, CLLocationManagerDelegate {
                 } else {
                     if record?.recordType == RecordTypes.UsersStatus {
                         logw ("Fetch user ")
-                        let localPerson = Person.MR_findFirstByAttribute("recordIDName",
+                        var localPerson = Person.MR_findFirstByAttribute("recordIDName",
                             withValue: record!.valueForKey("UserRecordIDName")!.recordID.recordName, inContext: managedConcurrentObjectContext)
-                        if let isDelete = record?.valueForKey("IsDeleted") as? Int{
-                            localPerson.setValue(isDelete , forKey: "isDelete")
+                        if localPerson == nil {
+                            localPerson = Person.MR_findFirstByAttribute("recordIDName",
+                                withValue: "__defaultOwner__", inContext: managedConcurrentObjectContext)
+                        }
+                        if localPerson != nil {
+                            if let isDelete = record?.valueForKey("IsDeleted") as? Int{
+                                localPerson.setValue(isDelete , forKey: "isDelete")
+                            }
                         }
 //                        if let personFbId = record!.objectForKey("FacebookID") as? String {
 //                            localPerson.setValue(personFbId, forKey: "facebookID")
@@ -604,13 +616,6 @@ class Model: NSObject, CLLocationManagerDelegate {
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
             
-//            let modifyOperation = CKModifySubscriptionsOperation()
-////            let deleteSubscriptions = (subscriptions! as NSArray).valueForKey("subscriptionID") as! [String]
-////            let deleteSubscriptions = ["B004E6B2-ACF4-4B99-994F-5A41C646C765"]
-//            modifyOperation.subscriptionIDsToDelete = ["B004E6B2-ACF4-4B99-994F-5A41C646C765"]//deleteSubscriptions
-//            modifyOperation.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
-//                logw("Deleted : \(deletedSubscriptions)")
-//            }
             for subscriptionObject in subscriptions! {
                 let subscription: CKSubscription = subscriptionObject as CKSubscription
                 logw("Subscription :\(subscription)")
@@ -619,18 +624,18 @@ class Model: NSObject, CLLocationManagerDelegate {
                         logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
                     if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
                         logw("Subscriptions added after deleting.")
-                        self.subscribeForNewOffer()
+//                        self.subscribeForNewOffer()
                     }
                 })
             }
             if subscriptions?.count == 0 {
                 logw("Subscriptions added with no previous subscriptions.")
-                self.subscribeForNewOffer()
+//                self.subscribeForNewOffer()
             }
         })
     }
     
-    func subscribeForNewOffer() {
+    func subscribeForNewOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -641,9 +646,12 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertBody = NotificationMessages.NewOfferMessage
-        notificationInfo.shouldBadge = true
-        notificationInfo.soundName = "default"
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) as? String == "yes" ||
+           NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
+            notificationInfo.alertBody = NotificationMessages.NewOfferMessage
+            notificationInfo.shouldBadge = true
+            notificationInfo.soundName = "default"
+        }
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
@@ -655,9 +663,15 @@ class Model: NSObject, CLLocationManagerDelegate {
                 if let err = error {
                     logw("NewOffer subscription failed \(err.localizedDescription)")
                 } else {
-                    logw("NewOffer subscription success")
+                    logw("NewOffer subscription success with ID: \(returnRecord!.subscriptionID)")
+                    NSUserDefaults.standardUserDefaults().setValue(returnRecord!.subscriptionID, forKey: SubscriptionIDs.NewOfferSubscriptionID)
+                    NSUserDefaults.standardUserDefaults().synchronize()
+//                    newOfferSubscriptionID = returnRecord!.subscriptionID
                 }
-                self.subscribeForUpdatedOffer()
+                if shouldResumeChainOfSubscriptions == true {
+                    self.subscribeForUpdatedOffer()
+                }
+                completionHandler()
             }))
     }
     
@@ -691,7 +705,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func subscribeForAcceptedOffer() {
+    func subscribeForAcceptedOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -703,9 +717,12 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordUpdate)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertBody = NotificationMessages.AcceptedOfferMessage
-        notificationInfo.shouldBadge = true
-        notificationInfo.soundName = "default"
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) as? String == "yes" ||
+            NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
+            notificationInfo.alertBody = NotificationMessages.AcceptedOfferMessage
+            notificationInfo.shouldBadge = true
+            notificationInfo.soundName = "default"
+        }
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
@@ -718,9 +735,15 @@ class Model: NSObject, CLLocationManagerDelegate {
                 if let err = error {
                     logw("AcceptedOffer subscription failed \(err.localizedDescription)")
                 } else {
-                    logw("AcceptedOffer subscription success")
+                    logw("AcceptedOffer subscription success with ID: \(returnRecord!.subscriptionID)")
+                    NSUserDefaults.standardUserDefaults().setValue(returnRecord!.subscriptionID, forKey: SubscriptionIDs.AcceptedOfferSubscriptionID)
+                    NSUserDefaults.standardUserDefaults().synchronize()
+//                    acceptedOfferSubscriptionID = returnRecord!.subscriptionID
                 }
-                self.subscribeForChat()
+                if shouldResumeChainOfSubscriptions == true {
+                    self.subscribeForChat()
+                }
+                completionHandler()
             }))
     }
     
@@ -893,6 +916,16 @@ class Model: NSObject, CLLocationManagerDelegate {
                 })
             }
         })
+    }
+    
+    func deleteSubscriptionsWithIDs(subscriptionIDs: [String]) {
+        let database = CKContainer.defaultContainer().publicCloudDatabase
+            for subscriptionID in subscriptionIDs {
+                
+                database.deleteSubscriptionWithID(subscriptionID, completionHandler: {subscriptionId, error in
+                    logw("Subscription with id \(subscriptionId!) was removed.")
+                })
+            }
     }
     
     
