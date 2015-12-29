@@ -3450,12 +3450,17 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qJU-Rp-aIe">
+                                <rect key="frame" x="290" y="95" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="qJU-Rp-aIe" firstAttribute="centerY" secondItem="gB9-cQ-YKw" secondAttribute="centerY" id="5HX-6e-wTE"/>
                             <constraint firstAttribute="trailing" secondItem="VgB-Ku-CDD" secondAttribute="trailing" id="BEh-MY-0Y0"/>
                             <constraint firstAttribute="centerY" secondItem="Hbt-na-swG" secondAttribute="centerY" id="DCv-e0-q7i"/>
+                            <constraint firstItem="qJU-Rp-aIe" firstAttribute="centerX" secondItem="gB9-cQ-YKw" secondAttribute="centerX" id="IAC-yq-09J"/>
                             <constraint firstAttribute="centerX" secondItem="Hbt-na-swG" secondAttribute="centerX" id="LNT-dQ-FGw"/>
                             <constraint firstAttribute="bottom" secondItem="VgB-Ku-CDD" secondAttribute="bottom" id="Pbz-rk-bRZ"/>
                             <constraint firstItem="VgB-Ku-CDD" firstAttribute="leading" secondItem="gB9-cQ-YKw" secondAttribute="leading" id="Sk5-2V-dCH"/>
@@ -3464,6 +3469,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="LqN-GX-381"/>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="qJU-Rp-aIe" id="vwn-kd-ekP"/>
                         <outlet property="tableView" destination="VgB-Ku-CDD" id="dvk-zO-XPt"/>
                         <outlet property="titleLabel" destination="Hbt-na-swG" id="nWU-wd-zgT"/>
                     </connections>

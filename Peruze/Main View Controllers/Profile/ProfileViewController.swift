@@ -375,11 +375,12 @@ class ProfileViewController: UIViewController {
         let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
         numberOfExchangesLabel.text = String(ex.count)
         //        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
+        self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         var fav = NSSet(array: [])
         if let favorites = self.personForProfile!.favorites! as? NSSet {
             if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
                 for favoriteObj in favoriteObjs{
-                    if favoriteObj.valueForKey("title") != nil {
+                    if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
                         //                                        fav.append(favoriteObj)
                         if fav.count == 0 {
                             fav = NSSet(array: [favoriteObj])

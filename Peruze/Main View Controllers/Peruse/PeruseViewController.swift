@@ -134,7 +134,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                         if let favorites = me.valueForKey("favorites") as? NSSet {
                             if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
                                 for favoriteObj in favoriteObjs{
-                                    if favoriteObj.valueForKey("title") != nil {
+                                    if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
 //                                        fav.append(favoriteObj)
                                         fav = NSSet(array: fav.allObjects + [favoriteObj])
                                     }

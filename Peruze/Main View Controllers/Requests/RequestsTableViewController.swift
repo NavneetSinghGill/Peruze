@@ -86,6 +86,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         self.activityIndicatorView.stopAnimating()
         self.activityIndicatorView.alpha = 1
         try self.dataSource.fetchedResultsController.performFetch()
+        self.tableView.reloadData()
       } catch {
            logw("\(error)")
       }

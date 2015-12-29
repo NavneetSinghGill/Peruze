@@ -35,11 +35,16 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dataSource.refresh()
+        if let profileVC = self.parentViewController?.parentViewController as? ProfileViewController {
+            profileVC.numberOfFavoritesLabel.text = "\(dataSource.refresh())"
+        }
+        checkForEmptyData(true)
     }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    dataSource.refresh()
+    if let profileVC = self.parentViewController?.parentViewController as? ProfileViewController {
+       profileVC.numberOfFavoritesLabel.text = "\(dataSource.refresh())"
+    }
     checkForEmptyData(true)
   }
   
@@ -104,6 +109,8 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
         let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
         favoriteOp.completionBlock = {
             logw("favorite completed successfully")
+//            self.activityIndicatorView.stopAnimating()
+//            self.activityIndicatorView.alpha = 0
             var favoriteCount = 0
             dispatch_async(dispatch_get_main_queue()) {
                 favoriteCount = self.dataSource.refresh()
@@ -122,6 +129,8 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
                 }
                 }}
         }
+//        self.activityIndicatorView.startAnimating()
+//        self.activityIndicatorView.alpha = 1
         OperationQueue().addOperation(favoriteOp)
     }
   

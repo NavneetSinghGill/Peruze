@@ -179,6 +179,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
           do{
             try self.dataSource.fetchedResultsController.performFetch()
             self.tableView.reloadData()
+            self.getLocalAcceptedExchanges()
           } catch {
             logw("Fetch threw an error. Not updating")
             logw("\(error)")
