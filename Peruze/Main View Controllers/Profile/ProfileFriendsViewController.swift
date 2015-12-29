@@ -71,6 +71,8 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     //MARK: Reloading view on fetch data from server
     func reloadFetchedData () {
-        self.tableView.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.tableView.reloadData()
+        }
     }
 }

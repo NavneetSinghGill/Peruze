@@ -29,7 +29,9 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        collectionView.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.collectionView.reloadData()
+        }
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex") as! Int, inSection: 0)

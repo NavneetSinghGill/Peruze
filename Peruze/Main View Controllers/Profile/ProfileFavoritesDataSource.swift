@@ -29,7 +29,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     }
     
   ///fetch current user profile and set `favorites` to the favorites of my profile
-  func refresh() {
+  func refresh() -> Int {
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     if let favorites = me.valueForKey("favorites") as? NSSet {
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
@@ -45,10 +45,13 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
     } else {
       logw("me.valueForKey('favorites') was not an NSSet ")
     }
-    if tableView != nil {
-        tableView.reloadData()
-        //NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex")
+    dispatch_async(dispatch_get_main_queue()){
+        if self.tableView != nil {
+            self.tableView.reloadData()
+            //NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex")
+        }
     }
+    return self.favorites.count
   }
   //MARK: - UITableViewDataSource methods
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

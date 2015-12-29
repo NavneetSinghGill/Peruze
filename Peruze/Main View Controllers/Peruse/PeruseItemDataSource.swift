@@ -150,6 +150,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     
     
     func refreshData(presentationContext: UIViewController) {
+        logw("PeruseViewController refresh by presentation context: \(presentationContext)")
         refreshFetchResultController()
         let opQueue = OperationQueue()
         

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   
@@ -25,6 +26,8 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     }
   }
     var indexOfSelectedTableViewRow: Int!
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     titleLabel.alpha = 0.0
@@ -36,6 +39,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
     }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+    dataSource.refresh()
     checkForEmptyData(true)
   }
   
@@ -84,13 +88,42 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Remove") { (rowAction, indexPath) -> Void in
-      self.dataSource.favorites.removeAtIndex(indexPath.item)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.checkForEmptyData(true)
+//      self.dataSource.favorites.removeAtIndex(indexPath.item)
+//      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+//      self.checkForEmptyData(true)
+        self.itemFavorited(self.dataSource.favorites[indexPath.item], favorite: false)
     }
     return [defaultAction]
   }
     
+    func itemFavorited(item: NSManagedObject, favorite: Bool) {
+        //favorite data
+        logw("item started favorite! ")
+        
+        let itemRecordIDName = item.valueForKey("recordIDName") as! String
+        let favoriteOp = favorite ? PostFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName) : RemoveFavoriteOperation(presentationContext: self, itemRecordID: itemRecordIDName)
+        favoriteOp.completionBlock = {
+            logw("favorite completed successfully")
+            var favoriteCount = 0
+            dispatch_async(dispatch_get_main_queue()) {
+                favoriteCount = self.dataSource.refresh()
+                self.checkForEmptyData(true)
+            
+            if let profileVC = self.parentViewController?.parentViewController as? ProfileViewController {
+                profileVC.updateViewAfterGettingResponse()
+                profileVC.numberOfFavoritesLabel.text = "\(favoriteCount)"
+                if let mainTabBarVC = profileVC.parentViewController?.parentViewController as? MainTabBarViewController {
+                    for child in mainTabBarVC.childViewControllers {
+                        if let peruseVC = child.childViewControllers[0] as? PeruseViewController {
+                            peruseVC.reloadPeruseItemMainScreen()
+                            break
+                        }
+                    }
+                }
+                }}
+        }
+        OperationQueue().addOperation(favoriteOp)
+    }
   
   /* Swift 2.0
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {

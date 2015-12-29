@@ -39,7 +39,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         checkmark.frame.insetInPlace(dx: checkmark.frame.width / 4, dy: checkmark.frame.width / 4)
         view.addSubview(checkmark)
         if self.dataSource.collectionView != nil {
-            self.dataSource.collectionView.reloadData()
+            dispatch_async(dispatch_get_main_queue()){
+                self.dataSource.collectionView.reloadData()
+            }
         }
         UIView.animateWithDuration(1, animations: { () -> Void in
           circle.alpha = 0.0
