@@ -375,12 +375,12 @@ class ProfileViewController: UIViewController {
         let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
         numberOfExchangesLabel.text = String(ex.count)
         //        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)
-        self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+        self.personForProfile = Person.MR_findFirstByAttribute("recordIDName", withValue: self.personForProfile!.valueForKey("recordIDName") as! String, inContext: managedConcurrentObjectContext)
         var fav = NSSet(array: [])
         if let favorites = self.personForProfile!.favorites! as? NSSet {
             if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
                 for favoriteObj in favoriteObjs{
-                    if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
+                    if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
                         //                                        fav.append(favoriteObj)
                         if fav.count == 0 {
                             fav = NSSet(array: [favoriteObj])
@@ -535,11 +535,17 @@ class ProfileViewController: UIViewController {
                 self.updateViewAfterGettingResponse()
                 for viewController in self.childViewControllers {
                     if let vc = viewController as? ProfileContainerViewController {
+                        for childVC in vc.childViewControllers {
+                            if let reviewVC = childVC as? ProfileReviewsViewController {
+                                reviewVC.dataSource.writeReviewEnabled = true
+                            }
+                        }
                         vc.profileOwner = self.personForProfile
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
                         vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
+                        self.uploadsTapped(UIButton())
                     }
                 }
             }

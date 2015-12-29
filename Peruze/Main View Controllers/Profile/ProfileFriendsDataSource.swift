@@ -35,7 +35,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         super.init()
         //    let predicate = NSPredicate(value: true)
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
-        getTaggableFriends()
+//        getTaggableFriends()
 //        getMutualFriendsFromCloud()
     }
     
@@ -68,10 +68,6 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!
         let profileImage = CircleImage()
-        
-//        if {
-//            
-//        }
         NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":mutualFriendIds.count])
         for id in mutualFriendIds {
             person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: id as! String)

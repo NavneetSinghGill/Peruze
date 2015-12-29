@@ -35,7 +35,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
         self.favorites = []
         for favoriteObj in favoriteObjs{
-            if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
+            if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
                 self.favorites.append(favoriteObj)
             }
         }

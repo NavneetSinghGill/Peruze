@@ -198,6 +198,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   private func segueToUploadNewItem() {
     let UploadVC = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
     UploadVC.parentVC = self
+    UploadVC.shouldShowUploadButton = true
     presentViewController(UploadVC, animated: true, completion: nil)
     //TODO: Implement this segue
   }

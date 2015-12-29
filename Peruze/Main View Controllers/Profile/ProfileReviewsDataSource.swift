@@ -106,10 +106,22 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     }
     
   }
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String {
+            writeReviewEnabled = false
+        } else {
+            writeReviewEnabled = true
+        }
     return writeReviewEnabled ? (section == 0 ? 1 : (fetchedResultsController?.sections?[0].numberOfObjects ?? 0)) : (fetchedResultsController?.sections?[section].numberOfObjects ?? 0)
   }
   func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String {
+        writeReviewEnabled = false
+    } else {
+        writeReviewEnabled = true
+    }
     return writeReviewEnabled ? 2 : 1
   }
 }

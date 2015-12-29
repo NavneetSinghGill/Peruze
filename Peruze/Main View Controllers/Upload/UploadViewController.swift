@@ -35,6 +35,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     var itemDescription: String?
     var recordIDName: String?
     var parentVC: UIViewController?
+    var shouldShowUploadButton = false
     
     var newUploadedItemTitle = ""
     //MARK: - View Controller Lifecycle Methods
@@ -90,7 +91,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         uploadButton.setTitleColor(UIColor.greenColor(), forState: UIControlState.Normal)
         uploadButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Disabled)
         uploadButton.titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        if self.navigationController != nil{
+        if self.navigationController != nil || shouldShowUploadButton == true {
             uploadButton.setTitle("Upload", forState: UIControlState.Normal)
         } else {
             uploadButton.setTitle("Done", forState: UIControlState.Normal)
