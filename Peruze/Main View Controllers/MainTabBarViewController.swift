@@ -28,6 +28,7 @@ class MainTabBarViewController: UITabBarController {
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "showTabBar:",name:"showIniticiaViewController",object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "showBadgeOnRequestTab:",name:"ShowBadgeOnRequestTab",object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "resetBadgeValue",name:"ResetBadgeValue",object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "setApplicationBadgeCount", name: "applicationDidBecomeActive", object: nil)
     }
     func showTabBar(notification: NSNotification){
         self.dismissViewControllerAnimated(false, completion: nil)
@@ -141,7 +142,7 @@ class MainTabBarViewController: UITabBarController {
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category)
                     }
 //                }
-//                resetBadgeValue()
+                resetBadgeValue()
             }
         }
     }
@@ -176,9 +177,18 @@ class MainTabBarViewController: UITabBarController {
                     currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
                 }
                 requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
-                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                    UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+                
+                let chatTab = self.tabBar.items![2]
+                let currentChatTabBadgeNumber: Int
+                if chatTab.badgeValue == nil {
+                    currentChatTabBadgeNumber = 0
+                } else {
+                    currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
                 }
+//                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = currentChatTabBadgeNumber + count + currentRequestTabBadgeNumber
+//                }
             }
         }
     }
@@ -186,17 +196,27 @@ class MainTabBarViewController: UITabBarController {
     func setChatBadgeCount(count:Int) {
         if self.selectedIndex != 2 {
             dispatch_async(dispatch_get_main_queue()) {
-                let requestTab = self.tabBar.items![2]
+                let chatTab = self.tabBar.items![2]
+                let currentChatTabBadgeNumber: Int
+                if chatTab.badgeValue == nil {
+                    currentChatTabBadgeNumber = 0
+                } else {
+                    currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
+                }
+                chatTab.badgeValue = String(count + currentChatTabBadgeNumber)
+                
+                let requestTab = self.tabBar.items![3]
                 let currentRequestTabBadgeNumber: Int
                 if requestTab.badgeValue == nil {
                     currentRequestTabBadgeNumber = 0
                 } else {
                     currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
                 }
-                requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
-                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                    UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
-                }
+                
+//                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = currentRequestTabBadgeNumber + count + currentChatTabBadgeNumber
+//                }
             }
         } else {
             dispatch_async(dispatch_get_main_queue()) {
@@ -236,5 +256,25 @@ class MainTabBarViewController: UITabBarController {
                 profileViewController.isShowingMyProfile = true
             }
         }
+    }
+    
+    func setApplicationBadgeCount() {
+        let requestTab = self.tabBar.items![3]
+        let currentRequestTabBadgeNumber: Int
+        if requestTab.badgeValue == nil {
+            currentRequestTabBadgeNumber = 0
+        } else {
+            currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
+        }
+        
+        let chatTab = self.tabBar.items![2]
+        let currentChatTabBadgeNumber: Int
+        if chatTab.badgeValue == nil {
+            currentChatTabBadgeNumber = 0
+        } else {
+            currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
+        }
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = currentRequestTabBadgeNumber + currentChatTabBadgeNumber
     }
 }

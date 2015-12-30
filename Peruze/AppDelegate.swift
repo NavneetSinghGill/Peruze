@@ -58,7 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //do stuff with notification
 //        NSLog([NSString stringWithFormat:@"Launched from push notification: %@", dictionary]);
 //        [[RemoteNotificationManager sharedInstance] sendLocalNotificationAfterRemoteNotification:dictionary andShowAlerts:YES];
-        logw("notification \(notification)")
+        logw("DidfinishlaunWithOptions notification: \(notification)")
+        self.postLocalNotifications(notification)
     }
     }
     
@@ -74,6 +75,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     })
     
+    //Exception handler
+    NSSetUncaughtExceptionHandler { exception in
+        logw("NSSetUncaughtExceptionHandler exception : \(exception)")
+        logw("NSSetUncaughtExceptionHandler callStackSymbols: \(exception.callStackSymbols)")
+    }
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }
@@ -123,23 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
     logw(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>app did receive remote notification ")
     
-    let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
-    if let notification = cloudKitNotification as? CKQueryNotification {
-      logw("app did receive remote notification ")
-      NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
-        logw("Notification: \(notification) \n UserInfo: \(userInfo)")
-        if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
-            logw("All of info: \n\(info)\n")
-            
-            if let _ = info["category"] as? String {
-                info["recordID"] = notification.recordID?.recordName
-                NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
-            }
-            if  let badge = info["badge"] as? Int {
-                logw("\nFrom APS-dictionary with key \"type\":  \( badge)")     
-            }
-        }
-    }
+    self.postLocalNotifications(userInfo)
   }
     
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -149,6 +139,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     logw(error.localizedDescription)
   }
+    
+    //Private methods:
+    
+    func postLocalNotifications(userInfo: NSDictionary) {
+        let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
+        if let notification = cloudKitNotification as? CKQueryNotification {
+            logw("app did receive remote notification ")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
+            logw("Notification: \(notification) \n UserInfo: \(userInfo)")
+            if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
+                logw("All of info: \n\(info)\n")
+                
+                if let _ = info["category"] as? String {
+                    info["recordID"] = notification.recordID?.recordName
+                    NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
+                }
+                if  let badge = info["badge"] as? Int {
+                    logw("\nFrom APS-dictionary with key \"type\":  \( badge)")
+                }
+            }
+        }
+    }
     
 }
 

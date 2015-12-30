@@ -65,7 +65,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
       try self.fetchedResultsController.performFetch()
         
     } catch {
-      logw("\(error)")
+      logw("PeruzeViewControllerDataSource fetch result exception: \(error)")
     }
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem:", name: "ScrollTOShowSharedItem", object: nil)

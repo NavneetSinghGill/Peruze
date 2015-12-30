@@ -334,7 +334,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.getAllItems()
             } else {
 //                logw("\n\n\(NSDate()) ----------------  Timer Stopped ----------------------")
-//                timer!.invalidate()
+                self.timer!.invalidate()
                 self.timer = NSTimer.scheduledTimerWithTimeInterval(5*60, target: self, selector: "update", userInfo: nil, repeats: true)
                 NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
                 self.getAllItems()
