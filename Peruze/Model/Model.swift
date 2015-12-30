@@ -329,22 +329,23 @@ class Model: NSObject, CLLocationManagerDelegate {
                     }
                 } else {
                     if record?.recordType == RecordTypes.Exchange {
-                        let requestingPerson = Person.MR_findFirstOrCreateByAttribute("me", withValue: true)
+                        let context = NSManagedObjectContext.MR_context()
+                        let requestingPerson = Person.MR_findFirstOrCreateByAttribute("me", withValue: true,inContext: context)
                         
                         let localExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
                             withValue: record!.recordID.recordName,
-                            inContext: managedConcurrentObjectContext)
+                            inContext: context)
                         
                         //set creator
                         if record!.creatorUserRecordID!.recordName == "__defaultOwner__" {
                             let creator = Person.MR_findFirstOrCreateByAttribute("me",
                                 withValue: true,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             localExchange.setValue(creator, forKey: "creator")
                         } else {
                             let creator = Person.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: record!.creatorUserRecordID?.recordName,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             localExchange.setValue(creator, forKey: "creator")
                         }
                         
@@ -363,8 +364,22 @@ class Model: NSObject, CLLocationManagerDelegate {
                         if let itemOfferedReference = record!.objectForKey("OfferedItem") as? CKReference {
                             let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: itemOfferedReference.recordID.recordName,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             itemOffered.setValue("yes", forKey: "hasRequested")
+                            if localExchange.valueForKey("status") as! Int == 2 ||
+                                localExchange.valueForKey("status") as! Int == 4 {
+                                    
+//                                    let itemOfferedOwner = itemOffered.valueForKey("owner")
+//                                    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
+//                                    if itemOfferedOwner!.valueForKey("recordIDName") as! String != me.valueForKey("recordIDName") as! String && itemOfferedOwner!.valueForKey("recordIDName") as! String != "__defaultOwner__" {
+//                                        
+//                                        let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",itemOffered.valueForKey("recordIDName") as! String, itemOffered.valueForKey("recordIDName") as! String)
+//                                        let exchanges = Exchange.MR_findAllWithPredicate(predicate)
+//                                        if exchanges.count <= 1 {
+                                            itemOffered.setValue("no", forKey: "hasRequested")
+//                                        }
+//                                    }
+                            }
                             localExchange.setValue(itemOffered, forKey: "itemOffered")
                         }
                         
@@ -372,10 +387,22 @@ class Model: NSObject, CLLocationManagerDelegate {
                         if let itemRequestedReference = record!.objectForKey("RequestedItem") as? CKReference {
                             let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: itemRequestedReference.recordID.recordName,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             itemRequested.setValue("no", forKey: "hasRequested")
+                            if localExchange.valueForKey("status") as! Int == 2 ||
+                                localExchange.valueForKey("status") as! Int == 4{
+//                                    let itemOfferedOwner = itemRequested.valueForKey("owner")
+//                                    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
+//                                    if itemOfferedOwner!.valueForKey("recordIDName") as! String != me.valueForKey("recordIDName") as! String && itemOfferedOwner!.valueForKey("recordIDName") as! String != "__defaultOwner__" {
+//                                        
+//                                        let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",itemRequested.valueForKey("recordIDName") as! String, itemRequested.valueForKey("recordIDName") as! String)
+//                                        let exchanges = Exchange.MR_findAllWithPredicate(predicate)
+//                                        if exchanges.count <= 1 {
+                                            itemRequested.setValue("no", forKey: "hasRequested")
+//                                        }
+//                                    }
+                            }
                             localExchange.setValue(itemRequested, forKey: "itemRequested")
-                            
                         }
                         
                         
@@ -387,7 +414,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         //                    requestingPerson.setValue(set as NSSet, forKey: "exchanges")
                         
                         //save the context
-                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        context.MR_saveToPersistentStoreAndWait()
                         
                         if message == NotificationCategoryMessages.NewOfferMessage {
                             if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
@@ -398,12 +425,9 @@ class Model: NSObject, CLLocationManagerDelegate {
                             }
                         }
                         if message == NotificationCategoryMessages.UpdateOfferMessage {
-//                            if NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isChatsShowing") as! String == "yes"{
-//                                if localExchange.valueForKey("status") != nil &&
-//                                    localExchange.valueForKey("status") as? NSNumber == 2 {
-//                                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
-//                                }
-//                            }
+                            if localExchange.valueForKey("status") as? NSNumber == 2 || localExchange.valueForKey("status") as? NSNumber == 4 {
+                                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+                            }
                         }
                         if message == NotificationCategoryMessages.AcceptedOfferMessage {
                             if localExchange.valueForKey("status") != nil &&
@@ -711,9 +735,9 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "OfferedItemOwnerRecordIDName == %@", me.recordIDName!)
-//        let statusPredicate = NSPredicate(format: "ExchangeStatus == 1")
+        let statusPredicate = NSPredicate(format: "ExchangeStatus == 1")
         let subscription = CKSubscription(recordType: "Exchange",
-            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate]),
+            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, statusPredicate]),
             options: .FiresOnRecordUpdate)
         
         let notificationInfo = CKNotificationInfo()

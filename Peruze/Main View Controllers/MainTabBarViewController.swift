@@ -141,7 +141,7 @@ class MainTabBarViewController: UITabBarController {
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category)
                     }
 //                }
-                resetBadgeValue()
+//                resetBadgeValue()
             }
         }
     }
@@ -176,7 +176,9 @@ class MainTabBarViewController: UITabBarController {
                     currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
                 }
                 requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
-                UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+                }
             }
         }
     }
@@ -192,7 +194,9 @@ class MainTabBarViewController: UITabBarController {
                     currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
                 }
                 requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
-                UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + count
+                }
             }
         } else {
             dispatch_async(dispatch_get_main_queue()) {

@@ -35,20 +35,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     // Setup CoreData with MagicalRecord
-    if NSUserDefaults.standardUserDefaults().valueForKey("appLaunchedOnce") == nil{
-       NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "appLaunchedOnce")
+    let defaults = NSUserDefaults.standardUserDefaults()
+    if defaults.valueForKey("appLaunchedOnce") == nil{
+       defaults.setValue("yes", forKey: "appLaunchedOnce")
        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
        resetBadgeCounter()
     }
-    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
-        NSUserDefaults.standardUserDefaults().setValue("yes", forKey: UniversalConstants.kIsPushNotificationOn)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    if defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
+        defaults.setValue("yes", forKey: UniversalConstants.kIsPushNotificationOn)
+        defaults.synchronize()
     }
-    if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil {
-        NSUserDefaults.standardUserDefaults().setValue("yes", forKey: UniversalConstants.kIsPostingToFacebookOn)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    if defaults.valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil {
+        defaults.setValue("yes", forKey: UniversalConstants.kIsPostingToFacebookOn)
+        defaults.synchronize()
     }
-    
+    defaults.setBool(true, forKey: "isAppActive")
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     
@@ -95,15 +96,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationDidEnterBackground(application: UIApplication) {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isAppActive")
   }
   
   func applicationWillEnterForeground(application: UIApplication) {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isAppActive")
   }
   
   func applicationDidBecomeActive(application: UIApplication) {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     FBSDKAppEvents.activateApp()
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isAppActive")
     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "applicationDidBecomeActive", object: true))
   }
   
@@ -111,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     MagicalRecord.cleanUp()
+    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isAppActive")
     NSFetchedResultsController.deleteCacheWithName("PeruzeDataModel")
   }
     

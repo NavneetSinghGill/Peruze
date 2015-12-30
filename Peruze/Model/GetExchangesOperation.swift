@@ -212,14 +212,16 @@ class GetExchangesOperation: Operation {
         
       
       //add this exchange to the requesting user's exchanges
-      let currentExchanges = requestingPerson.valueForKey("exchanges") as! NSSet
+        if let currentExchanges: NSSet = requestingPerson.valueForKey("exchanges") as? NSSet{
             logw("Saving exchanges \(currentExchanges.count)")
-         logw("\n requestingPerson \(requestingPerson)")
-        logw("\n localExchange \(localExchange)")
-
-        let set = currentExchanges.setByAddingObject(localExchange)
-        requestingPerson.setValue(set, forKey: "exchanges")
-      
+            logw("\n requestingPerson \(requestingPerson)")
+            logw("\n localExchange \(localExchange)")
+            
+            let set = currentExchanges.setByAddingObject(localExchange)
+            requestingPerson.setValue(set, forKey: "exchanges")
+        } else {
+            logw("\(__FUNCTION__) Failed while fetching persons exchanges.")
+        }
       //save the context
       self.context.MR_saveToPersistentStoreAndWait()
     }

@@ -205,6 +205,17 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         dispatch_async(dispatch_get_main_queue()) {
           do {
             try self.dataSource.fetchedResultsController.performFetch()
+//            let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath)
+//            let itemOfferedOwner = item.valueForKey("owner")
+//            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+//            if itemOfferedOwner!.valueForKey("recordIDName") as! String != me.valueForKey("recordIDName") as! String && itemOfferedOwner!.valueForKey("recordIDName") as! String != "__defaultOwner__" {
+//                
+//                let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",item.valueForKey("recordIDName") as! String, item.valueForKey("recordIDName") as! String)
+//                let exchanges = Exchange.MR_findAllWithPredicate(predicate)
+//                if exchanges.count <= 1 {
+//                    item.setValue("no", forKey: "hasRequested")
+//                }
+//            }
           } catch {
             logw("\(error)")
           }

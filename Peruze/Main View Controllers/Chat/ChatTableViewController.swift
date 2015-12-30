@@ -44,8 +44,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     tableView.rowHeight = UITableViewAutomaticDimension
     navigationController!.navigationBar.tintColor = .redColor()
     tableView.reloadData()
-    self.dataSource.getLocalAcceptedExchanges()
     checkForEmptyData(false)
+    if self.dataSource.getLocalAcceptedExchanges() == 0 {
+        self.noChatsLabel.hidden = false
+    } else {
+        self.noChatsLabel.hidden = true
+    }
   }
   
   //MARK: - UITableViewDelegate Methods
@@ -76,6 +80,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         } else {
             self.noChatsLabel.alpha = 0
         }
+        self.tableView.reloadData()
       }
     }
     OperationQueue().addOperation(chatOp)
@@ -133,6 +138,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
           do{
             try self.dataSource.fetchedResultsController.performFetch()
             self.tableView.reloadData()
+            self.getLocalAcceptedExchanges()
           } catch {
             logw("Fetch threw an error. Not updating")
             logw("\(error)")
