@@ -142,7 +142,7 @@ class UpdateExchangeWithIncrementalData: Operation {
     cloudOp.savePolicy = CKRecordSavePolicy.ChangedKeys
     cloudOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
       if let error = error {
-        logw("UpdateExchangeWithIncrementalData finished with error:")
+        logw("UpdateExchangesOperation UpdateExchangeWithIncrementalData finished with error:")
         logw("\(error)")
         self.finishWithError(error)
       } else {

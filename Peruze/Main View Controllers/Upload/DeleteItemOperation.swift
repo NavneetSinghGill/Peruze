@@ -111,7 +111,7 @@ class DeleteItemFromLocalStorageOperation: Operation {
       let localItem = try context.existingObjectWithID(self.objectID)
         context.deleteObject(localItem)
     } catch {
-      logw("\(error)")
+      logw("DeleteItemFromLocalStorageOperation failed with error: \(error)")
     }
     
     logw("Deleting Item from Persistent Store and Waiting...")
@@ -161,7 +161,7 @@ class DeleteItemFromLocalStorageToCloudOperation: Operation {
       deleteItemRecordOp.qualityOfService = qualityOfService
       database.addOperation(deleteItemRecordOp)
     } catch {
-      logw("\(error)")
+      logw("DeleteItemFromLocalStorageToCloudOperation failed with error: \(error)")
       self.finish()
     }
   }

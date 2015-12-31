@@ -376,7 +376,7 @@ class Model: NSObject, CLLocationManagerDelegate {
 //                                        let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",itemOffered.valueForKey("recordIDName") as! String, itemOffered.valueForKey("recordIDName") as! String)
 //                                        let exchanges = Exchange.MR_findAllWithPredicate(predicate)
 //                                        if exchanges.count <= 1 {
-                                            itemOffered.setValue("no", forKey: "hasRequested")
+//                                            itemOffered.setValue("no", forKey: "hasRequested")
 //                                        }
 //                                    }
                             }
@@ -398,7 +398,7 @@ class Model: NSObject, CLLocationManagerDelegate {
 //                                        let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",itemRequested.valueForKey("recordIDName") as! String, itemRequested.valueForKey("recordIDName") as! String)
 //                                        let exchanges = Exchange.MR_findAllWithPredicate(predicate)
 //                                        if exchanges.count <= 1 {
-                                            itemRequested.setValue("no", forKey: "hasRequested")
+//                                            itemRequested.setValue("no", forKey: "hasRequested")
 //                                        }
 //                                    }
                             }

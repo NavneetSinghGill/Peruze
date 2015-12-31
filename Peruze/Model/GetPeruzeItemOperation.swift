@@ -84,7 +84,7 @@ class GetPeruzeItemOperation: GroupOperation {
     defaults.synchronize()
     cursor = getItems.cursor
     if let error = errors.first {
-      logw("\(error)")
+      logw("GetPeruzeItemOperation failed with error: \(error)")
       let alert = AlertOperation(presentationContext: presentationContext)
       alert.title = "Oops!"
       alert.message = "There was an error trying to retrieve items from the iCloud server. Please try again."

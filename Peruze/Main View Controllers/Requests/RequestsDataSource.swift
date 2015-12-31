@@ -40,7 +40,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     do {
       try self.fetchedResultsController.performFetch()
     } catch {
-      logw("\(error)")
+      logw("RequestsDataSource fetchResult failed with error: \(error)")
     }
   }
   

@@ -71,7 +71,7 @@ class PostItemOperation: GroupOperation {
           localMe.setValue(NSNumber(double: location.coordinate.latitude), forKey: "latitude")
           context.MR_saveToPersistentStoreAndWait()
         } catch {
-          logw("\(error)")
+          logw("PostItemOperation saving local item failed with error: \(error)")
         }
       }
       
@@ -112,7 +112,7 @@ class PostItemOperation: GroupOperation {
           operationsToInit = [ getLocationOp, saveItemOp, uploadItemOp, finishOp]
           break
         case .Failed(let error) :
-          logw("\(error)")
+          logw("PostItemOperation .Failed error: \(error)")
           let finishWithErrorOp = BlockOperation(block: { (continueWithError) -> Void in
             errorCompletionHandler()
           })
@@ -186,7 +186,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       localItem.setValue(self.isDelete, forKey: "isDelete")
       
     } catch {
-      logw("\(error)")
+      logw("PostItemOperation SaveItemInfoToLocalStorageOperation failed with error: \(error)")
     }
     
     logw("Saving Item to Persistent Store and Waiting...")
@@ -272,7 +272,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         do {
           try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
         } catch {
-          logw("\(error)")
+          logw("PostItemOperation UploadItemFromLocalStorageToCloudOperation removeItemAtPath failed with error: \(error)")
           return
         }
         
@@ -287,7 +287,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       saveItemRecordOp.qualityOfService = qualityOfService
       database.addOperation(saveItemRecordOp)
     } catch {
-      logw("\(error)")
+      logw("PostItemOperation UploadItemFromLocalStorageToCloudOperation failed with error: \(error)")
       self.finish()
     }
   }

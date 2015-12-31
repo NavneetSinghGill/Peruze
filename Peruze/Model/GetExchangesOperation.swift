@@ -149,6 +149,7 @@ class GetExchangesOperation: Operation {
     //handle returned objects
     getExchangesOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
       record
+        logw("GetExchangesOperation recordFetchBlock with ExchangeStatus \(self.status) ..... record: \(record)")
       //find or create the record
       let requestingPerson = Person.MR_findFirstByAttribute("recordIDName",
         withValue: self.personRecordIDName,

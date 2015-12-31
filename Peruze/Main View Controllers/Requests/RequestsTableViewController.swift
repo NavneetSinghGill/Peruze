@@ -88,7 +88,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         try self.dataSource.fetchedResultsController.performFetch()
         self.tableView.reloadData()
       } catch {
-           logw("\(error)")
+           logw("RequestsTableViewController iCloud data fetch failed with error: \(error)")
       }
       dispatch_async(dispatch_get_main_queue()){
         self.tableView.reloadData()
@@ -105,6 +105,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     fetchMissingPeople.addDependency(fetchMissingItems)
     updateExchanges.addDependency(fetchMissingPeople)
     
+    logw("RequestsTableViewController iCloud Data fetch initiated.")
     let operationQueue = OperationQueue()
     operationQueue.qualityOfService = NSQualityOfService.Utility
     operationQueue.addOperations([fetchExchanges, fetchMissingItems, fetchMissingPeople, updateExchanges], waitUntilFinished: false)
@@ -118,7 +119,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
             self.activityIndicatorView.alpha = 1
             try self.dataSource.fetchedResultsController.performFetch()
         } catch {
-            logw("\(error)")
+            logw("RequestsTableViewController fetch local result failed with error: \(error)")
         }
         dispatch_async(dispatch_get_main_queue()){
             self.tableView.reloadData()
@@ -217,7 +218,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
 //                }
 //            }
           } catch {
-            logw("\(error)")
+            logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Denied completion block fetch local data failed with error: \(error)")
           }
           self.tableView.reloadData()
             self.activityIndicatorView.stopAnimating()
@@ -257,7 +258,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
           do {
             try self.dataSource.fetchedResultsController.performFetch()
           } catch {
-            logw("\(error)")
+            logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Accepted completion block fetch local data failed with error: \(error)")
           }
           self.tableView.reloadData()
             self.activityIndicatorView.stopAnimating()

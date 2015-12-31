@@ -148,6 +148,9 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if self.tabBarController != nil {
+            self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+        }
         for superChildVC in childViewControllers {
             if let profileContainerVC = superChildVC as? ProfileContainerViewController {
                 for childVC in profileContainerVC.childViewControllers{

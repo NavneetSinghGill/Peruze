@@ -100,7 +100,7 @@ class PostUserOperation: Operation {
         do {
           try NSFileManager.defaultManager().removeItemAtURL(imageURL)
         } catch {
-          logw("\(error)")
+          logw("PostUserOperation removeItemAtUrl failed with error: \(error)")
           self.finish()
           return
         }

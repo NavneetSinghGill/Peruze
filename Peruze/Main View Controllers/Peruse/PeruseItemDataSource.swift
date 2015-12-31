@@ -86,7 +86,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //        self.refreshData(presentationContext)
       } catch {
         
-        logw("\(error)")
+        logw("PeruzeItemDatasource local item fetch failed with error: \(error)")
         let alert = UIAlertController(
           title: "Oops!",
           message: ("There was an issue fetching results from your device. Error: \(error)"),
@@ -196,7 +196,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
             try self.fetchedResultsController.performFetch()
             
         } catch {
-            logw("\(error)")
+            logw("PeruseItemDatasource failed with error: \(error)")
         }
     }
     

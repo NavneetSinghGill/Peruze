@@ -93,7 +93,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeItemFromLocalDB:", name: "removeItemFromLocalDB", object: nil)
     
-    let logo = UIImage(named: "Peruse_Typography_With_Eye.jpeg")
+    let logo = UIImage(named: "Peruse_Typography_Thick.jpeg")
     let imageView = UIImageView(image:logo)
     imageView.frame.size.width = 100;
     imageView.frame.size.height = 35;
@@ -147,7 +147,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
                         managedConcurrentObjectContext.deleteObject(localItem)
                     }
                 } catch {
-                    logw("\(error)")
+                    logw("PeruseViewController removeItemFromLocalDB failed with error: \(error)")
                 }
                 
                 logw("Deleting Single Item from Persistent Store and Waiting...")

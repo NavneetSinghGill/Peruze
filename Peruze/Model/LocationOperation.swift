@@ -78,7 +78,7 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
   }
   override func finished(errors: [NSError]) {
     if let error = errors.first {
-      logw("\(error)")
+      logw("LocationOperation failed with error: \(error)")
     }
   }
 }

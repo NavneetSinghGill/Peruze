@@ -58,7 +58,7 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
       if !success {
-        logw("\(error)")
+        logw("ProfileSetupSlectPhotoViewController getProfilePhotosWithCompletion failed with error: \(error)")
         self.profilePictureFetchingError()
       }
       dispatch_async(dispatch_get_main_queue()) {
