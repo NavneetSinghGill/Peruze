@@ -317,7 +317,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func fetchExchangeWithRecord(recordID: CKRecordID, message: String) -> Void
+    func fetchExchangeWithRecord(recordID: CKRecordID, message: String, badgeCount: Int = 0) -> Void
     {
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
@@ -417,12 +417,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                         context.MR_saveToPersistentStoreAndWait()
                         
                         if message == NotificationCategoryMessages.NewOfferMessage {
-                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+//                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
                                 if localExchange.valueForKey("status") != nil &&
                                     localExchange.valueForKey("status") as? NSNumber == 0 {
                                         NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                                        NSNotificationCenter.defaultCenter().postNotificationName("setRequestBadge", object: nil, userInfo: ["badgeCount": badgeCount])
                                 }
-                            }
+//                            }
                         }
                         if message == NotificationCategoryMessages.UpdateOfferMessage {
                             if localExchange.valueForKey("status") as? NSNumber == 2 || localExchange.valueForKey("status") as? NSNumber == 4 {
@@ -433,6 +434,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                             if localExchange.valueForKey("status") != nil &&
                                 localExchange.valueForKey("status") as? NSNumber == 1 {
                                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+                                    NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
                             }
                         }
                     }

@@ -308,12 +308,20 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     @IBAction func textFieldEditingChanged(sender: UITextField) {
+//        if uploadButton.titleLabel?.text == "Edit" {
+//            uploadButton.setTitle("Done", forState: UIControlState.Normal)
+//            uploadButton.sizeToFit()
+//        }
         if !sender.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true
         }
     }
     
     func textViewDidChange(textView: UITextView) {
+//        if uploadButton.titleLabel?.text == "Edit" {
+//            uploadButton.setTitle("Done", forState: UIControlState.Normal)
+//            uploadButton.sizeToFit()
+//        }
         if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage && textView.tag
             == Constants.descriptionTextViewTag{
                 uploadButton.enabled = true

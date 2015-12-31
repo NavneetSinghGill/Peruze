@@ -29,6 +29,8 @@ class MainTabBarViewController: UITabBarController {
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "showBadgeOnRequestTab:",name:"ShowBadgeOnRequestTab",object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "resetBadgeValue",name:"ResetBadgeValue",object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "setApplicationBadgeCount", name: "applicationDidBecomeActive", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "setRequestBadgeCount:", name: "setRequestBadge", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "setChatBadgeCount:", name: "setAcceptedExchangesBadge", object: nil)
     }
     func showTabBar(notification: NSNotification){
         self.dismissViewControllerAnimated(false, completion: nil)
@@ -62,9 +64,9 @@ class MainTabBarViewController: UITabBarController {
                         Model.sharedInstance().fetchChatWithRecord(recordID)
                     }
                     else if category == NotificationCategoryMessages.NewOfferMessage {
-                        if Int(badge) != 0{
-                            self.setRequestBadgeCount(Int(badge))
-                        }
+//                        if Int(badge) != 0{
+//                            self.setRequestBadgeCount(Int(badge))
+//                        }
                         //refresh Exchanges
                         let navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
@@ -77,7 +79,7 @@ class MainTabBarViewController: UITabBarController {
                         NSUserDefaults.standardUserDefaults().synchronize()
 //                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage, badgeCount: Int(badge))
                     }
                     else if category == NotificationCategoryMessages.ItemAdditionOrUpdation {
                         let navController = self.viewControllers![0] as! UINavigationController
@@ -135,11 +137,11 @@ class MainTabBarViewController: UITabBarController {
                         Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationCategoryMessages.UpdateOfferMessage)
                     }
                     else if category == NotificationCategoryMessages.AcceptedOfferMessage {
-                        if Int(badge) != 0 {
-                            self.setChatBadgeCount(Int(badge))
-                        }
+//                        if Int(badge) != 0 {
+//                            self.setChatBadgeCount(Int(badge))
+//                        }
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category)
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category, badgeCount: Int(badge))
                     }
 //                }
                 resetBadgeValue()
@@ -166,61 +168,71 @@ class MainTabBarViewController: UITabBarController {
         CKContainer.defaultContainer().addOperation(badgeOperation)
     }
     
-    func setRequestBadgeCount(count:Int) {
-        if self.selectedIndex != 3 {
-            dispatch_async(dispatch_get_main_queue()) {
-                let requestTab = self.tabBar.items![3]
-                let currentRequestTabBadgeNumber: Int
-                if requestTab.badgeValue == nil {
-                    currentRequestTabBadgeNumber = 0
-                } else {
-                    currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
-                }
-                requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
-                
-                let chatTab = self.tabBar.items![2]
-                let currentChatTabBadgeNumber: Int
-                if chatTab.badgeValue == nil {
-                    currentChatTabBadgeNumber = 0
-                } else {
-                    currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
-                }
-//                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+    func setRequestBadgeCount(notification: NSNotification) {
+        if notification.userInfo == nil {
+            return
+        }
+        if notification.userInfo != nil {
+            let userInfo : NSDictionary = notification.userInfo!
+            let count = userInfo.valueForKey("badgeCount") as! Int
+            if self.selectedIndex != 3 {
+                dispatch_async(dispatch_get_main_queue()) {
+                    let requestTab = self.tabBar.items![3]
+                    let currentRequestTabBadgeNumber: Int
+                    if requestTab.badgeValue == nil {
+                        currentRequestTabBadgeNumber = 0
+                    } else {
+                        currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
+                    }
+                    requestTab.badgeValue = String(count + currentRequestTabBadgeNumber)
+                    
+                    let chatTab = self.tabBar.items![2]
+                    let currentChatTabBadgeNumber: Int
+                    if chatTab.badgeValue == nil {
+                        currentChatTabBadgeNumber = 0
+                    } else {
+                        currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
+                    }
+                    //                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
                     UIApplication.sharedApplication().applicationIconBadgeNumber = currentChatTabBadgeNumber + count + currentRequestTabBadgeNumber
-//                }
+                    //                }
+                }
             }
         }
     }
     
-    func setChatBadgeCount(count:Int) {
-        if self.selectedIndex != 2 {
-            dispatch_async(dispatch_get_main_queue()) {
-                let chatTab = self.tabBar.items![2]
-                let currentChatTabBadgeNumber: Int
-                if chatTab.badgeValue == nil {
-                    currentChatTabBadgeNumber = 0
-                } else {
-                    currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
-                }
-                chatTab.badgeValue = String(count + currentChatTabBadgeNumber)
-                
-                let requestTab = self.tabBar.items![3]
-                let currentRequestTabBadgeNumber: Int
-                if requestTab.badgeValue == nil {
-                    currentRequestTabBadgeNumber = 0
-                } else {
-                    currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
-                }
-                
-//                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+    func setChatBadgeCount(notification: NSNotification) {
+        if notification.userInfo == nil {
+            return
+        }
+        if notification.userInfo != nil {
+            let userInfo : NSDictionary = notification.userInfo!
+            let count = userInfo.valueForKey("badgeCount") as! Int
+            if self.selectedIndex != 2 {
+                dispatch_async(dispatch_get_main_queue()) {
+                    let chatTab = self.tabBar.items![2]
+                    let currentChatTabBadgeNumber: Int
+                    if chatTab.badgeValue == nil {
+                        currentChatTabBadgeNumber = 0
+                    } else {
+                        currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
+                    }
+                    chatTab.badgeValue = String(count + currentChatTabBadgeNumber)
+                    
+                    let requestTab = self.tabBar.items![3]
+                    let currentRequestTabBadgeNumber: Int
+                    if requestTab.badgeValue == nil {
+                        currentRequestTabBadgeNumber = 0
+                    } else {
+                        currentRequestTabBadgeNumber = Int(requestTab.badgeValue!)!
+                    }
+                    
+                    //                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
                     UIApplication.sharedApplication().applicationIconBadgeNumber = currentRequestTabBadgeNumber + count + currentChatTabBadgeNumber
-//                }
-            }
-        } else {
-            dispatch_async(dispatch_get_main_queue()) {
-//                self.setBadgeCounter(<#T##count: Int##Int#>)
+                    //                }
+                }
             }
         }
     }

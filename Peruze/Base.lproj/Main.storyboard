@@ -1726,23 +1726,23 @@
                                             <constraint firstAttribute="width" secondItem="nA7-XA-xbh" secondAttribute="height" multiplier="1:1" id="4fQ-TH-7cu"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gMC-lO-HuH" userLabel="FarLeftSpacer">
-                                        <rect key="frame" x="8" y="223" width="76" height="52"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMC-lO-HuH" userLabel="FarLeftSpacer">
+                                        <rect key="frame" x="8" y="223" width="59" height="52"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKY-Xr-4TI" userLabel="MiddleLeftSpacer">
-                                        <rect key="frame" x="128" y="223" width="153" height="52"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rKY-Xr-4TI" userLabel="MiddleLeftSpacer">
+                                        <rect key="frame" x="145" y="223" width="116" height="52"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="8" id="DEa-q0-sgc"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zff-HY-AYm" userLabel="MiddleRightSpacer">
-                                        <rect key="frame" x="325" y="223" width="152" height="52"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zff-HY-AYm" userLabel="MiddleRightSpacer">
+                                        <rect key="frame" x="339" y="223" width="116" height="52"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuX-vM-Ju1" userLabel="FarRightSpacer">
-                                        <rect key="frame" x="516" y="223" width="76" height="52"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yuX-vM-Ju1" userLabel="FarRightSpacer">
+                                        <rect key="frame" x="533" y="223" width="59" height="52"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-IA-bM4">
-                                        <rect key="frame" x="84" y="225" width="44" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-IA-bM4">
+                                        <rect key="frame" x="67" y="225" width="78" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <state key="normal" title="Uploads">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1753,7 +1753,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2DQ-0g-2oa">
-                                        <rect key="frame" x="281" y="225" width="44" height="52"/>
+                                        <rect key="frame" x="261" y="225" width="78" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <state key="normal" title="Reviews">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1763,10 +1763,10 @@
                                             <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="gWc-Zp-BCa"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-PO-Fv1">
-                                        <rect key="frame" x="477" y="225" width="39" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-PO-Fv1">
+                                        <rect key="frame" x="455" y="225" width="78" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                        <state key="normal" title="Friends">
+                                        <state key="normal" title="Mutual Friends">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1835,7 +1835,7 @@
                                             <constraint firstAttribute="height" constant="1" id="RNi-ac-tau"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5V-UF-epw" userLabel="Cloud">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5V-UF-epw" userLabel="Cloud">
                                         <rect key="frame" x="89" y="225" width="34" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="x5V-UF-epw" secondAttribute="height" multiplier="1:1" id="Jv7-EX-sGc"/>
@@ -1846,7 +1846,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BkC-vl-gE1" userLabel="Star">
-                                        <rect key="frame" x="286" y="225" width="34" height="34"/>
+                                        <rect key="frame" x="283" y="225" width="34" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="BkC-vl-gE1" secondAttribute="height" multiplier="1:1" id="xcT-2L-Zqd"/>
                                         </constraints>
@@ -1855,12 +1855,12 @@
                                             <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="HOX-F0-A1W"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MND-WX-XoD" userLabel="Dollar Sign">
-                                        <rect key="frame" x="480" y="225" width="34" height="34"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MND-WX-XoD" userLabel="Dollar Sign">
+                                        <rect key="frame" x="477" y="225" width="34" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="MND-WX-XoD" secondAttribute="height" multiplier="1:1" id="mfM-IP-9Tk"/>
                                         </constraints>
-                                        <state key="normal" image="Profile_Exchange"/>
+                                        <state key="normal" image="Profile_Friend"/>
                                         <connections>
                                             <action selector="friendsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="0pf-ag-B26"/>
                                         </connections>
@@ -1977,6 +1977,7 @@
                                     <constraint firstItem="VQs-aA-FJs" firstAttribute="centerX" secondItem="J16-mL-4rp" secondAttribute="centerX" id="Zf6-Y1-p1n"/>
                                     <constraint firstItem="bZe-k2-Y1i" firstAttribute="leading" secondItem="J16-mL-4rp" secondAttribute="trailing" id="ZfL-aP-4Lb"/>
                                     <constraint firstItem="IcU-OX-xTU" firstAttribute="top" secondItem="fI1-Uj-Utl" secondAttribute="top" id="a7O-pO-1d6"/>
+                                    <constraint firstItem="MrF-PO-Fv1" firstAttribute="width" secondItem="2DQ-0g-2oa" secondAttribute="width" id="aBj-nq-nSX"/>
                                     <constraint firstItem="acP-Pd-2KG" firstAttribute="top" secondItem="1cW-1V-0l7" secondAttribute="bottom" id="aTl-S9-Gd5"/>
                                     <constraint firstAttribute="bottom" secondItem="gMC-lO-HuH" secondAttribute="bottom" constant="2" id="anw-Zh-4OX"/>
                                     <constraint firstItem="2DQ-0g-2oa" firstAttribute="bottom" secondItem="oQF-IA-bM4" secondAttribute="bottom" id="bEV-5r-PBh"/>
@@ -4363,6 +4364,7 @@
         <image name="Peruze_Small_Icon" width="66" height="66"/>
         <image name="Profile" width="30" height="30"/>
         <image name="Profile_Exchange" width="33" height="33"/>
+        <image name="Profile_Friend" width="100" height="100"/>
         <image name="Profile_Heart" width="33" height="33"/>
         <image name="Profile_Star" width="33" height="33"/>
         <image name="Profile_Upload_Filled" width="33" height="33"/>

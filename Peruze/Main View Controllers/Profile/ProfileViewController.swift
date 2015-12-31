@@ -33,6 +33,8 @@ class ProfileViewController: UIViewController {
             static let FavoritesFilled = "Profile_Heart_Filled"
             static let Exchanges = "Profile_Exchange"
             static let ExchangesFilled = "Profile_Exchange_Filled"
+            static let Friends = "Profile_Friend"
+            static let FriendsFilled = "Profile_Friend_Filled"
         }
     }
     
@@ -290,7 +292,7 @@ class ProfileViewController: UIViewController {
         ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
         favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
         exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
-        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
+        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Friends)
         for viewController in childViewControllers {
             if let vc = viewController as? ProfileContainerViewController {
                 vc.profileOwner = personForProfile
@@ -305,7 +307,7 @@ class ProfileViewController: UIViewController {
         ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.ReviewsFilled)
         favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
         exchangesButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
-        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Exchanges)
+        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.Friends)
         for viewController in childViewControllers {
             if let vc = viewController as? ProfileContainerViewController {
                 vc.profileOwner = personForProfile
@@ -340,7 +342,7 @@ class ProfileViewController: UIViewController {
     @IBAction func friendsTapped(sender: AnyObject) {
         ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
-        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.ExchangesFilled)
+        ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.FriendsFilled)
         for viewController in childViewControllers {
             if let vc = viewController as? ProfileContainerViewController {
                 vc.profileOwner = personForProfile

@@ -121,6 +121,17 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
   }
   
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) == nil ||
+           defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) as! String == "yes" {
+            self.pushNotificationSwitch.on = true
+        } else {
+            self.pushNotificationSwitch.on = false
+        }
+    }
+    
   override func viewDidAppear(animated: Bool) {
     super.viewWillAppear(animated)
     if loadingCircle == nil {
@@ -274,13 +285,19 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         }
         
         self.pushNotificationSwitch.userInteractionEnabled = false
-        Model.sharedInstance().deleteSubscriptionsWithIDs([defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) as! String])
-        
-        Model.sharedInstance().subscribeForNewOffer(false, completionHandler: {
-            Model.sharedInstance().subscribeForAcceptedOffer(false,completionHandler: {
-                self.pushNotificationSwitch.userInteractionEnabled = true
+        if defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) != nil ||
+            defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) != nil {
+            Model.sharedInstance().deleteSubscriptionsWithIDs([defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) as! String])
+            
+            Model.sharedInstance().subscribeForNewOffer(false, completionHandler: {
+                Model.sharedInstance().subscribeForAcceptedOffer(false,completionHandler: {
+                    self.pushNotificationSwitch.userInteractionEnabled = true
+                })
             })
-        })
+        } else {
+            self.pushNotificationSwitch.on = !self.pushNotificationSwitch.on
+            self.pushNotificationSwitch.userInteractionEnabled = true
+        }
     }
     @IBAction func postToFacebookSwitchTapped(sender: UISwitch) {
         if sender.on == false{
