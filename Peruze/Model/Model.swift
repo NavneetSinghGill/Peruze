@@ -239,7 +239,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     //MARK: Fetch record
     
-    func fetchItemWithRecord(recordID: CKRecordID) -> Void
+    func fetchItemWithRecord(recordID: CKRecordID, completionBlock: (Bool -> Void) = {Bool -> Void in return false}) -> Void
     {
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
@@ -248,6 +248,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         //                        self.notifyUser("Fetch Error", message:
                         //                            err.localizedDescription)
                         logw("Error while fetching Item : \(err)")
+                        completionBlock(false)
                     }
                 } else {
                     if record?.recordType == RecordTypes.Item {
@@ -312,7 +313,9 @@ class Model: NSObject, CLLocationManagerDelegate {
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                         NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+                        completionBlock(true)
                     }
+                    completionBlock(false)
                 }
             }))
     }
@@ -360,9 +363,10 @@ class Model: NSObject, CLLocationManagerDelegate {
                             localExchange.setValue((date ?? newDate), forKey: "date")
                         }
                         
+                        var itemOffered: NSManagedObject!
                         //set item offered
                         if let itemOfferedReference = record!.objectForKey("OfferedItem") as? CKReference {
-                            let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                            itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: itemOfferedReference.recordID.recordName,
                                 inContext: context)
                             itemOffered.setValue("yes", forKey: "hasRequested")
@@ -383,11 +387,14 @@ class Model: NSObject, CLLocationManagerDelegate {
                             localExchange.setValue(itemOffered, forKey: "itemOffered")
                         }
                         
+                        var itemRequested: NSManagedObject!
+                        var itemRequestedRecordID: String!
                         //set item requested
                         if let itemRequestedReference = record!.objectForKey("RequestedItem") as? CKReference {
-                            let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
+                            itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: itemRequestedReference.recordID.recordName,
                                 inContext: context)
+                            itemRequestedRecordID = itemRequested.valueForKey("recordIDName") as! String
                             itemRequested.setValue("no", forKey: "hasRequested")
                             if localExchange.valueForKey("status") as! Int == 2 ||
                                 localExchange.valueForKey("status") as! Int == 4{
@@ -413,33 +420,85 @@ class Model: NSObject, CLLocationManagerDelegate {
                         let set = currentExchanges.setByAddingObject(localExchange)
                         //                    requestingPerson.setValue(set as NSSet, forKey: "exchanges")
                         
+                        let localExchangeStatus: NSNumber
+                        if let status = localExchange.valueForKey("status") as? NSNumber {
+                            localExchangeStatus = status
+                        } else {
+                            localExchangeStatus = -1
+                        }
+                        
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
                         
-                        if message == NotificationCategoryMessages.NewOfferMessage {
-//                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
-                                if localExchange.valueForKey("status") != nil &&
-                                    localExchange.valueForKey("status") as? NSNumber == 0 {
-                                        NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
-                                        NSNotificationCenter.defaultCenter().postNotificationName("setRequestBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                        
+                        //Fetching offered and requested items
+                        var isRequestedItemPresentLocally = true
+                        
+                        if itemRequested.valueForKey("recordIDName") == nil || itemRequested.valueForKey("title") == nil || itemRequested.valueForKey("image") == nil{
+                            isRequestedItemPresentLocally = false
+                        }
+                        
+                        if itemOffered.valueForKey("recordIDName") == nil || itemOffered.valueForKey("title") == nil || itemOffered.valueForKey("image") == nil {
+                            self.fetchItemWithRecord(CKRecordID(recordName: itemOffered.valueForKey("recordIDName") as! String), completionBlock: {
+                                (isOfferedItemFetchedSuccessfully : Bool) in
+                                if isOfferedItemFetchedSuccessfully == true {
+                                    
+                                    //After first success.... Fetch second item
+                                    
+                                    if isRequestedItemPresentLocally == false {
+                                        self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), completionBlock: {
+                                            (isRequestedItemFetchedSuccessfully : Bool) in
+                                            if isRequestedItemFetchedSuccessfully == true {
+                                                
+                                                self.sendLocalNotificationWith(message, localExchangeStatus: localExchangeStatus, badgeCount: badgeCount)
+                                                
+                                            }
+                                        })
+                                    } else {
+                                        self.sendLocalNotificationWith(message, localExchangeStatus: localExchangeStatus, badgeCount: badgeCount)
+                                    }
                                 }
-//                            }
-                        }
-                        if message == NotificationCategoryMessages.UpdateOfferMessage {
-                            if localExchange.valueForKey("status") as? NSNumber == 2 || localExchange.valueForKey("status") as? NSNumber == 4 {
-                                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
-                            }
-                        }
-                        if message == NotificationCategoryMessages.AcceptedOfferMessage {
-                            if localExchange.valueForKey("status") != nil &&
-                                localExchange.valueForKey("status") as? NSNumber == 1 {
-                                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
-                                    NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                            })
+                        } else {
+                            if isRequestedItemPresentLocally == false {
+                                self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), completionBlock: {
+                                    (isRequestedItemFetchedSuccessfully : Bool) in
+                                    if isRequestedItemFetchedSuccessfully == true {
+                                        
+                                        self.sendLocalNotificationWith(message, localExchangeStatus: localExchangeStatus, badgeCount: badgeCount)
+                                        
+                                    }
+                                })
+                            } else {
+                                self.sendLocalNotificationWith(message, localExchangeStatus: localExchangeStatus, badgeCount: badgeCount)
                             }
                         }
                     }
                 }
             }))
+    }
+    
+    func sendLocalNotificationWith(message: String, localExchangeStatus: NSNumber, badgeCount: Int) {
+        //Fire local notification for updation
+        if message == NotificationCategoryMessages.NewOfferMessage {
+            //                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
+            if localExchangeStatus == 0 {
+                NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName("setRequestBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+            }
+            //                            }
+        }
+        if message == NotificationCategoryMessages.UpdateOfferMessage {
+            if localExchangeStatus == 2 || localExchangeStatus == 4 {
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+            }
+        }
+        if message == NotificationCategoryMessages.AcceptedOfferMessage {
+            if localExchangeStatus == 1 {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+            }
+        }
     }
     
     func fetchChatWithRecord(recordID: CKRecordID) -> Void

@@ -2225,6 +2225,7 @@
                         <outlet property="ouReviewsButton" destination="BkC-vl-gE1" id="CzF-Gi-uGK"/>
                         <outlet property="ouStarView" destination="1cW-1V-0l7" id="zn4-hh-naB"/>
                         <outlet property="ouUploadsButton" destination="x5V-UF-epw" id="XmA-l5-mdu"/>
+                        <outlet property="profileContainerBottomConstraint" destination="bz8-8V-pmm" id="xwr-Au-ejd"/>
                         <outlet property="profileImageView" destination="7ek-An-bXV" id="1aG-Ar-VdL"/>
                         <outlet property="profileNameLabel" destination="N9U-jb-ddQ" id="6ZX-Ib-XOe"/>
                         <outlet property="reviewsButton" destination="ICp-ag-K7L" id="ebP-Ry-0eR"/>
@@ -4364,7 +4365,7 @@
         <image name="Peruze_Small_Icon" width="66" height="66"/>
         <image name="Profile" width="30" height="30"/>
         <image name="Profile_Exchange" width="33" height="33"/>
-        <image name="Profile_Friend" width="100" height="100"/>
+        <image name="Profile_Friend" width="33" height="33"/>
         <image name="Profile_Heart" width="33" height="33"/>
         <image name="Profile_Star" width="33" height="33"/>
         <image name="Profile_Upload_Filled" width="33" height="33"/>

@@ -94,7 +94,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         if self.navigationController != nil || shouldShowUploadButton == true {
             uploadButton.setTitle("Upload", forState: UIControlState.Normal)
         } else {
-            uploadButton.setTitle("Done", forState: UIControlState.Normal)
+            uploadButton.setTitle("Edit", forState: UIControlState.Normal)
         }
         uploadButton.sizeToFit()
         uploadButton.addTarget(self, action: "upload:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -267,6 +267,10 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
         if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true
+            if uploadButton.titleLabel?.text == "Edit" {
+                uploadButton.setTitle("Done", forState: UIControlState.Normal)
+                uploadButton.sizeToFit()
+            }
         }
     }
     
@@ -308,23 +312,27 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     @IBAction func textFieldEditingChanged(sender: UITextField) {
-//        if uploadButton.titleLabel?.text == "Edit" {
-//            uploadButton.setTitle("Done", forState: UIControlState.Normal)
-//            uploadButton.sizeToFit()
-//        }
+        if uploadButton.titleLabel?.text == "Edit" {
+            uploadButton.setTitle("Done", forState: UIControlState.Normal)
+            uploadButton.sizeToFit()
+        }
         if !sender.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true
+        } else {
+            uploadButton.enabled = false
         }
     }
     
     func textViewDidChange(textView: UITextView) {
-//        if uploadButton.titleLabel?.text == "Edit" {
-//            uploadButton.setTitle("Done", forState: UIControlState.Normal)
-//            uploadButton.sizeToFit()
-//        }
+        if uploadButton.titleLabel?.text == "Edit" {
+            uploadButton.setTitle("Done", forState: UIControlState.Normal)
+            uploadButton.sizeToFit()
+        }
         if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage && textView.tag
             == Constants.descriptionTextViewTag{
                 uploadButton.enabled = true
+        } else {
+            uploadButton.enabled = false
         }
     }
     

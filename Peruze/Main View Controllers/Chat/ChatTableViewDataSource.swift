@@ -60,7 +60,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
     cell!.data = (fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-    logw("Accepted exchange table cell data: \(cell?.data)")
+    logw("Accepted exchange table cell data at .... IndexPath:\(indexPath) .... with data: \(cell?.data)")
     return cell!
   }
   

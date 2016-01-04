@@ -62,6 +62,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var ouReviewsButton: UIButton!
     @IBOutlet weak var ouFriendsButton: UIButton!
     @IBOutlet weak var ouStarView: StarView!
+    @IBOutlet weak var profileContainerBottomConstraint: NSLayoutConstraint!
     
     var isOtherUser: Bool!
     
@@ -152,6 +153,8 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         if self.tabBarController != nil {
             self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+        } else {
+            self.profileContainerBottomConstraint.constant = 0
         }
         for superChildVC in childViewControllers {
             if let profileContainerVC = superChildVC as? ProfileContainerViewController {

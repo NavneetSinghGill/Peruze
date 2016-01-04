@@ -31,6 +31,11 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
   }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        checkForEmptyData(true)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         checkForEmptyData(true)

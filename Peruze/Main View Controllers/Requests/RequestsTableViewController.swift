@@ -118,17 +118,17 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
             self.activityIndicatorView.stopAnimating()
             self.activityIndicatorView.alpha = 1
             try self.dataSource.fetchedResultsController.performFetch()
+            dispatch_async(dispatch_get_main_queue()){
+                self.tableView.reloadData()
+                if self.dataSource.fetchedResultsController.sections?[0].numberOfObjects > 0 {
+                    self.noRequetsLabel.alpha = 0
+                } else {
+                    self.noRequetsLabel.alpha = 1
+                }
+                self.refreshControl?.endRefreshing()
+            }
         } catch {
             logw("RequestsTableViewController fetch local result failed with error: \(error)")
-        }
-        dispatch_async(dispatch_get_main_queue()){
-            self.tableView.reloadData()
-            if self.tableView.numberOfRowsInSection(0) > 0 {
-                self.noRequetsLabel.alpha = 0
-            } else {
-                self.noRequetsLabel.alpha = 1
-            }
-            self.refreshControl?.endRefreshing()
         }
     }
   

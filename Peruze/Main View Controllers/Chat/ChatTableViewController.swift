@@ -20,6 +20,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   @IBOutlet weak var tableView: UITableView! {
     didSet {
       dataSource.tableView = tableView
+        self.tableView.dataSource = dataSource
+        tableView.delegate = self
     }
   }
   @IBOutlet weak var noChatsLabel: UILabel!
@@ -43,12 +45,15 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     tableView.estimatedRowHeight = CGFloat(55)
     tableView.rowHeight = UITableViewAutomaticDimension
     navigationController!.navigationBar.tintColor = .redColor()
-    tableView.reloadData()
+    self.dataSource.tableView.reloadData()
     checkForEmptyData(false)
     if self.dataSource.getLocalAcceptedExchanges() == 0 {
         self.noChatsLabel.hidden = false
     } else {
         self.noChatsLabel.hidden = true
+        dispatch_async(dispatch_get_main_queue()){
+            self.tableView.reloadData()
+        }
     }
   }
   
