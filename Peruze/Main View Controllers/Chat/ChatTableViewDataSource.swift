@@ -39,10 +39,10 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
             delegate: self)
         
         do {
-            logw("Fetching local Chat.")
+            logw("ChatTableViewController Fetching local Chat.")
             try self.fetchedResultsController.performFetch()
         } catch {
-            logw("Fetching local Chat failed with error: \(error)")
+            logw("ChatTableViewController Fetching local Chat failed with error: \(error)")
         }
         dispatch_async(dispatch_get_main_queue()){
             if self.tableView != nil {

@@ -29,6 +29,8 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
     }
   }
   
+    var parentVC: UIViewController!
+    
   private var storedTop: CGFloat = 0
   private var storedBottom: CGFloat = 0
   override func viewDidLayoutSubviews() {
@@ -62,9 +64,18 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
     }
   }
   
-  func requestAccepted(request: Exchange) {
-    let deletedItemIndexPath = dataSource.deleteRequest(request)
-    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
+    func requestAccepted(request: Exchange) {
+        let deletedItemIndexPath = dataSource.acceptRequest(request)
+        // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
+        if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        if let parent = self.parentVC as? RequestsTableViewController {
+            parent.acceptExchangeAtIndexPath(deletedItemIndexPath,completionBlock: {
+            })
+        }
+        collectionView.reloadData()
+//    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
 //    Model.sharedInstance().acceptExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
 //      self.dataSource.requests = reloadedRequests ?? []
 //      self.collectionView.reloadData()
@@ -77,7 +88,16 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   
   func requestDenied(request: Exchange) {
     let deletedItemIndexPath = dataSource.deleteRequest(request)
-    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
+    // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
+    if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    if let parent = self.parentVC as? RequestsTableViewController {
+        parent.denyExchangeAtIndexPath(deletedItemIndexPath,completionBlock: {
+        })
+    }
+    collectionView.reloadData()
+//    collectionView.deleteItemsAtIndexPaths([deletedItemIndexPath])
 //    Model.sharedInstance().denyExchangeRequest(request, completion: { (reloadedRequests, error) -> Void in
 //      self.dataSource.requests = reloadedRequests ?? []
 //      self.collectionView.reloadData()

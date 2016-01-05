@@ -69,6 +69,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   func refresh() {
     //reload the data
     self.noRequetsLabel.alpha = 0
+    self.noRequetsLabel.hidden = true
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let myRecordIDName = me.valueForKey("recordIDName") as! String
@@ -94,8 +95,10 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         self.tableView.reloadData()
         if self.tableView.numberOfRowsInSection(0) > 0 {
             self.noRequetsLabel.alpha = 0
+            self.noRequetsLabel.hidden = true
         } else {
             self.noRequetsLabel.alpha = 1
+            self.noRequetsLabel.hidden = false
         }
         self.refreshControl?.endRefreshing()
       }
@@ -114,7 +117,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     
     func localRefresh() {
         do {
-            logw("Requests Table VC local refresh.")
+            logw("RequestsTableViewController fetching local requests.")
             self.activityIndicatorView.stopAnimating()
             self.activityIndicatorView.alpha = 1
             try self.dataSource.fetchedResultsController.performFetch()
@@ -122,8 +125,10 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
                 self.tableView.reloadData()
                 if self.dataSource.fetchedResultsController.sections?[0].numberOfObjects > 0 {
                     self.noRequetsLabel.alpha = 0
+                    self.noRequetsLabel.hidden = true
                 } else {
                     self.noRequetsLabel.alpha = 1
+                    self.noRequetsLabel.hidden = false
                 }
                 self.refreshControl?.endRefreshing()
             }
@@ -155,22 +160,25 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     private func checkForEmptyData(animated: Bool) {
         if self.activityIndicatorView.isAnimating() {
             self.noRequetsLabel.alpha = 0
+            self.noRequetsLabel.hidden = true
             return
         }
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.noRequetsLabel.alpha = 1.0
+                self.noRequetsLabel.hidden = false
 //                self.tableView.alpha = 0.2
             }
         } else {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.noRequetsLabel.alpha = 0.0
+                self.noRequetsLabel.hidden = true
                 self.tableView.alpha = 1.0
             }
         }
     }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
+    performSegueWithIdentifier(Constants.CollectionViewSegueIdentifier, sender: indexPath)
     logw("Requests Table cell tapped of indexpath: \(indexPath)")
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
@@ -184,95 +192,116 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       logw("Requests Table cell Deny tapped.")
-      //get the recordIDName for the exchange at that index path
-      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
-      
-      //create the operation
-      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-      let operation = UpdateExchangeWithIncrementalData(
-        recordIDName: idName,
-        exchangeStatus: ExchangeStatus.Denied,
-        database: publicDB,
-        context: managedConcurrentObjectContext,
-        errorBlock: {
-            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Denying exchange.", preferredStyle: .Alert)
-            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-      })
-      //add completion
-      operation.completionBlock = {
-        dispatch_async(dispatch_get_main_queue()) {
-          do {
-            try self.dataSource.fetchedResultsController.performFetch()
-//            let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath)
-//            let itemOfferedOwner = item.valueForKey("owner")
-//            let me = Person.MR_findFirstByAttribute("me", withValue: true)
-//            if itemOfferedOwner!.valueForKey("recordIDName") as! String != me.valueForKey("recordIDName") as! String && itemOfferedOwner!.valueForKey("recordIDName") as! String != "__defaultOwner__" {
-//                
-//                let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",item.valueForKey("recordIDName") as! String, item.valueForKey("recordIDName") as! String)
-//                let exchanges = Exchange.MR_findAllWithPredicate(predicate)
-//                if exchanges.count <= 1 {
-//                    item.setValue("no", forKey: "hasRequested")
-//                }
-//            }
-          } catch {
-            logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Denied completion block fetch local data failed with error: \(error)")
-          }
-          self.tableView.reloadData()
-            self.activityIndicatorView.stopAnimating()
-        }
-      }
-      
-      //add operation to the queue
-        self.activityIndicatorView.startAnimating()
-      OperationQueue().addOperation(operation)
+      self.denyExchangeAtIndexPath(indexPath)
     }
   }
   
+    func denyExchangeAtIndexPath(indexPath: NSIndexPath,completionBlock: (Void -> Void) = {}) {
+        //get the recordIDName for the exchange at that index path
+        let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
+        
+        //create the operation
+        let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+        let operation = UpdateExchangeWithIncrementalData(
+            recordIDName: idName,
+            exchangeStatus: ExchangeStatus.Denied,
+            database: publicDB,
+            context: NSManagedObjectContext.MR_context(),
+            errorBlock: {
+                let alertController = UIAlertController(title: "Peruze", message: "An error occured while Denying exchange.", preferredStyle: .Alert)
+                let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                alertController.addAction(defaultAction)
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+                let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: idName, inContext: managedConcurrentObjectContext)
+                localExchange.setValue(0, forKey: "status")
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        })
+        //add completion
+        operation.completionBlock = {
+            logw("RequestsTableViewController denyEditAction completion block.")
+            dispatch_async(dispatch_get_main_queue()) {
+                do {
+                    try self.dataSource.fetchedResultsController.performFetch()
+                    //            let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath)
+                    //            let itemOfferedOwner = item.valueForKey("owner")
+                    //            let me = Person.MR_findFirstByAttribute("me", withValue: true)
+                    //            if itemOfferedOwner!.valueForKey("recordIDName") as! String != me.valueForKey("recordIDName") as! String && itemOfferedOwner!.valueForKey("recordIDName") as! String != "__defaultOwner__" {
+                    //
+                    //                let predicate = NSPredicate(format: "itemOffered.recordIDName == %@ OR itemRequested.recordIDName == %@",item.valueForKey("recordIDName") as! String, item.valueForKey("recordIDName") as! String)
+                    //                let exchanges = Exchange.MR_findAllWithPredicate(predicate)
+                    //                if exchanges.count <= 1 {
+                    //                    item.setValue("no", forKey: "hasRequested")
+                    //                }
+                    //            }
+                    self.localRefresh()
+                    completionBlock()
+                } catch {
+                    logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Denied completion block fetch local data failed with error: \(error)")
+                }
+                self.tableView.reloadData()
+                self.activityIndicatorView.stopAnimating()
+            }
+        }
+        
+        //add operation to the queue
+        self.activityIndicatorView.startAnimating()
+        OperationQueue().addOperation(operation)
+    }
+    
   private func acceptEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       logw("Requests Table cell Accept tapped.")
-      //get the recordIDName for the exchange at that index path
-      let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
-      
-      //create the operation
-      let publicDB = CKContainer.defaultContainer().publicCloudDatabase
-      let operation = UpdateExchangeWithIncrementalData(
-        recordIDName: idName,
-        exchangeStatus: ExchangeStatus.Accepted,
-        database: publicDB,
-        context: managedConcurrentObjectContext,
-        errorBlock: {
-            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Accepting exchange.", preferredStyle: .Alert)
-            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-      })
-      
-      //add completion
-      operation.completionBlock = { () -> Void in
-        dispatch_async(dispatch_get_main_queue()) {
-          do {
-            try self.dataSource.fetchedResultsController.performFetch()
-          } catch {
-            logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Accepted completion block fetch local data failed with error: \(error)")
-          }
-          self.tableView.reloadData()
-            self.activityIndicatorView.stopAnimating()
-        }
-      }
-      
-      //add operation to the queue
-        self.activityIndicatorView.startAnimating()
-      OperationQueue().addOperation(operation)
+      self.acceptExchangeAtIndexPath(indexPath)
     }
     accept.backgroundColor = .greenColor()
     return accept
   }
   
+    func acceptExchangeAtIndexPath(indexPath: NSIndexPath,completionBlock: (Void -> Void) = {}) {
+        //get the recordIDName for the exchange at that index path
+        let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
+        
+        //create the operation
+        let publicDB = CKContainer.defaultContainer().publicCloudDatabase
+        let operation = UpdateExchangeWithIncrementalData(
+            recordIDName: idName,
+            exchangeStatus: ExchangeStatus.Accepted,
+            database: publicDB,
+            context: managedConcurrentObjectContext,
+            errorBlock: {
+                let alertController = UIAlertController(title: "Peruze", message: "An error occured while Accepting exchange.", preferredStyle: .Alert)
+                let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                alertController.addAction(defaultAction)
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+                let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: idName, inContext: managedConcurrentObjectContext)
+                localExchange.setValue(0, forKey: "status")
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        })
+        
+        //add completion
+        operation.completionBlock = { () -> Void in
+            logw("RequestsTableViewController acceptEditAction completion block.")
+            dispatch_async(dispatch_get_main_queue()) {
+                do {
+                    //            try self.dataSource.fetchedResultsController.performFetch()
+                    self.localRefresh()
+                } catch {
+                    logw("RequestTableViewController UpdateExchangeWithIncrementalData ExchangeStatus.Accepted completion block fetch local data failed with error: \(error)")
+                }
+                self.tableView.reloadData()
+                self.activityIndicatorView.stopAnimating()
+            }
+        }
+        
+        //add operation to the queue
+        self.activityIndicatorView.startAnimating()
+        OperationQueue().addOperation(operation)
+    }
+    
   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
     return UITableViewCellEditingStyle.Delete
   }
@@ -290,6 +319,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
         logw("Requests Table segue")
         destVC.indexPathToScrollToOnInit = indexPath
         destVC.dataSource = dataSource
+        destVC.parentVC = self
       }
     }
   }

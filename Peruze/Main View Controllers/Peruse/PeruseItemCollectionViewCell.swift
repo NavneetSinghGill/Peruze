@@ -171,8 +171,10 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       }
         let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(owner,context: managedConcurrentObjectContext)
         
-        if mutualFriends.count == 1{
-            
+        if mutualFriends.count == 0{
+            self.mutualFriendsLabel.hidden = true
+        } else {
+            self.mutualFriendsLabel.hidden = false
         }
         if mutualFriends.count <= 1{
             self.mutualFriendsLabel.text = "\(mutualFriends.count) mutual friend"

@@ -13,6 +13,7 @@ import SwiftLog
 class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
   private struct Constants {
     static let SegueIdentifier = "toChat"
+    static let TableViewRowHeight: CGFloat = 100
   }
   
   private lazy var dataSource = ChatTableViewDataSource()
@@ -22,6 +23,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       dataSource.tableView = tableView
         self.tableView.dataSource = dataSource
         tableView.delegate = self
+        tableView.rowHeight = Constants.TableViewRowHeight
     }
   }
   @IBOutlet weak var noChatsLabel: UILabel!
@@ -46,11 +48,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     tableView.rowHeight = UITableViewAutomaticDimension
     navigationController!.navigationBar.tintColor = .redColor()
     self.dataSource.tableView.reloadData()
-    checkForEmptyData(false)
+//    checkForEmptyData(false)
     if self.dataSource.getLocalAcceptedExchanges() == 0 {
         self.noChatsLabel.hidden = false
+        self.noChatsLabel.alpha = 1.0
     } else {
         self.noChatsLabel.hidden = true
+        self.noChatsLabel.alpha = 0.0
         dispatch_async(dispatch_get_main_queue()){
             self.tableView.reloadData()
         }
@@ -80,11 +84,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.refreshControl.endRefreshing()
         self.activityIndicatorView.stopAnimating()
         self.activityIndicatorView.alpha = 1
-        if self.dataSource.getLocalAcceptedExchanges() == 0 {
-            self.noChatsLabel.alpha = 1
-        } else {
-            self.noChatsLabel.alpha = 0
-        }
+        self.getLocalAcceptedExchanges()
         self.tableView.reloadData()
       }
     }
@@ -94,8 +94,10 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     
     func getLocalAcceptedExchanges() {
         if self.dataSource.getLocalAcceptedExchanges() == 0 {
+            self.noChatsLabel.hidden = false
             self.noChatsLabel.alpha = 1.0
         } else {
+            self.noChatsLabel.hidden = true
             self.noChatsLabel.alpha = 0.0
         }
     }

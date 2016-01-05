@@ -168,10 +168,31 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     return exchangeVal
   }
   
-  func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
-    let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
-    let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! NSManagedObject
-    retValue.setValue(NSNumber(integer: ExchangeStatus.Denied.rawValue), forKey: "status")
-    return retIndexPath!
-  }
+    func deleteRequest(requestToDelete: Exchange) -> NSIndexPath {
+        let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
+        let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! NSManagedObject
+        retValue.setValue(NSNumber(integer: ExchangeStatus.Denied.rawValue), forKey: "status")
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        //    do {
+        //        try self.fetchedResultsController.performFetch()
+        //    }
+        //    catch {
+        //        
+        //    }
+        return retIndexPath!
+    }
+    
+    func acceptRequest(requestToDelete: Exchange) -> NSIndexPath {
+        let retIndexPath = fetchedResultsController.indexPathForObject(requestToDelete)
+        let retValue = fetchedResultsController.objectAtIndexPath(retIndexPath!) as! NSManagedObject
+        retValue.setValue(NSNumber(integer: ExchangeStatus.Accepted.rawValue), forKey: "status")
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        //    do {
+        //        try self.fetchedResultsController.performFetch()
+        //    }
+        //    catch {
+        //        
+        //    }
+        return retIndexPath!
+    }
 }
