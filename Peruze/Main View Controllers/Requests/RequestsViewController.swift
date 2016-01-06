@@ -67,9 +67,9 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
     func requestAccepted(request: Exchange) {
         let deletedItemIndexPath = dataSource.acceptRequest(request)
         // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
-        if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
+//        if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
             self.navigationController?.popViewControllerAnimated(true)
-        }
+//        }
         if let parent = self.parentVC as? RequestsTableViewController {
             parent.acceptExchangeAtIndexPath(deletedItemIndexPath,completionBlock: {
             })
@@ -89,9 +89,9 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   func requestDenied(request: Exchange) {
     let deletedItemIndexPath = dataSource.deleteRequest(request)
     // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
-    if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
+//    if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
         self.navigationController?.popViewControllerAnimated(true)
-    }
+//    }
     if let parent = self.parentVC as? RequestsTableViewController {
         parent.denyExchangeAtIndexPath(deletedItemIndexPath,completionBlock: {
         })

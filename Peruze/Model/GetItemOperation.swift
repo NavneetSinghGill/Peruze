@@ -217,6 +217,8 @@ class GetItemOperation: Operation {
             localUpload.setValue(isDelete, forKey: "isDelete")
         }
         
+        localUpload.setValue(NSDate(), forKey: "dateOfDownload")
+        
         if localUpload.hasRequested != "yes" {
             localUpload.setValue("no", forKey: "hasRequested")
         }
@@ -342,6 +344,8 @@ class GetAllItemsWithMissingDataOperation: Operation {
         } else {
             localOwner.setValue("noId", forKey: "ownerFacebookID")
         }
+        
+        localItem.setValue(NSDate(), forKey: "dateOfDownload")
         
         self.context.MR_saveToPersistentStoreAndWait()
 

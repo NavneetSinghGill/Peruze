@@ -109,13 +109,15 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         self.getAllItems()
     }
     Model.sharedInstance().getAllDeleteUsers()
-    //APNS
-//    Model.sharedInstance().deleteAllSubscription()
-    Model.sharedInstance().subscribeForNewOffer()
-//    Model.sharedInstance().subscribeForChat()
-//    Model.sharedInstance().subscribeForItemAdditionUpdation()
-//    Model.sharedInstance().subscribeForItemDeletion()
   }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) == nil || NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) as! Bool == true {
+            Model.sharedInstance().subscribeForNewOffer()
+            NSUserDefaults.standardUserDefaults().setValue(false, forKey: UniversalConstants.kSetSubscriptions)
+        }
+    }
     
     func reloadPeruseItemMainScreen(){
         self.dataSource.refreshData(self)

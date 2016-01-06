@@ -60,6 +60,7 @@ struct NotificationCategoryMessages {
 struct UniversalConstants {
     static let kIsPushNotificationOn = "isPushNotificationOn"
     static let kIsPostingToFacebookOn = "isPostingToFacebookOn"
+    static let kSetSubscriptions = "setSubscriptions"
 }
 
 struct SubscritionTypes {
@@ -252,9 +253,17 @@ class Model: NSObject, CLLocationManagerDelegate {
                     }
                 } else {
                     if record?.recordType == RecordTypes.Item {
-                        
+                        var isItemPresentLocally = true
+                        if Item.MR_findFirstByAttribute("recordIDName",
+                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext) == nil {
+                            isItemPresentLocally = false
+                        }
                         let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
                             withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
+                        
+                        if isItemPresentLocally == false {
+                            localUpload.setValue(NSDate(), forKey: "dateOfDownload")
+                        }
                         
                         localUpload.setValue(record!.recordID.recordName, forKey: "recordIDName")
                         
@@ -696,7 +705,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     
     
-    func getAllSubscription() {
+    func deleteAndSetAllSubscriptions() {
         
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
@@ -706,7 +715,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                 logw("Subscription :\(subscription)")
                 
                 database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
-                        logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
+                        logw("Subscription with id \(subscriptionId!) was removed : \(subscription.description)")
                     if subscriptions?.indexOf(subscriptionObject) == subscriptions?.count{
                         logw("Subscriptions added after deleting.")
 //                        self.subscribeForNewOffer()
@@ -989,7 +998,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func deleteAllSubscription() {
+    func deleteAllSubscription(completionBlock: (Void -> Void) = {}) {
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
             for subscriptionObject in subscriptions! {
@@ -997,7 +1006,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                 logw("Subscription :\(subscription)")
                 
                 database.deleteSubscriptionWithID(subscription.subscriptionID, completionHandler: {subscriptionId, error in
-                    logw("Subscription with id \(subscriptionId) was removed : \(subscription.description)")
+                    logw("Subscription with id \(subscriptionId!) was removed : \(subscription.description)")
                 })
             }
         })

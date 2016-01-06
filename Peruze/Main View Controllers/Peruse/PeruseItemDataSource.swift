@@ -53,7 +53,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
     let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
     fetchRequest.predicate = compoundPredicate
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true), NSSortDescriptor(key: "recordIDName", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
@@ -63,7 +63,6 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     getFavorites()
     do {
       try self.fetchedResultsController.performFetch()
-        
     } catch {
       logw("PeruzeViewControllerDataSource fetch result exception: \(error)")
     }
@@ -184,7 +183,7 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
         fetchRequest.predicate = compoundPredicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "recordIDName", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true), NSSortDescriptor(key: "recordIDName", ascending: true)]
         fetchRequest.includesSubentities = true
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.includesPropertyValues = true

@@ -33,8 +33,28 @@ class ChatTableViewCell: UITableViewCell {
           logw("Error: Issue with item title in ChatTableViewCell")
           return
       }
-      
-      itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
+      let fetchRequest = NSFetchRequest(entityName: "Message")
+        let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", data?.valueForKey("recordIDName") as! String)
+        fetchRequest.predicate = exchangePredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        fetchRequest.fetchLimit = 1
+        var fetchedResultsController: NSFetchedResultsController!
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedResultsController.performFetch()
+            if fetchedResultsController.sections![0].numberOfObjects > 0 {
+                let latestChatArray : NSArray = fetchedResultsController.sections?[0].objects as! [Message]
+                let latestChat = latestChatArray[0]
+                if latestChat.valueForKey("sender") != nil && latestChat.valueForKey("sender")!.valueForKey("firstName") != nil && latestChat.valueForKey("sender")!.valueForKey("lastName") != nil{
+                   self.mostRecentTextString.text = "\(latestChat.valueForKey("sender")!.valueForKey("firstName")!) \(latestChat.valueForKey("sender")!.valueForKey("lastName")!): \(latestChat.valueForKey("text")!)"
+                }
+            } else {
+                self.mostRecentTextString.text = ""
+            }
+        } catch {
+            logw("ChatTableViewCell fetching latest chat failed with error: \(error)")
+        }
+        itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
       theirItemNameLabel.text = "\(itemOfferedTitle)"
       yourItemNameLabel.text = "for \(itemRequestedTitle)"
       
