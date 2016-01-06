@@ -48,10 +48,17 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    tableView.deselectRowAtIndexPath(indexPath, animated: false)
-    let uploadView = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
-    let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ProfileUploadsTableViewCell
-    if cell.circleImageView.image != nil {
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    var isThisMyProfile = true
+    if let profileVC = self.parentViewController?.parentViewController as? ProfileViewController {
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        if me.valueForKey("recordIDName") as! String != profileVC.personForProfile?.valueForKey("recordIDName") as! String {
+            isThisMyProfile = false
+        }
+    }
+    if isThisMyProfile == true {
+        let uploadView = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
+        let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ProfileUploadsTableViewCell
         uploadView.image = cell.circleImageView.image
         uploadView.itemTitle = cell.titleTextLabel.text
         uploadView.itemDescription = cell.descriptionTextLabel.text
@@ -60,7 +67,18 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
             self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
             self.tableView.reloadData()
         }
+    } else {
+        self.dataSource.currentlyTappedUploadedItem = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject
+        if let parentVC = parentViewController as? ProfileContainerViewController {
+            if let originVC = parentVC.parentViewController as? ProfileViewController {
+//                self.indexOfSelectedTableViewRow = indexPath.row
+                NSUserDefaults.standardUserDefaults().setInteger(indexPath.row, forKey: "UploadedItemIndex")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                originVC.performSegueWithIdentifier("toUploadDetail", sender:dataSource)
+            }
+        }
     }
+    
   }
   
   //MARK: Editing

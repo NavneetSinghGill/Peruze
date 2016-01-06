@@ -19,6 +19,7 @@
 		3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */; };
 		3BEFDFD31C1E914E0001C964 /* ProfileFriendsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */; };
 		3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */; };
+		3BF8FAA01C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF8FA9F1C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9A1E2E4C1C118A490043CD29 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E2E4A1C118A490043CD29 /* Friend.swift */; };
 		9A1E2E4D1C118A490043CD29 /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */; };
@@ -260,6 +261,7 @@
 		3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsViewController.swift; sourceTree = "<group>"; };
 		3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsDataSource.swift; sourceTree = "<group>"; };
 		3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		3BF8FA9F1C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUploadsCollectionViewController.swift; sourceTree = "<group>"; };
 		9A1E2E4A1C118A490043CD29 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9D009A491B5F65D900AF6A4E /* GetItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GetItemOperation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -830,6 +832,7 @@
 				9D177B141B54DDC3009CB9FA /* ProfileUploadsTableViewCell.swift */,
 				9D177B151B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib */,
 				9D177B161B54DDC3009CB9FA /* ProfileUploadsViewController.swift */,
+				3BF8FA9F1C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift */,
 			);
 			name = Uploads;
 			sourceTree = "<group>";
@@ -1373,6 +1376,7 @@
 				9D177B8A1B54DDC3009CB9FA /* ChatTableViewDataSource.swift in Sources */,
 				3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */,
 				9D177BA01B54DDC3009CB9FA /* ProfileUploadsDataSource.swift in Sources */,
+				3BF8FAA01C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift in Sources */,
 				9DC345771BA9F22B00B1CA2C /* CloudCondition.swift in Sources */,
 				9DE423931B689C850086E2B0 /* PostExchangeOperation.swift in Sources */,
 				9D177BAB1B54DDC3009CB9FA /* SettingsViewController.swift in Sources */,

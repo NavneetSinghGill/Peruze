@@ -116,6 +116,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) == nil || NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) as! Bool == true {
             Model.sharedInstance().subscribeForNewOffer()
             NSUserDefaults.standardUserDefaults().setValue(false, forKey: UniversalConstants.kSetSubscriptions)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
@@ -200,12 +201,18 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   }
   
   func segueToExchange(item: NSManagedObject) {
-    itemToForwardToExchange = item
-    if let _ = itemToForwardToExchange?.valueForKey("imageUrl") as? String,
-        let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("imageUrl") as? String{
-            performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
+    if item.valueForKey("hasRequested") as! String == "yes" {
+        let alert = UIAlertController(title: "Exchange", message: "This item is already requested.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    } else {
+        itemToForwardToExchange = item
+        if let _ = itemToForwardToExchange?.valueForKey("imageUrl") as? String,
+            let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("imageUrl") as? String{
+                performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
     }
-  }
+    }
+    }
   
   private func exchangeInitiated() {
     //TODO: create an exchange and pass it to the data model

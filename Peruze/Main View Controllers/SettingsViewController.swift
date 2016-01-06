@@ -226,6 +226,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     FBSDKLoginManager().logOut()
     Model.sharedInstance().deleteAllSubscription()
     NSUserDefaults.standardUserDefaults().setValue(true, forKey: UniversalConstants.kSetSubscriptions)
+    NSUserDefaults.standardUserDefaults().synchronize()
     logw("Logged out of account.")
     dismissViewControllerAnimated(false, completion: nil)
     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))

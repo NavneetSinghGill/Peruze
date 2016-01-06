@@ -9,16 +9,22 @@
 import UIKit
 import SwiftLog
 
-class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate, UICollectionViewDataSource {
   
   private struct Constants {
     static let ReuseIdentifier = "ProfileUpload"
     static let NibName = "ProfileUploadsTableViewCell"
+    struct ReuseIdentifiers {
+        static let TableViewCell = "ProfileUpload"
+        static let CollectionViewCell = "item"
+    }
   }
   
   //TODO: Get items
   var tableView: UITableView!
   var fetchedResultsController: NSFetchedResultsController!
+  var currentlyTappedUploadedItem: NSManagedObject?
+  var itemDelegate: PeruseItemCollectionViewCellDelegate?
   var personRecordID: String! {
     didSet {
       if personRecordID == nil { return }
@@ -31,6 +37,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   
   override init() {
     super.init()
+    currentlyTappedUploadedItem = Item.MR_findFirst()
     if personRecordID == nil {
       return
     }
@@ -91,7 +98,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         cell.recordIDName = item.valueForKey("recordIDName") as! String
     }
     cell.accessoryType = editableCells ? .DisclosureIndicator : .None
-    cell.userInteractionEnabled = editableCells
+//    cell.userInteractionEnabled = editableCells
     
     return cell
   }
@@ -159,4 +166,21 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
     }
   }
+    //MARK: - UICollectionViewDataSource methods
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
+        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell)
+
+//        currentlyTappedUploadedItem!.setValue("navneet", forKey: "title")
+        let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+        cell.item = item
+        cell.delegate = itemDelegate
+        cell.itemFavorited = true
+        cell.setNeedsDisplay()
+        return cell
+    }
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return fetchedResultsController?.sections?[section].numberOfObjects ?? 0
+    }
 }

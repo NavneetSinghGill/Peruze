@@ -70,6 +70,15 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var otherUserProfileSuperView: UIView!
     var friendsRecords : NSMutableArray = []
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toUploadDetail" {
+            if let profileUploadsDataSource = sender as? ProfileUploadsDataSource,
+                let uploadsDetailScreen = segue.destinationViewController.childViewControllers[0] as? ProfileUploadsCollectionViewController {
+                    uploadsDetailScreen.dataSource = profileUploadsDataSource
+            }
+        }
+    }
+    
     //MARK: - UIViewController Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
