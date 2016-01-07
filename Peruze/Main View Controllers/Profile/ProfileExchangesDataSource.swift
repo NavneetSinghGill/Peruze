@@ -78,12 +78,30 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
         return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
     }
     
+    guard
+        let itemRequestedOwner = itemRequested.valueForKey("owner") as? NSManagedObject,
+        let itemRequestedOwnerImage = itemRequestedOwner.valueForKey("image") as? NSData,
+        let itemRequestedOwnerName = itemRequestedOwner.valueForKey("firstName") as? String
+        else {
+            logw("There was not enough data for this exchange to populate the table")
+            return tableView.dequeueReusableCellWithIdentifier(Constants.EmptyReuseIdentifier)!
+    }
+    
     //set the values from above
-    cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
-    cell.nameLabel.text = "\(itemOfferedOwnerName)'s"
-    cell.itemLabel.text = itemOfferedTitle
-    cell.itemSubtitle.text = "for your \(itemRequestedTitle)"
-    cell.itemsExchangedImage.itemImages = (UIImage(data: itemOfferedImage)!, UIImage(data: itemRequestedImage)!)
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    if me.valueForKey("recordIDName") as! String != itemOfferedOwner.valueForKey("recordIDName") as! String {
+        cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
+        cell.nameLabel.text = "\(itemOfferedOwnerName)'s"
+        cell.itemLabel.text = itemOfferedTitle
+        cell.itemSubtitle.text = "for your \(itemRequestedTitle)"
+        cell.itemsExchangedImage.itemImages = (UIImage(data: itemOfferedImage)!, UIImage(data: itemRequestedImage)!)
+    } else {
+        cell.profileImageView.image = UIImage(data: itemRequestedOwnerImage)
+        cell.nameLabel.text = "\(itemRequestedOwnerName)'s"
+        cell.itemLabel.text = itemRequestedTitle
+        cell.itemSubtitle.text = "for your \(itemOfferedTitle)"
+        cell.itemsExchangedImage.itemImages = (UIImage(data: itemRequestedImage)!, UIImage(data: itemOfferedImage)!)
+    }
     
     //set the date
     if let requestDate = exchange.valueForKey("date") as? NSDate {

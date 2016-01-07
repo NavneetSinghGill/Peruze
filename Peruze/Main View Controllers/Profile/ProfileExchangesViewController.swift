@@ -49,6 +49,14 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
   }
     
     private func checkForEmptyData(animated: Bool) {
+        do {
+           try self.dataSource.fetchedResultsController.performFetch()
+            dispatch_async(dispatch_get_main_queue()){
+                self.dataSource.tableView.reloadData()
+            }
+        } catch {
+            
+        }
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.titleLabel.alpha = 1.0
