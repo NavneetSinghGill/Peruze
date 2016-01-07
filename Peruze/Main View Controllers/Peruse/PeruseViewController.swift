@@ -108,7 +108,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
-    Model.sharedInstance().getAllDeleteUsers()
+    Model.sharedInstance().getAllDeleteUsers() 
   }
     
     override func viewWillAppear(animated: Bool) {
