@@ -72,15 +72,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
-    super.viewDidLoad()
-    facebookData.profilePictureRetrievalDelegate = self
-    facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
-      if !success {
-        logw("\(error)")
-        self.profilePictureFetchingError()
-      }
-      self.loadingCircle?.stop()
-    }
     //distance
     distanceValues.sortInPlace(<)
     distanceSlider.minimumValue = distanceValues.first!
@@ -134,6 +125,15 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     
   override func viewDidAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    super.viewDidLoad()
+    facebookData.profilePictureRetrievalDelegate = self
+    facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
+        if !success {
+            logw("\(error)")
+            self.profilePictureFetchingError()
+        }
+        self.loadingCircle?.stop()
+    }
     if loadingCircle == nil {
       setupLoadingViews()
     }
@@ -201,25 +201,36 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   
   //MARK: - Gesture Handling
   @IBAction func tapUpperLeft(sender: UITapGestureRecognizer) {
-    tap(upperLeft)
+    if UIImagePNGRepresentation(upperLeft.image!) != nil {
+        tap(upperLeft)
+    }
   }
-  @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
-    tap(lowerLeft)
+    @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(lowerLeft.image!) != nil {
+            tap(lowerLeft)
+        }
   }
-  @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
-    tap(upperRight)
+    @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(upperRight.image!) != nil {
+            tap(upperRight)
+        }
   }
-  @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
-    tap(lowerRight)
+    @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(lowerRight.image!) != nil {
+            tap(lowerRight)
+        }
   }
+    
   private func tap(selectedImage: CircleImage) {
     for obj in [upperLeft, upperRight, lowerRight, lowerLeft] { obj.selected = false }
     selectedImage.selected = true
     profilePicUpdate(selectedImage)
   }
+    
     func profilePicUpdate(selectedImage: CircleImage){
             selectedCircleImage = selectedImage
     }
+    
   //MARK: - Handling Buttons
   @IBAction func logOutOfFacebook(sender: UIButton) {
     FBSDKAccessToken.setCurrentAccessToken(nil)

@@ -188,7 +188,11 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             return
         }
         if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
-            self.beginUpload()
+            if uploadButton.titleLabel?.text == "Upload"{
+                beginUpload()
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
             
             let uniqueImageName = createUniqueName()
             let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
@@ -220,14 +224,28 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                         if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
                             NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
                                 self.postOnFaceBook(uniqueImageName)
-                        }
-                        self.endUpload() } }
-                    let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
-                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                            //            let per = self.parentVC as! PeruseExchangeViewController
-                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
-                        }
-                        self.endUpload() } }
+                }
+                if self.uploadButton.titleLabel?.text == "Upload" {
+                self.endUpload()
+                } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+                } } }
+                let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                //            let per = self.parentVC as! PeruseExchangeViewController
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+                }
+                let alertController = UIAlertController(title: "Peruze", message: "An error occured while Editing item.", preferredStyle: .Alert)
+                
+                let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                alertController.addAction(defaultAction)
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                if self.uploadButton.titleLabel?.text == "Upload" {
+                self.endUpload()
+                } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+                }} }
                     OperationQueue().addOperation(
                         PostItemOperation(
                             image: self.mainImageView.image!,
@@ -243,7 +261,6 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 }
                 return nil
             })
-            
         } else {
             let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))

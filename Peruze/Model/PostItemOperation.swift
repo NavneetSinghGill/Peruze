@@ -157,6 +157,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   let image: NSData?
   let isDelete: Int?
   let imageUrl: String?
+    let errorCompletionHandler: (Void -> Void)
   
   init(title: String?,
     detail: String?,
@@ -164,7 +165,8 @@ class SaveItemInfoToLocalStorageOperation: Operation {
     isDelete: Int?,
     imageUrl: String?,
     objectID: NSManagedObjectID,
-    context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    context: NSManagedObjectContext = managedConcurrentObjectContext,
+    errorCompletionHandler: (Void -> Void) = { }) {
       if logging { logw("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
       self.title = title
       self.detail = detail
@@ -173,6 +175,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       self.imageUrl = imageUrl
       self.context = context
       self.objectID = objectID
+      self.errorCompletionHandler = errorCompletionHandler
       super.init()
   }
   
@@ -203,6 +206,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   override func finished(errors: [NSError]) {
     if let firstError = errors.first {
       logw("SaveItemInfoToLocalStorageOperation finished with an error: \(firstError)")
+        self.errorCompletionHandler()
     } else {
       logw("SaveItemInfoToLocalStorageOperation finished successfully")
     }
@@ -213,13 +217,16 @@ class SaveItemInfoToLocalStorageOperation: Operation {
 class UploadItemFromLocalStorageToCloudOperation: Operation {
   let database: CKDatabase
   let context: NSManagedObjectContext
-  let objectID: NSManagedObjectID
+    let objectID: NSManagedObjectID
+    let errorCompletionHandler: (Void -> Void)
   
-  init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext) {
+    init(objectID: NSManagedObjectID, database: CKDatabase, context: NSManagedObjectContext = managedConcurrentObjectContext,
+        errorCompletionHandler: (Void -> Void) = { }) {
     if logging { logw("UploadItemFromLocalStorageToCloudOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
     self.database = database
     self.context = context
     self.objectID = objectID
+    self.errorCompletionHandler = errorCompletionHandler
     super.init()
     addObserver(NetworkObserver())
   }
@@ -247,7 +254,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       let itemIsDeleted = itemToSave.valueForKey("isDelete") as? Int
       let itemImageUniqueName = itemToSave.valueForKey("imageUrl") as? String
       
-      itemRecord.setObject(itemTitle, forKey: "Title")
+      itemRecord.setObject(1, forKey: "Title")
       itemRecord.setObject(itemDetail, forKey: "Description")
       itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
       itemRecord.setObject(itemIsDeleted, forKey: "IsDeleted")
@@ -276,7 +283,10 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
       saveItemRecordOp.modifyRecordsCompletionBlock = { (savedRecords, _, error) -> Void in
         //print any returned errors
-        if error != nil { logw("UploadItem returned error: \(error)") }
+        if error != nil { logw("UploadItem returned error: \(error)")
+            self.finish([error!])
+            return
+        }
         
 //        do {
 //          try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
@@ -306,5 +316,12 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
     let cachePath = NSURL(string: paths.first!)!.URLByAppendingPathComponent(name)
     return cachePath.path!
   }
-  
+    override func finished(errors: [NSError]) {
+        if let firstError = errors.first {
+            logw("SaveItemInfoToLocalStorageOperation finished with an error: \(firstError)")
+            self.errorCompletionHandler()
+        } else {
+            logw("SaveItemInfoToLocalStorageOperation finished successfully")
+        }
+    }
 }

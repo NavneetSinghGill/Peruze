@@ -10,7 +10,7 @@ import UIKit
 import SwiftLog
 import CloudKit
 
-class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
     private struct Constants {
         static let ReuseIdentifier = "ProfileExchange"
         static let NibName = "ProfileExchangesTableViewCell"
@@ -20,7 +20,6 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     }
     var tableView: UITableView!
     var profileOwner: Person!
-    var fetchedResultsController: NSFetchedResultsController!
     var mutualFriendIds: NSMutableSet!
     
     struct FriendsDataAndProfilePic {
@@ -60,10 +59,8 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         }
         return cell!
     }
-    
-    
-    
-    func getMutualFriends() -> Int{
+
+    func getMutualFriends() -> Int {
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!

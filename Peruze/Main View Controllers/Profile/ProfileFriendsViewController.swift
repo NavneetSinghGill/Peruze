@@ -22,6 +22,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
             tableView.delegate = self
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        titleLabel.alpha = 0.0
@@ -44,11 +45,12 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
             self.titleLabel.hidden = true
             self.dataSource.tableView.alpha = 1.0
         }
+//        checkForEmptyData(true)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        checkForEmptyData(true)
+        checkForEmptyData(true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -62,7 +64,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
 
     
     private func checkForEmptyData(animated: Bool) {
-        if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
+        if dataSource.sortedFriendsData.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.titleLabel.alpha = 1.0
                 self.tableView.alpha = 0.0
