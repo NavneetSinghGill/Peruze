@@ -156,6 +156,8 @@ class GetItemOperation: Operation {
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     
+    getItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title"]
+    
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
         self.hasDataRetrivedFromCloud = true
       if logging { logw("\(NSDate())\nGetItemsOperation per record completion block \n \(record)") }
@@ -285,6 +287,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
+    fetchAllItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title"]
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
     if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
         

@@ -80,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logw("NSSetUncaughtExceptionHandler exception : \(exception)")
         logw("NSSetUncaughtExceptionHandler callStackSymbols: \(exception.callStackSymbols)")
     }
+    
     return FBSDKApplicationDelegate.sharedInstance().application(application,
       didFinishLaunchingWithOptions: launchOptions)
   }

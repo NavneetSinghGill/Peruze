@@ -19,6 +19,7 @@
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hasRequested" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isDelete" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -66,7 +67,7 @@
     <elements>
         <element name="Exchange" positionX="97" positionY="-804" width="128" height="150"/>
         <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
-        <element name="Item" positionX="-36" positionY="-421" width="128" height="208"/>
+        <element name="Item" positionX="-36" positionY="-421" width="128" height="225"/>
         <element name="Message" positionX="-164" positionY="-762" width="128" height="163"/>
         <element name="Person" positionX="252" positionY="-594" width="128" height="270"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>

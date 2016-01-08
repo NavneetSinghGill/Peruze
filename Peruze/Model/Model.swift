@@ -33,7 +33,9 @@ struct NotificationCenterKeys {
     static let UpdateItemsOnFilterChange = "UpdateItemsOnFilterChange"
 }
 
-
+struct BuckeyKeys {
+    static let bucket = "peruze"
+}
 
 struct NotificationMessages {
     static let NewOfferMessage = "A new offer made for you"
@@ -87,6 +89,10 @@ class Model: NSObject, CLLocationManagerDelegate {
     private var publicDB = CKContainer.defaultContainer().publicCloudDatabase
     private let locationAccuracy: CLLocationAccuracy = 200 //meters
     class func sharedInstance() -> Model {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "a")
+        let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+        transferManager = AWSS3TransferManager.defaultS3TransferManager()
         return modelSingletonGlobal
     }
     
@@ -1027,4 +1033,7 @@ class Model: NSObject, CLLocationManagerDelegate {
 
 let modelSingletonGlobal = Model()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
+
+//s3
+var transferManager = AWSS3TransferManager.defaultS3TransferManager()
 

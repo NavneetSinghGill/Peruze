@@ -188,35 +188,53 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             return
         }
         if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
-            beginUpload()
-            logw("OperationQueue().addOperation(PostItemOperation)")
-            let successCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
-                if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                    //            let per = self.parentVC as! PeruseExchangeViewController
-                    NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+            let uploadRequest = AWSS3TransferManagerUploadRequest()
+            uploadRequest.bucket = BuckeyKeys.bucket
+            uploadRequest.key = titleTextField.text
+            uploadRequest.body = NSURL(string: "https://s3.amazonaws.com/")
+            
+            transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+                if task.error != nil {
+                    if task.error?.domain == AWSS3TransferManagerErrorDomain {
+        
+                    }
                 }
-                if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
-                    NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
-                        self.postOnFaceBook()
+                if task.result != nil {
+                    let uploadOutput = task.result
+                    
+                    self.beginUpload()
+                    logw("OperationQueue().addOperation(PostItemOperation)")
+                    let successCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                            //            let per = self.parentVC as! PeruseExchangeViewController
+                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+                        }
+                        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
+                            NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
+                                self.postOnFaceBook()
+                        }
+                        self.endUpload() } }
+                    let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                            //            let per = self.parentVC as! PeruseExchangeViewController
+                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+                        }
+                        self.endUpload() } }
+                    OperationQueue().addOperation(
+                        PostItemOperation(
+                            image: self.mainImageView.image!,
+                            title: self.titleTextField.text!,
+                            detail: self.descriptionTextView.text,
+                            recordIDName: self.recordIDName,
+                            presentationContext: self,
+                            completionHandler: successCompletionHandler,
+                            errorCompletionHandler: failureCompletionHandler
+                        )
+                    )
                 }
-                self.endUpload() } }
-            let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
-                if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                    //            let per = self.parentVC as! PeruseExchangeViewController
-                    NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
-                }
-                self.endUpload() } }
-            OperationQueue().addOperation(
-                PostItemOperation(
-                    image: mainImageView.image!,
-                    title: titleTextField.text!,
-                    detail: descriptionTextView.text,
-                    recordIDName: recordIDName,
-                    presentationContext: self,
-                    completionHandler: successCompletionHandler,
-                    errorCompletionHandler: failureCompletionHandler
-                )
-            )
+                return nil
+            })
+            
         } else {
             let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))

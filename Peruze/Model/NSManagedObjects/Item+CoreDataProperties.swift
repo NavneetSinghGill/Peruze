@@ -25,5 +25,6 @@ extension Item {
     @NSManaged var isDelete: NSNumber?
     @NSManaged var owner: Person?
     @NSManaged var dateOfDownload: NSDate?
+    @NSManaged var imageUrl: String?
   
 }
