@@ -1,4 +1,7 @@
 PODS:
+  - AWSCore (2.3.3)
+  - AWSS3 (2.3.3):
+    - AWSCore (= 2.3.3)
   - Bolts (1.2.0):
     - Bolts/AppLinks (= 1.2.0)
     - Bolts/Tasks (= 1.2.0)
@@ -25,6 +28,7 @@ PODS:
   - MagicalRecord (2.3.0)
 
 DEPENDENCIES:
+  - AWSS3
   - Branch
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -34,6 +38,8 @@ DEPENDENCIES:
   - MagicalRecord
 
 SPEC CHECKSUMS:
+  AWSCore: b12704516e21ed34cfe7547e07ab945b079d1f56
+  AWSS3: 675f59e0c338e61441117f03018187b9deb359c4
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   Branch: 37553775450de2d844b03a0854c37d6271d967e7
   FBSDKCoreKit: ba4ca18ecae56af01e1b8c4faa889ef21d68bea2

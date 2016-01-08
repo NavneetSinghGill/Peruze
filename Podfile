@@ -9,4 +9,5 @@ target 'Peruze' do
   pod 'FBSDKShareKit'
   pod 'FBSDKLoginKit'
   pod 'Branch'
+  pod 'AWSS3'
 end

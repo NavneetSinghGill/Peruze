@@ -9,4 +9,5 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import <Branch/Branch.h>
+#import <AWSS3/AWSS3.h>
 #define MR_SHORTHAND
