@@ -89,7 +89,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     private var publicDB = CKContainer.defaultContainer().publicCloudDatabase
     private let locationAccuracy: CLLocationAccuracy = 200 //meters
     class func sharedInstance() -> Model {
-        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "a")
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:c53e37f7-320c-4992-a272-bf26ff79063c")
         let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
         transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -1028,6 +1028,55 @@ class Model: NSObject, CLLocationManagerDelegate {
             }
     }
     
+    //MARK: - s3 methods
+    
+    func uploadRequestForImageWithKey(key: String,andImage image: UIImage) -> AWSS3TransferManagerUploadRequest {
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest.bucket = BuckeyKeys.bucket
+        uploadRequest.key = key
+        
+        let testFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("temp")
+        UIImageJPEGRepresentation(image, 0.5)!.writeToURL(testFileURL, atomically: true)
+        uploadRequest.body = testFileURL
+        
+        return uploadRequest
+    }
+    
+    func downloadRequestForImageWithKey(uniqueName: String, downloadingFilePath: String) -> AWSS3TransferManagerDownloadRequest {
+        let readRequest1 = AWSS3TransferManagerDownloadRequest()
+        readRequest1.bucket = BuckeyKeys.bucket
+        readRequest1.key = uniqueName
+//        let downloadingFileURL = NSURL(string: NSTemporaryDirectory())!.URLByAppendingPathComponent("temp-download")
+        let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath).URLByAppendingPathComponent(randomStringWithLength(10) as String)
+        readRequest1.downloadingFileURL = downloadingFileURL
+        
+        return readRequest1
+    }
+    
+    func filterUrlForDownload(url: NSURL) -> String{
+        let urlString = "\(url)"
+        if urlString.hasPrefix("file://") {
+           return urlString.stringByReplacingOccurrencesOfString("file://", withString: "")
+        } else if urlString.hasPrefix("var://"){
+           return urlString.stringByReplacingOccurrencesOfString("var://", withString: "")
+        }
+        return ""
+    }
+    
+    func randomStringWithLength (len : Int) -> NSString {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: len)
+        
+        for (var i=0; i < len; i++){
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString
+    }
     
 }
 
@@ -1036,4 +1085,18 @@ let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 
 //s3
 var transferManager = AWSS3TransferManager.defaultS3TransferManager()
+private let s3URL = "https://s3.amazonaws.com/peruze/"
+func s3Url(uniqueName: String) -> String {
+    return "\(s3URL)\(uniqueName)"
+}
+
+func createUniqueName(name: String!) -> String {
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "EEE_MMM_dd_HH_mm_ss_yyyy"
+    let date = NSDate()
+    let formattedDate = dateFormatter.stringFromDate(date)
+
+    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    return "\(me.valueForKey("recordIDName")!)\(formattedDate)"
+}
 

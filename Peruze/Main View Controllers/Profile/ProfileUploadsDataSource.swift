@@ -62,7 +62,13 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     cell.titleTextLabel.text = (item.valueForKey("title") as! String)
     cell.subtitleTextLabel.text = ""
     cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
-    cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
+    if item.valueForKey("imageUrl") != nil {
+        if item.valueForKey("image") != nil {
+           cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
+        }
+    } else {
+        cell.circleImageView.image = nil
+    }
     if item.valueForKey("recordIDName") == nil {
         cell.recordIDName = nil
     } else {

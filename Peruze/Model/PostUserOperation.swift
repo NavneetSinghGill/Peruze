@@ -214,9 +214,6 @@ class UpdateUserOnCloudOperation: Operation {
                     (records, recordIDs, error) -> Void in
                     if error == nil {
                         for record in records! {
-                            if record.recordID.recordName == "_3632277db1c1d5d442724c76603b4c17"{
-                                
-                            }
                             let recordID = record.recordID.recordName
                             let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
                             if person != nil {
@@ -249,9 +246,6 @@ class UpdateUserOnCloudOperation: Operation {
                         (records, recordIDs, error) -> Void in
                         if error == nil {
                             for record in records! {
-                                if record.recordID.recordName == "_3632277db1c1d5d442724c76603b4c17"{
-                                    
-                                }
                                 let recordID = record.recordID.recordName
                                 let person = Person.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: self.context)
                                 if person != nil {

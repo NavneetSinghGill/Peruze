@@ -25,6 +25,7 @@ class PostItemOperation: GroupOperation {
     title: String,
     detail: String,
     recordIDName: String? = nil,
+    imageUrl: String,
     isDelete: Int? = 0,
     presentationContext: UIViewController,
     database: CKDatabase = CKContainer.defaultContainer().publicCloudDatabase,
@@ -36,12 +37,13 @@ class PostItemOperation: GroupOperation {
       //create the record if it doesn't exist
       let itemImageData = UIImagePNGRepresentation(image)
       let tempItem = Item.MR_findFirstOrCreateByAttribute("recordIDName", withValue: recordIDName, inContext: context)
-      tempItem.setValue(itemImageData, forKey: "image")
+//      tempItem.setValue(itemImageData, forKey: "image")
       tempItem.setValue(title, forKey: "title")
       tempItem.setValue(detail, forKey: "detail")
       tempItem.setValue((recordIDName ?? "tempID"), forKey: "recordIDName")
       tempItem.setValue("no", forKey: "hasRequested")
       tempItem.setValue(isDelete, forKey: "isDelete")
+      tempItem.setValue(imageUrl, forKey: "imageUrl")
       
       context.MR_saveToPersistentStoreAndWait()
       
@@ -80,6 +82,7 @@ class PostItemOperation: GroupOperation {
         detail: detail,
         image: itemImageData,
         isDelete: isDelete,
+        imageUrl: imageUrl,
         objectID: item.objectID,
         context: context
       )
@@ -153,11 +156,13 @@ class SaveItemInfoToLocalStorageOperation: Operation {
   let detail: String?
   let image: NSData?
   let isDelete: Int?
+  let imageUrl: String?
   
   init(title: String?,
     detail: String?,
     image: NSData?,
     isDelete: Int?,
+    imageUrl: String?,
     objectID: NSManagedObjectID,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       if logging { logw("SaveItemInfoToLocalStorageOperation " + __FUNCTION__ + " in " + __FILE__ + ". ") }
@@ -165,6 +170,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       self.detail = detail
       self.image = image
       self.isDelete = isDelete
+      self.imageUrl = imageUrl
       self.context = context
       self.objectID = objectID
       super.init()
@@ -184,6 +190,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       localItem.setValue(self.image, forKey: "image")
       localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
       localItem.setValue(self.isDelete, forKey: "isDelete")
+      localItem.setValue(self.imageUrl, forKey: "imageUrl")
       
     } catch {
       logw("PostItemOperation SaveItemInfoToLocalStorageOperation failed with error: \(error)")
@@ -238,11 +245,13 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       let itemTitle = itemToSave.valueForKey("title") as? String
       let itemDetail = itemToSave.valueForKey("detail") as? String
       let itemIsDeleted = itemToSave.valueForKey("isDelete") as? Int
+      let itemImageUniqueName = itemToSave.valueForKey("imageUrl") as? String
       
       itemRecord.setObject(itemTitle, forKey: "Title")
       itemRecord.setObject(itemDetail, forKey: "Description")
       itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
       itemRecord.setObject(itemIsDeleted, forKey: "IsDeleted")
+      itemRecord.setObject(itemImageUniqueName, forKey: "ImageUrl")
         
       //retrieve location
       if let itemLat = itemToSave.valueForKey("latitude") as? NSNumber,
@@ -253,15 +262,15 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       
       //get the imageURL
       ///URL for item image
-      let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
-      let imageData = itemToSave.valueForKey("image") as? NSData
-      if imageData!.writeToURL(imageURL, atomically: true) {
-        let imageAsset = CKAsset(fileURL: imageURL)
-        itemRecord.setObject(imageAsset, forKey: "Image")
-      } else {
-        finish()
-        return
-      }
+//      let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
+//      let imageData = itemToSave.valueForKey("image") as? NSData
+//      if imageData!.writeToURL(imageURL, atomically: true) {
+//        let imageAsset = CKAsset(fileURL: imageURL)
+//        itemRecord.setObject(imageAsset, forKey: "Image")
+//      } else {
+//        finish()
+//        return
+//      }
 
         
       let saveItemRecordOp = CKModifyRecordsOperation(recordsToSave: [itemRecord], recordIDsToDelete: nil)
@@ -269,12 +278,12 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
         //print any returned errors
         if error != nil { logw("UploadItem returned error: \(error)") }
         
-        do {
-          try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
-        } catch {
-          logw("PostItemOperation UploadItemFromLocalStorageToCloudOperation removeItemAtPath failed with error: \(error)")
-          return
-        }
+//        do {
+//          try NSFileManager.defaultManager().removeItemAtPath(imageURL.path!)
+//        } catch {
+//          logw("PostItemOperation UploadItemFromLocalStorageToCloudOperation removeItemAtPath failed with error: \(error)")
+//          return
+//        }
         
         if let first = savedRecords?.first {
           itemToSave.setValue(first.recordID.recordName, forKey: "recordIDName")

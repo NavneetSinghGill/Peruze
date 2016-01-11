@@ -111,6 +111,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
                 title: (item.valueForKey("title") as? String)!,
                 detail: (item.valueForKey("detail") as? String)!,
                 recordIDName: item.valueForKey("recordIDName") as? String,
+                imageUrl: (item.valueForKey("imageUrl") as? String)!,
                 isDelete: 1,
                 presentationContext: self,
                 completionHandler: completionHandler,

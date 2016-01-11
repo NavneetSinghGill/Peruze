@@ -62,6 +62,7 @@ class GetCurrentUserOperation: Operation {
       let lastName   = (record.objectForKey("LastName")   as? String)
       let facebookID = (record.objectForKey("FacebookID") as? String)
       let isDelete = (record.objectForKey("IsDeleted") as? Int)
+      let imageUrl = (record.objectForKey("ImageUrl") as? String)
         
         // if firstName == nil it means it's the very first time any user is logging to device
         if (person?.valueForKey("FacebookID") as? String) != facebookID && firstName != nil{
@@ -84,13 +85,34 @@ class GetCurrentUserOperation: Operation {
         if isDelete == nil {
            person.setValue(0, forKey: "isDelete")
         }
+      person.setValue(imageUrl, forKey: "imageUrl")
       
       //check for image property and set the data
-      if let imageAsset = record.objectForKey("Image") as? CKAsset {
-        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-        person.setValue(imageData, forKey: "image")
-      }
+//      if let imageAsset = record.objectForKey("Image") as? CKAsset {
+//        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+//        person.setValue(imageData, forKey: "image")
+//      }
       
+        if imageUrl != nil {
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl!, downloadingFilePath: downloadingFilePath)
+            
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error!)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        person.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+                return nil
+            })
+        }
+        
       //check for favorites
       if let favoriteReferences = record.objectForKey("FavoriteItems") as? [CKReference] {
         let favorites = favoriteReferences.map {

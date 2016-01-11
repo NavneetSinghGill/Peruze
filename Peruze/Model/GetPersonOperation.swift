@@ -45,15 +45,17 @@ class GetPersonOperation: Operation {
       desiredKeys.append("LastName")
     }
     
-    if (person.valueForKey("image") as? NSData) == nil {
-      desiredKeys.append("Image")
-    }
+//    if (person.valueForKey("image") as? NSData) == nil {
+//      desiredKeys.append("Image")
+//    }
+    
     
     if (person.valueForKey("facebookID") as? String) == nil {
       desiredKeys.append("FacebookID")
     }
     
     desiredKeys.append("FavoriteItems")
+    desiredKeys.append("ImageUrl")
     
     //if the person is complete, finish and return
     if desiredKeys.count == 0 {
@@ -117,10 +119,32 @@ class GetPersonOperation: Operation {
             })
           }
           //check for image property and set the data
-          if let imageAsset = recordsByID[recordID]?.objectForKey("Image") as? CKAsset {
-            let image = NSData(contentsOfURL: imageAsset.fileURL)
-            localPerson.setValue(image, forKey: "image")
-          }
+//          if let imageAsset = recordsByID[recordID]?.objectForKey("Image") as? CKAsset {
+//            let image = NSData(contentsOfURL: imageAsset.fileURL)
+//            localPerson.setValue(image, forKey: "image")
+//          }
+            
+            if let imageUrlSuffix = recordsByID[recordID]?.objectForKey("ImageUrl") as? String {
+                //download image
+                let downloadingFilePath = NSTemporaryDirectory()
+                let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+                
+                let task = transferManager.download(downloadRequest)
+                task.continueWithBlock({ (task) -> AnyObject? in
+                    if task.error != nil {
+                        logw("GetItemOperation image download failed with error: \(task.error!)")
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            let fileUrl = task.result!.valueForKey("body")!
+                            let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                            localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                            self.context.MR_saveToPersistentStoreAndWait()
+                        }
+                    }
+                    return nil
+                })
+            }
+            
           self.context.MR_saveToPersistentStoreAndWait()
         }
         
@@ -154,7 +178,7 @@ class GetAllPersonsWithMissingData: Operation {
     
     let allMissingPersons = Person.MR_findAllWithPredicate(missingPersonsPredicate, inContext: context) as! [NSManagedObject]
     let allMissingPersonsRecordNameID = allMissingPersons.map { $0.valueForKey("recordIDName") as? String }
-    let desiredKeys = ["FirstName", "LastName", "Image", "FacebookID"]
+    let desiredKeys = ["FirstName", "LastName", "FacebookID", "ImageUrl"]
     var missingPersonsRecordIDs = [CKRecordID]()
     for recordIDName in allMissingPersonsRecordNameID {
       if recordIDName != nil {
@@ -228,9 +252,31 @@ class GetAllPersonsWithMissingData: Operation {
         }
         
           //check for image property and set the data
-        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
-          localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
+//        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
+//          localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
+//        }
+        
+        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+            //download image
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+            
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error!)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+                return nil
+            })
         }
+        
         self.context.MR_saveToPersistentStoreAndWait()
       }
       

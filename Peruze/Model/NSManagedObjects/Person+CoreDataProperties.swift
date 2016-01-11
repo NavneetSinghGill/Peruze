@@ -29,5 +29,5 @@ extension Person {
     @NSManaged var averageRating: NSNumber?
     @NSManaged var mutualFriends: NSNumber?
     @NSManaged var isDelete: NSNumber?
-
+    @NSManaged var imageUrl: String?
 }

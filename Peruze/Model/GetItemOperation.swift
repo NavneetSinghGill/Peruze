@@ -156,7 +156,7 @@ class GetItemOperation: Operation {
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     
-    getItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title"]
+    getItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title","ImageUrl"]
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
         self.hasDataRetrivedFromCloud = true
@@ -199,10 +199,10 @@ class GetItemOperation: Operation {
         localUpload.setValue("noId", forKey: "ownerFacebookID")
       }
       
-      if let imageAsset = record.objectForKey("Image") as? CKAsset {
-        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-        localUpload.setValue(imageData, forKey: "image")
-      }
+//      if let imageAsset = record.objectForKey("Image") as? CKAsset {
+//        let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+//        localUpload.setValue(imageData, forKey: "image")
+//      }
                
         if let itemLocation = record.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
             
@@ -223,6 +223,29 @@ class GetItemOperation: Operation {
         
         if localUpload.hasRequested != "yes" {
             localUpload.setValue("no", forKey: "hasRequested")
+        }
+        
+        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+            localUpload.setValue(imageUrlSuffix, forKey: "imageUrl")
+            
+            //download image
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+            
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error!)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+                return nil
+            })
         }
         
       //save the context
@@ -287,7 +310,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
-    fetchAllItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title"]
+    fetchAllItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title","ImageUrl"]
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
     if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
         
@@ -308,12 +331,12 @@ class GetAllItemsWithMissingDataOperation: Operation {
           inContext: self.context)
         
         //get image
-        if let image = record.valueForKey("Image") as? CKAsset {
-          let imageData = NSData(contentsOfURL: image.fileURL)
-          localItem.setValue(imageData, forKey: "image")
-        } else {
-          logw("Image is not a CKAsset")
-        }
+//        if let image = record.valueForKey("Image") as? CKAsset {
+//          let imageData = NSData(contentsOfURL: image.fileURL)
+//          localItem.setValue(imageData, forKey: "image")
+//        } else {
+//          logw("Image is not a CKAsset")
+//        }
         
         //get title
         if let title = record.valueForKey("Title") as? String {
@@ -349,6 +372,30 @@ class GetAllItemsWithMissingDataOperation: Operation {
         }
         
         localItem.setValue(NSDate(), forKey: "dateOfDownload")
+        
+        // get image
+        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+            localItem.setValue(imageUrlSuffix, forKey: "imageUrl")
+            
+            //download image
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+            
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        localItem.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+                return nil
+            })
+        }
         
         self.context.MR_saveToPersistentStoreAndWait()
 

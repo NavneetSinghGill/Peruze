@@ -188,21 +188,29 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             return
         }
         if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
-            let uploadRequest = AWSS3TransferManagerUploadRequest()
-            uploadRequest.bucket = BuckeyKeys.bucket
-            uploadRequest.key = titleTextField.text
-            uploadRequest.body = NSURL(string: "https://s3.amazonaws.com/")
+            self.beginUpload()
+            
+            let uniqueImageName = createUniqueName(titleTextField.text!)
+            let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
             
             transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
                 if task.error != nil {
-                    if task.error?.domain == AWSS3TransferManagerErrorDomain {
-        
+                    logw("UploadViewController s3 item image upload failed with error: \(task.error)")
+                    
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.uploadingView?.removeFromSuperview()
+                    if self.navigationController == nil {
+                        self.dismissViewControllerAnimated(true, completion: nil)
                     }
+                    
+                    let alert = UIAlertController(title: "Peruze", message: "An error occured while uploading your item.", preferredStyle: .Alert)
+                    alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
                 }
                 if task.result != nil {
-                    let uploadOutput = task.result
+//                    let uploadOutput = task.result
                     
-                    self.beginUpload()
                     logw("OperationQueue().addOperation(PostItemOperation)")
                     let successCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
                         if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
@@ -211,7 +219,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                         }
                         if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
                             NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
-                                self.postOnFaceBook()
+                                self.postOnFaceBook(uniqueImageName)
                         }
                         self.endUpload() } }
                     let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
@@ -226,6 +234,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                             title: self.titleTextField.text!,
                             detail: self.descriptionTextView.text,
                             recordIDName: self.recordIDName,
+                            imageUrl: uniqueImageName,
                             presentationContext: self,
                             completionHandler: successCompletionHandler,
                             errorCompletionHandler: failureCompletionHandler
@@ -384,21 +393,21 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     //MARK: - Post On facebook
-    func postOnFaceBook() {
+    func postOnFaceBook(uniqueImageName: String) {
         if !FBSDKAccessToken.currentAccessToken().hasGranted("publish_actions") {
             let manager = FBSDKLoginManager()
             manager.logInWithPublishPermissions(["publish_actions"], handler: { (loginResult, error) -> Void in
                 if !loginResult.grantedPermissions.contains("publish_actions") {
-                    self.performPost()
+                    self.performPost(uniqueImageName)
                 }
             })
         } else {
-            performPost()
+            performPost(uniqueImageName)
         }
     }
     
     
-    func performPost() {
+    func performPost(uniqueImageName: String) {
         
         
         let params: NSMutableDictionary = [:]
@@ -414,7 +423,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 // Now we can do something with the URL...
                 logw("url: \(url)")
                 let urlString = "\(url)"
-                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(title)\'", "link" :urlString,"picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(title)\'", "link" :urlString,"picture": s3Url(uniqueImageName),"caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {
