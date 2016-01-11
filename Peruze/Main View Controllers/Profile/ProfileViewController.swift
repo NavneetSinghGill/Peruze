@@ -224,10 +224,10 @@ class ProfileViewController: UIViewController {
                 localUpload.setValue("noId", forKey: "ownerFacebookID")
             }
             
-            if let imageAsset = record.objectForKey("Image") as? CKAsset {
-                let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-                localUpload.setValue(imageData, forKey: "image")
-            }
+//            if let imageAsset = record.objectForKey("Image") as? CKAsset {
+//                let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+//                localUpload.setValue(imageData, forKey: "image")
+//            }
             
             if let itemLocation = record.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
                 
@@ -242,6 +242,10 @@ class ProfileViewController: UIViewController {
             
             if let isDelete = record.objectForKey("IsDeleted") as? Int {
                 localUpload.setValue(isDelete, forKey: "isDelete")
+            }
+            
+            if let imageUrl = record.objectForKey("ImageUrl") as? String {
+                localUpload.setValue(imageUrl, forKey: "imageUrl")
             }
 //            
 //            if localUpload.hasRequested != "yes" {

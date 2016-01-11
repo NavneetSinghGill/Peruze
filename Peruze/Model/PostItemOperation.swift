@@ -187,7 +187,7 @@ class SaveItemInfoToLocalStorageOperation: Operation {
       localItem.setValue(me, forKey: "owner")
       localItem.setValue(self.title, forKey: "title")
       localItem.setValue(self.detail, forKey: "detail")
-      localItem.setValue(self.image, forKey: "image")
+//      localItem.setValue(self.image, forKey: "image")
       localItem.setValue(me.valueForKey("facebookID"), forKey: "ownerFacebookID")
       localItem.setValue(self.isDelete, forKey: "isDelete")
       localItem.setValue(self.imageUrl, forKey: "imageUrl")

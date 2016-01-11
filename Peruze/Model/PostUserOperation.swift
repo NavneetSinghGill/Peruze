@@ -49,74 +49,87 @@ class PostUserOperation: Operation {
     }
     
     //save the image to disk and create the asset for the image
-    let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
+//    let imageURL = NSURL(fileURLWithPath: cachePathForFileName("tempFile"))
+//    
+//    if let imageData : NSData = myPerson.valueForKey("image") as? NSData {
+//        if !imageData.writeToURL(imageURL, atomically: true) {
+//            logw("imageData.writeToURL failed to write")
+//            self.finish()
+//            return
+//        }
+//    }
+//    
+//    let imageAsset = CKAsset(fileURL: imageURL)
     
-    if let imageData : NSData = myPerson.valueForKey("image") as? NSData {
-        if !imageData.writeToURL(imageURL, atomically: true) {
-            logw("imageData.writeToURL failed to write")
-            self.finish()
-            return
-        }
-    }
+    let uniqueImageName = createUniqueName()
+    let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: UIImage(data:(myPerson.valueForKey("image") as? NSData)!,scale:1.0)!)
     
-    let imageAsset = CKAsset(fileURL: imageURL)
+    transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+        if task.error != nil {
+            logw("PostUserOperation Image upload to s3 failed with error: \(task.error)")
+        } else {
+            logw("PostUserOperation Image upload to s3 success")
+            //create the record from the information
+            //get my profile from the server
+            
+            let fetchMyRecord = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
+            fetchMyRecord.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
+                if let error = error {
+                    self.finishWithError(error)
+                    return
+                }
+                
+                guard let myRecordID = recordsByID?.keys.first else {
+                    logw("myRecordID from fetchRecordsCompletionBlock in Post User Operation was nil")
+                    self.finish()
+                    return
+                }
+                guard let myRecord = recordsByID?[myRecordID] else {
+                    logw("myRecord from fetchRecordsCompletionBlock in Post User Operation was nil")
+                    self.finish()
+                    return
+                }
+                myRecord.setObject(firstName, forKey: "FirstName")
+                myRecord.setObject(lastName, forKey: "LastName")
+                myRecord.setObject(facebookID, forKey: "FacebookID")
+                //      myRecord.setObject(imageAsset, forKey: "Image")
+                myRecord.setObject(isDelete, forKey: "IsDeleted")
+                myRecord.setObject(uniqueImageName, forKey: "ImageUrl")
+                
+                let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
+                saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
+                    logw("saveOp.modifyRecordsCompletionBlock called.  ")
+                    
+                    if let error = operationError {
+                        self.finishWithError(error)
+                        return
+                    }
+                    
+                    
+                    //        do {
+                    //          try NSFileManager.defaultManager().removeItemAtURL(imageURL)
+                    //        } catch {
+                    //          logw("PostUserOperation removeItemAtUrl failed with error: \(error)")
+                    //          self.finish()
+                    //          return
+                    //        }
+                    
+                    if savedRecords?.first == nil {
+                        logw("saved records in PostUserOperation was nil")
+                        self.finish()
+                        return
+                    }
+                    self.finish()
+                }
+                
+                saveOp.qualityOfService = self.qualityOfService
+                self.database.addOperation(saveOp)
+            }
+            self.database.addOperation(fetchMyRecord)
+        }
+        return nil
+    })
     
-    //create the record from the information
-    //get my profile from the server
-    
-    let fetchMyRecord = CKFetchRecordsOperation.fetchCurrentUserRecordOperation()
-    fetchMyRecord.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
-      if let error = error {
-        self.finishWithError(error)
-        return
-      }
-      
-      guard let myRecordID = recordsByID?.keys.first else {
-        logw("myRecordID from fetchRecordsCompletionBlock in Post User Operation was nil")
-        self.finish()
-        return
-      }
-      guard let myRecord = recordsByID?[myRecordID] else {
-        logw("myRecord from fetchRecordsCompletionBlock in Post User Operation was nil")
-        self.finish()
-        return
-      }
-      myRecord.setObject(firstName, forKey: "FirstName")
-      myRecord.setObject(lastName, forKey: "LastName")
-      myRecord.setObject(facebookID, forKey: "FacebookID")
-      myRecord.setObject(imageAsset, forKey: "Image")
-        myRecord.setObject(isDelete, forKey: "IsDeleted")
-      
-      let saveOp = CKModifyRecordsOperation(recordsToSave: [myRecord], recordIDsToDelete: nil)
-      saveOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
-        logw("saveOp.modifyRecordsCompletionBlock called.  ")
-        
-        if let error = operationError {
-          self.finishWithError(error)
-          return
-        }
-        
-        
-        do {
-          try NSFileManager.defaultManager().removeItemAtURL(imageURL)
-        } catch {
-          logw("PostUserOperation removeItemAtUrl failed with error: \(error)")
-          self.finish()
-          return
-        }
-        
-        if savedRecords?.first == nil {
-          logw("saved records in PostUserOperation was nil")
-          self.finish()
-          return
-        }
-        self.finish()
-      }
-      
-      saveOp.qualityOfService = self.qualityOfService
-      self.database.addOperation(saveOp)
-    }
-    self.database.addOperation(fetchMyRecord)
   }
   override func finished(errors: [NSError]) {
     if logging { logw(__FUNCTION__ + " of " + __FILE__ + " called.  ") }

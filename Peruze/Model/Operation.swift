@@ -247,6 +247,7 @@ class Operation: NSOperation {
     */
     final func finishWithError(error: NSError?) {
         if let error = error {
+            
             finish([error])
         }
         else {

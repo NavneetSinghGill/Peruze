@@ -22,5 +22,5 @@ extension Message {
     @NSManaged var senderRecordIDName: String?
     @NSManaged var exchange: Exchange?
     @NSManaged var sender: Person?
-
+    @NSManaged var imageUrl: String?
 }

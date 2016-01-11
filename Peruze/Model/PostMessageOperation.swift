@@ -100,8 +100,21 @@ class SaveMessageWithTempRecordIDOperation: Operation {
     } else {
         newMessage.setValue(exchange.itemRequested?.owner?.recordIDName, forKey: "receiverRecordIDName")
     }
-    context.MR_saveToPersistentStoreAndWait()
-    finish()
+    
+    let uniqueImageName = createUniqueName()
+    let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: self.image!)
+    
+    transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+        if task.error != nil {
+            logw("PostMessageOperation Image upload to s3 failed with error: \(task.error)")
+        } else {
+            logw("PostMessageOperation Image upload to s3 success")
+            newMessage.setValue(uniqueImageName, forKey: "imageUrl")
+            self.context.MR_saveToPersistentStoreAndWait()
+            self.finish()
+        }
+        return nil
+    })
   }
 }
 
@@ -129,7 +142,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     
     let messageRecord = CKRecord(recordType: RecordTypes.Message)
     messageRecord.setObject(localMessage.valueForKey("text") as? String, forKey: "Text")
-    messageRecord.setObject(localMessage.valueForKey("image") as? NSData, forKey: "Image")
+//    messageRecord.setObject(localMessage.valueForKey("image") as? NSData, forKey: "Image")
     messageRecord.setObject(localMessage.valueForKey("date") as? NSDate, forKey: "Date")
     messageRecord.setObject(localMessage.valueForKey("senderRecordIDName") as? String, forKey: "SenderRecordIDName")
     messageRecord.setObject(localMessage.valueForKey("receiverRecordIDName") as? String, forKey: "ReceiverRecordIDName")
@@ -139,6 +152,7 @@ class UploadMessageWithTempRecordIDOperation: Operation {
         let exchangeRef = CKReference(recordID: exchangeRecordID, action: .None)
         messageRecord.setObject(exchangeRef, forKey: "Exchange")
     }
+    messageRecord.setObject(localMessage.valueForKey("imageUrl") as? String, forKey: "ImageUrl")
     
     let saveRecordsOp = CKModifyRecordsOperation(recordsToSave: [messageRecord], recordIDsToDelete: nil)
     

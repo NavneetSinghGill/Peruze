@@ -190,7 +190,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         if mainImageView.image != Constants.DefaultImage && !titleTextField.text!.isEmpty {
             self.beginUpload()
             
-            let uniqueImageName = createUniqueName(titleTextField.text!)
+            let uniqueImageName = createUniqueName()
             let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
             
             transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in

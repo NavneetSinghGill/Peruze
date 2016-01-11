@@ -31,6 +31,7 @@
     <entity name="Message" representedClassName="Message" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="receiverRecordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderRecordIDName" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,7 +70,7 @@
         <element name="Exchange" positionX="97" positionY="-804" width="128" height="150"/>
         <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
         <element name="Item" positionX="-36" positionY="-421" width="128" height="225"/>
-        <element name="Message" positionX="-164" positionY="-762" width="128" height="163"/>
+        <element name="Message" positionX="-164" positionY="-762" width="128" height="180"/>
         <element name="Person" positionX="252" positionY="-594" width="128" height="285"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>
     </elements>

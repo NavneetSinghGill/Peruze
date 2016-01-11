@@ -259,13 +259,14 @@ class Model: NSObject, CLLocationManagerDelegate {
                     }
                 } else {
                     if record?.recordType == RecordTypes.Item {
+                        let context = NSManagedObjectContext.MR_context()
                         var isItemPresentLocally = true
                         if Item.MR_findFirstByAttribute("recordIDName",
-                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext) == nil {
+                            withValue: record!.recordID.recordName, inContext: context) == nil {
                             isItemPresentLocally = false
                         }
                         let localUpload = Item.MR_findFirstOrCreateByAttribute("recordIDName",
-                            withValue: record!.recordID.recordName, inContext: managedConcurrentObjectContext)
+                            withValue: record!.recordID.recordName, inContext: context)
                         
                         if isItemPresentLocally == false {
                             localUpload.setValue(NSDate(), forKey: "dateOfDownload")
@@ -278,12 +279,12 @@ class Model: NSObject, CLLocationManagerDelegate {
                         if ownerRecordIDName == "__defaultOwner__" {
                             let owner = Person.MR_findFirstByAttribute("me",
                                 withValue: true,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             localUpload.setValue(owner, forKey: "owner")
                         } else {
                             let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: ownerRecordIDName,
-                                inContext: managedConcurrentObjectContext)
+                                inContext: context)
                             localUpload.setValue(owner, forKey: "owner")
                         }
                         
@@ -301,9 +302,29 @@ class Model: NSObject, CLLocationManagerDelegate {
                             localUpload.setValue("noId", forKey: "ownerFacebookID")
                         }
                         
-                        if let imageAsset = record!.objectForKey("Image") as? CKAsset {
-                            let imageData = NSData(contentsOfURL: imageAsset.fileURL)
-                            localUpload.setValue(imageData, forKey: "image")
+//                        if let imageAsset = record!.objectForKey("Image") as? CKAsset {
+//                            let imageData = NSData(contentsOfURL: imageAsset.fileURL)
+//                            localUpload.setValue(imageData, forKey: "image")
+//                        }
+                        
+                        if let imageUrl = record!.objectForKey("ImageUrl") as? String {
+                            let downloadingFilePath = NSTemporaryDirectory()
+                            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl, downloadingFilePath: downloadingFilePath)
+                            
+                            let task = transferManager.download(downloadRequest)
+                            task.continueWithBlock({ (task) -> AnyObject? in
+                                if task.error != nil {
+                                    logw("GetItemOperation image download failed with error: \(task.error!)")
+                                } else {
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        let fileUrl = task.result!.valueForKey("body")!
+                                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                                        context.MR_saveToPersistentStoreAndWait()
+                                    }
+                                }
+                                return nil
+                            })
                         }
                         
                         if let itemLocation = record!.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
@@ -326,7 +347,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         }
                         
                         //save the context
-                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        context.MR_saveToPersistentStoreAndWait()
                         NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
                         completionBlock(true)
                     }
@@ -535,9 +556,9 @@ class Model: NSObject, CLLocationManagerDelegate {
                             localMessage.setValue(messageText, forKey: "text")
                         }
                         
-                        if let messageImage = record!.objectForKey("Image") as? CKAsset {
-                            localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
-                        }
+//                        if let messageImage = record!.objectForKey("Image") as? CKAsset {
+//                            localMessage.setValue(NSData(contentsOfURL: messageImage.fileURL), forKey: "image")
+//                        }
                         
                         localMessage.setValue(record!.objectForKey("Date") as? NSDate, forKey: "date")
                         
@@ -1090,7 +1111,7 @@ func s3Url(uniqueName: String) -> String {
     return "\(s3URL)\(uniqueName)"
 }
 
-func createUniqueName(name: String!) -> String {
+func createUniqueName() -> String {
     let dateFormatter = NSDateFormatter()
     dateFormatter.dateFormat = "EEE_MMM_dd_HH_mm_ss_yyyy"
     let date = NSDate()
