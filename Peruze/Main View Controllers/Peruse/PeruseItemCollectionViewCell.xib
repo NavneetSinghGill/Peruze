@@ -37,6 +37,12 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Image" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pDJ-ec-mU6">
+                        <rect key="frame" x="8" y="56" width="395" height="395"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atW-1V-LPr" userLabel="Profile Picture" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="95" height="95"/>
                         <animations/>
@@ -59,12 +65,15 @@
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="pDJ-ec-mU6" firstAttribute="top" secondItem="pZi-1G-DCd" secondAttribute="top" id="9S1-4O-Iz0"/>
                 <constraint firstItem="Xk5-Ig-met" firstAttribute="top" secondItem="pZi-1G-DCd" secondAttribute="top" id="GMf-oi-5zc"/>
                 <constraint firstItem="atW-1V-LPr" firstAttribute="leading" secondItem="pZi-1G-DCd" secondAttribute="leading" id="INv-80-pKX"/>
                 <constraint firstItem="atW-1V-LPr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="ImM-Cf-UF9"/>
                 <constraint firstAttribute="trailing" secondItem="IfS-Ih-PKu" secondAttribute="trailing" id="Lcs-2E-6FA"/>
                 <constraint firstItem="atW-1V-LPr" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="Pa4-gE-ial"/>
+                <constraint firstItem="pDJ-ec-mU6" firstAttribute="trailing" secondItem="pZi-1G-DCd" secondAttribute="trailing" id="UqU-oB-Bbf"/>
                 <constraint firstItem="IfS-Ih-PKu" firstAttribute="baseline" secondItem="v6m-PV-671" secondAttribute="baseline" id="VYr-qy-hWB"/>
+                <constraint firstItem="pDJ-ec-mU6" firstAttribute="bottom" secondItem="pZi-1G-DCd" secondAttribute="bottom" id="WIL-8M-ffQ"/>
                 <constraint firstAttribute="centerX" secondItem="atW-1V-LPr" secondAttribute="trailing" multiplier="2" id="YVw-ke-mtx"/>
                 <constraint firstAttribute="trailing" secondItem="pZi-1G-DCd" secondAttribute="trailing" priority="800" constant="8" id="ZdX-6P-9bl"/>
                 <constraint firstItem="gm9-Lc-yVH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="aVL-Mx-k6A"/>
@@ -80,6 +89,7 @@
                 <constraint firstItem="Xk5-Ig-met" firstAttribute="trailing" secondItem="pZi-1G-DCd" secondAttribute="trailing" id="jTG-ZX-3QE"/>
                 <constraint firstAttribute="centerX" secondItem="pZi-1G-DCd" secondAttribute="centerX" id="seA-bN-tKJ"/>
                 <constraint firstItem="Xk5-Ig-met" firstAttribute="leading" secondItem="pZi-1G-DCd" secondAttribute="leading" id="ukK-fp-8ce"/>
+                <constraint firstItem="pDJ-ec-mU6" firstAttribute="leading" secondItem="pZi-1G-DCd" secondAttribute="leading" id="y0u-xA-4Np"/>
                 <constraint firstItem="Xk5-Ig-met" firstAttribute="bottom" secondItem="pZi-1G-DCd" secondAttribute="bottom" id="z61-Ng-Nix"/>
             </constraints>
             <size key="customSize" width="411" height="650"/>
@@ -93,6 +103,7 @@
                 <outlet property="activityIndicator" destination="Xk5-Ig-met" id="ozw-86-VQM"/>
                 <outlet property="itemImageView" destination="pZi-1G-DCd" id="zFd-0y-Zrd"/>
                 <outlet property="mutualFriendsLabel" destination="IfS-Ih-PKu" id="yIM-Ng-yzh"/>
+                <outlet property="noItemImageLabel" destination="pDJ-ec-mU6" id="KCj-sH-gn0"/>
                 <outlet property="ownerNameLabel" destination="v6m-PV-671" id="aAQ-5G-WwX"/>
                 <outlet property="ownerProfileImage" destination="atW-1V-LPr" id="kmL-0s-crt"/>
                 <outlet property="scrollView" destination="gm9-Lc-yVH" id="sKd-du-z3X"/>

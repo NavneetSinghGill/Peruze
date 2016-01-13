@@ -34,6 +34,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     }
   }
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var noItemImageLabel: UILabel!
   
   //Views
   private var itemNameLabel = UILabel()
@@ -148,12 +149,18 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //MARK: - Drawing and UI
   
   private func updateUI() {
+    self.noItemImageLabel.hidden = true
     if let imageData = item?.valueForKey("image") as? NSData {
       itemImageView.image = UIImage(data: imageData)
         self.activityIndicator.stopAnimating()
     } else {
         itemImageView.image = UIImage()
-        self.activityIndicator.startAnimating()
+        if let _ = item?.valueForKey("imageUrl") as? String {
+            self.activityIndicator.startAnimating()
+        } else {
+            self.activityIndicator.stopAnimating()
+            self.noItemImageLabel.hidden = false
+        }
     }
     if let title = item?.valueForKey("title") as? String {
       itemNameLabel.text = title
@@ -248,6 +255,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     profilePicNormalOriginY = ownerProfileImage.frame.origin.y
     ownerNameNormalOriginY = ownerNameLabel.frame.origin.y
     mutualFriendsNormalOriginY = mutualFriendsLabel.frame.origin.y
+    noItemLabelNormalOriginY = noItemImageLabel.frame.origin.y
+    activityIndicatorNormalOriginY = activityIndicator.frame.origin.y
     
     //get sizeToFit size for item detail view and item name label
     itemDescriptionTextView.frame = itemImageView.frame
@@ -341,6 +350,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   private var profilePicNormalOriginY: CGFloat?
   private var ownerNameNormalOriginY: CGFloat?
   private var mutualFriendsNormalOriginY: CGFloat?
+  private var noItemLabelNormalOriginY: CGFloat?
+  private var activityIndicatorNormalOriginY: CGFloat?
   private var segueShouldHappen = false
   private var segueHappened = false
   
@@ -374,6 +385,20 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       let newImgWidth = itemImageView.frame.width
       let newImgHeight = itemImageView.frame.height
       itemImageView.frame = CGRectMake(newImgX, newImgY, newImgWidth, newImgHeight)
+        
+        //noItemImage label
+        let newProfX_noItemLabel = noItemImageLabel.frame.origin.x
+        let newProfY_noItemLabel = noItemLabelNormalOriginY! - scrollView.contentOffset.y
+        let newProfWidth_noItemLabel = noItemImageLabel.frame.width
+        let newProfHeight_noItemLabel = noItemImageLabel.frame.height
+        noItemImageLabel.frame = CGRectMake(newProfX_noItemLabel, newProfY_noItemLabel, newProfWidth_noItemLabel, newProfHeight_noItemLabel)
+        
+        //activityIndeicator activityIndicatorNormalOriginY
+        let newProfX_loader = activityIndicator.frame.origin.x
+        let newProfY_loader = activityIndicatorNormalOriginY! - scrollView.contentOffset.y
+        let newProfWidth_loader = activityIndicator.frame.width
+        let newProfHeight_loader = activityIndicator.frame.height
+        activityIndicator.frame = CGRectMake(newProfX_loader, newProfY_loader, newProfWidth_loader, newProfHeight_loader)
       
       if scrollView.contentOffset.y < -exchangeView.frame.height {
         exchangeView.backgroundColor = .greenColor()

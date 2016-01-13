@@ -182,32 +182,28 @@ class GetItemOperation: Operation {
         }
       }
         
-        //        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
-        var imageUrlSuffix = "Goku_ssj.jpg"
-        if record.objectForKey("ImageUrl") as? String != nil {
-            imageUrlSuffix = record.objectForKey("ImageUrl") as! String
-        }
-        localUpload.setValue(imageUrlSuffix, forKey: "imageUrl")
-        
-        //download image
-        let downloadingFilePath = NSTemporaryDirectory()
-        let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        let task = transferManager.download(downloadRequest)
-        task.continueWithBlock({ (task) -> AnyObject? in
-            if task.error != nil {
-                logw("GetItemOperation image download failed with error: \(task.error!)")
-            } else {
-                dispatch_async(dispatch_get_main_queue()) {
-                    let fileUrl = task.result!.valueForKey("body")!
-                    let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                    localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                    self.context.MR_saveToPersistentStoreAndWait()
+        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+            localUpload.setValue(imageUrlSuffix, forKey: "imageUrl")
+            
+            //download image
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error!)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
                 }
-            }
-            return nil
-        })
-        //        }
+                return nil
+            })
+    }
         
       if let title = record.objectForKey("Title") as? String {
         localUpload.setValue(title, forKey: "title")
@@ -340,10 +336,6 @@ class GetAllItemsWithMissingDataOperation: Operation {
 //        }
         // get image
         if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
-            var imageUrlSuffix = "Goku_ssj.jpg"
-            if record.objectForKey("ImageUrl") != nil {
-                imageUrlSuffix = record.objectForKey("ImageUrl") as! String
-            }
             localItem.setValue(imageUrlSuffix, forKey: "imageUrl")
             
             //download image
