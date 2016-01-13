@@ -63,7 +63,7 @@ class PostUserOperation: Operation {
     
     let uniqueImageName = createUniqueName()
     let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: UIImage(data:(myPerson.valueForKey("image") as? NSData)!,scale:1.0)!)
-    
+    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
     transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
         if task.error != nil {
             logw("PostUserOperation Image upload to s3 failed with error: \(task.error)")

@@ -103,7 +103,7 @@ class SaveMessageWithTempRecordIDOperation: Operation {
     
     let uniqueImageName = createUniqueName()
     let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: self.image!)
-    
+    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
     transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
         if task.error != nil {
             logw("PostMessageOperation Image upload to s3 failed with error: \(task.error)")

@@ -156,7 +156,7 @@ class GetItemOperation: Operation {
       getItemsOperation = CKQueryOperation(query: getItemQuery)
     }
     
-    getItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title","ImageUrl"]
+    getItemsOperation.desiredKeys = ["Description","ImageUrl","IsDeleted","Location","OwnerFacebookID","Title"]
     
     getItemsOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
         self.hasDataRetrivedFromCloud = true
@@ -181,12 +181,36 @@ class GetItemOperation: Operation {
         localUpload.setValue(owner, forKey: "owner")
         }
       }
-      
+        
+        //        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+        var imageUrlSuffix = "Goku_ssj.jpg"
+        if record.objectForKey("ImageUrl") as? String != nil {
+            imageUrlSuffix = record.objectForKey("ImageUrl") as! String
+        }
+        localUpload.setValue(imageUrlSuffix, forKey: "imageUrl")
+        
+        //download image
+        let downloadingFilePath = NSTemporaryDirectory()
+        let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        let task = transferManager.download(downloadRequest)
+        task.continueWithBlock({ (task) -> AnyObject? in
+            if task.error != nil {
+                logw("GetItemOperation image download failed with error: \(task.error!)")
+            } else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    let fileUrl = task.result!.valueForKey("body")!
+                    let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                    localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                    self.context.MR_saveToPersistentStoreAndWait()
+                }
+            }
+            return nil
+        })
+        //        }
+        
       if let title = record.objectForKey("Title") as? String {
         localUpload.setValue(title, forKey: "title")
-        if title == "Crop Mobile"{
-            
-        }
       }
       
       if let detail = record.objectForKey("Description") as? String {
@@ -223,29 +247,6 @@ class GetItemOperation: Operation {
         
         if localUpload.hasRequested != "yes" {
             localUpload.setValue("no", forKey: "hasRequested")
-        }
-        
-        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
-            localUpload.setValue(imageUrlSuffix, forKey: "imageUrl")
-            
-            //download image
-            let downloadingFilePath = NSTemporaryDirectory()
-            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-            
-            let task = transferManager.download(downloadRequest)
-            task.continueWithBlock({ (task) -> AnyObject? in
-                if task.error != nil {
-                    logw("GetItemOperation image download failed with error: \(task.error!)")
-                } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let fileUrl = task.result!.valueForKey("body")!
-                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                        self.context.MR_saveToPersistentStoreAndWait()
-                    }
-                }
-                return nil
-            })
         }
         
       //save the context
@@ -310,7 +311,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
     }
     
     let fetchAllItemsOperation = CKFetchRecordsOperation(recordIDs: itemRecordsToFetch)
-    fetchAllItemsOperation.desiredKeys = ["Description","IsDeleted","Location","OwnerFacebookID","Title","ImageUrl"]
+    fetchAllItemsOperation.desiredKeys = ["Description","ImageUrl","IsDeleted","Location","OwnerFacebookID","Title"]
     fetchAllItemsOperation.fetchRecordsCompletionBlock = { (recordsByID, error) -> Void in
     if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissing DataOperation Per record " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
         
@@ -337,6 +338,33 @@ class GetAllItemsWithMissingDataOperation: Operation {
 //        } else {
 //          logw("Image is not a CKAsset")
 //        }
+        // get image
+        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+            var imageUrlSuffix = "Goku_ssj.jpg"
+            if record.objectForKey("ImageUrl") != nil {
+                imageUrlSuffix = record.objectForKey("ImageUrl") as! String
+            }
+            localItem.setValue(imageUrlSuffix, forKey: "imageUrl")
+            
+            //download image
+            let downloadingFilePath = NSTemporaryDirectory()
+            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+            let task = transferManager.download(downloadRequest)
+            task.continueWithBlock({ (task) -> AnyObject? in
+                if task.error != nil {
+                    logw("GetItemOperation image download failed with error: \(task.error)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fileUrl = task.result!.valueForKey("body")!
+                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+                        localItem.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+                        self.context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+                return nil
+            })
+        }
         
         //get title
         if let title = record.valueForKey("Title") as? String {
@@ -358,8 +386,11 @@ class GetAllItemsWithMissingDataOperation: Operation {
         }
         
         //fill in creator details
-        let creatorIDName = record.creatorUserRecordID!.recordName
+        var creatorIDName = record.creatorUserRecordID!.recordName
         
+        if creatorIDName == "__defaultOwner__"{
+            creatorIDName = Person.MR_findFirstByAttribute("me", withValue: true).valueForKey("recordIDName") as! String
+        }
         let localOwner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: creatorIDName,
           inContext: self.context)
@@ -368,34 +399,10 @@ class GetAllItemsWithMissingDataOperation: Operation {
         if let facebookID = record.valueForKey("OwnerFacebookID") as? String {
           localOwner.setValue(facebookID, forKey: "facebookID")
         } else {
-            localOwner.setValue("noId", forKey: "ownerFacebookID")
+            localOwner.setValue("noId", forKey: "facebookID")
         }
         
         localItem.setValue(NSDate(), forKey: "dateOfDownload")
-        
-        // get image
-        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
-            localItem.setValue(imageUrlSuffix, forKey: "imageUrl")
-            
-            //download image
-            let downloadingFilePath = NSTemporaryDirectory()
-            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-            
-            let task = transferManager.download(downloadRequest)
-            task.continueWithBlock({ (task) -> AnyObject? in
-                if task.error != nil {
-                    logw("GetItemOperation image download failed with error: \(task.error)")
-                } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let fileUrl = task.result!.valueForKey("body")!
-                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                        localItem.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                        self.context.MR_saveToPersistentStoreAndWait()
-                    }
-                }
-                return nil
-            })
-        }
         
         self.context.MR_saveToPersistentStoreAndWait()
 

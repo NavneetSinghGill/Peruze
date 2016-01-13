@@ -22,10 +22,11 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     super.init()
 //    let predicate = NSPredicate(value: true)
     let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
+    let itemsTitleAndImageNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.image != nil AND itemRequested.image != nil")
     fetchedResultsController = Exchange.MR_fetchAllSortedBy(
       "date",
       ascending: true,
-      withPredicate: predicate,
+      withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, itemsTitleAndImageNotNil]),
       groupBy: nil,
       delegate: self,
       inContext: managedConcurrentObjectContext

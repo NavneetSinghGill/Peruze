@@ -29,7 +29,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    let itemsTitleNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil")
+    let itemsTitleNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.image != nil AND itemRequested.image != nil")
 //    let requestedItemTitleNotNil = NSPredicate(format: "itemRequested.title != nil")
     let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate, itemsTitleNotNil])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",

@@ -96,7 +96,7 @@ class GetCurrentUserOperation: Operation {
         if imageUrl != nil {
             let downloadingFilePath = NSTemporaryDirectory()
             let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl!, downloadingFilePath: downloadingFilePath)
-            
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
             let task = transferManager.download(downloadRequest)
             task.continueWithBlock({ (task) -> AnyObject? in
                 if task.error != nil {
@@ -107,6 +107,7 @@ class GetCurrentUserOperation: Operation {
                         let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
                         person.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
                         self.context.MR_saveToPersistentStoreAndWait()
+                        self.finish()
                     }
                 }
                 return nil
@@ -127,7 +128,6 @@ class GetCurrentUserOperation: Operation {
       self.context.MR_saveToPersistentStoreAndWait()
     
         
-      self.finish()
     }
     
     //add operation to the cloud kit database

@@ -128,7 +128,7 @@ class GetPersonOperation: Operation {
                 //download image
                 let downloadingFilePath = NSTemporaryDirectory()
                 let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-                
+                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
                 let task = transferManager.download(downloadRequest)
                 task.continueWithBlock({ (task) -> AnyObject? in
                     if task.error != nil {
@@ -201,6 +201,7 @@ class GetAllPersonsWithMissingData: Operation {
         self.finishWithError(error)
         return
       }
+        
       for recordID in recordsByID!.keys {
         //add person to the database
         
@@ -260,7 +261,7 @@ class GetAllPersonsWithMissingData: Operation {
             //download image
             let downloadingFilePath = NSTemporaryDirectory()
             let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-            
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
             let task = transferManager.download(downloadRequest)
             task.continueWithBlock({ (task) -> AnyObject? in
                 if task.error != nil {
@@ -276,7 +277,6 @@ class GetAllPersonsWithMissingData: Operation {
                 return nil
             })
         }
-        
         self.context.MR_saveToPersistentStoreAndWait()
       }
       

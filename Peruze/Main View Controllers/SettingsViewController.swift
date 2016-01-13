@@ -168,7 +168,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
   private func setupImageViews() {
-    
     var views = [upperLeft, upperRight, lowerLeft, lowerRight]
     for index in 0..<Constants.NumberOfProfilePictures {
       views[index].hidden = false

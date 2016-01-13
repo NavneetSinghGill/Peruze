@@ -61,14 +61,17 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
       let item = exchangeItems[indexPath.item]
       
       guard
-        let title = item.valueForKey("title") as? String,
-        let imageData = item.valueForKey("image") as? NSData
+        let title = item.valueForKey("title") as? String
         else {
           return cell
       }
-      
+        
       cell.itemNameLabel.text = title
-      cell.imageView.image = UIImage(data: imageData)
+        if let imageData = item.valueForKey("image") as? NSData {
+            cell.imageView.image = UIImage(data: imageData)
+        } else {
+            cell.imageView.image = nil
+        }
     } else if indexPath.item == exchangeItems.count {
       //last item
       cell.itemNameLabel.text = "Upload New Item"
@@ -88,7 +91,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
         guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
             return
         }
-        let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
+        let predicate = NSPredicate(format: "owner.recordIDName = %@ AND title != nil AND image != nil", personRecordID)
         fetchedResultsController = Item.MR_fetchAllSortedBy("title",
             ascending: true,
             withPredicate: predicate,

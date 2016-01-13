@@ -92,7 +92,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:c53e37f7-320c-4992-a272-bf26ff79063c")
         let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-        transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        transferManager1 = AWSS3TransferManager.defaultS3TransferManager()
         return modelSingletonGlobal
     }
     
@@ -310,7 +310,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         if let imageUrl = record!.objectForKey("ImageUrl") as? String {
                             let downloadingFilePath = NSTemporaryDirectory()
                             let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl, downloadingFilePath: downloadingFilePath)
-                            
+                            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
                             let task = transferManager.download(downloadRequest)
                             task.continueWithBlock({ (task) -> AnyObject? in
                                 if task.error != nil {
@@ -321,6 +321,8 @@ class Model: NSObject, CLLocationManagerDelegate {
                                         let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
                                         localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
                                         context.MR_saveToPersistentStoreAndWait()
+                                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+                                        completionBlock(true)
                                     }
                                 }
                                 return nil
@@ -348,8 +350,6 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
-                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
-                        completionBlock(true)
                     }
                     completionBlock(false)
                 }
@@ -1105,7 +1105,7 @@ let modelSingletonGlobal = Model()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 
 //s3
-var transferManager = AWSS3TransferManager.defaultS3TransferManager()
+var transferManager1 = AWSS3TransferManager.defaultS3TransferManager()
 private let s3URL = "https://s3.amazonaws.com/peruze/"
 func s3Url(uniqueName: String) -> String {
     return "\(s3URL)\(uniqueName)"

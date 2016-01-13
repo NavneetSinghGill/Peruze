@@ -33,6 +33,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       scrollView.alwaysBounceVertical = true
     }
   }
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   
   //Views
   private var itemNameLabel = UILabel()
@@ -126,7 +127,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     } else if CGRectContainsPoint(ownerProfileImage.frame, sender.locationInView(contentView)) {
       if
         let owner = item?.valueForKey("owner") as? NSManagedObject,
-        let recordID = owner.valueForKey("recordIDName") as? String
+        let recordID = owner.valueForKey("recordIDName") as? String,
+        let _ = owner.valueForKey("image") as? NSData
       {
         delegate?.segueToProfile(recordID)
         NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "yes")
@@ -138,6 +140,9 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   func doubleTap(sender: UITapGestureRecognizer) {
     itemFavorited = true
     delegate?.itemFavorited(item!, favorite: itemFavorited)
+    if itemFavorited == true {
+        heartFlash()
+    }
   }
   
   //MARK: - Drawing and UI
@@ -145,8 +150,10 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   private func updateUI() {
     if let imageData = item?.valueForKey("image") as? NSData {
       itemImageView.image = UIImage(data: imageData)
+        self.activityIndicator.stopAnimating()
     } else {
-      itemImageView.image = UIImage()
+        itemImageView.image = UIImage()
+        self.activityIndicator.startAnimating()
     }
     if let title = item?.valueForKey("title") as? String {
       itemNameLabel.text = title

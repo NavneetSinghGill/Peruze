@@ -201,7 +201,10 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   func segueToExchange(item: NSManagedObject) {
     itemToForwardToExchange = item
-    performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
+    if let _ = itemToForwardToExchange?.valueForKey("image") as? NSData,
+        let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("image") as? NSData{
+            performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
+    }
   }
   
   private func exchangeInitiated() {
@@ -366,7 +369,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
-      if let destVC = segue.destinationViewController as? PeruseExchangeViewController {
+      if let destVC = segue.destinationViewController as? PeruseExchangeViewController{
         destVC.itemSelectedForExchange = itemToForwardToExchange
         destVC.delegate = self
       }

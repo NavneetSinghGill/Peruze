@@ -187,26 +187,34 @@ class GetExchangesOperation: Operation {
         let itemOffered = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemOfferedReference.recordID.recordName,
           inContext: self.context)
-        if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName{
-            itemOffered.setValue("yes", forKey: "hasRequested")
-        } else {
-            itemOffered.setValue("no", forKey: "hasRequested")
+        if itemOffered.valueForKey("image") == nil {
+            Model.sharedInstance().fetchItemWithRecord(itemOfferedReference.recordID,completionBlock: {_ in 
+                if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName{
+                    itemOffered.setValue("yes", forKey: "hasRequested")
+                } else {
+                    itemOffered.setValue("no", forKey: "hasRequested")
+                }
+                localExchange.setValue(itemOffered, forKey: "itemOffered")
+            })
         }
-        localExchange.setValue(itemOffered, forKey: "itemOffered")
       }
       
       //set item requested
       if let itemRequestedReference = record.objectForKey("RequestedItem") as? CKReference {
         let itemRequested = Item.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: itemRequestedReference.recordID.recordName,
-          inContext: self.context)
-        if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName {
-            itemRequested.setValue("no", forKey: "hasRequested")
-        } else {
-            itemRequested.setValue("yes", forKey: "hasRequested")
+            inContext: self.context)
+        if itemRequested.valueForKey("image") == nil {
+            Model.sharedInstance().fetchItemWithRecord(itemRequestedReference.recordID, completionBlock: {_ in 
+                if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName {
+                    itemRequested.setValue("no", forKey: "hasRequested")
+                } else {
+                    itemRequested.setValue("yes", forKey: "hasRequested")
+                }
+                
+                localExchange.setValue(itemRequested, forKey: "itemRequested")
+            })
         }
-        
-        localExchange.setValue(itemRequested, forKey: "itemRequested")
         
       }
         

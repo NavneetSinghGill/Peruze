@@ -192,7 +192,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             
             let uniqueImageName = createUniqueName()
             let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
-            
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
             transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
                 if task.error != nil {
                     logw("UploadViewController s3 item image upload failed with error: \(task.error)")

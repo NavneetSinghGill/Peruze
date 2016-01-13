@@ -67,13 +67,17 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
         let title = item.valueForKey("title") as? String,
         let owner = item.valueForKey("owner") as? NSManagedObject,
         let ownerName = owner.valueForKey("firstName") as? String,
-        let detail = item.valueForKey("detail") as? String,
-        let imageData = item.valueForKey("image") as? NSData
+        let detail = item.valueForKey("detail") as? String
+//        let imageData = item.valueForKey("image") as? NSData
       {
         cell.titleTextLabel.text = title
         cell.subtitleTextLabel.text = "by \(ownerName)"
         cell.descriptionTextLabel.text = detail
-        cell.circleImageView.image = UIImage(data: imageData)
+        if let imageData = item.valueForKey("image") as? NSData{
+            cell.circleImageView.image = UIImage(data: imageData)
+        } else {
+            cell.circleImageView.image = nil
+        }
       } else {
         logw("There was not enough non-nil data for the favorite item")
       }

@@ -30,6 +30,12 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     titleLabel.alpha = 0.0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
   }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.dataSource.fetchAndReloadLocalContent()
+    }
+    
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.reloadData()
@@ -39,15 +45,18 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    tableView.deselectRowAtIndexPath(indexPath, animated: false)
     let uploadView = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
     let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ProfileUploadsTableViewCell
-    uploadView.image = cell.circleImageView.image
-    uploadView.itemTitle = cell.titleTextLabel.text
-    uploadView.itemDescription = cell.descriptionTextLabel.text
-    uploadView.recordIDName = cell.recordIDName
-    presentViewController(uploadView, animated: true) {
-      self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
-      self.tableView.reloadData()
+    if cell.circleImageView.image != nil {
+        uploadView.image = cell.circleImageView.image
+        uploadView.itemTitle = cell.titleTextLabel.text
+        uploadView.itemDescription = cell.descriptionTextLabel.text
+        uploadView.recordIDName = cell.recordIDName
+        presentViewController(uploadView, animated: true) {
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            self.tableView.reloadData()
+        }
     }
   }
   
@@ -72,7 +81,8 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
         if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController {
             parentVC.updateViewAfterGettingResponse()
         }
-        
+        self.dataSource.fetchAndReloadLocalContent()
+        self.tableView.reloadData()
         logw("OperationQueue().addOperation(DeleteItemOperation)")
         let completionHandler = { dispatch_async(dispatch_get_main_queue()) {
             if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
