@@ -30,7 +30,8 @@ class MainTabBarViewController: UITabBarController {
     NSNotificationCenter.defaultCenter().addObserver(self,selector: "resetBadgeValue",name:"ResetBadgeValue",object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "setApplicationBadgeCount", name: "applicationDidBecomeActive", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "setRequestBadgeCount:", name: "setRequestBadge", object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "setChatBadgeCount:", name: "setAcceptedExchangesBadge", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setChatBadgeCount:", name: "setAcceptedExchangesBadge", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showChatScreen", name: NotificationCenterKeys.LNAcceptedRequest, object: nil)
     }
     func showTabBar(notification: NSNotification){
         self.dismissViewControllerAnimated(false, completion: nil)
@@ -288,5 +289,11 @@ class MainTabBarViewController: UITabBarController {
         }
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = currentRequestTabBadgeNumber + currentChatTabBadgeNumber
+    }
+    
+    //MARK: Notification method
+    
+    func showChatScreen() {
+        self.selectedIndex = 2
     }
 }

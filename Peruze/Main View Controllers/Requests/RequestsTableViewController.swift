@@ -294,6 +294,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
                 }
                 self.tableView.reloadData()
                 self.activityIndicatorView.stopAnimating()
+                NSNotificationCenter.defaultCenter().postNotificationName("AcceptedRequest", object: nil, userInfo: ["exchangeRecordIDName": idName])
             }
         }
         

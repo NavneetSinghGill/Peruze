@@ -19,6 +19,9 @@
 		3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */; };
 		3BEFDFD31C1E914E0001C964 /* ProfileFriendsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */; };
 		3BF411F21C0D68E800859FBE /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */; };
+		3BF67AA21C476B90004DE6CC /* PeruzePrivacyPolicy.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3BF67AA11C476B90004DE6CC /* PeruzePrivacyPolicy.rtf */; };
+		3BF67AA41C476BDC004DE6CC /* PeruzeSafety.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3BF67AA31C476BDC004DE6CC /* PeruzeSafety.rtf */; };
+		3BF67AA81C47A365004DE6CC /* ChatItemDetailShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF67AA71C47A365004DE6CC /* ChatItemDetailShowDetailViewController.swift */; };
 		3BF8FAA01C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF8FA9F1C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift */; };
 		5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3511EFD6152DB9272C1FB3 /* libPods-Peruze.a */; };
 		9A1E2E4C1C118A490043CD29 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E2E4A1C118A490043CD29 /* Friend.swift */; };
@@ -261,6 +264,9 @@
 		3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsViewController.swift; sourceTree = "<group>"; };
 		3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsDataSource.swift; sourceTree = "<group>"; };
 		3BF411F11C0D68E800859FBE /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		3BF67AA11C476B90004DE6CC /* PeruzePrivacyPolicy.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = PeruzePrivacyPolicy.rtf; sourceTree = "<group>"; };
+		3BF67AA31C476BDC004DE6CC /* PeruzeSafety.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = PeruzeSafety.rtf; sourceTree = "<group>"; };
+		3BF67AA71C47A365004DE6CC /* ChatItemDetailShowDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatItemDetailShowDetailViewController.swift; sourceTree = "<group>"; };
 		3BF8FA9F1C3D066400FD94F4 /* ProfileUploadsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUploadsCollectionViewController.swift; sourceTree = "<group>"; };
 		9A1E2E4A1C118A490043CD29 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -579,6 +585,7 @@
 				9D177AF91B54DDC3009CB9FA /* ChatTableViewCell.xib */,
 				9D177AFA1B54DDC3009CB9FA /* ChatTableViewController.swift */,
 				9D177AFB1B54DDC3009CB9FA /* ChatTableViewDataSource.swift */,
+				3BF67AA71C47A365004DE6CC /* ChatItemDetailShowDetailViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -901,6 +908,8 @@
 				3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */,
 				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
 				3B0093C01C2188D1008D3339 /* Terms.rtf */,
+				3BF67AA11C476B90004DE6CC /* PeruzePrivacyPolicy.rtf */,
+				3BF67AA31C476BDC004DE6CC /* PeruzeSafety.rtf */,
 				3BE910AE1C253F1B00DAB409 /* Localizable.strings */,
 				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
@@ -1211,6 +1220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D177B9E1B54DDC3009CB9FA /* ProfileReviewsTableViewCell.xib in Resources */,
+				3BF67AA41C476BDC004DE6CC /* PeruzeSafety.rtf in Resources */,
 				9D177B881B54DDC3009CB9FA /* ChatTableViewCell.xib in Resources */,
 				9D177BA21B54DDC3009CB9FA /* ProfileUploadsTableViewCell.xib in Resources */,
 				9D177B791B54DDC3009CB9FA /* LaunchScreen.xib in Resources */,
@@ -1229,6 +1239,7 @@
 				9D177BD81B54DDC4009CB9FA /* TGCameraViewController.xib in Resources */,
 				9D177BD91B54DDC4009CB9FA /* TGPhotoViewController.xib in Resources */,
 				9D177BDB1B54DDC4009CB9FA /* TGCameraViewController.xcassets in Resources */,
+				3BF67AA21C476B90004DE6CC /* PeruzePrivacyPolicy.rtf in Resources */,
 				9D177BA71B54DDC3009CB9FA /* RequestsCollectionViewCell.xib in Resources */,
 				9D177BD71B54DDC4009CB9FA /* TGCameraAuthorizationViewController.xib in Resources */,
 				9D177B7A1B54DDC3009CB9FA /* Main.storyboard in Resources */,
@@ -1383,6 +1394,7 @@
 				9DC345951BA9FC1100B1CA2C /* AsyncOpKit.swift in Sources */,
 				9D009A4A1B5F65D900AF6A4E /* GetItemOperation.swift in Sources */,
 				9DC345701BA9F22B00B1CA2C /* Operation.swift in Sources */,
+				3BF67AA81C47A365004DE6CC /* ChatItemDetailShowDetailViewController.swift in Sources */,
 				9D177B8B1B54DDC3009CB9FA /* MainTabBarViewController.swift in Sources */,
 				9D177BB61B54DDC3009CB9FA /* NetworkConnection.swift in Sources */,
 				9DC3457C1BA9F22B00B1CA2C /* HealthCondition.swift in Sources */,

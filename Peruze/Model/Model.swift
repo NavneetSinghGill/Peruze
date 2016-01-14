@@ -25,6 +25,7 @@ struct NotificationCenterKeys {
   static let LNRefreshChatScreenForUpdatedExchanges = "RefreshChatScreenForUpdatedExchanges"
     static let LNRefreshRequestScreenWithLocalData = "RefreshRequestScreenWithLocalData"
     static let AppDidBecomeActiveNotificationName = "applicationDidBecomeActive"
+    static let LNAcceptedRequest = "AcceptedRequest"
   struct Error {
     static let PeruzeUpdateError = "PeruseUpdateError"
     static let UploadItemError = "UploadItemError"

@@ -33,42 +33,50 @@ class ChatTableViewCell: UITableViewCell {
           logw("Error: Issue with item title in ChatTableViewCell")
           return
       }
-//      let fetchRequest = NSFetchRequest(entityName: "Message")
-//        let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", data?.valueForKey("recordIDName") as! String)
-//        fetchRequest.predicate = exchangePredicate
-//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-//        fetchRequest.fetchLimit = 1
-//        var fetchedResultsController: NSFetchedResultsController!
-//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-//        do {
-//            try fetchedResultsController.performFetch()
-//            if fetchedResultsController.sections![0].numberOfObjects > 0 {
-//                let latestChatArray : NSArray = fetchedResultsController.sections?[0].objects as! [Message]
-//                let latestChat = latestChatArray[0]
-//                if latestChat.valueForKey("sender") != nil && latestChat.valueForKey("sender")!.valueForKey("firstName") != nil && latestChat.valueForKey("sender")!.valueForKey("lastName") != nil{
-//                   self.mostRecentTextString.text = "\(latestChat.valueForKey("sender")!.valueForKey("firstName")!) \(latestChat.valueForKey("sender")!.valueForKey("lastName")!): \(latestChat.valueForKey("text")!)"
-//                }
-//            } else {
-//                self.mostRecentTextString.text = ""
-//            }
-//        } catch {
-//            logw("ChatTableViewCell fetching latest chat failed with error: \(error)")
-//        }
         
+      let fetchRequest = NSFetchRequest(entityName: "Message")
+        let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", data?.valueForKey("recordIDName") as! String)
+        fetchRequest.predicate = exchangePredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        fetchRequest.fetchLimit = 1
+        var fetchedResultsController: NSFetchedResultsController!
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedResultsController.performFetch()
+            if fetchedResultsController.sections![0].numberOfObjects > 0 {
+                let latestChatArray : NSArray = fetchedResultsController.sections?[0].objects as! [Message]
+                let latestChat = latestChatArray[0]
+                if latestChat.valueForKey("sender") != nil && latestChat.valueForKey("sender")!.valueForKey("firstName") != nil && latestChat.valueForKey("sender")!.valueForKey("lastName") != nil{
+                   self.mostRecentTextString.text = "\(latestChat.valueForKey("sender")!.valueForKey("firstName")!) \(latestChat.valueForKey("sender")!.valueForKey("lastName")!): \(latestChat.valueForKey("text")!)"
+                }
+            } else {
+                self.mostRecentTextString.text = ""
+            }
+        } catch {
+            logw("ChatTableViewCell fetching latest chat failed with error: \(error)")
+        }
         
-//        itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
         let tempImageView1 = UIImageView()
         let tempImageView2 = UIImageView()
         tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(offeredImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
-                self.itemImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+                self.itemImage.itemImagesTappable = (tempImageView1.image!, tempImageView2.image!, prominentImageTapBlock: {
+                    self.showChatItemDelegate.showItem(self.data?.valueForKey("itemOffered") as! NSManagedObject)
+                    }, lesserImageTapBlock: {
+                        self.showChatItemDelegate.showItem(self.data?.valueForKey("itemRequested") as! NSManagedObject)
+                })
             }
         })
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(requestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
-                self.itemImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+                self.itemImage.itemImagesTappable = (tempImageView1.image!, tempImageView2.image!, prominentImageTapBlock: {
+                    self.showChatItemDelegate.showItem(self.data?.valueForKey("itemOffered") as! NSManagedObject)
+                    }, lesserImageTapBlock: {
+                        self.showChatItemDelegate.showItem(self.data?.valueForKey("itemRequested") as! NSManagedObject)
+                })
             }
         })
+        
       theirItemNameLabel.text = "\(itemOfferedTitle)"
       yourItemNameLabel.text = "for \(itemRequestedTitle)"
       
@@ -77,6 +85,7 @@ class ChatTableViewCell: UITableViewCell {
       //mostRecentTextString.text = name + ": \(data!.messages.last!.text)"
     }
   }
+    var showChatItemDelegate: showChatItemDetailDelegate!
   @IBOutlet weak var itemImage: DoubleCircleImage!
   @IBOutlet weak var theirItemNameLabel: UILabel!
   @IBOutlet weak var yourItemNameLabel: UILabel!

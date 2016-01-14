@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 import SwiftLog
 
-class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate {
+class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeletionDelegate, showChatItemDetailDelegate {
   private struct Constants {
     static let SegueIdentifier = "toChat"
     static let TableViewRowHeight: CGFloat = 100
@@ -24,6 +24,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.rowHeight = Constants.TableViewRowHeight
+        self.dataSource.showChatItemDelegate = self
     }
   }
   @IBOutlet weak var noChatsLabel: UILabel!
@@ -32,10 +33,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   override func viewDidLoad() {
     super.viewDidLoad()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchanges", name: NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "showChatScreen:", name: NotificationCenterKeys.LNAcceptedRequest, object: nil)
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
     refresh()
+    
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -295,6 +298,16 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
   }
   
+    //MARK: - Show item detail
+    
+    func showItem(item: NSManagedObject) {
+      let navigationController = self.storyboard?.instantiateViewControllerWithIdentifier("showItemDetailIdentifier")
+        if let chatItemDetailShowDetailVC = navigationController?.childViewControllers[0] as? ChatItemDetailShowDetailViewController {
+            chatItemDetailShowDetailVC.manageObjectItems = [item]
+        }
+        self.presentViewController(navigationController!, animated: true, completion: nil)
+    }
+    
   //MARK: - Navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard
@@ -312,5 +325,16 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     destVC.delegate = self
   }
   
-  
+    func showChatScreen(notification: NSNotification) {
+        if notification.userInfo != nil {
+            let userDict: NSDictionary = notification.userInfo!
+            let exchangeRecordIDName = userDict.valueForKey("exchangeRecordIDName")
+            let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName)
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("chat", forIndexPath: NSIndexPath(forRow: 0, inSection: 0)) as? ChatTableViewCell
+            cell!.theirItemNameLabel.text = exchange.valueForKey("itemOffered")!.valueForKey("title") as? String
+            cell!.data = exchange
+            performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
+        }
+    }
 }

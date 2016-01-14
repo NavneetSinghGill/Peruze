@@ -17,6 +17,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   }
   var fetchedResultsController: NSFetchedResultsController!
   var tableView: UITableView!
+    var showChatItemDelegate: showChatItemDetailDelegate!
   
   //MARK: - Lifecycle Methods
   override init() {
@@ -60,6 +61,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
     
     let cell = tableView.dequeueReusableCellWithIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as? ChatTableViewCell
     cell!.data = (fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+    cell!.showChatItemDelegate = self.showChatItemDelegate
     logw("Accepted exchange table cell data at .... IndexPath:\(indexPath) .... with data: \(cell?.data)")
     return cell!
   }
@@ -143,5 +145,9 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
   }
+}
+
+protocol showChatItemDetailDelegate {
+    func showItem(item: NSManagedObject)
 }
 

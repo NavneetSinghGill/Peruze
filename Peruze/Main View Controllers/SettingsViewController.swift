@@ -320,8 +320,25 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     @IBAction func termsAndConditionsButtonTapped(sender: UIButton) {
-        let termsAndConditionViewController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
-        presentViewController(termsAndConditionViewController, animated: true, completion: nil)
+        let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
+        if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
+            termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.terms
+        }
+        presentViewController(termsAndConditionNavigationController, animated: true, completion: nil)
+    }
+    @IBAction func safetyButtonTapped(sender: UIButton) {
+        let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
+        if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
+            termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.safety
+        }
+        presentViewController(termsAndConditionNavigationController, animated: true, completion: nil)
+    }
+    @IBAction func privacyPolicyButtonTapped(sender: UIButton) {
+        let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
+        if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
+            termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.privacyPolicy
+        }
+        presentViewController(termsAndConditionNavigationController, animated: true, completion: nil)
     }
     
   //MARK: - Handling Sliders
