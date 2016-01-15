@@ -30,8 +30,8 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
   }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         if self.dataSource.fetchAndReloadLocalContent() == 0 {
             self.titleLabel.hidden = false
         } else {
@@ -41,7 +41,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    tableView.reloadData()
+//    tableView.reloadData()
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
@@ -95,6 +95,12 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
                     managedConcurrentObjectContext.deleteObject(localItem)
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                     parentVC.updateViewAfterGettingResponse()
+                    try self.dataSource.fetchedResultsController.performFetch()
+                    dispatch_async(dispatch_get_main_queue()){
+                        if self.tableView != nil {
+                            self.tableView.reloadData()
+                        }
+                    }
                 } catch {
                     logw("Error while deleting local item in item updation completion block: \(error)")
                 }

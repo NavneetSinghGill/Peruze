@@ -40,8 +40,8 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     func fetchAndReloadLocalContent() -> Int {
         if personRecordID == nil { return 0}
         let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
-//        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
-        let predicateForDeletedItem = NSPredicate(value: true)
+        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
+//        let predicateForDeletedItem = NSPredicate(value: true)
         fetchedResultsController = Item.MR_fetchAllSortedBy("title",
             ascending: true,
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
