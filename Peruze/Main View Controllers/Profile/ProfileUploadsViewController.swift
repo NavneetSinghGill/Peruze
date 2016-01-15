@@ -27,13 +27,16 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
   override func viewDidLoad() {
     super.viewDidLoad()
-    titleLabel.alpha = 0.0
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
   }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.dataSource.fetchAndReloadLocalContent()
+        if self.dataSource.fetchAndReloadLocalContent() == 0 {
+            self.titleLabel.hidden = false
+        } else {
+            self.titleLabel.hidden = true
+        }
     }
     
   override func viewDidLayoutSubviews() {

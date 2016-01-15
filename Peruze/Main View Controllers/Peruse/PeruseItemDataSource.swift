@@ -51,9 +51,10 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
     let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
     let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != 1")
     let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
+    let noImage = NSPredicate(format: "imageUrl != nil")
+    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem, noImage])
     fetchRequest.predicate = compoundPredicate
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true), NSSortDescriptor(key: "recordIDName", ascending: true)]
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true)]
     fetchRequest.includesSubentities = true
     fetchRequest.returnsObjectsAsFaults = false
     fetchRequest.includesPropertyValues = true
@@ -181,9 +182,10 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
         let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
         let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != 1")
         let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
-        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem])
+        let noImage = NSPredicate(format: "imageUrl != nil")
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,getFriendsPredicate(),predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem, noImage])
         fetchRequest.predicate = compoundPredicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true), NSSortDescriptor(key: "recordIDName", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true)]
         fetchRequest.includesSubentities = true
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.includesPropertyValues = true

@@ -15,13 +15,17 @@ class TermsConditionViewController: UIViewController {
         super.viewDidLoad()
         textView.text = ""
         textView.editable = false
-        initialSetup()
         title = "Terms and conditions"
         navigationController?.navigationBar.tintColor = .redColor()
         view.backgroundColor = .whiteColor()
 //        self.navigationItem.setLeftBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "backButtonTapped"), animated: true)
         let rightBarButton = UIBarButtonItem(title: "Back", style: .Plain, target: self, action: "backButtonTapped")
         self.navigationItem.setLeftBarButtonItem(rightBarButton, animated: true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        initialSetup()
     }
     
     func backButtonTapped() {

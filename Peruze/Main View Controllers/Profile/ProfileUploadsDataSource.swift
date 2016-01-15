@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   
@@ -36,8 +37,8 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     fetchAndReloadLocalContent()
   }
     
-    func fetchAndReloadLocalContent() {
-        if personRecordID == nil { return }
+    func fetchAndReloadLocalContent() -> Int {
+        if personRecordID == nil { return 0}
         let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
 //        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
         let predicateForDeletedItem = NSPredicate(value: true)
@@ -46,6 +47,17 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
             groupBy: nil, delegate: self,
             inContext: managedConcurrentObjectContext)
+        do {
+            try fetchedResultsController.performFetch()
+            dispatch_async(dispatch_get_main_queue()) {
+                if self.tableView != nil {
+                    self.tableView.reloadData()
+                }
+            }
+        } catch {
+            logw("ProfileUploads local data fetch failed with error: \(error)")
+        }
+        return fetchedResultsController.sections![0].numberOfObjects
     }
   
   var editableCells = true
