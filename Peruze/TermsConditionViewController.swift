@@ -38,7 +38,7 @@ class TermsConditionViewController: UIViewController {
     
     func initialSetup() {
         if fileToShow == FileOnDemand.terms {
-            title = "Terms and conditions"
+            title = "Terms and Conditions"
             let rtfPath = NSBundle.mainBundle().URLForResource("Terms", withExtension: "rtf")
             do {
                 let attributedStringWithRtf = try NSAttributedString(fileURL: rtfPath!, options: [NSDocumentTypeDocumentAttribute: NSRTFTextDocumentType], documentAttributes: nil)
