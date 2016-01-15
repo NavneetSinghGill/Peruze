@@ -63,7 +63,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     
     
     
-    func getMutualFriends() {
+    func getMutualFriends() -> Int{
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!
@@ -106,6 +106,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
                 self.tableView.reloadData()
             }
         }
+        return self.sortedFriendsData.count
     }
     
     func getTaggableFriends() {

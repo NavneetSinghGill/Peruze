@@ -1726,23 +1726,23 @@
                                             <constraint firstAttribute="width" secondItem="nA7-XA-xbh" secondAttribute="height" multiplier="1:1" id="4fQ-TH-7cu"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMC-lO-HuH" userLabel="FarLeftSpacer">
-                                        <rect key="frame" x="8" y="223" width="59" height="52"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gMC-lO-HuH" userLabel="FarLeftSpacer">
+                                        <rect key="frame" x="8" y="223" width="58" height="52"/>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rKY-Xr-4TI" userLabel="MiddleLeftSpacer">
-                                        <rect key="frame" x="145" y="223" width="116" height="52"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKY-Xr-4TI" userLabel="MiddleLeftSpacer">
+                                        <rect key="frame" x="144" y="223" width="117" height="52"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="8" id="DEa-q0-sgc"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zff-HY-AYm" userLabel="MiddleRightSpacer">
-                                        <rect key="frame" x="339" y="223" width="116" height="52"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zff-HY-AYm" userLabel="MiddleRightSpacer">
+                                        <rect key="frame" x="339" y="223" width="117" height="52"/>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yuX-vM-Ju1" userLabel="FarRightSpacer">
-                                        <rect key="frame" x="533" y="223" width="59" height="52"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuX-vM-Ju1" userLabel="FarRightSpacer">
+                                        <rect key="frame" x="534" y="223" width="58" height="52"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-IA-bM4">
-                                        <rect key="frame" x="67" y="225" width="78" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQF-IA-bM4">
+                                        <rect key="frame" x="66" y="225" width="78" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <state key="normal" title="Uploads">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1763,8 +1763,8 @@
                                             <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="gWc-Zp-BCa"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-PO-Fv1">
-                                        <rect key="frame" x="455" y="225" width="78" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-PO-Fv1">
+                                        <rect key="frame" x="456" y="225" width="78" height="52"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <state key="normal" title="Mutual Friends">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1788,7 +1788,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="21" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QZz-eD-Ehu" userLabel="Uploads Number">
-                                        <rect key="frame" x="384" y="153" width="17" height="20"/>
+                                        <rect key="frame" x="365" y="153" width="17" height="20"/>
                                         <gestureRecognizers/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1797,15 +1797,15 @@
                                             <outletCollection property="gestureRecognizers" destination="M6K-HE-ouW" appends="YES" id="WIU-BG-uLP"/>
                                         </connections>
                                     </label>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J16-mL-4rp" userLabel="Friends">
-                                        <rect key="frame" x="422" y="173" width="39" height="14"/>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mutual Friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J16-mL-4rp" userLabel="Friends">
+                                        <rect key="frame" x="403" y="173" width="78" height="14"/>
                                         <gestureRecognizers/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Uploads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECo-hm-mr7" userLabel="Uploads">
-                                        <rect key="frame" x="370" y="173" width="44" height="14"/>
+                                        <rect key="frame" x="351" y="173" width="44" height="14"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -1835,8 +1835,8 @@
                                             <constraint firstAttribute="height" constant="1" id="RNi-ac-tau"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5V-UF-epw" userLabel="Cloud">
-                                        <rect key="frame" x="89" y="225" width="34" height="34"/>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5V-UF-epw" userLabel="Cloud">
+                                        <rect key="frame" x="88" y="225" width="34" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="x5V-UF-epw" secondAttribute="height" multiplier="1:1" id="Jv7-EX-sGc"/>
                                         </constraints>
@@ -1855,8 +1855,8 @@
                                             <action selector="reviewsTapped:" destination="k06-Ue-L8P" eventType="touchUpInside" id="HOX-F0-A1W"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MND-WX-XoD" userLabel="Dollar Sign">
-                                        <rect key="frame" x="477" y="225" width="34" height="34"/>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MND-WX-XoD" userLabel="Dollar Sign">
+                                        <rect key="frame" x="478" y="225" width="34" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="MND-WX-XoD" secondAttribute="height" multiplier="1:1" id="mfM-IP-9Tk"/>
                                         </constraints>
@@ -1881,14 +1881,14 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2tF-cj-tFY" userLabel="Uploads Touch View">
-                                        <rect key="frame" x="370" y="153" width="44" height="34"/>
+                                        <rect key="frame" x="351" y="153" width="44" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="KUJ-5w-nWn" appends="YES" id="0Rx-jp-9Xy"/>
                                         </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VQs-aA-FJs" userLabel="Friends Touch View">
-                                        <rect key="frame" x="422" y="153" width="39" height="34"/>
+                                        <rect key="frame" x="403" y="153" width="78" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="exp-h5-OHU" appends="YES" id="5fn-pg-KN7"/>
@@ -1899,14 +1899,14 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="doe-RU-g6I">
-                                        <rect key="frame" x="231" y="167" width="139" height="20"/>
+                                        <rect key="frame" x="231" y="167" width="120" height="20"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="n7L-SV-2y0"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bZe-k2-Y1i">
-                                        <rect key="frame" x="461" y="167" width="139" height="20"/>
+                                        <rect key="frame" x="481" y="167" width="119" height="20"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="F2E-D1-ser"/>
@@ -4365,7 +4365,7 @@
         <image name="Peruze_Small_Icon" width="66" height="66"/>
         <image name="Profile" width="30" height="30"/>
         <image name="Profile_Exchange" width="33" height="33"/>
-        <image name="Profile_Friend" width="33" height="33"/>
+        <image name="Profile_Friend" width="100" height="100"/>
         <image name="Profile_Heart" width="33" height="33"/>
         <image name="Profile_Star" width="33" height="33"/>
         <image name="Profile_Upload_Filled" width="33" height="33"/>
@@ -4376,6 +4376,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xoQ-gx-uPK"/>
-        <segue reference="6TZ-FQ-lfY"/>
+        <segue reference="yke-5P-fFJ"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -24,7 +24,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.alpha = 0.0
+//        titleLabel.alpha = 0.0
 //        refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
 //        tableView.addSubview(refreshControl)
@@ -37,7 +37,13 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.dataSource.getMutualFriends()
+        if self.dataSource.getMutualFriends() == 0 {
+            self.titleLabel.hidden = false
+            self.dataSource.tableView.alpha = 0.0
+        } else {
+            self.titleLabel.hidden = true
+            self.dataSource.tableView.alpha = 1.0
+        }
     }
     
     override func viewDidLayoutSubviews() {

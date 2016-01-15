@@ -232,14 +232,22 @@ class Model: NSObject, CLLocationManagerDelegate {
             //        let mutualFriendIds = Set(arrayLiteral: myFriendsIDs).intersect(Set(arrayLiteral: otherUserFriendsIDs))
             let mutualFriends: NSMutableSet = []
             for id in myFriendsIDs{
-                if otherUserFriendsIDs.containsObject(id) {
+                if otherUserFriendsIDs.containsObject(id){
                     mutualFriends.addObject(id)
                 }
             }
             owner.setValue(mutualFriends.count, forKey: "mutualFriends")
+            var count = 0
+            var mutualFriendsModified: NSMutableSet = []
+            while count < mutualFriends.count {
+                if Person.MR_findFirstByAttribute("facebookID", withValue: mutualFriends.allObjects[count] as! String, inContext: context) != nil {
+                    mutualFriendsModified.addObject(mutualFriends.allObjects[count])
+                }
+                count++
+            }
             context.MR_saveToPersistentStoreAndWait()
             
-            return mutualFriends
+            return mutualFriendsModified
         }
         return []
     }
