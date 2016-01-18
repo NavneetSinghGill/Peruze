@@ -181,7 +181,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       } else {
         ownerNameLabel.text = ""
       }
-      if let ownerImageUrl = owner.valueForKey("imageUrl") as? String {
+        if let ownerImageUrl = owner.valueForKey("imageUrl") as? String {
+            ownerProfileImage.image = UIImage()
 //        ownerProfileImage.image = UIImage(data: ownerImageData)
         let tempImageView = UIImageView()
         tempImageView.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in

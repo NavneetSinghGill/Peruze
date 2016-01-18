@@ -67,8 +67,13 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
       }
         
       cell.itemNameLabel.text = title
-        if let imageData = item.valueForKey("image") as? NSData {
-            cell.imageView.image = UIImage(data: imageData)
+        if let imageUrl = item.valueForKey("imageUrl") as? String {
+//            cell.imageView.image = UIImage(data: imageData)
+            cell.imageView.image = nil
+            let tempImageView = UIImageView()
+            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+                cell.imageView.image = image
+            })
         } else {
             cell.imageView.image = nil
         }
@@ -91,7 +96,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
         guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
             return
         }
-        let predicate = NSPredicate(format: "owner.recordIDName = %@ AND title != nil AND image != nil", personRecordID)
+        let predicate = NSPredicate(format: "owner.recordIDName = %@ AND title != nil AND imageUrl != nil", personRecordID)
         fetchedResultsController = Item.MR_fetchAllSortedBy("title",
             ascending: true,
             withPredicate: predicate,

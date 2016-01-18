@@ -201,8 +201,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
   
   func segueToExchange(item: NSManagedObject) {
     itemToForwardToExchange = item
-    if let _ = itemToForwardToExchange?.valueForKey("image") as? NSData,
-        let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("image") as? NSData{
+    if let _ = itemToForwardToExchange?.valueForKey("imageUrl") as? String,
+        let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("imageUrl") as? String{
             performSegueWithIdentifier(Constants.ExchangeSegueIdentifier, sender: self)
     }
   }

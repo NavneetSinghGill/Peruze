@@ -53,9 +53,13 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   @IBOutlet weak var itemYoureExchangingLabel: UILabel!
   private var itemInCircleView: NSManagedObject? {
     didSet {
-      if let imageData = itemInCircleView?.valueForKey("image") as? NSData,
+      if let imageUrl = itemInCircleView?.valueForKey("imageUrl") as? String,
         let title = itemInCircleView?.valueForKey("title") as? String {
-          leftCircleImageView.image =  UIImage(data: imageData)
+//            leftCircleImageView.image =  UIImage(data: imageData)
+            let tempImageView = UIImageView()
+            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+                self.leftCircleImageView.image = image
+            })
           itemYoureExchangingLabel.text = title
       }
     }
@@ -91,19 +95,27 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     greenCircle.alpha = 1.0
     
     //setup item selected for exchange
-    if let imageData = itemSelectedForExchange.valueForKey("image") as? NSData,
+    if let imageUrl = itemSelectedForExchange.valueForKey("imageUrl") as? String,
       let title = itemSelectedForExchange.valueForKey("title") as? String,
       let itemSelectedForExchangeOwner = itemSelectedForExchange.valueForKey("owner") as? NSManagedObject,
       let ownerName = itemSelectedForExchangeOwner.valueForKey("firstName") as? String,
-      let ownerImageData = itemSelectedForExchangeOwner.valueForKey("image") as? NSData,
+      let ownerImageUrl = itemSelectedForExchangeOwner.valueForKey("imageUrl") as? String,
       let mutualFriendsCount = itemSelectedForExchangeOwner.valueForKey("mutualFriends") as? Int {
         
         //mutualFriendsLabel.text = "\(itemSelectedForExchange!.owner.mutualFriends) mutual friends"
-        rightCircleImageView.image = UIImage(data: imageData)
+        //        rightCircleImageView.image = UIImage(data: imageData)
+        let tempImageView1 = UIImageView()
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+            self.rightCircleImageView.image = image
+        })
         otherPersonsFullNameLabel.text = ownerName
         otherPersonsFirstNameLabel.text = "for \(ownerName)'s"
         otherPersonsItemLabel.text = title
-        otherPersonsProfileImageView.image = UIImage(data: ownerImageData)
+//        otherPersonsProfileImageView.image = UIImage(data: ownerImageData)
+        let tempImageView2 = UIImageView()
+        tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+            self.otherPersonsProfileImageView.image = image
+        })
         if mutualFriendsCount <= 1{
             mutualFriendsLabel.text = "\(mutualFriendsCount) mutual friend"
         } else{
@@ -220,8 +232,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   private var pickedUpCell: PickedUpCell? {
     didSet {
       if let pickedUpCell = pickedUpCell,
-        let imageData = pickedUpCell.item.valueForKey("image") as? NSData {
-          pickedUpCell.circleImage.image = UIImage(data: imageData)
+        let imageUrl = pickedUpCell.item.valueForKey("imageUrl") as? String {
+//            pickedUpCell.circleImage.image = UIImage(data: imageData)
+            let tempImageView = UIImageView()
+            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+                pickedUpCell.circleImage.image = image
+            })
           pickedUpCell.circleImage.backgroundColor = .clearColor()
           view.addSubview(pickedUpCell.circleImage)
       }
@@ -431,7 +447,11 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //MARK: Information Handling
   private func setupLeftViewWithItemInfo(item: Item?) {
     if let item = item {
-      leftCircleImageView.image = UIImage(data: item.valueForKey("image") as! NSData)
+//        leftCircleImageView.image = UIImage(data: item.valueForKey("image") as! NSData)
+        let tempImageView = UIImageView()
+        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+            self.leftCircleImageView.image = image
+        })
       itemYoureExchangingLabel.text = item.valueForKey("title") as? String
       UIView.animateWithDuration(0.3, animations: { () -> Void in
         self.itemYoureExchangingLabel.alpha = 1.0
