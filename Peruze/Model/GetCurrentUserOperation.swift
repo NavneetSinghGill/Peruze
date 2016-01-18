@@ -93,26 +93,24 @@ class GetCurrentUserOperation: Operation {
 //        person.setValue(imageData, forKey: "image")
 //      }
       
-        if imageUrl != nil {
-            let downloadingFilePath = NSTemporaryDirectory()
-            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl!, downloadingFilePath: downloadingFilePath)
-            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-            let task = transferManager.download(downloadRequest)
-            task.continueWithBlock({ (task) -> AnyObject? in
-                if task.error != nil {
-                    logw("GetItemOperation image download failed with error: \(task.error!)")
-                } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let fileUrl = task.result!.valueForKey("body")!
-                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                        person.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                        self.context.MR_saveToPersistentStoreAndWait()
-                        self.finish()
-                    }
-                }
-                return nil
-            })
-        }
+//        if imageUrl != nil {
+//            let downloadingFilePath = NSTemporaryDirectory()
+//            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl!, downloadingFilePath: downloadingFilePath)
+//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//            let task = transferManager.download(downloadRequest)
+//            task.continueWithBlock({ (task) -> AnyObject? in
+//                if task.error != nil {
+//                    logw("GetItemOperation image download failed with error: \(task.error!)")
+//                } else {
+//                    dispatch_async(dispatch_get_main_queue()) {
+//                        let fileUrl = task.result!.valueForKey("body")!
+//                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+//                        person.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+//                    }
+//                }
+//                return nil
+//            })
+//        }
         
       //check for favorites
       if let favoriteReferences = record.objectForKey("FavoriteItems") as? [CKReference] {
@@ -124,8 +122,9 @@ class GetCurrentUserOperation: Operation {
         person.setValue(favoritesSet, forKey: "favorites")
       }
       
-      //save the context
-      self.context.MR_saveToPersistentStoreAndWait()
+        //save the context
+        self.context.MR_saveToPersistentStoreAndWait()
+        self.finish()
     
         
     }

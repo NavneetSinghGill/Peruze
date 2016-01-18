@@ -30,8 +30,8 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
   }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         if self.dataSource.fetchAndReloadLocalContent() == 0 {
             self.titleLabel.hidden = false
         } else {
@@ -41,7 +41,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-//    tableView.reloadData()
+    tableView.reloadData()
   }
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight

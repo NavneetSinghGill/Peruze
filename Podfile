@@ -10,4 +10,5 @@ target 'Peruze' do
   pod 'FBSDKLoginKit'
   pod 'Branch'
   pod 'AWSS3'
+  pod 'SDWebImage'
 end

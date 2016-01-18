@@ -41,7 +41,6 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         if personRecordID == nil { return 0}
         let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
         let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
-//        let predicateForDeletedItem = NSPredicate(value: true)
         fetchedResultsController = Item.MR_fetchAllSortedBy("title",
             ascending: true,
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
@@ -74,11 +73,15 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     cell.subtitleTextLabel.text = ""
     cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
     if item.valueForKey("imageUrl") != nil {
-        if item.valueForKey("image") != nil {
-           cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
-        } else {
-            cell.circleImageView.image = nil
-        }
+//        if item.valueForKey("image") != nil {
+//           cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
+//        } else {
+//            cell.circleImageView.image = nil
+//        }
+        let tempImageView = UIImageView()
+        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            cell.circleImageView.image = image
+        })
     } else {
         cell.circleImageView.image = nil
     }

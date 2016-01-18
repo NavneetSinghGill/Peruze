@@ -29,7 +29,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     
     let statusPredicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Pending.rawValue))
     let myRequestedPredicate = NSPredicate(format: "itemRequested.owner.recordIDName == %@", myRecordID)
-    let itemsTitleNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.image != nil AND itemRequested.image != nil")
+    let itemsTitleNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil")
 //    let requestedItemTitleNotNil = NSPredicate(format: "itemRequested.title != nil")
     let fetchedResultsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, myRequestedPredicate, itemsTitleNotNil])
     fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
@@ -74,20 +74,38 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       let theirItem = exchange.valueForKey("itemOffered") as? NSManagedObject,
       let theirItemTitle = theirItem.valueForKey("title") as? String,
       let theirOwner = theirItem.valueForKey("owner") as? NSManagedObject,
-      let theirProfileImageData = theirOwner.valueForKey("image") as? NSData,
+      let theirProfileImageUrl = theirOwner.valueForKey("imageUrl") as? String,
       let theirOwnerFirstName = theirOwner.valueForKey("firstName") as? String,
-      let theirItemImage = theirItem.valueForKey("image") as? NSData,
-      let myItemImage = myItem.valueForKey("image") as? NSData else {
+      let theirItemImageUrl = theirItem.valueForKey("imageUrl") as? String,
+      let myItemImageUrl = myItem.valueForKey("imageUrl") as? String else {
         logw("Requests datasource failure.")
         return cell
     }
     
     cell.itemSubtitle.text = "for your \(myItemTitle)"
     cell.itemLabel.text = theirItemTitle
-    cell.profileImageView.image = UIImage(data: theirProfileImageData)
-    cell.nameLabel.text = "\(theirOwnerFirstName)'s"
-    cell.itemsExchangedImage.itemImages = (UIImage(data: theirItemImage)!, UIImage(data: myItemImage)!)
+//    cell.profileImageView.image = UIImage(data: theirProfileImageData)
     
+    let tempImageView3 = UIImageView()
+    tempImageView3.sd_setImageWithURL(NSURL(string: s3Url(theirProfileImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+        if tempImageView3.image != nil {
+            cell.profileImageView.image = image
+        }
+    })
+    cell.nameLabel.text = "\(theirOwnerFirstName)'s"
+    
+    let tempImageView1 = UIImageView()
+    let tempImageView2 = UIImageView()
+    tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(theirItemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+        if tempImageView1.image != nil && tempImageView2.image != nil {
+            cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+        }
+    })
+    tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(myItemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+        if tempImageView1.image != nil && tempImageView2.image != nil {
+            cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+        }
+    })
     if let requestDate = exchange.valueForKey("date") as? NSDate {
       let dateString = NSDateFormatter.localizedStringFromDate(requestDate, dateStyle: .LongStyle, timeStyle: .NoStyle)
       cell.dateLabel.text = dateString

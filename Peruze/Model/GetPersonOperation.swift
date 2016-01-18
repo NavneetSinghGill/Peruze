@@ -125,25 +125,28 @@ class GetPersonOperation: Operation {
 //          }
             
             if let imageUrlSuffix = recordsByID[recordID]?.objectForKey("ImageUrl") as? String {
-                //download image
-                let downloadingFilePath = NSTemporaryDirectory()
-                let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-                let task = transferManager.download(downloadRequest)
-                task.continueWithBlock({ (task) -> AnyObject? in
-                    if task.error != nil {
-                        logw("GetItemOperation image download failed with error: \(task.error!)")
-                    } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            let fileUrl = task.result!.valueForKey("body")!
-                            let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                            localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                            self.context.MR_saveToPersistentStoreAndWait()
-                        }
-                    }
-                    return nil
-                })
+                localPerson.setValue(imageUrlSuffix, forKey: "imageUrl")
             }
+//            if let imageUrlSuffix = recordsByID[recordID]?.objectForKey("ImageUrl") as? String {
+//                //download image
+//                let downloadingFilePath = NSTemporaryDirectory()
+//                let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+//                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//                let task = transferManager.download(downloadRequest)
+//                task.continueWithBlock({ (task) -> AnyObject? in
+//                    if task.error != nil {
+//                        logw("GetItemOperation image download failed with error: \(task.error!)")
+//                    } else {
+//                        dispatch_async(dispatch_get_main_queue()) {
+//                            let fileUrl = task.result!.valueForKey("body")!
+//                            let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+//                            localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+//                            self.context.MR_saveToPersistentStoreAndWait()
+//                        }
+//                    }
+//                    return nil
+//                })
+//            }
             
           self.context.MR_saveToPersistentStoreAndWait()
         }
@@ -256,27 +259,29 @@ class GetAllPersonsWithMissingData: Operation {
 //        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
 //          localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")
 //        }
-        
         if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
-            //download image
-            let downloadingFilePath = NSTemporaryDirectory()
-            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
-            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-            let task = transferManager.download(downloadRequest)
-            task.continueWithBlock({ (task) -> AnyObject? in
-                if task.error != nil {
-                    logw("GetItemOperation image download failed with error: \(task.error!)")
-                } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let fileUrl = task.result!.valueForKey("body")!
-                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                        localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                        self.context.MR_saveToPersistentStoreAndWait()
-                    }
-                }
-                return nil
-            })
+            localPerson.setValue(imageUrlSuffix, forKey: "imageUrl")
         }
+//        if let imageUrlSuffix = record.objectForKey("ImageUrl") as? String {
+//            //download image
+//            let downloadingFilePath = NSTemporaryDirectory()
+//            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrlSuffix, downloadingFilePath: downloadingFilePath)
+//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//            let task = transferManager.download(downloadRequest)
+//            task.continueWithBlock({ (task) -> AnyObject? in
+//                if task.error != nil {
+//                    logw("GetItemOperation image download failed with error: \(task.error!)")
+//                } else {
+//                    dispatch_async(dispatch_get_main_queue()) {
+//                        let fileUrl = task.result!.valueForKey("body")!
+//                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+//                        localPerson.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+//                        self.context.MR_saveToPersistentStoreAndWait()
+//                    }
+//                }
+//                return nil
+//            })
+//        }
         self.context.MR_saveToPersistentStoreAndWait()
       }
       

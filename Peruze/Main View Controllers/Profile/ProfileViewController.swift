@@ -90,9 +90,14 @@ class ProfileViewController: UIViewController {
             personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
         }
         //setup the known information about the person
-        if (personForProfile?.valueForKey("image") as? NSData != nil) {
-            profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
-            ouProfileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
+        if (personForProfile?.valueForKey("imageUrl") as? String != nil) {
+//            profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
+//            ouProfileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
+            let tempImageView1 = UIImageView()
+            tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                self.profileImageView.image = image
+                self.ouProfileImageView.image = image
+            })
             profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
             ouProfileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
         }
@@ -153,6 +158,10 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         if self.tabBarController != nil {
             self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+            let tempImageView1 = UIImageView()
+            tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                self.profileImageView.image = image
+            })
         } else {
             self.profileContainerBottomConstraint.constant = 0
         }
@@ -281,9 +290,12 @@ class ProfileViewController: UIViewController {
         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
         let op = PostUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
         OperationQueue().addOperation(op)
-        dispatch_async(dispatch_get_main_queue()) {
-            self.profileImageView.image = UIImage(data: me!.valueForKey("image") as! NSData)
-        }
+        let tempImageView1 = UIImageView()
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(me!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.profileImageView.image = image
+            }
+        })
     }
     
     func refreshProfileVCData() {

@@ -73,10 +73,16 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionV
         cell.titleTextLabel.text = title
         cell.subtitleTextLabel.text = "by \(ownerName)"
         cell.descriptionTextLabel.text = detail
-        if let imageData = item.valueForKey("image") as? NSData{
-            cell.circleImageView.image = UIImage(data: imageData)
-        } else {
-            cell.circleImageView.image = nil
+//        if let imageData = item.valueForKey("image") as? NSData{
+//            cell.circleImageView.image = UIImage(data: imageData)
+//        } else {
+//            cell.circleImageView.image = nil
+//        }
+        if let imageUrl = item.valueForKey("imageUrl") as? String {
+            let tempImageView = UIImageView()
+            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                cell.circleImageView.image = image
+            })
         }
       } else {
         logw("There was not enough non-nil data for the favorite item")

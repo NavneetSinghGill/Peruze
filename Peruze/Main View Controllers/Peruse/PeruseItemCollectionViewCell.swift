@@ -129,7 +129,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       if
         let owner = item?.valueForKey("owner") as? NSManagedObject,
         let recordID = owner.valueForKey("recordIDName") as? String,
-        let _ = owner.valueForKey("image") as? NSData
+        let _ = owner.valueForKey("imageUrl") as? String
       {
         delegate?.segueToProfile(recordID)
         NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "yes")
@@ -151,12 +151,15 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   private func updateUI() {
     self.noItemImageLabel.hidden = true
     if let imageData = item?.valueForKey("image") as? NSData {
-      itemImageView.image = UIImage(data: imageData)
+//      itemImageView.image = UIImage(data: imageData)
         self.activityIndicator.stopAnimating()
     } else {
         itemImageView.image = UIImage()
         if let _ = item?.valueForKey("imageUrl") as? String {
             self.activityIndicator.startAnimating()
+            itemImageView.sd_setImageWithURL(NSURL(string: s3Url(item?.valueForKey("imageUrl") as! String)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+                self.activityIndicator.stopAnimating()
+            })
         } else {
             self.activityIndicator.stopAnimating()
             self.noItemImageLabel.hidden = false
@@ -178,8 +181,12 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       } else {
         ownerNameLabel.text = ""
       }
-      if let ownerImageData = owner.valueForKey("image") as? NSData {
-        ownerProfileImage.image = UIImage(data: ownerImageData)
+      if let ownerImageUrl = owner.valueForKey("imageUrl") as? String {
+//        ownerProfileImage.image = UIImage(data: ownerImageData)
+        let tempImageView = UIImageView()
+        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
+            self.ownerProfileImage.image = image
+        })
       } else {
         ownerProfileImage.image = UIImage()
       }

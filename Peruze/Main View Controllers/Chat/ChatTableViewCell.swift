@@ -21,8 +21,8 @@ class ChatTableViewCell: UITableViewCell {
       }
       
       guard
-        let offeredImageData = itemOffered.valueForKey("image") as? NSData,
-        let requestedImageData = itemRequested.valueForKey("image") as? NSData else {
+        let offeredImageUrl = itemOffered.valueForKey("imageUrl") as? String,
+        let requestedImageUrl = itemRequested.valueForKey("imageUrl") as? String else {
           logw("Error: Issue with image data in ChatTableViewCell")
           return
       }
@@ -54,7 +54,21 @@ class ChatTableViewCell: UITableViewCell {
 //        } catch {
 //            logw("ChatTableViewCell fetching latest chat failed with error: \(error)")
 //        }
-        itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
+        
+        
+//        itemImage.itemImages = (UIImage(data: offeredImageData)!, UIImage(data: requestedImageData)!)
+        let tempImageView1 = UIImageView()
+        let tempImageView2 = UIImageView()
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(offeredImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                self.itemImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            }
+        })
+        tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(requestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                self.itemImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            }
+        })
       theirItemNameLabel.text = "\(itemOfferedTitle)"
       yourItemNameLabel.text = "for \(itemRequestedTitle)"
       

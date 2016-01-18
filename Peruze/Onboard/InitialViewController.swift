@@ -106,7 +106,7 @@ class InitialViewController: UIViewController {
                 let myPerson = Person.MR_findFirstByAttribute("me", withValue: true)
                 if (myPerson?.valueForKey("firstName") as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
                 if (myPerson?.valueForKey("lastName")  as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
-                if (myPerson?.valueForKey("image")     as? NSData) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
+                if (myPerson?.valueForKey("imageUrl")     as? String) == nil { self.setupAndSegueToSetupProfileVCWithTransitionDelay(); return }
                 
                 //if there isn't anything wrong with my profile, segue to tab bar
                 self.setupAndSegueToTabBarVC()

@@ -316,26 +316,29 @@ class Model: NSObject, CLLocationManagerDelegate {
 //                        }
                         
                         if let imageUrl = record!.objectForKey("ImageUrl") as? String {
-                            let downloadingFilePath = NSTemporaryDirectory()
-                            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl, downloadingFilePath: downloadingFilePath)
-                            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-                            let task = transferManager.download(downloadRequest)
-                            task.continueWithBlock({ (task) -> AnyObject? in
-                                if task.error != nil {
-                                    logw("GetItemOperation image download failed with error: \(task.error!)")
-                                } else {
-                                    dispatch_async(dispatch_get_main_queue()) {
-                                        let fileUrl = task.result!.valueForKey("body")!
-                                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
-                                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
-                                        context.MR_saveToPersistentStoreAndWait()
-                                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
-                                        completionBlock(true)
-                                    }
-                                }
-                                return nil
-                            })
+                            localUpload.setValue(imageUrl, forKey: "imageUrl")
                         }
+//                        if let imageUrl = record!.objectForKey("ImageUrl") as? String {
+//                            let downloadingFilePath = NSTemporaryDirectory()
+//                            let downloadRequest = Model.sharedInstance().downloadRequestForImageWithKey(imageUrl, downloadingFilePath: downloadingFilePath)
+//                            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//                            let task = transferManager.download(downloadRequest)
+//                            task.continueWithBlock({ (task) -> AnyObject? in
+//                                if task.error != nil {
+//                                    logw("GetItemOperation image download failed with error: \(task.error!)")
+//                                } else {
+//                                    dispatch_async(dispatch_get_main_queue()) {
+//                                        let fileUrl = task.result!.valueForKey("body")!
+//                                        let modifiedUrl = Model.sharedInstance().filterUrlForDownload(fileUrl as! NSURL)
+//                                        localUpload.setValue(UIImagePNGRepresentation(UIImage(contentsOfFile: modifiedUrl)!) ,forKey: "image")
+//                                        context.MR_saveToPersistentStoreAndWait()
+//                                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+//                                        completionBlock(true)
+//                                    }
+//                                }
+//                                return nil
+//                            })
+//                        }
                         
                         if let itemLocation = record!.objectForKey("Location") as? CLLocation {//(latitude: itemLat.doubleValue, longitude: itemLong.doubleValue)
                             
@@ -358,6 +361,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
+                        completionBlock(true)
                     }
                     completionBlock(false)
                 }

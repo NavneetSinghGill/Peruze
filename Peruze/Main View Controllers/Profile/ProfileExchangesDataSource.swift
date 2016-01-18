@@ -22,7 +22,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     super.init()
 //    let predicate = NSPredicate(value: true)
     let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
-    let itemsTitleAndImageNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.image != nil AND itemRequested.image != nil")
+    let itemsTitleAndImageNotNil = NSPredicate(format: "itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.imageUrl != nil AND itemRequested.imageUrl != nil")
     fetchedResultsController = Exchange.MR_fetchAllSortedBy(
       "date",
       ascending: true,
@@ -64,15 +64,15 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
         return cell
     }
     guard
-      let itemOfferedImage = itemOffered.valueForKey("image") as? NSData,
-      let itemRequestedImage = itemRequested.valueForKey("image") as? NSData
+      let itemOfferedImageUrl = itemOffered.valueForKey("imageUrl") as? String,
+      let itemRequestedImageUrl = itemRequested.valueForKey("imageUrl") as? String
       else {
         logw("could not get itemOfferedImage or itemRequestedImage")
         return cell
     }
     guard
       let itemOfferedOwner = itemOffered.valueForKey("owner") as? NSManagedObject,
-      let itemOfferedOwnerImage = itemOfferedOwner.valueForKey("image") as? NSData,
+      let itemOfferedOwnerImageUrl = itemOfferedOwner.valueForKey("imageUrl") as? String,
       let itemOfferedOwnerName = itemOfferedOwner.valueForKey("firstName") as? String
       else {
         logw("There was not enough data for this exchange to populate the table")
@@ -81,7 +81,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     
     guard
         let itemRequestedOwner = itemRequested.valueForKey("owner") as? NSManagedObject,
-        let itemRequestedOwnerImage = itemRequestedOwner.valueForKey("image") as? NSData,
+        let itemRequestedOwnerImageUrl = itemRequestedOwner.valueForKey("imageUrl") as? String,
         let itemRequestedOwnerName = itemRequestedOwner.valueForKey("firstName") as? String
         else {
             logw("There was not enough data for this exchange to populate the table")
@@ -89,19 +89,52 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     }
     
     //set the values from above
+    let tempImageView1 = UIImageView()
+    let tempImageView2 = UIImageView()
+    let tempImageView3 = UIImageView()
+    let tempImageView4 = UIImageView()
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
+    
     if me.valueForKey("recordIDName") as! String != itemOfferedOwner.valueForKey("recordIDName") as! String {
-        cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
+//        cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
+        tempImageView3.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedOwnerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            cell.profileImageView.image = image
+        })
         cell.nameLabel.text = "\(itemOfferedOwnerName)'s"
         cell.itemLabel.text = itemOfferedTitle
         cell.itemSubtitle.text = "for your \(itemRequestedTitle)"
-        cell.itemsExchangedImage.itemImages = (UIImage(data: itemOfferedImage)!, UIImage(data: itemRequestedImage)!)
+        
+//        cell.itemsExchangedImage.itemImages = (UIImage(data: itemOfferedImage)!, UIImage(data: itemRequestedImage)!)
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            }
+        })
+        tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            }
+        })
     } else {
-        cell.profileImageView.image = UIImage(data: itemRequestedOwnerImage)
+//        cell.profileImageView.image = UIImage(data: itemRequestedOwnerImage)
+        tempImageView4.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedOwnerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            cell.profileImageView.image = image
+        })
         cell.nameLabel.text = "\(itemRequestedOwnerName)'s"
         cell.itemLabel.text = itemRequestedTitle
         cell.itemSubtitle.text = "for your \(itemOfferedTitle)"
-        cell.itemsExchangedImage.itemImages = (UIImage(data: itemRequestedImage)!, UIImage(data: itemOfferedImage)!)
+        
+//        cell.itemsExchangedImage.itemImages = (UIImage(data: itemRequestedImage)!, UIImage(data: itemOfferedImage)!)
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                cell.itemsExchangedImage.itemImages = (tempImageView2.image!, tempImageView1.image!)
+            }
+        })
+        tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            if tempImageView1.image != nil && tempImageView2.image != nil {
+                cell.itemsExchangedImage.itemImages = (tempImageView2.image!, tempImageView1.image!)
+            }
+        })
     }
     
     //set the date

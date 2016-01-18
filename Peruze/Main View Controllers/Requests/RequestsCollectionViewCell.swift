@@ -32,15 +32,24 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
       if
         let item = itemOfferedToUser,
         let owner = item.valueForKey("owner") as? NSManagedObject,
-        let ownerImageData = owner.valueForKey("image") as? NSData,
-        let itemImageData = item.valueForKey("image") as? NSData,
+        let ownerImageUrl = owner.valueForKey("imageUrl") as? String,
+        let itemImageUrl = item.valueForKey("imageUrl") as? String,
         let ownerName = owner.valueForKey("firstName") as? String,
         let itemTitle = item.valueForKey("title") as? String,
       let itemDescription = item.valueForKey("detail") as? String
       {
-        profilePicture.image = UIImage(data: ownerImageData)
+//        profilePicture.image = UIImage(data: ownerImageData)
+        let tempImageView1 = UIImageView()
+        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            self.profilePicture.image = image
+        })
         profileName.text = ownerName
-        theirItemImageView.image = UIImage(data: itemImageData)
+//        theirItemImageView.image = UIImage(data: itemImageData)
+        let tempImageView2 = UIImageView()
+        tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            self.theirItemImageView.image = image
+            self.theirSquareItemImageView.image = image
+        })
         forTheirLabel.text = "for \(ownerName)'s"
         aboutTheirItemLabel.text = "About \(itemTitle)"
         theirItemNameLabel.text = itemTitle
@@ -48,7 +57,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         theirItemDescription.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
         theirItemDescription.text = itemDescription
         theirSquareItemImageView.contentMode =  UIViewContentMode.ScaleAspectFill
-        theirSquareItemImageView.image = UIImage(data: itemImageData)
+//        theirSquareItemImageView.image = UIImage(data: itemImageData)
         setNeedsDisplay()
       }
     }
@@ -58,8 +67,12 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   private var itemRequestedFromUser: Item? {
     didSet {
       if let item = itemRequestedFromUser {
-        if let imageData = item.valueForKey("image") as? NSData {
-          yourItemImageView.image = UIImage(data: imageData)
+        if let imageUrl = item.valueForKey("imageUrl") as? String {
+//          yourItemImageView.image = UIImage(data: imageData)
+            let tempImageView1 = UIImageView()
+            tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                self.yourItemImageView.image = image
+            })
         }
         yourItemNameLabel.text = item.valueForKey("title") as? String
         setNeedsDisplay()
