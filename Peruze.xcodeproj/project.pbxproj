@@ -14,6 +14,7 @@
 		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
 		3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */; };
 		3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BCA63911C18298300CFA976 /* SwiftLog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3BE308041C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */; };
 		3BE910AF1C253F1B00DAB409 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BE910AE1C253F1B00DAB409 /* Localizable.strings */; };
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */; };
@@ -259,6 +260,7 @@
 		3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftLog.xcodeproj; path = "../../../Downloads/SwiftLog-master/SwiftLog.xcodeproj"; sourceTree = "<group>"; };
 		3BE0B8CD1C0F00F300E3612B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionContainerViewController.swift; sourceTree = "<group>"; };
 		3BE910AE1C253F1B00DAB409 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsViewController.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				9D177AF61B54DDC3009CB9FA /* ChatCollectionViewController.swift */,
+				3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */,
 				9D177AF71B54DDC3009CB9FA /* ChatCollectionViewDataSource.swift */,
 				9D177AF81B54DDC3009CB9FA /* ChatTableViewCell.swift */,
 				9D177AF91B54DDC3009CB9FA /* ChatTableViewCell.xib */,
@@ -1437,6 +1440,7 @@
 				9D177BBC1B54DDC3009CB9FA /* FacebookDataSource.swift in Sources */,
 				9D177B871B54DDC3009CB9FA /* ChatTableViewCell.swift in Sources */,
 				9D2890251B8CF309006B9626 /* PostReviewOperation.swift in Sources */,
+				3BE308041C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift in Sources */,
 				9D177BB11B54DDC3009CB9FA /* FileManagementOperations.swift in Sources */,
 				9D177BC01B54DDC3009CB9FA /* UIImage+CameraFilters.m in Sources */,
 				9D177BD11B54DDC4009CB9FA /* TGCameraGridView.m in Sources */,

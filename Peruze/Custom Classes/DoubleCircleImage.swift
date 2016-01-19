@@ -27,8 +27,8 @@ class DoubleCircleImage: UIView {
     }
   }
   
-  private var prominentImage: CircleImage?
-  private var lesserImage: CircleImage?
+  var prominentImage: CircleImage?
+  var lesserImage: CircleImage?
   private var lesserImageTapBlock: (Void -> Void) = {}
   private var prominentImageTapBlock: (Void -> Void) = {}
   

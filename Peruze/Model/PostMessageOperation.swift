@@ -101,20 +101,25 @@ class SaveMessageWithTempRecordIDOperation: Operation {
         newMessage.setValue(exchange.itemRequested?.owner?.recordIDName, forKey: "receiverRecordIDName")
     }
     
-    let uniqueImageName = createUniqueName()
-    let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: self.image!)
-    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-    transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
-        if task.error != nil {
-            logw("PostMessageOperation Image upload to s3 failed with error: \(task.error)")
-        } else {
-            logw("PostMessageOperation Image upload to s3 success")
-            newMessage.setValue(uniqueImageName, forKey: "imageUrl")
-            self.context.MR_saveToPersistentStoreAndWait()
-            self.finish()
-        }
-        return nil
-    })
+    if self.image != nil {
+        let uniqueImageName = createUniqueName()
+        let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: self.image!)
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+            if task.error != nil {
+                logw("PostMessageOperation Image upload to s3 failed with error: \(task.error)")
+            } else {
+                logw("PostMessageOperation Image upload to s3 success")
+                newMessage.setValue(uniqueImageName, forKey: "imageUrl")
+                self.context.MR_saveToPersistentStoreAndWait()
+                self.finish()
+            }
+            return nil
+        })
+    } else {
+        self.context.MR_saveToPersistentStoreAndWait()
+        self.finish()
+    }
   }
 }
 

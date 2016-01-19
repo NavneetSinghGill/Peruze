@@ -90,7 +90,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             cell.circleImageView.image = image
         })
     } else {
-        cell.circleImageView.image = nil
+        cell.circleImageView.image = UIImage()
     }
     if item.valueForKey("recordIDName") == nil {
         cell.recordIDName = nil

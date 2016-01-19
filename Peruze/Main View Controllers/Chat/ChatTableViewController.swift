@@ -312,17 +312,22 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     guard
       let cell = sender as? ChatTableViewCell,
-      let destVC = segue.destinationViewController as? ChatCollectionViewController
+      let destVC = segue.destinationViewController as? ChatCollectionContainerViewController
       else {
         return
     }
     
     destVC.title = cell.theirItemNameLabel.text
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    destVC.prominentImage = cell.itemImage.prominentImage!
+    destVC.lesserImage = cell.itemImage.lesserImage!
+    destVC.theirItemName = cell.theirItemNameLabel.text
+    destVC.yourItemName = cell.yourItemNameLabel.text
     destVC.exchange = cell.data
     destVC.senderId = me.valueForKey("recordIDName") as! String
     destVC.senderDisplayName =  me.valueForKey("firstName") as! String
     destVC.delegate = self
+    destVC.showChatItemDelegate = self.dataSource.showChatItemDelegate
   }
   
     func showChatScreen(notification: NSNotification) {

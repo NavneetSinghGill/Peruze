@@ -17,30 +17,33 @@
                 <rect key="frame" x="0.0" y="0.0" width="403" height="115"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="780" misplaced="YES" text="Their Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NP6-lB-jrQ">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="780" text="Their Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NP6-lB-jrQ">
                         <rect key="frame" x="108" y="8" width="287" height="20"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="for Your Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngb-uw-KOP">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="for Your Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngb-uw-KOP">
                         <rect key="frame" x="108" y="27" width="287" height="17"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojK-fy-siq">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojK-fy-siq">
                         <rect key="frame" x="107" y="83" width="288" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="N9b-X2-HMm"/>
+                        </constraints>
                         <string key="text">Person: The most recent message that whomever last sent that could be extremely long and have like an absolute ton of words in it. Especially if they're friends with the person that they're talking to</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" horizontalHuggingPriority="260" verticalHuggingPriority="260" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZFz-X0-Acc" customClass="DoubleCircleImage" customModule="Peruze" customModuleProvider="target">
+                    <view contentMode="scaleToFill" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="ZFz-X0-Acc" customClass="DoubleCircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="92" height="92"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="85" id="Mna-bI-gqn"/>
+                            <constraint firstAttribute="width" constant="92" id="Mna-bI-gqn"/>
                             <constraint firstAttribute="width" secondItem="ZFz-X0-Acc" secondAttribute="height" multiplier="1:1" id="zIA-PW-rhn"/>
                         </constraints>
                     </view>
@@ -49,21 +52,21 @@
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="0LY-vK-Ww2"/>
                     <constraint firstItem="ojK-fy-siq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ngb-uw-KOP" secondAttribute="bottom" constant="8" symbolic="YES" id="1Ux-33-Gxg"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ngb-uw-KOP" secondAttribute="trailing" id="41h-85-PBv"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="ZFz-X0-Acc" secondAttribute="bottom" constant="8" id="47P-as-zxk"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ZFz-X0-Acc" secondAttribute="bottom" constant="7" id="47P-as-zxk"/>
                     <constraint firstAttribute="centerX" secondItem="ZFz-X0-Acc" secondAttribute="trailing" multiplier="1.2" id="7bV-JW-ZhF"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ojK-fy-siq" secondAttribute="trailing" id="9dh-4b-005"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="bottom" secondItem="ojK-fy-siq" secondAttribute="bottom" priority="750" id="9ed-NH-pDd"/>
-                    <constraint firstItem="ngb-uw-KOP" firstAttribute="top" secondItem="NP6-lB-jrQ" secondAttribute="bottom" id="AHJ-pt-58k"/>
+                    <constraint firstItem="ngb-uw-KOP" firstAttribute="top" secondItem="NP6-lB-jrQ" secondAttribute="bottom" constant="-1" id="AHJ-pt-58k"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="top" secondItem="NP6-lB-jrQ" secondAttribute="top" id="Bnl-Cx-LHS"/>
                     <constraint firstAttribute="centerX" secondItem="ZFz-X0-Acc" secondAttribute="trailing" multiplier="1.7" id="GeC-rX-ZU7"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="IGB-1m-fCE"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="ojK-fy-siq" secondAttribute="bottom" constant="8" id="TvW-xw-BdQ"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ojK-fy-siq" secondAttribute="bottom" constant="7" id="TvW-xw-BdQ"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="VzE-ks-eBu"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" constant="8" id="Y9Y-zl-nHb"/>
                     <constraint firstAttribute="trailingMargin" secondItem="NP6-lB-jrQ" secondAttribute="trailing" id="YNG-AI-2FG"/>
                     <constraint firstItem="NP6-lB-jrQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="12" id="Yhl-v3-yaW"/>
                     <constraint firstItem="NP6-lB-jrQ" firstAttribute="leading" secondItem="ZFz-X0-Acc" secondAttribute="trailing" constant="8" symbolic="YES" id="aQX-WT-9wh"/>
-                    <constraint firstItem="ojK-fy-siq" firstAttribute="leading" secondItem="ZFz-X0-Acc" secondAttribute="trailing" constant="8" symbolic="YES" id="bLN-OM-w4C"/>
+                    <constraint firstItem="ojK-fy-siq" firstAttribute="leading" secondItem="ZFz-X0-Acc" secondAttribute="trailing" constant="7" id="bLN-OM-w4C"/>
                     <constraint firstItem="ngb-uw-KOP" firstAttribute="leading" secondItem="ZFz-X0-Acc" secondAttribute="trailing" constant="8" symbolic="YES" id="cMR-IG-eT9"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="hBF-Wk-WtD"/>
                 </constraints>

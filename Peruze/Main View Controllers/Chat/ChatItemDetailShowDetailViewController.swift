@@ -67,6 +67,8 @@ class ChatItemDetailShowDetailViewController: UIViewController, UICollectionView
         let item = self.items[indexPath.row]
         localCell.item = item as? NSManagedObject
         localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+        localCell.canFavorite = PeruseItemCollectionViewCell.shouldEnableFavorite.No
+        localCell.favoriteImageView.hidden = true
         localCell.setNeedsDisplay()
         return localCell
     }

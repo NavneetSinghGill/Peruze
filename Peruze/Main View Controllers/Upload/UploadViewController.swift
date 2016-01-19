@@ -306,8 +306,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     func cameraDidSelectAlbumPhoto(image: UIImage!) { setImage(image) }
     
-    private func setImage(image: UIImage) {
-        mainImageView.image = image
+    private func setImage(image1: UIImage) {
+        mainImageView.image = image1
+        self.image = image1
         cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
         if !titleTextField.text!.isEmpty  && mainImageView.image != Constants.DefaultImage {
             uploadButton.enabled = true

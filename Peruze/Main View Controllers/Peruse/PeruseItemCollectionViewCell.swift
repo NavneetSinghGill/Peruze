@@ -18,6 +18,11 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     static let DownArrowName = "Down_Arrow_Light"
     static let LargeHeartName = "Large_Heart"
   }
+    
+    struct shouldEnableFavorite {
+        static let Yes = "yes"
+        static let No = "no"
+    }
   
   //MARK: - Variables
   var item: NSManagedObject? { didSet { updateUI() } }
@@ -39,7 +44,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //Views
   private var itemNameLabel = UILabel()
   private var itemDescriptionTextView = UILabel()
-  private var favoriteImageView = UIImageView()
+  var favoriteImageView = UIImageView()
   private var exchangeView = UIView()
   private var exchangeLabel = UILabel()
   private var exchangeArrow = UIImageView()
@@ -54,6 +59,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       }
     }
   }
+    
+    var canFavorite: String!
   
   //MARK: - Lifecycle
   override func awakeFromNib() {
@@ -112,6 +119,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //MARK: - Gesture Handling
   func singleTap(sender: UITapGestureRecognizer) {
     //favorite buffer is 3x the size of the favorite button
+    if canFavorite != nil && canFavorite == shouldEnableFavorite.No {return}
     let bufferX = favoriteImageView.frame.origin.x - favoriteImageView.frame.width
     let bufferY = favoriteImageView.frame.origin.y - favoriteImageView.frame.height
     let bufferWidth = favoriteImageView.frame.width * 3
@@ -138,7 +146,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     }
   }
   
-  func doubleTap(sender: UITapGestureRecognizer) {
+    func doubleTap(sender: UITapGestureRecognizer) {
+    if canFavorite != nil && canFavorite == shouldEnableFavorite.No {return}
     itemFavorited = true
     delegate?.itemFavorited(item!, favorite: itemFavorited)
     if itemFavorited == true {

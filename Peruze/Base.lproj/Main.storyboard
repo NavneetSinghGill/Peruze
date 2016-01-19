@@ -470,20 +470,81 @@
             </objects>
             <point key="canvasLocation" x="3483" y="-1861"/>
         </scene>
-        <!--Chat Collection View Controller-->
+        <!--Chat Collection Container View Controller-->
         <scene sceneID="xMs-bH-Fz5">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="PqD-EP-ksO" customClass="ChatCollectionViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="PqD-EP-ksO" customClass="ChatCollectionContainerViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="j3i-KZ-00M"/>
                         <viewControllerLayoutGuide type="bottom" id="YdG-sM-5oG"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="rKz-sZ-N8y">
+                    <view key="view" contentMode="scaleToFill" id="mty-8G-Y2H">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hfl-z9-4yw" userLabel="HeaderView">
+                                <rect key="frame" x="0.0" y="64" width="600" height="81"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="780" text="Their Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAJ-bX-kpz">
+                                        <rect key="frame" x="81" y="8" width="519" height="20"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="for Your Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHn-Oj-yec">
+                                        <rect key="frame" x="81" y="36" width="519" height="17"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="WiB-wa-uqe" customClass="DoubleCircleImage" customModule="Peruze" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="8" width="65" height="65"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="WiB-wa-uqe" secondAttribute="height" multiplier="1:1" id="HoD-f0-GRD"/>
+                                            <constraint firstAttribute="width" constant="65" id="xQh-l2-6yP"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="gAJ-bX-kpz" firstAttribute="leading" secondItem="WiB-wa-uqe" secondAttribute="trailing" constant="8" id="1rD-d0-VNd"/>
+                                    <constraint firstAttribute="trailing" secondItem="bHn-Oj-yec" secondAttribute="trailing" id="Ud1-z1-PMb"/>
+                                    <constraint firstItem="bHn-Oj-yec" firstAttribute="top" secondItem="gAJ-bX-kpz" secondAttribute="bottom" constant="8" id="WC8-nV-SW9"/>
+                                    <constraint firstItem="WiB-wa-uqe" firstAttribute="top" secondItem="Hfl-z9-4yw" secondAttribute="top" constant="8" id="XE7-4D-80Y"/>
+                                    <constraint firstItem="WiB-wa-uqe" firstAttribute="leading" secondItem="Hfl-z9-4yw" secondAttribute="leading" constant="8" id="a0i-zk-LMf"/>
+                                    <constraint firstItem="WiB-wa-uqe" firstAttribute="top" secondItem="gAJ-bX-kpz" secondAttribute="top" id="cYq-HV-JXY"/>
+                                    <constraint firstAttribute="bottom" secondItem="WiB-wa-uqe" secondAttribute="bottom" constant="8" id="gMm-J4-z0O"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bHn-Oj-yec" secondAttribute="bottom" id="ooj-VB-rRv"/>
+                                    <constraint firstItem="bHn-Oj-yec" firstAttribute="leading" secondItem="WiB-wa-uqe" secondAttribute="trailing" constant="8" id="ukl-Oy-OYh"/>
+                                    <constraint firstAttribute="trailing" secondItem="gAJ-bX-kpz" secondAttribute="trailing" id="y8k-3c-Ygt"/>
+                                </constraints>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MUo-G4-mzQ">
+                                <rect key="frame" x="0.0" y="145" width="600" height="455"/>
+                                <connections>
+                                    <segue destination="7bS-4S-Ahv" kind="embed" identifier="jsq" id="cAG-Tn-uOD"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Hfl-z9-4yw" secondAttribute="trailing" id="ENb-15-l4y"/>
+                            <constraint firstItem="Hfl-z9-4yw" firstAttribute="top" secondItem="j3i-KZ-00M" secondAttribute="bottom" id="PRD-pN-k0z"/>
+                            <constraint firstItem="Hfl-z9-4yw" firstAttribute="leading" secondItem="mty-8G-Y2H" secondAttribute="leading" id="RlK-rh-5tL"/>
+                            <constraint firstItem="MUo-G4-mzQ" firstAttribute="top" secondItem="Hfl-z9-4yw" secondAttribute="bottom" id="fUS-11-xLo"/>
+                            <constraint firstItem="MUo-G4-mzQ" firstAttribute="leading" secondItem="mty-8G-Y2H" secondAttribute="leading" id="xpX-vS-r2I"/>
+                            <constraint firstAttribute="bottom" secondItem="MUo-G4-mzQ" secondAttribute="bottom" id="yYO-ov-wFm"/>
+                            <constraint firstAttribute="trailing" secondItem="MUo-G4-mzQ" secondAttribute="trailing" id="zbj-rX-gWM"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="containerView" destination="MUo-G4-mzQ" id="Oof-gS-b14"/>
+                        <outlet property="headerView" destination="Hfl-z9-4yw" id="h28-zy-frB"/>
+                        <outlet property="itemImage" destination="WiB-wa-uqe" id="Jjs-s2-y4c"/>
+                        <outlet property="theirItemNameLabel" destination="gAJ-bX-kpz" id="dbw-VT-lI4"/>
+                        <outlet property="yourItemNameLabel" destination="bHn-Oj-yec" id="nkG-iS-FeU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TqS-qe-qXy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4570,6 +4631,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X6W-G4-BPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4227" y="-2633"/>
+        </scene>
+        <!--Chat Collection View Controller-->
+        <scene sceneID="ZIQ-Sh-COE">
+            <objects>
+                <viewController id="7bS-4S-Ahv" customClass="ChatCollectionViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IIw-wF-tyL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yVj-2l-Xn8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4905" y="-1861"/>
         </scene>
     </scenes>
     <resources>

@@ -25,7 +25,9 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   private var cancelButton: UIButton?
   private var completeButton: UIButton?
   private var attachmentButton: UIButton?
-  
+    
+    
+    
   //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
