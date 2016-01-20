@@ -76,6 +76,7 @@ class ProfileViewController: UIViewController {
             if let profileUploadsDataSource = sender as? ProfileUploadsDataSource,
                 let uploadsDetailScreen = segue.destinationViewController.childViewControllers[0] as? ProfileUploadsCollectionViewController {
                     uploadsDetailScreen.dataSource = profileUploadsDataSource
+                    uploadsDetailScreen.navigationItem.title = "\(personForProfile?.valueForKey("firstName")! as! String)\'s uploads"
             }
         }
     }

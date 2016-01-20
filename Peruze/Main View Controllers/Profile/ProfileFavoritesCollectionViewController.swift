@@ -24,7 +24,7 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     navigationController?.navigationBar.tintColor = .redColor()
     tabBarController?.tabBar.hidden = true
     dataSource!.itemDelegate = self
-    collectionView.dataSource = dataSource
+    collectionView.infiniteDataSource = dataSource
   }
     
     override func viewWillAppear(animated: Bool) {

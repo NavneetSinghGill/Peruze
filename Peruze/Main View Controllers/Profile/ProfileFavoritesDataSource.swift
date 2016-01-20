@@ -9,7 +9,33 @@
 import UIKit
 import SwiftLog
 
-class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
+extension ProfileFavoritesDataSource: InfiniteCollectionViewDataSource {
+    func numberOfItems(collectionView: UICollectionView) -> Int
+    {
+        var returnValue = 0
+        if favorites.count == 0 {
+            returnValue = 1
+        } else {
+            returnValue = favorites.count
+        }
+        return returnValue
+    }
+    
+    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath)  -> UICollectionViewCell
+    {
+        let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
+        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: dequeueIndexPath) as! PeruseItemCollectionViewCell)
+        
+        cell.item = favorites[dequeueIndexPath.row % favorites.count]
+        cell.delegate = itemDelegate
+        cell.itemFavorited = true
+        cell.setNeedsDisplay()
+        return cell
+    }
+}
+
+class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
   private struct Constants {
     static let NibName = "ProfileUploadsTableViewCell"
     struct ReuseIdentifiers {

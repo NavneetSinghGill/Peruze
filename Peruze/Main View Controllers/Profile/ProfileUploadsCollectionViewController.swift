@@ -22,11 +22,11 @@ class ProfileUploadsCollectionViewController: PeruseViewController {
         //    super.viewDidLoad()
         //TODO: - Pass this variable in instead of setting it
 //        dataSource = ProfileUploadsDataSource()
-        self.title = "Upload"
+//        self.title = "Upload"
         navigationController?.navigationBar.tintColor = .redColor()
         tabBarController?.tabBar.hidden = true
         dataSource!.itemDelegate = self
-        collectionView.dataSource = dataSource
+        collectionView.infiniteDataSource = dataSource
         let leftBarButton = UIBarButtonItem(title: "Back", style: .Plain, target: self, action: "backButtonTapped")
         self.navigationItem.setLeftBarButtonItem(leftBarButton, animated: true)
     }

@@ -9,7 +9,37 @@
 import UIKit
 import SwiftLog
 
-class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate, UICollectionViewDataSource {
+extension ProfileUploadsDataSource: InfiniteCollectionViewDataSource {
+    func numberOfItems(collectionView: UICollectionView) -> Int
+    {
+        var returnValue = 0
+        if fetchedResultsController?.sections?[0].numberOfObjects == 0 {
+            returnValue = 1
+        } else {
+            returnValue = (fetchedResultsController?.sections?[0].numberOfObjects)!
+        }
+        return returnValue
+    }
+    
+    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath)  -> UICollectionViewCell
+    {
+        let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
+        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: dequeueIndexPath) as! PeruseItemCollectionViewCell)
+        
+        let numberOfObjects = (fetchedResultsController?.sections?[0].numberOfObjects)
+        var modifiedIndexpath = dequeueIndexPath
+        modifiedIndexpath = NSIndexPath(forItem: dequeueIndexPath.row % numberOfObjects!, inSection: dequeueIndexPath.section)
+        let item = fetchedResultsController.objectAtIndexPath(modifiedIndexpath) as! NSManagedObject
+        cell.item = item
+        cell.delegate = itemDelegate
+        cell.itemFavorited = true
+        cell.setNeedsDisplay()
+        return cell
+    }
+}
+
+class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   
   private struct Constants {
     static let ReuseIdentifier = "ProfileUpload"
@@ -173,7 +203,6 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifiers.CollectionViewCell)
         let cell = (collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifiers.CollectionViewCell, forIndexPath: indexPath) as! PeruseItemCollectionViewCell)
 
-//        currentlyTappedUploadedItem!.setValue("navneet", forKey: "title")
         let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
         cell.item = item
         cell.delegate = itemDelegate
