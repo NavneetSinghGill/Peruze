@@ -38,7 +38,40 @@ class ChatCollectionContainerViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: "viewTapped:")
         self.view.addGestureRecognizer(tapGesture)
+        
+//        let leftBarButton = UIBarButtonItem(image: self.itemImage.prominentImage?.image, style: .Plain, target: self, action: nil)
+        let backBarButton = UIBarButtonItem(title: "Back", style: .Plain, target: self, action: "backButtonTapped")
+        
+        let prominentButton = UIButton(frame: CGRectMake(0, 4, 34, 34))
+        prominentButton.sd_setImageWithURL(NSURL(string: s3Url(self.exchange.valueForKey("itemOffered")!.valueForKey("imageUrl") as! String)), forState: UIControlState.Normal)
+        prominentButton.layer.cornerRadius = prominentButton.frame.size.width / 2
+        prominentButton.layer.masksToBounds = true
+        prominentButton.addTarget(self, action: "showItemOffered", forControlEvents: UIControlEvents.TouchUpInside)
+        let leftButton = UIBarButtonItem(customView: prominentButton)
+        
+        let lesserButton = UIButton(frame: CGRectMake(0, 4, 34, 34))
+        lesserButton.sd_setImageWithURL(NSURL(string: s3Url(self.exchange.valueForKey("itemRequested")!.valueForKey("imageUrl") as! String)), forState: UIControlState.Normal)
+        lesserButton.layer.cornerRadius = lesserButton.frame.size.width / 2
+        lesserButton.layer.masksToBounds = true
+        lesserButton.addTarget(self, action: "showItemRequested", forControlEvents: UIControlEvents.TouchUpInside)
+        let rightButton = UIBarButtonItem(customView: lesserButton)
+        
+        self.navigationItem.setLeftBarButtonItems([backBarButton, leftButton], animated: true)
+        self.navigationItem.setRightBarButtonItems([rightButton], animated: false)
     }
+    
+    func backButtonTapped() {
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    func showItemOffered() {
+        self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemOffered") as! NSManagedObject)
+    }
+    
+    func showItemRequested() {
+        self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemRequested") as! NSManagedObject)
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "jsq") {
             if let chatCollectionVC = segue.destinationViewController as? ChatCollectionViewController {

@@ -317,8 +317,14 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         return
     }
     
-    destVC.title = cell.theirItemNameLabel.text
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+    
+    if me.valueForKey("recordIDName") as! String != cell.data?.valueForKey("itemOffered")!.valueForKey("owner")!.valueForKey("recordIDName") as! String {
+        destVC.title = cell.data?.valueForKey("itemOffered")!.valueForKey("title") as! String
+    } else {
+        destVC.title = cell.data?.valueForKey("itemRequested")!.valueForKey("title") as! String
+    }
+    
     destVC.prominentImage = cell.itemImage.prominentImage!
     destVC.lesserImage = cell.itemImage.lesserImage!
     destVC.theirItemName = cell.theirItemNameLabel.text
