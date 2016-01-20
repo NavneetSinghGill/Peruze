@@ -15,6 +15,7 @@
 		3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */; };
 		3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BCA63911C18298300CFA976 /* SwiftLog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3BE308041C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */; };
+		3BE308141C4E840800843B3B /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */; };
 		3BE910AF1C253F1B00DAB409 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BE910AE1C253F1B00DAB409 /* Localizable.strings */; };
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */; };
@@ -261,6 +262,7 @@
 		3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftLog.xcodeproj; path = "../../../Downloads/SwiftLog-master/SwiftLog.xcodeproj"; sourceTree = "<group>"; };
 		3BE0B8CD1C0F00F300E3612B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionContainerViewController.swift; sourceTree = "<group>"; };
+		3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionView.swift; sourceTree = "<group>"; };
 		3BE910AE1C253F1B00DAB409 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsViewController.swift; sourceTree = "<group>"; };
@@ -914,6 +916,7 @@
 				3BF67AA11C476B90004DE6CC /* PeruzePrivacyPolicy.rtf */,
 				3BF67AA31C476BDC004DE6CC /* PeruzeSafety.rtf */,
 				3BE910AE1C253F1B00DAB409 /* Localizable.strings */,
+				3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */,
 				9D177B2E1B54DDC3009CB9FA /* InitialViewController.swift */,
 				9D177B1F1B54DDC3009CB9FA /* SettingsViewController.swift */,
 				3B0093C91C218F73008D3339 /* TermsConditionViewController.swift */,
@@ -1339,6 +1342,7 @@
 				9DC345941BA9FC1100B1CA2C /* AsyncOperation.swift in Sources */,
 				9D177BA41B54DDC3009CB9FA /* ProfileViewController.swift in Sources */,
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
+				3BE308141C4E840800843B3B /* InfiniteCollectionView.swift in Sources */,
 				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */,

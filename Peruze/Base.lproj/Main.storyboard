@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N6Z-Lu-0jp">
+                            <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N6Z-Lu-0jp" customClass="InfiniteCollectionView" customModule="Peruze" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -4636,6 +4636,10 @@
         <scene sceneID="ZIQ-Sh-COE">
             <objects>
                 <viewController id="7bS-4S-Ahv" customClass="ChatCollectionViewController" customModule="Peruze" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sJd-29-8lo"/>
+                        <viewControllerLayoutGuide type="bottom" id="7DE-XM-OHK"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IIw-wF-tyL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -10,7 +10,13 @@ import UIKit
 import CloudKit
 import SwiftLog
 
-class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
+extension PeruseViewController : InfiniteCollectionViewDelegate {
+    func didSelectCellAtIndexPath(collectionView: UICollectionView, usableIndexPath: NSIndexPath) {
+        
+    }
+}
+
+class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout, PeruseItemCollectionViewCellDelegate, PeruseExchangeViewControllerDelegate {
   private struct Constants {
     static let BufferSize:CGFloat = 16
     static let ExchangeSegueIdentifier = "toOfferToExchangeView"
@@ -54,12 +60,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegate, UICollec
       }
     }
   }
-  @IBOutlet weak var collectionView: UICollectionView! {
+  @IBOutlet weak var collectionView: InfiniteCollectionView! {
     didSet {
       dataSource.collectionView = collectionView
       dataSource.itemDelegate = self
-      collectionView.dataSource = dataSource
-      collectionView.delegate = self
+//      collectionView.dataSource = dataSource
+//      collectionView.delegate = self
+        collectionView.infiniteDataSource = dataSource
+        collectionView.infiniteDelegate = self
       collectionView.pagingEnabled = true
       collectionView.showsHorizontalScrollIndicator = false
     }

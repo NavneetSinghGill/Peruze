@@ -23,14 +23,57 @@ struct OwnerStruct {
   var formattedName: String
   var recordIDName: String
 }
+extension PeruseItemDataSource: InfiniteCollectionViewDataSource {
+    func numberOfItems(collectionView: UICollectionView) -> Int
+    {
+        var returnValue = 0
+        if self.items.count == 0 {
+            returnValue = 1
+        } else {
+            returnValue = self.items.count
+        }
+        return returnValue
+    }
+    
+    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath)  -> UICollectionViewCell
+    {
+        let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: NSBundle.mainBundle())
+        let loadingNib = UINib(nibName: "PeruseLoadingCollectionViewCell", bundle: NSBundle.mainBundle())
+        collectionView.registerNib(loadingNib, forCellWithReuseIdentifier: Constants.LoadingReuseIdentifier)
+        collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
+        var cell: UICollectionViewCell
+        if self.items.count != 0 {
+            //normal item cell
+            let localCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: dequeueIndexPath) as! PeruseItemCollectionViewCell
+            //      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+            let item = self.items[dequeueIndexPath.row % self.items.count]
+            localCell.item = item
+            localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+            localCell.delegate = itemDelegate
+            localCell.setNeedsDisplay()
+            cell = localCell
+        } else {
+            //loading cell
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: dequeueIndexPath)
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
+            let view : UIView = cell.viewWithTag(3)!
+            if  isMoreItemsAvailable == false {
+                view.hidden = false
+            } else {
+                view.hidden = true
+            }
+        }
+        return cell
+    }}
 
-class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
+class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
   private struct Constants {
     static let ReuseIdentifier = "item"
     static let LoadingReuseIdentifier = "loading"
   }
   var itemDelegate: PeruseItemCollectionViewCellDelegate?
-  var collectionView: UICollectionView!
+  var collectionView: InfiniteCollectionView!
   var fetchedResultsController: NSFetchedResultsController!
     var location =  CLLocation()
     
@@ -318,54 +361,55 @@ class PeruseItemDataSource: NSObject, UICollectionViewDataSource, NSFetchedResul
 //  }
   
   //MARK: - UICollectionView Delegate Methods
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: NSBundle.mainBundle())
-    let loadingNib = UINib(nibName: "PeruseLoadingCollectionViewCell", bundle: NSBundle.mainBundle())
     
-    collectionView.registerNib(loadingNib, forCellWithReuseIdentifier: Constants.LoadingReuseIdentifier)
-    collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
-    var cell: UICollectionViewCell
-    if indexPath.section == 0 {
-      //normal item cell
-      let localCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
-//      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-      let item = self.items[indexPath.row]
-        
-      localCell.item = item
-      localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
-      localCell.delegate = itemDelegate
-      localCell.setNeedsDisplay()
-      cell = localCell
-    } else {
-      //loading cell
-      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath)
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
-        let view : UIView = cell.viewWithTag(3)!
-        if  isMoreItemsAvailable == false {
-            view.hidden = false
-        } else {
-            view.hidden = true
-        }
-    }
-    return cell
-  }
-  
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    var returnValue = 0
-    if section == 0 {
-//      returnValue = fetchedResultsController.sections?[section].numberOfObjects ?? 0
-        returnValue = self.items.count
-    } else {
-      returnValue = 1
-    }
-    return returnValue
-  }
-  
-  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
-    return 2
-  }
+//  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+//    let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: NSBundle.mainBundle())
+//    let loadingNib = UINib(nibName: "PeruseLoadingCollectionViewCell", bundle: NSBundle.mainBundle())
+//    
+//    collectionView.registerNib(loadingNib, forCellWithReuseIdentifier: Constants.LoadingReuseIdentifier)
+//    collectionView.registerNib(nib, forCellWithReuseIdentifier: Constants.ReuseIdentifier)
+//    var cell: UICollectionViewCell
+//    if indexPath.section == 0 {
+//      //normal item cell
+//      let localCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.ReuseIdentifier, forIndexPath: indexPath) as! PeruseItemCollectionViewCell
+////      let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+//      let item = self.items[indexPath.row]
+//        
+//      localCell.item = item
+//      localCell.itemFavorited = self.favorites.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+//      localCell.delegate = itemDelegate
+//      localCell.setNeedsDisplay()
+//      cell = localCell
+//    } else {
+//      //loading cell
+//      cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LoadingReuseIdentifier, forIndexPath: indexPath)
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
+//        let view : UIView = cell.viewWithTag(3)!
+//        if  isMoreItemsAvailable == false {
+//            view.hidden = false
+//        } else {
+//            view.hidden = true
+//        }
+//    }
+//    return cell
+//  }
+//  
+//  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//    var returnValue = 0
+//    if section == 0 {
+////      returnValue = fetchedResultsController.sections?[section].numberOfObjects ?? 0
+//        returnValue = self.items.count
+//    } else {
+//      returnValue = 1
+//    }
+//    return returnValue
+//  }
+//  
+//  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+////    return (fetchedResultsController.sections?.count ?? 0) + 1 //one for the loading view
+//    return 2
+//  }
     
     
     //MARK: - Notification observer methods
