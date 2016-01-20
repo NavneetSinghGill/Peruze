@@ -362,6 +362,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
+                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
                         completionBlock(true)
                     }
                     completionBlock(false)
@@ -533,7 +534,9 @@ class Model: NSObject, CLLocationManagerDelegate {
             //                            if NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") != nil && NSUserDefaults.standardUserDefaults().valueForKey("isRequestsShowing") as! String == "yes"{
             if localExchangeStatus == 0 {
                 NSNotificationCenter.defaultCenter().postNotificationName("getRequestedExchange", object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName("setRequestBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                if badgeCount > 0 {
+                    NSNotificationCenter.defaultCenter().postNotificationName("setRequestBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                }
             }
             //                            }
         }
@@ -545,7 +548,9 @@ class Model: NSObject, CLLocationManagerDelegate {
         if message == NotificationCategoryMessages.AcceptedOfferMessage {
             if localExchangeStatus == 1 {
                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                if badgeCount > 0 {
+                    NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
+                }
             }
         }
     }

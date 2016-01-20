@@ -254,7 +254,7 @@ class UploadItemFromLocalStorageToCloudOperation: Operation {
       let itemIsDeleted = itemToSave.valueForKey("isDelete") as? Int
       let itemImageUniqueName = itemToSave.valueForKey("imageUrl") as? String
       
-      itemRecord.setObject(1, forKey: "Title")
+      itemRecord.setObject(itemTitle, forKey: "Title")
       itemRecord.setObject(itemDetail, forKey: "Description")
       itemRecord.setObject((me.valueForKey("facebookID") as? String), forKey: "OwnerFacebookID")
       itemRecord.setObject(itemIsDeleted, forKey: "IsDeleted")

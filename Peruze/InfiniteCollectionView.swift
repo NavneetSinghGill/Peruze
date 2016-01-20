@@ -59,7 +59,7 @@ class InfiniteCollectionView: UICollectionView
 //        let centerOffsetX: CGFloat = (3 * contentWidth - bounds.size.width) / 2
         let centerOffsetX: CGFloat = contentWidth
         let distFromCentre = centerOffsetX - currentOffset.x
-        logw("distan from centre: \(fabs(distFromCentre)).... contentWidth/4: \(contentWidth).... centerOffsetX: \(centerOffsetX).... currentOffset.x: \(currentOffset.x)")
+//        logw("distan from centre: \(fabs(distFromCentre)).... contentWidth/4: \(contentWidth).... centerOffsetX: \(centerOffsetX).... currentOffset.x: \(currentOffset.x)")
         if (fabs(distFromCentre) > (contentWidth))
         {
             // Total cells (including partial cells) from centre

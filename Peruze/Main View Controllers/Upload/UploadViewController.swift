@@ -224,28 +224,32 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                         if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
                             NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
                                 self.postOnFaceBook(uniqueImageName)
-                }
-                if self.uploadButton.titleLabel?.text == "Upload" {
-                self.endUpload()
-                } else {
-                self.dismissViewControllerAnimated(true, completion: nil)
-                } } }
-                let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
-                if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                //            let per = self.parentVC as! PeruseExchangeViewController
-                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
-                }
-                let alertController = UIAlertController(title: "Peruze", message: "An error occured while Editing item.", preferredStyle: .Alert)
+                        }
+                        if self.uploadButton.titleLabel?.text == "Upload" {
+                            self.endUpload()
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                        }
+                    }
+                    let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                            //            let per = self.parentVC as! PeruseExchangeViewController
+                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+                        }
+                        let alertController = UIAlertController(title: "Peruze", message: "An error occured while Editing item.", preferredStyle: .Alert)
                 
-                let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-                alertController.addAction(defaultAction)
+                        let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                        alertController.addAction(defaultAction)
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
-                if self.uploadButton.titleLabel?.text == "Upload" {
-                self.endUpload()
-                } else {
-                self.dismissViewControllerAnimated(true, completion: nil)
-                }} }
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                        if self.uploadButton.titleLabel?.text == "Upload" {
+                            self.endUpload()
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                        }
+                    }
                     OperationQueue().addOperation(
                         PostItemOperation(
                             image: self.mainImageView.image!,
@@ -273,6 +277,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             dismissViewControllerAnimated(true, completion: nil)
         } else {
             self.mainImageView.image! = Constants.DefaultImage!
+            self.image = Constants.DefaultImage!
             self.titleTextField.text = ""
             self.descriptionLabel.text = ""
             self.tabBarController?.selectedIndex = 0
@@ -398,6 +403,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     func endUpload() {
         mainImageView.image = Constants.DefaultImage
+        self.image = Constants.DefaultImage
         titleTextField.text = ""
         descriptionTextView.text = ""
         uploadingView?.endUpload() {
