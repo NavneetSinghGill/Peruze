@@ -90,6 +90,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     tempImageView3.sd_setImageWithURL(NSURL(string: s3Url(theirProfileImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
         if tempImageView3.image != nil {
             cell.profileImageView.image = image
+            cell.contentView.setNeedsDisplay()
         }
     })
     cell.nameLabel.text = "\(theirOwnerFirstName)'s"
@@ -99,11 +100,13 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(theirItemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
         if tempImageView1.image != nil && tempImageView2.image != nil {
             cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            cell.contentView.setNeedsDisplay()
         }
     })
     tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(myItemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
         if tempImageView1.image != nil && tempImageView2.image != nil {
             cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+            cell.contentView.setNeedsDisplay()
         }
     })
     if let requestDate = exchange.valueForKey("date") as? NSDate {

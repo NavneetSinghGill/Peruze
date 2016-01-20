@@ -66,6 +66,7 @@ class ChatTableViewCell: UITableViewCell {
                         self.showChatItemDelegate.showItem(self.data?.valueForKey("itemRequested") as! NSManagedObject)
                 })
             }
+            self.contentView.setNeedsDisplay()
         })
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(requestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
@@ -75,6 +76,7 @@ class ChatTableViewCell: UITableViewCell {
                         self.showChatItemDelegate.showItem(self.data?.valueForKey("itemRequested") as! NSManagedObject)
                 })
             }
+            self.contentView.setNeedsDisplay()
         })
         
       theirItemNameLabel.text = "\(itemOfferedTitle)"

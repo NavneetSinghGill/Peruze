@@ -46,12 +46,15 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
        profileVC.numberOfFavoritesLabel.text = "\(dataSource.refresh())"
     }
     checkForEmptyData(true)
+    self.tableView.reloadData()
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
   }
-  
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        self.tableView.reloadData()
+//    }
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if let parentVC = parentViewController as? ProfileContainerViewController {
       if let originVC = parentVC.parentViewController as? ProfileViewController {

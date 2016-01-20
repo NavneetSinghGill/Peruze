@@ -34,7 +34,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         }
     }
   }
-  
+  var tempImageView = UIImageView()
   override init() {
     super.init()
     currentlyTappedUploadedItem = Item.MR_findFirst()
@@ -85,9 +85,10 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
 //        } else {
 //            cell.circleImageView.image = nil
 //        }
-        let tempImageView = UIImageView()
+        tempImageView = UIImageView()
         tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
             cell.circleImageView.image = image
+            cell.contentView.setNeedsDisplay()
         })
     } else {
         cell.circleImageView.image = UIImage()

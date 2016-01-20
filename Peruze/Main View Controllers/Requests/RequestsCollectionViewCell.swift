@@ -42,6 +42,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         let tempImageView1 = UIImageView()
         tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             self.profilePicture.image = image
+            self.contentView.setNeedsDisplay()
         })
         profileName.text = ownerName
 //        theirItemImageView.image = UIImage(data: itemImageData)
@@ -49,6 +50,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             self.theirItemImageView.image = image
             self.theirSquareItemImageView.image = image
+            self.contentView.setNeedsDisplay()
         })
         forTheirLabel.text = "for \(ownerName)'s"
         aboutTheirItemLabel.text = "About \(itemTitle)"
@@ -72,6 +74,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             let tempImageView1 = UIImageView()
             tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
                 self.yourItemImageView.image = image
+                self.contentView.setNeedsDisplay()
             })
         }
         yourItemNameLabel.text = item.valueForKey("title") as? String

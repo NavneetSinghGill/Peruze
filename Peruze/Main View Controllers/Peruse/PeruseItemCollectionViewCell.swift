@@ -61,7 +61,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   }
     
     var canFavorite: String!
-  
+  var tempImageView = UIImageView()
+    
   //MARK: - Lifecycle
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -168,6 +169,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
             self.activityIndicator.startAnimating()
             itemImageView.sd_setImageWithURL(NSURL(string: s3Url(item?.valueForKey("imageUrl") as! String)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
                 self.activityIndicator.stopAnimating()
+                self.contentView.setNeedsDisplay()
             })
         } else {
             self.activityIndicator.stopAnimating()
@@ -193,9 +195,10 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
         if let ownerImageUrl = owner.valueForKey("imageUrl") as? String {
             ownerProfileImage.image = UIImage()
 //        ownerProfileImage.image = UIImage(data: ownerImageData)
-        let tempImageView = UIImageView()
+        tempImageView = UIImageView()
         tempImageView.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
             self.ownerProfileImage.image = image
+            self.contentView.setNeedsDisplay()
         })
       } else {
         ownerProfileImage.image = UIImage()

@@ -25,6 +25,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     }
   }
   var exchangeItems = [NSManagedObject]()
+    var tempImageView = UIImageView()
   override init() {
     super.init()
     getItems()
@@ -70,9 +71,10 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
         if let imageUrl = item.valueForKey("imageUrl") as? String {
 //            cell.imageView.image = UIImage(data: imageData)
             cell.imageView.image = nil
-            let tempImageView = UIImageView()
+            tempImageView = UIImageView()
             tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, ErrorType, sdImageCacheType, url) -> Void in
                 cell.imageView.image = image
+                cell.setNeedsDisplay()
             })
         } else {
             cell.imageView.image = nil

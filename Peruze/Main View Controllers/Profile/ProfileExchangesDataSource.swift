@@ -99,6 +99,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
 //        cell.profileImageView.image = UIImage(data: itemOfferedOwnerImage)
         tempImageView3.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedOwnerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             cell.profileImageView.image = image
+            cell.contentView.setNeedsDisplay()
         })
         cell.nameLabel.text = "\(itemOfferedOwnerName)'s"
         cell.itemLabel.text = itemOfferedTitle
@@ -108,17 +109,20 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
         tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
                 cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+                cell.contentView.setNeedsDisplay()
             }
         })
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
                 cell.itemsExchangedImage.itemImages = (tempImageView1.image!, tempImageView2.image!)
+                cell.contentView.setNeedsDisplay()
             }
         })
     } else {
 //        cell.profileImageView.image = UIImage(data: itemRequestedOwnerImage)
         tempImageView4.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedOwnerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             cell.profileImageView.image = image
+            cell.contentView.setNeedsDisplay()
         })
         cell.nameLabel.text = "\(itemRequestedOwnerName)'s"
         cell.itemLabel.text = itemRequestedTitle
@@ -128,11 +132,13 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
         tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(itemOfferedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
                 cell.itemsExchangedImage.itemImages = (tempImageView2.image!, tempImageView1.image!)
+                cell.contentView.setNeedsDisplay()
             }
         })
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemRequestedImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             if tempImageView1.image != nil && tempImageView2.image != nil {
                 cell.itemsExchangedImage.itemImages = (tempImageView2.image!, tempImageView1.image!)
+                cell.contentView.setNeedsDisplay()
             }
         })
     }

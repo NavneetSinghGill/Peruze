@@ -65,6 +65,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileContainerBottomConstraint: NSLayoutConstraint!
     
     var isOtherUser: Bool!
+    var newProfilePic: Bool!
     
     private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     @IBOutlet weak var otherUserProfileSuperView: UIView!
@@ -106,6 +107,7 @@ class ProfileViewController: UIViewController {
             tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
                 self.profileImageView.image = image
                 self.ouProfileImageView.image = image
+                self.view.setNeedsDisplay()
             })
             profileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
             ouProfileNameLabel.text = (personForProfile!.valueForKey("firstName") as! String)
@@ -160,17 +162,22 @@ class ProfileViewController: UIViewController {
         otherUserProfileSuperView.hidden = !isOtherUser
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshUser:", name: "RefreshUser", object: nil)
-        
+        newProfilePic = false
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.view.setNeedsDisplay()
         if self.tabBarController != nil {
-            self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
-            let tempImageView1 = UIImageView()
-            tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
-                self.profileImageView.image = image
-            })
+            if !newProfilePic {
+                self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+                let tempImageView1 = UIImageView()
+                tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                    self.profileImageView.image = image
+                    self.view.setNeedsDisplay()
+                })
+            }
+            newProfilePic = false
         } else {
             self.profileContainerBottomConstraint.constant = 0
         }
@@ -294,17 +301,40 @@ class ProfileViewController: UIViewController {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         let userInfo:NSDictionary = noti.userInfo!
         let updatedProfileImage = (userInfo.valueForKey("circleImage") as? CircleImage)!
-        let imageData = UIImagePNGRepresentation(updatedProfileImage.image!)
-        me!.setValue(imageData, forKey: "image")
-        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-        let op = PostUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
-        OperationQueue().addOperation(op)
-        let tempImageView1 = UIImageView()
-        tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(me!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
-            dispatch_async(dispatch_get_main_queue()) {
-                self.profileImageView.image = image
+        
+        self.view.reloadInputViews()
+        let uniqueImageName = createUniqueName()
+        let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: updatedProfileImage.image!)
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+            if task.error != nil {
+                logw("ProfileViewController profile Image upload to s3 failed with error: \(task.error)")
+            } else {
+                logw("ProfileViewController profile Image upload to s3 success")
+                let imageData = UIImagePNGRepresentation(updatedProfileImage.image!)
+                me!.setValue(imageData, forKey: "image")
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                me!.setValue(uniqueImageName, forKey: "imageUrl")
+                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                let op = PostUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
+                OperationQueue().addOperation(op)
+                let tempImageView1 = UIImageView()
+                tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(me!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.profileImageView.image = nil
+                        self.profileImageView.image = image
+                        self.view.setNeedsDisplay()
+                    }
+                })
             }
+            return nil
         })
+        dispatch_async(dispatch_get_main_queue()) {
+            self.newProfilePic = true
+            self.profileImageView.image = nil
+            self.profileImageView.image = updatedProfileImage.image!
+            self.view.setNeedsDisplay()
+        }
     }
     
     func refreshProfileVCData() {
