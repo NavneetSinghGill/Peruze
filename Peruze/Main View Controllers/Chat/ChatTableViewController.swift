@@ -70,6 +70,10 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
   }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 116
+    }
+    
     //MARK: Refresh methods
     
     func refreshWithoutActivityIndicator() {

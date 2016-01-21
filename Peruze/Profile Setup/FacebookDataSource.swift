@@ -11,6 +11,7 @@ import SwiftLog
 
 protocol FacebookProfilePictureRetrievalDelegate {
   var profileImages: [UIImage]? { get set }
+    var profileImageUrls: [String]? { get set }
   var percentLoaded: Int? { get set } //out of 100%
 }
 
@@ -46,6 +47,10 @@ class FacebookDataSource: NSObject {
       if let imagesOp = operation as? DownloadImagesForURLs {
         completionBlock(success: true, error: nil)
         self.profilePictureRetrievalDelegate?.profileImages = imagesOp.images
+        self.profilePictureRetrievalDelegate?.profileImageUrls = [String]()
+        for url in imagesOp.imageURLs {
+            self.profilePictureRetrievalDelegate?.profileImageUrls?.append("\(url)")
+        }
       }
     }
     

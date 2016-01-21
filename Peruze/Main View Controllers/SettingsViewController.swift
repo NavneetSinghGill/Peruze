@@ -57,7 +57,14 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   //MARK: Local Vars
   private var facebookData = FacebookDataSource()
   private var locationManager = CLLocationManager()
-  var percentLoaded: Int?
+    var percentLoaded: Int?
+    var profileImageUrls: [String]?{
+        didSet {
+            if profileImageUrls?.count == Constants.NumberOfProfilePictures {
+                setupImageViews()
+            }
+        }
+    }
   var profileImages: [UIImage]? {
     didSet {
       setupImageViews()
@@ -69,6 +76,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     private var selectedCircleImage: CircleImage!
     private var profilePicDidChange: Bool!
     private var loadingCircle: LoadingCircleView?
+    var savedImageUrl: String?
+    var shouldUpdateProfilePic = false
   
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
@@ -121,6 +130,12 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         } else {
             self.pushNotificationSwitch.on = false
         }
+        
+        if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String{
+            savedImageUrl = urlLastComponent
+        } else {
+            savedImageUrl = ""
+        }
     }
     
   override func viewDidAppear(animated: Bool) {
@@ -166,7 +181,16 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     loadingCircle!.fadeOutAnimationDuration = Constants.LoadFadeDuration
     loadingViewContainer.addSubview(loadingCircle!)
   }
-  
+    
+    func lastComponentOfString(source:String, char: String) -> String {
+        let reverseSoruce = String(source.characters.reverse())
+        if let range = reverseSoruce.rangeOfString(char){
+            return source.substringFromIndex(range.endIndex)
+        } else {
+            return ""
+        }
+    }
+    
   private func setupImageViews() {
     var views = [upperLeft, upperRight, lowerLeft, lowerRight]
     for index in 0..<Constants.NumberOfProfilePictures {
@@ -176,7 +200,29 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         views[index].image = profileImages![index]
       }
     }
-    self.tap(upperLeft)
+
+    if profileImages != nil && profileImages!.count != 0 && profileImageUrls != nil {
+        if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String {
+            for urlString in profileImageUrls! {
+                if urlLastComponent as! String == lastComponentOfString(urlString, char: "/") {
+                    let index = profileImageUrls?.indexOf(urlString)
+                    if index == 0 {
+                        self.tap(upperLeft)
+                    } else if index == 1 {
+                        self.tap(upperRight)
+                    } else if index == 2 {
+                        self.tap(lowerLeft)
+                    } else if index == 3 {
+                        self.tap(lowerRight)
+                    }
+                }
+            }
+        } else {
+            self.tap(upperLeft)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
   }
   
   //MARK: - Errors and Alerts
@@ -203,21 +249,33 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   @IBAction func tapUpperLeft(sender: UITapGestureRecognizer) {
     if UIImagePNGRepresentation(upperLeft.image!) != nil {
         tap(upperLeft)
+        NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        shouldUpdateProfilePic = lastComponentOfString(profileImageUrls![0], char: "/") == savedImageUrl ? false: true
     }
   }
     @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
         if UIImagePNGRepresentation(lowerLeft.image!) != nil {
             tap(lowerLeft)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![2], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            shouldUpdateProfilePic = lastComponentOfString(profileImageUrls![2], char: "/") == savedImageUrl ? false: true
         }
   }
     @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
         if UIImagePNGRepresentation(upperRight.image!) != nil {
             tap(upperRight)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![1], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            shouldUpdateProfilePic = lastComponentOfString(profileImageUrls![1], char: "/") == savedImageUrl ? false: true
         }
   }
     @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
         if UIImagePNGRepresentation(lowerRight.image!) != nil {
             tap(lowerRight)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![3], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            shouldUpdateProfilePic = lastComponentOfString(profileImageUrls![3], char: "/") == savedImageUrl ? false: true
         }
   }
     
@@ -268,8 +326,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       NSUserDefaults.standardUserDefaults().setObject(Int(distanceSlider.value), forKey: UserDefaultsKeys.UsersDistancePreference)
       NSUserDefaults.standardUserDefaults().setObject(Int(friendsSlider.value), forKey: UserDefaultsKeys.UsersFriendsPreference)
             //Update profile Pic
+        if shouldUpdateProfilePic == true {
             let dict:[String:AnyObject] = ["circleImage":selectedCircleImage]
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "profileUpdate", object: nil, userInfo: dict))
+        }
       dismissViewControllerAnimated(true) {
         //Model.sharedInstance().fetchItemsWithinRangeAndPrivacy()
         //TODO: Pass edited data back to dataSource

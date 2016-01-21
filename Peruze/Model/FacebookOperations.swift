@@ -111,7 +111,7 @@ to a DownloadImagesForURLs
 */
 class DownloadImagesForURLs: AsyncOperation {
   ///Image URLs from dependencies
-  private var imageURLs = [NSURL]()
+  var imageURLs = [NSURL]()
   ///Images that are
   var images = [UIImage]()
   

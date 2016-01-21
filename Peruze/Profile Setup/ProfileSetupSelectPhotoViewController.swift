@@ -41,14 +41,21 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   @IBOutlet weak var center: CircleImage!
   //MARK: Local Vars
   private var facebookData = FacebookDataSource()
-  var percentLoaded: Int?
+    var percentLoaded: Int?
+    var profileImageUrls: [String]?{
+        didSet {
+            if profileImageUrls?.count == Constants.NumberOfProfilePictures {
+                setupImageViews()
+            }
+        }
+    }
   var profileImages: [UIImage]? {
     didSet {
       setupImageViews()
     }
   }
   private var loadingCircle: LoadingCircleView?
-  private var loadingLabel = UILabel()
+    private var loadingLabel = UILabel()
   
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
@@ -98,6 +105,30 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
         views[index].image = profileImages![index]
       }
     }
+    
+    if profileImages != nil && profileImages!.count != 0 && profileImageUrls != nil {
+        if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String {
+            for urlString in profileImageUrls! {
+                if urlLastComponent as! String == lastComponentOfString(urlString, char: "/") {
+                    let index = profileImageUrls?.indexOf(urlString)
+                    if index == 0 {
+                        self.tap(upperLeft)
+                    } else if index == 1 {
+                        self.tap(upperRight)
+                    } else if index == 2 {
+                        self.tap(lowerLeft)
+                    } else if index == 3 {
+                        self.tap(lowerRight)
+                    }
+                }
+            }
+        } else {
+            self.tap(upperLeft)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
     center.hidden = false
     center.alpha = 0.0
     self.tap(upperLeft)
@@ -234,23 +265,48 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
   
   //MARK: - Gesture Handling
   @IBAction func tapUpperLeft(sender: UITapGestureRecognizer) {
-    tap(upperLeft)
+    if UIImagePNGRepresentation(upperLeft.image!) != nil {
+        tap(upperLeft)
+        NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
   }
-  @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
-    tap(lowerLeft)
+    @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(lowerLeft.image!) != nil {
+            tap(lowerLeft)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![2], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
   }
-  @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
-    tap(upperRight)
+    @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(upperRight.image!) != nil {
+            tap(upperRight)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![1], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
   }
-  @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
-    tap(lowerRight)
+    @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
+        if UIImagePNGRepresentation(lowerRight.image!) != nil {
+            tap(lowerRight)
+            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![3], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
   }
   private func tap(selectedImage: CircleImage) {
     for obj in [upperLeft, upperRight, lowerRight, lowerLeft] { obj.selected = false }
     selectedImage.selected = true
     center.image = selectedImage.image
   }
-  
+    
+    func lastComponentOfString(source:String, char: String) -> String {
+        let reverseSoruce = String(source.characters.reverse())
+        if let range = reverseSoruce.rangeOfString(char){
+            return source.substringFromIndex(range.endIndex)
+        } else {
+            return ""
+        }
+    }
+    
   //MARK: - Navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     //success

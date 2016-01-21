@@ -64,6 +64,7 @@ struct UniversalConstants {
     static let kIsPushNotificationOn = "isPushNotificationOn"
     static let kIsPostingToFacebookOn = "isPostingToFacebookOn"
     static let kSetSubscriptions = "setSubscriptions"
+    static let kCurrentProfilePicUrl = "currentProfilePicUrl"
 }
 
 struct SubscritionTypes {
