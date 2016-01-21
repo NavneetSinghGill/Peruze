@@ -104,17 +104,24 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
 //        } else {
 //            cell.circleImageView.image = nil
 //        }
+        
+//        if let imageUrl = item.valueForKey("imageUrl") as? String {
+//            tempImageView = UIImageView()
+//            weak var weakCell = cell
+//            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: {
+//                (image, error, sdImageCacheType, url) -> Void in
+//                weakCell!.circleImageView.image = nil
+//                weakCell!.circleImageView.image = image
+//                weakCell!.setNeedsDisplay()
+//            })
+//            cell.circleImageView.image = tempImageView.image
+//        }
         if let imageUrl = item.valueForKey("imageUrl") as? String {
-            tempImageView = UIImageView()
-            weak var weakCell = cell
-            tempImageView.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: {
-                (image, error, sdImageCacheType, url) -> Void in
-                weakCell!.circleImageView.image = nil
-                weakCell!.circleImageView.image = image
-                weakCell!.setNeedsDisplay()
-            })
-            cell.circleImageView.image = tempImageView.image
+            cell.circleButton.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), forState: UIControlState.Normal)
         }
+        cell.circleButton.layer.cornerRadius = cell.circleButton.frame.size.width / 2
+        cell.circleButton.layer.masksToBounds = true
+        
       } else {
         logw("There was not enough non-nil data for the favorite item")
       }

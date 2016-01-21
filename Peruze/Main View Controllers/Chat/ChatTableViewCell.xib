@@ -25,14 +25,18 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="for Your Item Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngb-uw-KOP">
                         <rect key="frame" x="108" y="27" width="287" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17" id="mZz-UQ-kZr"/>
+                        </constraints>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojK-fy-siq">
-                        <rect key="frame" x="107" y="83" width="288" height="17"/>
+                        <rect key="frame" x="107" y="87" width="288" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="N9b-X2-HMm"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17" id="rzS-Mh-0dT"/>
                         </constraints>
                         <string key="text">Person: The most recent message that whomever last sent that could be extremely long and have like an absolute ton of words in it. Especially if they're friends with the person that they're talking to</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -51,11 +55,11 @@
                 <constraints>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="0LY-vK-Ww2"/>
                     <constraint firstItem="ojK-fy-siq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ngb-uw-KOP" secondAttribute="bottom" constant="8" symbolic="YES" id="1Ux-33-Gxg"/>
+                    <constraint firstItem="ojK-fy-siq" firstAttribute="baseline" secondItem="ZFz-X0-Acc" secondAttribute="baseline" id="27e-1I-uS0"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ngb-uw-KOP" secondAttribute="trailing" id="41h-85-PBv"/>
                     <constraint firstAttribute="bottomMargin" secondItem="ZFz-X0-Acc" secondAttribute="bottom" constant="7" id="47P-as-zxk"/>
                     <constraint firstAttribute="centerX" secondItem="ZFz-X0-Acc" secondAttribute="trailing" multiplier="1.2" id="7bV-JW-ZhF"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ojK-fy-siq" secondAttribute="trailing" id="9dh-4b-005"/>
-                    <constraint firstItem="ZFz-X0-Acc" firstAttribute="bottom" secondItem="ojK-fy-siq" secondAttribute="bottom" priority="750" id="9ed-NH-pDd"/>
                     <constraint firstItem="ngb-uw-KOP" firstAttribute="top" secondItem="NP6-lB-jrQ" secondAttribute="bottom" constant="-1" id="AHJ-pt-58k"/>
                     <constraint firstItem="ZFz-X0-Acc" firstAttribute="top" secondItem="NP6-lB-jrQ" secondAttribute="top" id="Bnl-Cx-LHS"/>
                     <constraint firstAttribute="centerX" secondItem="ZFz-X0-Acc" secondAttribute="trailing" multiplier="1.7" id="GeC-rX-ZU7"/>

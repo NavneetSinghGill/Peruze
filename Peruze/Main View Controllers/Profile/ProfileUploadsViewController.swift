@@ -63,7 +63,8 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     if isThisMyProfile == true {
         let uploadView = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
         let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ProfileUploadsTableViewCell
-        uploadView.image = cell.circleImageView.image
+//        uploadView.image = cell.circleImageView.image
+        uploadView.image = cell.circleButton.imageView?.image
         uploadView.itemTitle = cell.titleTextLabel.text
         uploadView.itemDescription = cell.descriptionTextLabel.text
         uploadView.recordIDName = cell.recordIDName
@@ -148,7 +149,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
 //                errorCompletionHandler: errorCompletionHandler))
         OperationQueue().addOperation(
             PostItemOperation(
-                image: UIImage(data: (item.valueForKey("image") as? NSData!)!)!,
+                image: UIImage(),
                 title: (item.valueForKey("title") as? String)!,
                 detail: (item.valueForKey("detail") as? String)!,
                 recordIDName: item.valueForKey("recordIDName") as? String,

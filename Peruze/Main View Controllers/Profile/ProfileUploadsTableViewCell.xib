@@ -23,24 +23,30 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyG-My-yFm">
-                        <rect key="frame" x="146" y="41" width="433" height="98"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyG-My-yFm">
+                        <rect key="frame" x="146" y="42" width="433" height="96"/>
                         <animations/>
                         <string key="text">I’ve been friends with this guy for a while now, and the stuff that he’s traded me is consistently quality. If you’re thinking about bartering with him, take my advice and DO IT! He might be a hard sell, but it’s totally I’ve been friends with this guy for a while now, and the stuff that he’s traded me is consistently quality. If you’re thinking about bartering with him, take my advice and DO IT! He might be a hard sell, but it’s totally I’ve been friends with this guy for a while now, and the stuff that he’s traded me is consistently quality. If you’re thinking about bartering with him, take my advice and DO IT! He might be a hard sell, but it’s totally I’ve been friends with this guy for a while now, and the stuff that he’s traded me is consistently quality. If you’re thinking about bartering with him, take my advice and DO IT! He might be a hard sell, but it’s totally</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aca-Dj-cCH" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
-                        <rect key="frame" x="8" y="8" width="130" height="131"/>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aca-Dj-cCH" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
+                        <rect key="frame" x="8" y="8" width="130" height="130"/>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="aca-Dj-cCH" secondAttribute="height" multiplier="1:1" id="Ofk-MK-E3Z"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="SubtitleLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6oX-LE-yyJ">
-                        <rect key="frame" x="146" y="27" width="68" height="14"/>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hc-jy-HS0">
+                        <rect key="frame" x="8" y="8" width="130" height="130"/>
+                        <state key="normal">
+                            <color key="titleColor" red="0.99607843139999996" green="0.65098039220000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="SubtitleLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6oX-LE-yyJ">
+                        <rect key="frame" x="146" y="28" width="69" height="14"/>
                         <animations/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,11 +62,15 @@
                     <constraint firstItem="aca-Dj-cCH" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="EDA-to-6LX"/>
                     <constraint firstItem="1uz-1L-7Uj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="MkI-B7-a5w"/>
                     <constraint firstItem="zyG-My-yFm" firstAttribute="top" secondItem="6oX-LE-yyJ" secondAttribute="bottom" id="PYf-5P-sVq"/>
+                    <constraint firstItem="5hc-jy-HS0" firstAttribute="bottom" secondItem="aca-Dj-cCH" secondAttribute="bottom" id="QBE-QK-XMb"/>
+                    <constraint firstItem="5hc-jy-HS0" firstAttribute="top" secondItem="aca-Dj-cCH" secondAttribute="top" id="UCb-Ay-scc"/>
                     <constraint firstItem="6oX-LE-yyJ" firstAttribute="leading" secondItem="1uz-1L-7Uj" secondAttribute="leading" id="Z5F-ac-SUL"/>
                     <constraint firstItem="zyG-My-yFm" firstAttribute="leading" secondItem="aca-Dj-cCH" secondAttribute="trailing" constant="8" symbolic="YES" id="g1y-bJ-mtk"/>
                     <constraint firstItem="6oX-LE-yyJ" firstAttribute="top" secondItem="1uz-1L-7Uj" secondAttribute="bottom" id="gJ1-Dt-UUg"/>
                     <constraint firstItem="aca-Dj-cCH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="rQA-ac-HOh"/>
                     <constraint firstItem="1uz-1L-7Uj" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="vcE-up-Amp"/>
+                    <constraint firstItem="5hc-jy-HS0" firstAttribute="leading" secondItem="aca-Dj-cCH" secondAttribute="leading" id="wsf-mX-heR"/>
+                    <constraint firstItem="5hc-jy-HS0" firstAttribute="trailing" secondItem="aca-Dj-cCH" secondAttribute="trailing" id="xm0-ON-bf7"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="zyG-My-yFm" secondAttribute="bottom" id="y4b-SF-6js"/>
                     <constraint firstItem="zyG-My-yFm" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="ydY-ub-xtG"/>
                 </constraints>
@@ -72,6 +82,7 @@
             </tableViewCellContentView>
             <animations/>
             <connections>
+                <outlet property="circleButton" destination="5hc-jy-HS0" id="Jbt-3w-yzK"/>
                 <outlet property="circleImageView" destination="aca-Dj-cCH" id="n5H-hL-Tve"/>
                 <outlet property="descriptionTextLabel" destination="zyG-My-yFm" id="QF5-4O-r5s"/>
                 <outlet property="subtitleTextLabel" destination="6oX-LE-yyJ" id="gb7-Gb-qgc"/>

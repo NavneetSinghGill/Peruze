@@ -363,7 +363,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
-                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruseItemMainScreen", object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName("justReloadPeruseItemMainScreen", object: nil)
                         completionBlock(true)
                     }
                     completionBlock(false)
@@ -1137,6 +1137,6 @@ func createUniqueName() -> String {
     let formattedDate = dateFormatter.stringFromDate(date)
 
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    return "\(me.valueForKey("recordIDName")!)\(formattedDate)"
+    return "\(me.valueForKey("recordIDName")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
 }
 

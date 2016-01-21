@@ -165,14 +165,15 @@ class InitialViewController: UIViewController {
             me.setValue(0, forKey: "isDelete")
             managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
             let modifyUserOperation = UpdateUserOperation(personToUpdate: (me)){
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.executeTabBar()
-                }
+//                dispatch_async(dispatch_get_main_queue()) {
+//                    self.executeTabBar()
+//                }
             }
             OperationQueue().addOperation(modifyUserOperation)
-        } else {
-            self.executeTabBar()
         }
+//        else {
+            self.executeTabBar()
+//        }
     }
     
     func executeTabBar() {tabBarVC = tabBarVC ?? storyboard!.instantiateViewControllerWithIdentifier(Constants.TabBarVCIdentifier) as? UITabBarController

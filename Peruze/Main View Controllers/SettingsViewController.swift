@@ -204,7 +204,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     if profileImages != nil && profileImages!.count != 0 && profileImageUrls != nil {
         if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String {
             for urlString in profileImageUrls! {
-                if urlLastComponent as! String == lastComponentOfString(urlString, char: "/") {
+                if urlLastComponent == lastComponentOfString(urlString, char: "/") {
                     let index = profileImageUrls?.indexOf(urlString)
                     if index == 0 {
                         self.tap(upperLeft)

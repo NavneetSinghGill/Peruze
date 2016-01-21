@@ -109,20 +109,23 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     cell.titleTextLabel.text = (item.valueForKey("title") as! String)
     cell.subtitleTextLabel.text = ""
     cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
-    if item.valueForKey("imageUrl") != nil {
-//        if item.valueForKey("image") != nil {
-//           cell.circleImageView.image = UIImage(data:(item.valueForKey("image") as! NSData))
-//        } else {
-//            cell.circleImageView.image = nil
-//        }
-        tempImageView = UIImageView()
-        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
-            cell.circleImageView.image = image
-            cell.contentView.setNeedsDisplay()
-        })
-    } else {
-        cell.circleImageView.image = UIImage()
+    
+//    if item.valueForKey("imageUrl") != nil {
+//        tempImageView = UIImageView()
+//        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+//            cell.circleImageView.image = image
+//            cell.contentView.setNeedsDisplay()
+//        })
+//    } else {
+//        cell.circleImageView.image = nil
+//    }
+    
+    if let imageUrl = item.valueForKey("imageUrl") as? String {
+        cell.circleButton.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), forState: UIControlState.Normal)
     }
+    cell.circleButton.layer.cornerRadius = cell.circleButton.frame.size.width / 2
+    cell.circleButton.layer.masksToBounds = true
+    
     if item.valueForKey("recordIDName") == nil {
         cell.recordIDName = nil
     } else {

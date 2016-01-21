@@ -10,6 +10,7 @@ import UIKit
 
 class ProfileUploadsTableViewCell: UITableViewCell {
     @IBOutlet weak var circleImageView: CircleImage!
+    @IBOutlet weak var circleButton: UIButton!
     @IBOutlet weak var titleTextLabel: UILabel!
     @IBOutlet weak var subtitleTextLabel: UILabel!
     @IBOutlet weak var descriptionTextLabel: UILabel!
