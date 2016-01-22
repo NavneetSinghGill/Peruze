@@ -38,8 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let defaults = NSUserDefaults.standardUserDefaults()
     if defaults.valueForKey("appLaunchedOnce") == nil{
        defaults.setValue("yes", forKey: "appLaunchedOnce")
+        defaults.synchronize()
        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
        resetBadgeCounter()
+        Model.sharedInstance().deleteAllSubscription()
     }
     if defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
         defaults.setValue("yes", forKey: UniversalConstants.kIsPushNotificationOn)

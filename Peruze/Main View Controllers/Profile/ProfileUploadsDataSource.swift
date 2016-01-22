@@ -123,7 +123,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     if let imageUrl = item.valueForKey("imageUrl") as? String {
         cell.circleButton.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), forState: UIControlState.Normal)
     }
-    cell.circleButton.layer.cornerRadius = cell.circleButton.frame.size.width / 2
+    cell.circleButton.layer.cornerRadius = 41.75
     cell.circleButton.layer.masksToBounds = true
     
     if item.valueForKey("recordIDName") == nil {

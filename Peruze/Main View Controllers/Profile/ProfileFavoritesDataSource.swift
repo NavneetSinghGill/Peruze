@@ -61,7 +61,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
         self.favorites = []
         for favoriteObj in favoriteObjs{
-            if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no"  {
+            if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1 {
                 self.favorites.append(favoriteObj)
             }
         }
@@ -119,7 +119,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
         if let imageUrl = item.valueForKey("imageUrl") as? String {
             cell.circleButton.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), forState: UIControlState.Normal)
         }
-        cell.circleButton.layer.cornerRadius = cell.circleButton.frame.size.width / 2
+        cell.circleButton.layer.cornerRadius = 41.75
         cell.circleButton.layer.masksToBounds = true
         
       } else {

@@ -31,16 +31,15 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   }
     
     override func viewWillAppear(animated: Bool) {
-        
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         if self.dataSource.fetchAndReloadLocalContent() == 0 {
             self.titleLabel.hidden = false
         } else {
             self.titleLabel.hidden = true
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
   override func viewDidLayoutSubviews() {
