@@ -23,14 +23,17 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
       dataSource.editableCells = tabBarController?.parentViewController?.tabBarController != nil
       tableView.dataSource = dataSource
       tableView.delegate = self
+      dataSource.presentationContext = self
     }
   }
   override func viewDidLoad() {
     super.viewDidLoad()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadNewLocalData", name: "reloadPeruzeExchangeScreen", object: nil)
   }
     
     override func viewWillAppear(animated: Bool) {
+        self.tableView.alpha = 1.0
         if self.dataSource.fetchAndReloadLocalContent() == 0 {
             self.titleLabel.hidden = false
         } else {
@@ -38,14 +41,17 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.reloadData()
   }
+    
+    func reloadNewLocalData() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
+    }
+    
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return Constants.TableViewCellHeight
   }

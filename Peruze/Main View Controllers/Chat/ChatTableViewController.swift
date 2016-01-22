@@ -328,7 +328,9 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     } else {
         destVC.title = cell.data?.valueForKey("itemRequested")!.valueForKey("title") as! String
     }
-    
+    if cell.itemImage.prominentImage == nil || cell.itemImage.lesserImage == nil {
+        return
+    }
     destVC.prominentImage = cell.itemImage.prominentImage!
     destVC.lesserImage = cell.itemImage.lesserImage!
     destVC.theirItemName = cell.theirItemNameLabel.text

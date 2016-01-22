@@ -49,7 +49,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         static let CollectionViewCell = "item"
     }
   }
-  
+    var presentationContext: UIViewController!
   //TODO: Get items
   var tableView: UITableView!
   var fetchedResultsController: NSFetchedResultsController!
@@ -58,7 +58,15 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   var personRecordID: String! {
     didSet {
       if personRecordID == nil { return }
-      self.fetchAndReloadLocalContent()
+        if self.fetchAndReloadLocalContent() == 0{
+            if let uploadController = self.presentationContext as? ProfileUploadsViewController {
+                uploadController.titleLabel.hidden = false
+            }
+        } else {
+            if let uploadController = self.presentationContext as? ProfileUploadsViewController {
+                uploadController.titleLabel.hidden = true
+            }
+        }
         if tableView != nil {
             tableView.reloadData()
         }
@@ -193,12 +201,19 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    dispatch_async(dispatch_get_main_queue()) {
+    
+    if NSThread.isMainThread() {
         if self.tableView != nil {
             self.tableView.endUpdates()
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
+    } else {
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.tableView != nil {
+                self.tableView.endUpdates()
+            }
+        }
     }
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
   }
     //MARK: - UICollectionViewDataSource methods
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

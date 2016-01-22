@@ -60,9 +60,9 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     var percentLoaded: Int?
     var profileImageUrls: [String]?{
         didSet {
-            if profileImageUrls?.count == Constants.NumberOfProfilePictures {
+//            if profileImageUrls?.count == Constants.NumberOfProfilePictures {
                 setupImageViews()
-            }
+//            }
         }
     }
   var profileImages: [UIImage]? {
@@ -129,6 +129,13 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             self.pushNotificationSwitch.on = true
         } else {
             self.pushNotificationSwitch.on = false
+        }
+        
+        if defaults.valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
+            defaults.valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
+                self.kIsPostingToFacebookOn.on = true
+        } else {
+            self.kIsPostingToFacebookOn.on = false
         }
         
         if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String{
@@ -219,8 +226,10 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             }
         } else {
             self.tap(upperLeft)
-            NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            if profileImageUrls != nil && profileImageUrls?.count != 0{
+                NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
         }
     }
   }

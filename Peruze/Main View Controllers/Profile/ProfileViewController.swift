@@ -66,6 +66,8 @@ class ProfileViewController: UIViewController {
     
     var isOtherUser: Bool!
     var newProfilePic: Bool!
+    var tempImageView1: UIImageView!
+    var uploadImageInProgress = false
     
     private let containerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     @IBOutlet weak var otherUserProfileSuperView: UIView!
@@ -104,7 +106,7 @@ class ProfileViewController: UIViewController {
         if (personForProfile?.valueForKey("imageUrl") as? String != nil) {
 //            profileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
 //            ouProfileImageView.image = UIImage(data: personForProfile!.valueForKey("image") as! NSData)
-            let tempImageView1 = UIImageView()
+            tempImageView1 = UIImageView()
             tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
                 self.profileImageView.image = image
                 self.ouProfileImageView.image = image
@@ -171,12 +173,14 @@ class ProfileViewController: UIViewController {
         self.view.setNeedsDisplay()
         if self.tabBarController != nil {
             if !newProfilePic {
-                self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
-                let tempImageView1 = UIImageView()
-                tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
-                    self.profileImageView.image = image
-                    self.view.setNeedsDisplay()
-                })
+                if uploadImageInProgress == false {
+                    self.personForProfile = Person.MR_findFirstByAttribute("me", withValue: true)
+                    tempImageView1 = UIImageView()
+                    tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(personForProfile!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                        self.profileImageView.image = image
+                        self.view.setNeedsDisplay()
+                    })
+                }
             }
             newProfilePic = false
         } else {
@@ -302,7 +306,7 @@ class ProfileViewController: UIViewController {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         let userInfo:NSDictionary = noti.userInfo!
         let updatedProfileImage = (userInfo.valueForKey("circleImage") as? CircleImage)!
-        
+        uploadImageInProgress = true
         self.view.reloadInputViews()
         let uniqueImageName = createUniqueName()
         let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: updatedProfileImage.image!)
@@ -312,6 +316,7 @@ class ProfileViewController: UIViewController {
                 logw("ProfileViewController profile Image upload to s3 failed with error: \(task.error)")
             } else {
                 logw("ProfileViewController profile Image upload to s3 success")
+                self.uploadImageInProgress = false
                 let imageData = UIImagePNGRepresentation(updatedProfileImage.image!)
                 me!.setValue(imageData, forKey: "image")
                 managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
@@ -319,8 +324,8 @@ class ProfileViewController: UIViewController {
                 managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                 let op = PostUserOperation(presentationContext: self, database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
                 OperationQueue().addOperation(op)
-                let tempImageView1 = UIImageView()
-                tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(me!.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
+                self.tempImageView1 = UIImageView()
+                self.tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(uniqueImageName)), completed: { (image, error, sdImageCacheType, url) -> Void in
                     dispatch_async(dispatch_get_main_queue()) {
                         self.profileImageView.image = nil
                         self.profileImageView.image = image
@@ -339,8 +344,11 @@ class ProfileViewController: UIViewController {
     }
     
     func refreshProfileVCData() {
-        ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
-        ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
+        dispatch_async(dispatch_get_main_queue()) {
+//            logw("=============================================\(NSThread.isMainThread())")
+            self.ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
+            self.ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
+        }
     }
     
     //MARK: - Handling Tab Segues

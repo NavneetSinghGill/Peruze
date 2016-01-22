@@ -216,7 +216,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 //                    let uploadOutput = task.result
                     
                     logw("OperationQueue().addOperation(PostItemOperation)")
-                    let successCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                    let successCompletionHandler = {
                         if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
                             //            let per = self.parentVC as! PeruseExchangeViewController
                             NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
@@ -227,12 +227,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                         }
                         if self.uploadButton.titleLabel?.text == "Upload" {
                             self.endUpload()
-                        } else {
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                        }
                         }
                     }
-                    let failureCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                    let failureCompletionHandler = { 
                         if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
                             //            let per = self.parentVC as! PeruseExchangeViewController
                             NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
@@ -247,7 +244,6 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                             self.endUpload()
                         } else {
                             self.dismissViewControllerAnimated(true, completion: nil)
-                        }
                         }
                     }
                     OperationQueue().addOperation(
