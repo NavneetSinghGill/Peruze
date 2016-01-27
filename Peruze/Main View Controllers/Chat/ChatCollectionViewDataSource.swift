@@ -47,7 +47,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   }
     
     func removeNoti() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "getChat", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "NewChat", object: nil)
     }
     
     func getChat() {

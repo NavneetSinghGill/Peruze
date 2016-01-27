@@ -2,6 +2,8 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9056" systemVersion="14F27" minimumToolsVersion="Xcode 7.0">
     <entity name="Exchange" representedClassName="Exchange" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateOfLatestChat" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="creator" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" syncable="YES"/>
@@ -67,7 +69,7 @@
         <relationship name="userBeingReviewed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="reviews" inverseEntity="Person" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exchange" positionX="97" positionY="-804" width="128" height="150"/>
+        <element name="Exchange" positionX="97" positionY="-804" width="128" height="178"/>
         <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
         <element name="Item" positionX="-36" positionY="-421" width="128" height="225"/>
         <element name="Message" positionX="-164" positionY="-762" width="128" height="180"/>

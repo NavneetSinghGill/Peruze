@@ -52,6 +52,15 @@ class ChatTableViewCell: UITableViewCell {
             } else {
                 self.mostRecentTextString.text = ""
             }
+            if data?.valueForKey("isRead") == nil || data?.valueForKey("isRead") as! Bool == true {
+                self.theirItemNameLabel.font = UIFont(name:"Helvetica-Medium", size: 16.0)
+                self.yourItemNameLabel.font = UIFont(name:"Helvetica-Light", size: 14.0)
+                self.mostRecentTextString.font = UIFont(name:"Helvetica-Light", size: 14.0)
+            } else {
+                self.theirItemNameLabel.font = UIFont(name:"Helvetica-Bold", size: 18.0)
+                self.yourItemNameLabel.font = UIFont(name:"Helvetica-Bold", size: 14.0)
+                self.mostRecentTextString.font = UIFont(name:"Helvetica-Bold", size: 14.0)
+            }
         } catch {
             logw("ChatTableViewCell fetching latest chat failed with error: \(error)")
         }

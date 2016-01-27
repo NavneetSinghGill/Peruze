@@ -398,17 +398,19 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     func endUpload() {
-        mainImageView.image = Constants.DefaultImage
-        self.image = Constants.DefaultImage
-        titleTextField.text = ""
-        descriptionTextView.text = ""
-        uploadingView?.endUpload() {
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            self.uploadingView?.removeFromSuperview()
-            if self.navigationController == nil {
-                self.dismissViewControllerAnimated(true, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.mainImageView.image = Constants.DefaultImage
+            self.image = Constants.DefaultImage
+            self.titleTextField.text = ""
+            self.descriptionTextView.text = ""
+            self.uploadingView?.endUpload() {
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                self.uploadingView?.removeFromSuperview()
+                if self.navigationController == nil {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                self.tabBarController?.selectedIndex = 0
             }
-            self.tabBarController?.selectedIndex = 0
         }
     }
     

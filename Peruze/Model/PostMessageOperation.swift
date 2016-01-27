@@ -39,6 +39,7 @@ class PostMessageOperation: GroupOperation {
       
       let uploadOp = UploadMessageWithTempRecordIDOperation(
         temporaryID: tempID,
+        exchangeRecordIDName: exchangeRecordIDName,
         database: database,
         context: context
       )
@@ -129,13 +130,16 @@ temporary ID from the message with the actual ID from the server.
 */
 class UploadMessageWithTempRecordIDOperation: Operation {
   let temporaryID: String
+  let exchangeRecordIDName: String
   let database: CKDatabase
   let context: NSManagedObjectContext
   
   init(temporaryID: String,
+    exchangeRecordIDName: String,
     database: CKDatabase,
     context: NSManagedObjectContext = managedConcurrentObjectContext) {
       self.temporaryID = temporaryID
+      self.exchangeRecordIDName = exchangeRecordIDName
       self.database = database
       self.context = context
       super.init()
@@ -163,6 +167,9 @@ class UploadMessageWithTempRecordIDOperation: Operation {
     
     saveRecordsOp.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
       localMessage.setValue(savedRecords?.first?.recordID.recordName, forKey: "recordIDName")
+        let localExchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: self.exchangeRecordIDName,inContext: self.context)
+        localExchange.setValue(savedRecords?.first?.modificationDate!, forKey: "dateOfLatestChat")
+        
       self.context.MR_saveToPersistentStoreAndWait()
       self.finishWithError(operationError)
     }

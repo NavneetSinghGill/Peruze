@@ -65,7 +65,8 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     inputToolbar?.contentView?.leftBarButtonItem?.enabled = true
     inputToolbar?.contentView?.rightBarButtonItem = completeButton
     inputToolbar?.contentView?.rightBarButtonItem?.enabled = true
-    NSNotificationCenter.defaultCenter().addObserver(dataSource!, selector: "getChat", name: "getChat", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(dataSource!, selector: "getChat", name: "NewChat", object: nil)
+//    NSNotificationCenter.defaultCenter().addObserver(self, selector: "checkForExchangeAndRefresh:", name: "NewChat", object: nil)
   }
     
     override func viewWillAppear(animated: Bool) {
@@ -85,6 +86,19 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
             self.dataSource?.getChatAfterDate(NSDate(timeIntervalSince1970: 0 ))
         }
     }
+    
+//    func checkForExchangeAndRefresh(notification: NSNotification) {
+//        if notification.userInfo != nil {
+//            let userInfo : NSDictionary = notification.userInfo!
+//            let exchangeRecordIDName = userInfo.valueForKey("exchangeRecordIDName") as! String
+//            let context = NSManagedObjectContext.MR_context()
+//            let exchangeFromOtherContext = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName, inContext: context)
+//            if exchangeRecordIDName == exchangeFromOtherContext.valueForKey("recordIDName") as! String {
+//                exchangeFromOtherContext.setValue(true, forKey: "isRead")
+//                context.MR_saveToPersistentStoreAndWait()
+//            }
+//        }
+//    }
     
   //MARK: - Required Subclassing Methods for Collection View and Layout
   override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

@@ -33,8 +33,8 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
         let itemRequestedImageUrlNotNil = NSPredicate(format: "itemRequested.imageUrl != nil")
         let itemOfferedTitleNotNil = NSPredicate(format: "itemOffered.title != nil")
         let itemRequestedTitleNotNil = NSPredicate(format: "itemRequested.title != nil")
-        fetchedResultsController = Exchange.MR_fetchAllSortedBy("date",
-            ascending: true,
+        fetchedResultsController = Exchange.MR_fetchAllSortedBy("dateOfLatestChat",
+            ascending: false,
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [chatPredicate, itemOfferedNotNil, itemRequestedNotNil, itemOfferedImageUrlNotNil, itemRequestedImageUrlNotNil, itemOfferedTitleNotNil, itemRequestedTitleNotNil]),
             groupBy: nil,
             delegate: self)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ChatCollectionContainerViewController: UIViewController {
     
@@ -58,6 +59,14 @@ class ChatCollectionContainerViewController: UIViewController {
         
         self.navigationItem.setLeftBarButtonItems([backBarButton, leftButton], animated: true)
         self.navigationItem.setRightBarButtonItems([rightButton], animated: false)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        let context = NSManagedObjectContext.MR_context()
+        let ex = Exchange.MR_findFirstByAttribute("recordIDName", withValue: self.exchange.valueForKey("recordIDName") as! String, inContext: context)
+        ex.setValue(true, forKey: "isRead")
+        context.MR_saveToPersistentStoreAndWait()
     }
     
     func backButtonTapped() {

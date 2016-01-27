@@ -581,18 +581,21 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         localMessage.setValue(record!.objectForKey("Date") as? NSDate, forKey: "date")
                         
+                        var exchangeRecordIDName = ""
                         if let exchange = record!.objectForKey("Exchange") as? CKReference {
                             let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
                                 withValue: exchange.recordID.recordName,
                                 inContext: managedConcurrentObjectContext)
+                            messageExchange.setValue(record!.modificationDate, forKey: "dateOfLatestChat")
                             localMessage.setValue(messageExchange, forKey: "exchange")
+                            exchangeRecordIDName = exchange.recordID.recordName
                         }
                         
                         let sender = Person.MR_findFirstOrCreateByAttribute("me",
                             withValue: true,
                             inContext: managedConcurrentObjectContext)
                         if (record!.creatorUserRecordID?.recordName == "__defaultOwner__") ||
-                            (record!.creatorUserRecordID?.recordName == sender?.valueForKey("recordIDName") as! String) {
+                            (record!.creatorUserRecordID?.recordName == sender?.valueForKey("recordIDName") as? String) {
                                 localMessage.setValue(sender, forKey: "sender")
                         } else {
                             let sender = Person.MR_findFirstOrCreateByAttribute("recordIDName",
@@ -603,7 +606,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                        NSNotificationCenter.defaultCenter().postNotificationName("getChat", object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName("NewChat", object: nil, userInfo: ["exchangeRecordIDName": exchangeRecordIDName])
                     }
                 }
             }))

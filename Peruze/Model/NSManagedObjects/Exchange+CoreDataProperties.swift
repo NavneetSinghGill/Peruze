@@ -21,5 +21,7 @@ extension Exchange {
     @NSManaged var itemOffered: Item?
     @NSManaged var itemRequested: Item?
     @NSManaged var messages: NSSet?
+    @NSManaged var dateOfLatestChat: NSDate?
+    @NSManaged var isRead: NSNumber?
 
 }

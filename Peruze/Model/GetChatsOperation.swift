@@ -118,6 +118,9 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
         let messageExchange = Exchange.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: exchange.recordID.recordName,
           inContext: self.context)
+        if messageExchange.valueForKey("dateOfLatestChat") == nil || (record.valueForKey("modificationDate") as! NSDate).timeIntervalSince1970 > (messageExchange.valueForKey("dateOfLatestChat") as! NSDate).timeIntervalSince1970 {
+            messageExchange.setValue(record.valueForKey("modificationDate"), forKey: "dateOfLatestChat")
+        }
         localMessage.setValue(messageExchange, forKey: "exchange")
       }
       

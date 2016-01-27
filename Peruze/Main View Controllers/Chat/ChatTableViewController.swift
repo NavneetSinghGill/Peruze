@@ -34,6 +34,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     super.viewDidLoad()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchanges", name: NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "showChatScreen:", name: NotificationCenterKeys.LNAcceptedRequest, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchangesAndSetRead:", name: "NewChat", object: nil)
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
@@ -106,6 +107,26 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         } else {
             self.noChatsLabel.hidden = true
             self.noChatsLabel.alpha = 0.0
+        }
+    }
+    
+    func getLocalAcceptedExchangesAndSetRead(notification: NSNotification) {
+        if notification.userInfo != nil {
+            let userInfo: NSDictionary = notification.userInfo!
+            let exchangeRecordIDName = userInfo.valueForKey("exchangeRecordIDName") as! String
+            let context = NSManagedObjectContext.MR_context()
+            let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName, inContext: context)
+            if self.navigationController?.childViewControllers.count == 1 {
+                exchange.setValue(false, forKey: "isRead")
+                context.MR_saveToPersistentStoreAndWait()
+                getLocalAcceptedExchanges()
+                return
+            }
+            if let chatCollectionContainerVC = self.navigationController?.childViewControllers[1] as? ChatCollectionContainerViewController {
+                exchange.setValue(true, forKey: "isRead")
+                context.MR_saveToPersistentStoreAndWait()
+                getLocalAcceptedExchanges()
+            }
         }
     }
     
