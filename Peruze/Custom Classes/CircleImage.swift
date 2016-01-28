@@ -20,7 +20,7 @@ public class CircleImage: UIView {
     }
     public var strokeWidth: CGFloat = 0 { didSet { setNeedsDisplay() } }
     public var selected = false { didSet { setNeedsDisplay() } }
-    private var imageView: UIImageView?
+    var imageView: UIImageView?
     var circleView: UIView?
     
     // MARK: - Init

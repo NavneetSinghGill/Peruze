@@ -76,6 +76,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
                 cell.imageView.image = image
                 cell.setNeedsDisplay()
             })
+            cell.imageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)))
         } else {
             cell.imageView.image = nil
         }

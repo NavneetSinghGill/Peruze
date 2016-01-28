@@ -24,7 +24,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
     
     struct FriendsDataAndProfilePic {
         var friendData: NSDictionary!
-        var profileImage: CircleImage?
+        var profileImageUrl: String!
     }
     var taggableFriendsData = [FriendsDataAndProfilePic]()
     var sortedFriendsData = [FriendsDataAndProfilePic]()
@@ -53,9 +53,13 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         let userDict =  parsedObject.friendData
         cell!.nameLabel.text = userDict?.valueForKey("name") as? String
         cell!.friendDataDict = userDict
+        cell!.profileImageView.hidden = true
+        cell!.profileImageButton.hidden = false
+        cell!.profileImageButton.layer.cornerRadius = cell!.profileImageView.frame.size.width / 2
+        cell!.profileImageButton.layer.masksToBounds = true
         
-        if parsedObject.profileImage?.image != nil {
-            cell?.profileImageView.image = parsedObject.profileImage?.image
+        if parsedObject.profileImageUrl != nil {
+            cell?.profileImageButton.sd_setImageWithURL(NSURL(string: s3Url(parsedObject.profileImageUrl)), forState: UIControlState.Normal)
         }
         return cell!
     }
@@ -64,23 +68,23 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!
-        let profileImage = CircleImage()
+        var profileImageUrl = ""
         NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":mutualFriendIds.count])
         for id in mutualFriendIds {
             person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: id as! String)
             if person != nil {
                 var data : NSMutableDictionary = [:]
-                profileImage.image = nil
+                profileImageUrl = ""
                 if person.valueForKey("firstName") != nil && person.valueForKey("lastName") != nil {
                     data = ["name": "\(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!)"]
                 }
-                if person.valueForKey("image") != nil {
-                    profileImage.image = UIImage(data: person.valueForKey("image") as! NSData)
+                if person.valueForKey("imageUrl") != nil {
+                    profileImageUrl = person.valueForKey("imageUrl") as! String
                 }
                 if person.valueForKey("recordIDName") != nil {
                     data.addEntriesFromDictionary(["recordIDName": person.valueForKey("recordIDName")!])
                 }
-                newSortedFriendsData.append(FriendsDataAndProfilePic(friendData: data, profileImage: profileImage))
+                newSortedFriendsData.append(FriendsDataAndProfilePic(friendData: data, profileImageUrl: profileImageUrl))
             } else {
                 let personPredicate = NSPredicate(format: "FacebookID == %@", id as! String)
                 let personQuery = CKQuery(recordType: RecordTypes.Users, predicate: personPredicate)
@@ -106,49 +110,49 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         return self.sortedFriendsData.count
     }
     
-    func getTaggableFriends() {
-//        self.activityIndicatorView.startAnimating()
-        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
-        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            if error == nil {
-                logw("Taggable Friends are : \(result)")
-                
-                var resultsArray = result.valueForKey("data") as! NSArray
-                resultsArray = resultsArray.sort { (element1, element2) -> Bool in
-                    return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
-                }
-                
-                self.taggableFriendsData = []
-                let newSortedFriendsData = [FriendsDataAndProfilePic]()
-                for friendData in resultsArray {
-                    let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImage: CircleImage())
-                    newFriendData.profileImage?.image = nil
-                    
-                    let facebookProfileUrl = ((friendData.valueForKey("picture") as! NSDictionary).valueForKey("data") as! NSDictionary).valueForKey("url") as! String
-                    let url = NSURL(string: facebookProfileUrl)
-                    if let data = NSData(contentsOfURL: url!) {
-                        newFriendData.profileImage?.image = UIImage(data: data)
-                    }
-                    
-                    self.taggableFriendsData.append(newFriendData)
-                    
-                    dispatch_async(dispatch_get_main_queue()){
-//                        self.activityIndicatorView.stopAnimating()
-                        if self.tableView != nil {
-                            self.tableView.reloadData()
-                        }
-                    }
-                }
-            } else {
-                logw("Error Getting Friends \(error)");
-            }
-        }
-        dispatch_async(dispatch_get_main_queue()){
-            if self.tableView != nil {
-                self.tableView.reloadData()
-            }
-        }
-    }
+//    func getTaggableFriends() {
+////        self.activityIndicatorView.startAnimating()
+//        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
+//        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+//            if error == nil {
+//                logw("Taggable Friends are : \(result)")
+//                
+//                var resultsArray = result.valueForKey("data") as! NSArray
+//                resultsArray = resultsArray.sort { (element1, element2) -> Bool in
+//                    return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
+//                }
+//                
+//                self.taggableFriendsData = []
+//                let newSortedFriendsData = [FriendsDataAndProfilePic]()
+//                for friendData in resultsArray {
+//                    let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImage: CircleImage())
+//                    newFriendData.profileImage?.image = nil
+//                    
+//                    let facebookProfileUrl = ((friendData.valueForKey("picture") as! NSDictionary).valueForKey("data") as! NSDictionary).valueForKey("url") as! String
+//                    let url = NSURL(string: facebookProfileUrl)
+//                    if let data = NSData(contentsOfURL: url!) {
+//                        newFriendData.profileImage?.image = UIImage(data: data)
+//                    }
+//                    
+//                    self.taggableFriendsData.append(newFriendData)
+//                    
+//                    dispatch_async(dispatch_get_main_queue()){
+////                        self.activityIndicatorView.stopAnimating()
+//                        if self.tableView != nil {
+//                            self.tableView.reloadData()
+//                        }
+//                    }
+//                }
+//            } else {
+//                logw("Error Getting Friends \(error)");
+//            }
+//        }
+//        dispatch_async(dispatch_get_main_queue()){
+//            if self.tableView != nil {
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
     
     //MARK: Get mutual friends
     func getMutualFriendsFromCloud() {

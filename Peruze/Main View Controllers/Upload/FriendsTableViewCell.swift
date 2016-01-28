@@ -10,6 +10,7 @@ import UIKit
 
 class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: CircleImage!
+    @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var inviteButton: UIButton!
     var friendDataDict: NSDictionary!

@@ -59,7 +59,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let parsedObject = dataSource.sortedFriendsData[indexPath.row]
-        NSNotificationCenter.defaultCenter().postNotificationName("RefreshUser", object: nil, userInfo: ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage!])
+        NSNotificationCenter.defaultCenter().postNotificationName("RefreshUser", object: nil, userInfo: ["friendData":parsedObject.friendData, "imageUrl": parsedObject.profileImageUrl])
     }
 
     

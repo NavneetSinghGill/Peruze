@@ -198,9 +198,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
             self.timer?.invalidate()
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(200, target: self, selector: nil, userInfo: nil, repeats: true)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(99999, target: self, selector: nil, userInfo: nil, repeats: true)
             if wasMainImageChanged == true {
-                logw("UploadViewController Image Upload to s3 started at time: \(self.timer?.timeInterval)")
+                logw("UploadViewController Image Upload to s3 started.")
                 let uniqueImageName = createUniqueName()
                 let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
                 let transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -286,7 +286,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     }
     
     func timeIntervalSince(fromDate: NSDate) -> NSTimeInterval{
-        return fromDate.timeIntervalSinceDate(NSDate())
+        return 99999 - fromDate.timeIntervalSinceDate(NSDate())
     }
     
     func cancelButtonTapped(sender: UIButton) {

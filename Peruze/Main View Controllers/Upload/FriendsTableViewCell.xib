@@ -23,6 +23,10 @@
                             <constraint firstAttribute="width" secondItem="pv1-QW-AoJ" secondAttribute="height" multiplier="1:1" id="8KK-Sr-DgH"/>
                         </constraints>
                     </view>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2u-3N-8dC">
+                        <rect key="frame" x="13" y="8" width="33" height="33"/>
+                        <state key="normal" title="Button"/>
+                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="751" text="Jafar's" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HL7-5O-eRa">
                         <rect key="frame" x="66" y="15" width="52" height="20"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -39,7 +43,11 @@
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="M4D-Qq-WVT" secondAttribute="bottom" id="1ok-mj-zee"/>
                     <constraint firstItem="pv1-QW-AoJ" firstAttribute="leading" secondItem="Bdg-0C-rhJ" secondAttribute="leadingMargin" constant="5" id="5DF-pv-CSU"/>
+                    <constraint firstItem="y2u-3N-8dC" firstAttribute="trailing" secondItem="pv1-QW-AoJ" secondAttribute="trailing" id="AnN-8U-zJp"/>
                     <constraint firstItem="M4D-Qq-WVT" firstAttribute="leading" secondItem="pv1-QW-AoJ" secondAttribute="trailing" id="Buy-sG-uK2"/>
+                    <constraint firstItem="y2u-3N-8dC" firstAttribute="leading" secondItem="pv1-QW-AoJ" secondAttribute="leading" id="GWn-NX-NfP"/>
+                    <constraint firstItem="y2u-3N-8dC" firstAttribute="top" secondItem="pv1-QW-AoJ" secondAttribute="top" id="H6e-U8-He1"/>
+                    <constraint firstItem="y2u-3N-8dC" firstAttribute="bottom" secondItem="pv1-QW-AoJ" secondAttribute="bottom" id="KyK-IJ-6eF"/>
                     <constraint firstAttribute="bottomMargin" secondItem="pv1-QW-AoJ" secondAttribute="bottom" id="XS2-2v-SD6"/>
                     <constraint firstItem="pv1-QW-AoJ" firstAttribute="top" secondItem="Bdg-0C-rhJ" secondAttribute="topMargin" id="cGt-lo-Y2o"/>
                     <constraint firstItem="HL7-5O-eRa" firstAttribute="centerY" secondItem="Bdg-0C-rhJ" secondAttribute="centerY" id="hrw-hC-1fF"/>
@@ -50,6 +58,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="nameLabel" destination="HL7-5O-eRa" id="hLn-X1-vYU"/>
+                <outlet property="profileImageButton" destination="y2u-3N-8dC" id="cmh-3L-8Qg"/>
                 <outlet property="profileImageView" destination="pv1-QW-AoJ" id="OEa-EH-hVI"/>
             </connections>
             <point key="canvasLocation" x="234.5" y="356"/>

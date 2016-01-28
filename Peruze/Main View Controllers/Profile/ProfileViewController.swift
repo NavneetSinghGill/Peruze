@@ -626,8 +626,8 @@ class ProfileViewController: UIViewController {
                 let userDictionary = userInfo.valueForKey("friendData")
                 let userId = userDictionary!.valueForKey("recordIDName") as? String
                 self.personForProfile = Person.MR_findFirstWithPredicate(NSPredicate(format: "recordIDName = %@",userId!))
-                if (self.personForProfile?.valueForKey("image") as? NSData != nil) {
-                    self.ouProfileImageView.image = UIImage(data: self.personForProfile!.valueForKey("image") as! NSData)
+                if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
+                    self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
                     self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
                 }
                 self.updateViewAfterGettingResponse()
