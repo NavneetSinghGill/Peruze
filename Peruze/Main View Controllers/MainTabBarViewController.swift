@@ -143,6 +143,9 @@ class MainTabBarViewController: UITabBarController {
 //                        }
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category, badgeCount: Int(badge))
+                    } else if category == NotificationCategoryMessages.NewReview {
+                        let recordID = CKRecordID(recordName: info["recordID"] as! String)
+                        Model.sharedInstance().fetchReviewWithRecord(recordID)
                     }
 //                }
                 resetBadgeValue()

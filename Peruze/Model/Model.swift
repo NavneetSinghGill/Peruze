@@ -58,6 +58,7 @@ struct NotificationCategoryMessages {
     static let ItemDeletion = "Item Deleted"
     static let UserStatusUpdate = "User update"
     static let AcceptedOfferMessage = "acceptedOfferMessage"
+    static let NewReview = "Review added"
 }
 
 struct UniversalConstants {
@@ -696,6 +697,60 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
+    func fetchReviewWithRecord(recordID: CKRecordID) -> Void
+    {   self.publicDB = CKContainer.defaultContainer().publicCloudDatabase
+        self.publicDB.fetchRecordWithID(recordID,
+            completionHandler: ({record, error in
+                if let err = error {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        //                        self.notifyUser("Fetch Error", message:
+                        //                            err.localizedDescription)
+                        logw("Error while fetching Exchange : \(err)")
+                    }
+                } else {
+                    if record?.recordType == RecordTypes.Review {
+                        let context = NSManagedObjectContext.MR_context()
+                        let localReview = Review.MR_findFirstOrCreateByAttribute("recordIDName",
+                            withValue: record!.recordID.recordName, inContext: context)
+                        
+                        if let detail = record!.objectForKey("Description") as? String {
+                            localReview.detail = detail
+                        }
+                        
+                        if let starRating = record!.objectForKey("StarRating") as? NSNumber {
+                            localReview.starRating = starRating
+                        }
+                        
+                        if let title = record!.objectForKey("Title") as? String {
+                            localReview.title = title
+                        }
+                        
+                        if let userBeingReviewed = record!.objectForKey("UserBeingReviewed") as? CKReference {
+                            let userReviewedIDName = userBeingReviewed.recordID.recordName
+                            logw(userReviewedIDName)
+                            let reviewedUser = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: userReviewedIDName, inContext: context)
+                            context.MR_saveToPersistentStoreAndWait()
+                            localReview.userBeingReviewed = reviewedUser
+                        }
+                        
+                        localReview.date = record!.creationDate
+                        
+                        if var creator = record!.creatorUserRecordID?.recordName {
+                            if creator == "__defaultOwner__"{
+                                creator = Person.MR_findFirstByAttribute("me",withValue: true, inContext: context).valueForKey("recordIDName") as! String
+                            }
+                            let reviewer = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: creator, inContext: context)
+                            context.MR_saveToPersistentStoreAndWait()
+                            localReview.reviewer = reviewer
+                        }
+                        
+                        //save the context
+                        context.MR_saveToPersistentStoreAndWait()
+                    }
+                }
+            }))
+    }
+    
     func getAllDeleteUsers() {
         let predicate = NSPredicate(value: true)
         let getUsersQuery = CKQuery(recordType: RecordTypes.UsersStatus, predicate: predicate)
@@ -1002,6 +1057,36 @@ class Model: NSObject, CLLocationManagerDelegate {
                     logw("DisablingProfile subscription failed \(err.localizedDescription)")
                 } else {
                     logw("DisablingProfile subscription success")
+                }
+                self.subscribeForReviews()
+            }))
+    }
+    
+    func subscribeForReviews() {
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let recordID = CKRecordID(recordName: me.recordIDName!)
+        let predicate = NSPredicate(format: "UserBeingReviewed == %@", CKReference(recordID: recordID, action: .None))
+        let subscription = CKSubscription(recordType: "Review",
+            predicate: predicate,
+            options: .FiresOnRecordCreation)
+        
+        let notificationInfo = CKNotificationInfo()
+        
+        notificationInfo.shouldSendContentAvailable = true
+        
+        if #available(iOS 9.0, *) {
+            notificationInfo.category = NotificationCategoryMessages.NewReview
+        }
+        
+        subscription.notificationInfo = notificationInfo
+        publicDatabase.saveSubscription(subscription,
+            completionHandler: ({returnRecord, error in
+                if let err = error {
+                    logw("New Review subscription failed \(err.localizedDescription)")
+                } else {
+                    logw("New Review  subscription success")
                 }
             }))
     }
