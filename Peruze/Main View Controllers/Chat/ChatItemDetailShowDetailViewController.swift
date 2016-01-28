@@ -44,10 +44,12 @@ class ChatItemDetailShowDetailViewController: UIViewController, UICollectionView
     }
     
     override func viewWillAppear(animated: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         super.viewWillAppear(animated)
     }
     
     func backButtonTapped() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -74,6 +76,7 @@ class ChatItemDetailShowDetailViewController: UIViewController, UICollectionView
     }
     
     func getFavorites() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         var trueFavorites = [NSManagedObject]()
         if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {

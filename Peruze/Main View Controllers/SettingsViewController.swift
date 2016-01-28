@@ -82,6 +82,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
     //distance
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     distanceValues.sortInPlace(<)
     distanceSlider.minimumValue = distanceValues.first!
     distanceSlider.maximumValue = distanceValues.last!
@@ -123,6 +124,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let defaults = NSUserDefaults.standardUserDefaults()
         if defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) == nil ||
            defaults.valueForKey(UniversalConstants.kIsPushNotificationOn) as! String == "yes" {
@@ -148,6 +150,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   override func viewDidAppear(animated: Bool) {
     super.viewWillAppear(animated)
     super.viewDidLoad()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     facebookData.profilePictureRetrievalDelegate = self
     facebookData.getProfilePhotosWithCompletion { [unowned self] (success, error) -> Void in
         if !success {
@@ -167,6 +170,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if loadingCircle == nil {
       setupLoadingViews()
       
@@ -178,7 +182,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
   }
   //MARK: - Setup
-  private func setupLoadingViews() {
+    private func setupLoadingViews() {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let loadingX: CGFloat = 0
     let loadingY: CGFloat = 0
     let loadingSideLength = min(loadingViewContainer.frame.width, loadingViewContainer.frame.height)
@@ -190,6 +195,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
     
     func lastComponentOfString(source:String, char: String) -> String {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let reverseSoruce = String(source.characters.reverse())
         if let range = reverseSoruce.rangeOfString(char){
             return source.substringFromIndex(range.endIndex)
@@ -198,7 +204,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         }
     }
     
-  private func setupImageViews() {
+    private func setupImageViews() {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     var views = [upperLeft, upperRight, lowerLeft, lowerRight]
     for index in 0..<Constants.NumberOfProfilePictures {
       views[index].hidden = false
@@ -208,7 +215,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       }
     }
 
-    if profileImages != nil && profileImages!.count != 0 && profileImageUrls != nil {
+        if profileImages != nil && profileImages!.count != 0 && profileImageUrls != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if let urlLastComponent = NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kCurrentProfilePicUrl) as? String {
             for urlString in profileImageUrls! {
                 if urlLastComponent == lastComponentOfString(urlString, char: "/") {
@@ -235,7 +243,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
   //MARK: - Errors and Alerts
-  private func profilePictureFetchingError() {
+    private func profilePictureFetchingError() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let notEnoughProfilePicturesAlertView = UIAlertView(title: Constants.Alerts.ProfilePhoto.Title,
       message: Constants.Alerts.ProfilePhoto.Message,
       delegate: nil,
@@ -244,18 +253,21 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     for view in [upperLeft, upperRight, lowerLeft, lowerRight] { view.hidden = true }
   }
   
-  private func logOutOfFacebookAlertWithCompletion(completion: (Bool -> Void)) {
+    private func logOutOfFacebookAlertWithCompletion(completion: (Bool -> Void)) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //TODO: you're about to log out of facebook
     completion(true)
   }
   
-  private func deleteAccountAlertWithCompletion(completion: (Bool -> Void)) {
+    private func deleteAccountAlertWithCompletion(completion: (Bool -> Void)) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //TODO: you're about to permanently delete everything
     completion(true)
   }
   
   //MARK: - Gesture Handling
-  @IBAction func tapUpperLeft(sender: UITapGestureRecognizer) {
+    @IBAction func tapUpperLeft(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if UIImagePNGRepresentation(upperLeft.image!) != nil {
         tap(upperLeft)
         NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![0], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
@@ -264,6 +276,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
   }
     @IBAction func tapLowerLeft(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if UIImagePNGRepresentation(lowerLeft.image!) != nil {
             tap(lowerLeft)
             NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![2], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
@@ -272,6 +285,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         }
   }
     @IBAction func tapUpperRight(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if UIImagePNGRepresentation(upperRight.image!) != nil {
             tap(upperRight)
             NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![1], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
@@ -280,6 +294,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         }
   }
     @IBAction func tapLowerRight(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if UIImagePNGRepresentation(lowerRight.image!) != nil {
             tap(lowerRight)
             NSUserDefaults.standardUserDefaults().setValue(lastComponentOfString(profileImageUrls![3], char: "/"), forKey: UniversalConstants.kCurrentProfilePicUrl)
@@ -288,18 +303,21 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         }
   }
     
-  private func tap(selectedImage: CircleImage) {
+    private func tap(selectedImage: CircleImage) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     for obj in [upperLeft, upperRight, lowerRight, lowerLeft] { obj.selected = false }
     selectedImage.selected = true
     profilePicUpdate(selectedImage)
   }
     
     func profilePicUpdate(selectedImage: CircleImage){
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
             selectedCircleImage = selectedImage
     }
     
   //MARK: - Handling Buttons
-  @IBAction func logOutOfFacebook(sender: UIButton) {
+    @IBAction func logOutOfFacebook(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     FBSDKAccessToken.setCurrentAccessToken(nil)
     FBSDKLoginManager().logOut()
     Model.sharedInstance().deleteAllSubscription()
@@ -310,7 +328,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))
   }
   
-  @IBAction func deleteProfile(sender: UIButton) {
+    @IBAction func deleteProfile(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
 //    FBSDKAccessToken.setCurrentAccessToken(nil)
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
     me.setValue(1, forKey: "isDelete")
@@ -322,7 +341,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       OperationQueue().addOperation(modifyUserOperation)
   }
   
-  @IBAction func done(sender: UIBarButtonItem) {
+    @IBAction func done(sender: UIBarButtonItem) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && distanceSlider.value != distanceSlider.maximumValue {
       showMustChangeLocationSettingAlert()
     } else if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") && friendsSlider.value != friendsSlider.maximumValue {
@@ -347,14 +367,17 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
     @IBAction func inviteFacebookFriendsButtonTapped(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         performSegueWithIdentifier(Constants.friendsNavigationSegueIdentifier, sender: self)
     }
     
     @IBAction func sendLogs(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         sendReportWithAttachment()
     }
 
     @IBAction func pushNotificationSwitchTapped(sender: UISwitch) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let defaults = NSUserDefaults.standardUserDefaults()
         if sender.on == false {
             defaults.setValue("no", forKey: UniversalConstants.kIsPushNotificationOn)
@@ -379,16 +402,20 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             self.pushNotificationSwitch.on = !self.pushNotificationSwitch.on
             self.pushNotificationSwitch.userInteractionEnabled = true
         }
+        logw("Pushnotification switch is now: \(pushNotificationSwitch.on)")
     }
     @IBAction func postToFacebookSwitchTapped(sender: UISwitch) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if sender.on == false{
             NSUserDefaults.standardUserDefaults().setValue("no", forKey: UniversalConstants.kIsPostingToFacebookOn)
         } else {
             NSUserDefaults.standardUserDefaults().setValue("yes", forKey: UniversalConstants.kIsPostingToFacebookOn)
         }
+        logw("FacebookPost switch is now: \(sender.on)")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     @IBAction func termsAndConditionsButtonTapped(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
         if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
             termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.terms
@@ -396,6 +423,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         presentViewController(termsAndConditionNavigationController, animated: true, completion: nil)
     }
     @IBAction func safetyButtonTapped(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
         if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
             termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.safety
@@ -403,6 +431,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         presentViewController(termsAndConditionNavigationController, animated: true, completion: nil)
     }
     @IBAction func privacyPolicyButtonTapped(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let termsAndConditionNavigationController = storyboard!.instantiateViewControllerWithIdentifier("toTermsConditionNavigationController") as! UINavigationController
         if let termsAndConditionViewController = termsAndConditionNavigationController.childViewControllers[0] as? TermsConditionViewController {
             termsAndConditionViewController.fileToShow = TermsConditionViewController.FileOnDemand.privacyPolicy
@@ -433,7 +462,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     default:
       assertionFailure("the slider's value is outside of the given range")
     }
-    
+    logw("Friends slider is set to: \(sender.value)")
     //check to make sure everything is within bounds of privacy settings
     if !FBSDKAccessToken.currentAccessToken().hasGranted("user_friends") {
       let manager = FBSDKLoginManager()
@@ -473,7 +502,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     } else {
       rangeLabel.text = "\(Int(sender.value)) mi"
     }
-    
+    logw("Distance Slider is set to: \(sender.value)")
     //check to make sure everything is within bounds of privacy settings
     if sender.value == sender.maximumValue { return }
     if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
@@ -515,7 +544,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   
   //MARK: - Alerts
-  private func showMustChangeLocationSettingAlert() {
+    private func showMustChangeLocationSettingAlert() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let title = "Can't Access Location"
     let message = "We don't know where you are! You can change the location settings in the Settings app or keep your range as Everywhere."
     let cancelTitle = "Dismiss"
@@ -533,7 +563,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     alert.addAction(settingsAction)
     presentViewController(alert, animated: true, completion: nil)
   }
-  private func mustChangeFacebookFriendsAccessSetting() {
+    private func mustChangeFacebookFriendsAccessSetting() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let title = "Can't Access Friends"
     let message = "Because of your security settings, we can't see who your friends are on Facebook! You can change that in Settings later, but for now, you'll see everyone's posts."
     let cancelTitle = "Dismiss"
@@ -548,7 +579,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     
     
     func sendReportWithAttachment() {
-        logw("\(__FUNCTION__)")
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if( MFMailComposeViewController.canSendMail() ) {
             logw("Can send email.")
             
@@ -607,6 +638,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.dismissViewControllerAnimated(true, completion: nil)
         if error != nil{
             let alertController = UIAlertController(title: "Peruzr", message: "There was an error while sending mail. Please try again later.", preferredStyle: .Alert)

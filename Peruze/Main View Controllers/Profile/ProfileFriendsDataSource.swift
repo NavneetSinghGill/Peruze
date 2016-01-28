@@ -51,6 +51,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         }
         let parsedObject = self.sortedFriendsData[indexPath.row]
         let userDict =  parsedObject.friendData
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with friendData: \(parsedObject.friendData)")
         cell!.nameLabel.text = userDict?.valueForKey("name") as? String
         cell!.friendDataDict = userDict
         cell!.profileImageView.hidden = true
@@ -65,6 +66,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
     }
 
     func getMutualFriends() -> Int {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
         var newSortedFriendsData = [FriendsDataAndProfilePic]()
         var person: NSManagedObject!
@@ -157,6 +159,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
     //MARK: Get mutual friends
     func getMutualFriendsFromCloud() {
         if profileOwner != nil && profileOwner.facebookID != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with profileOwner: \(profileOwner)")
             let database = CKContainer.defaultContainer().publicCloudDatabase
             let predicate = NSPredicate(format: "FacebookID == %@", profileOwner.facebookID!)
             let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)

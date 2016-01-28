@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class WriteReviewViewController: UIViewController, UITextViewDelegate {
     private struct Constants {
@@ -39,6 +40,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         detailTextView = UITextView()
         detailTextView.text = Constants.ReviewPlaceholder
         detailTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
@@ -57,6 +59,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
         updateTextViewSize(detailTextView)
     }
     @IBAction func starTap(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         var hitTap = false
         let starArray = [farLeftStar, middleLeftStar, middleStar, middleRightStar, farRightStar]
         starRatingCount = 0
@@ -71,9 +74,11 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func cancel(sender: UIBarButtonItem) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func send(sender: UIBarButtonItem) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) tapped with title: \(titleTextField.text), stars: \(self.starRatingCount), detail: \(detailTextView.text)")
         if farLeftStar.image == UIImage(named: "Empty_Star") {
             let alert = UIAlertController(title: Constants.NoStarRating.Title, message: Constants.NoStarRating.Message, preferredStyle: UIAlertControllerStyle.Alert)
             let cancel = UIAlertAction(title: Constants.NoStarRating.Cancel, style: UIAlertActionStyle.Cancel) { (_) -> Void in }
@@ -102,6 +107,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
         }
     }
     private func updateTextViewSize(textView: UITextView) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let fixedWidth = titleTextField.frame.size.width
         textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
@@ -113,6 +119,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     
     //MARK: - Handling Keyboard Display
     func keyboardWillShow(sender: NSNotification) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         keyboardOnScreen = true
         if let userInfo = sender.userInfo {
             if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
@@ -127,6 +134,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
     }
     
     func keyboardWillHide(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         keyboardOnScreen = false
         UIView.animateWithDuration(0.5) {
             let top = self.navigationController?.navigationBar.frame.maxY ?? 0

@@ -51,6 +51,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     }
     
     func getChat() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.getChatData()
         dispatch_async(dispatch_get_main_queue()){
             self.delegate?.collectionView?.reloadData()
@@ -58,6 +59,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
         }
     }
     func getChatData() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         //    let exchangePredicate = NSPredicate(value: true)
         let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", self.exchange.valueForKey("recordIDName") as! String)
         fetchedResultsController = Message.MR_fetchAllSortedBy(
@@ -80,6 +82,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     }
     
     func getChatAfterDate(messageDate: NSDate) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with messageDate: \(messageDate)")
         //Fetching all chat after date
         var exchangeReferences = [CKReference]()
         let recordID = CKRecordID(recordName: self.exchange.valueForKey("recordIDName") as! String)
@@ -203,7 +206,8 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
   }
   
   //MARK: - Button Action Methods
-  func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let postMessageOp = PostMessageOperation(
       date: date ?? NSDate(timeIntervalSinceNow: 0),
       text: text,
@@ -213,6 +217,7 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
       context: managedConcurrentObjectContext) {
         //do something
         dispatch_async(dispatch_get_main_queue()){
+            logw("\(_stdlib_getDemangledTypeName(self))) PostMessageOperation finished.")
             self.getChatData()
             self.delegate?.collectionView?.reloadData()
             self.scrollToBottom()

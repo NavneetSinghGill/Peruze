@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TGCameraDelegate {
   private struct Constants {
@@ -82,6 +83,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     }
     
     func appDidBecomeActive() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if self.isViewLoaded() && self.view.window != nil {
             self.dataSource?.getChatAfterDate(NSDate(timeIntervalSince1970: 0 ))
         }
@@ -118,7 +120,8 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
   
   //MARK: - Handling the Keyboard
-  func keyboardWillShow() {
+    func keyboardWillShow() {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     automaticallyScrollsToMostRecentMessage = true
     self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 0.0
     self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 0.0
@@ -136,7 +139,8 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     
   }
   
-  func keyboardWillHide() {
+    func keyboardWillHide() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     
     automaticallyScrollsToMostRecentMessage = false
     inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 0.0
@@ -155,29 +159,34 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
   //MARK: - Handling Camera
   var cameraNavController: TGCameraNavigationController?
-  func presentImagePicker() {
+    func presentImagePicker() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     TGCamera.setOption(kTGCameraOptionHiddenFilterButton, value: NSNumber(bool: true))
     
     cameraNavController = TGCameraNavigationController.newWithCameraDelegate(self)
     presentViewController(cameraNavController!, animated: true) { }
   }
   
-  func cameraDidCancel() {
+    func cameraDidCancel() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
-  func cameraDidTakePhoto(image: UIImage!) {
+    func cameraDidTakePhoto(image: UIImage!) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     sendImage(image)
     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
-  func cameraDidSelectAlbumPhoto(image: UIImage!) {
+    func cameraDidSelectAlbumPhoto(image: UIImage!) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     sendImage(image)
     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
   //MARK: - Handling Buttons
-  override func didPressAccessoryButton(sender: UIButton!) {
+    override func didPressAccessoryButton(sender: UIButton!) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     switch sender {
     case cancelButton!:
       let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel this exchange? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
@@ -201,9 +210,11 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     //TODO: make the image appear
   }
   
-  override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     switch button {
     case completeButton!:
+        logw("CompleteButton")
       let alert = UIAlertController(title: "Confirm Exchange", message: "Congratulations on your successful exchange!", preferredStyle: UIAlertControllerStyle.Alert)
       let successfulExchange = UIAlertAction(title: "We've successfully exchanged.", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
         self.delegate!.completeExchange(self.exchange)
@@ -215,6 +226,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
       self.presentViewController(alert, animated: true, completion: nil)
       break
     case sendButton!:
+        logw("SendButton")
       JSQSystemSoundPlayer.jsq_playMessageSentSound()
       dataSource?.didPressSendButton(button, withMessageText: text, senderId: senderId, senderDisplayName: senderDisplayName, date: date)
       finishSendingMessageAnimated(true)

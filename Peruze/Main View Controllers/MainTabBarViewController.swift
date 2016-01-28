@@ -38,6 +38,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func showBadgeOnRequestTab(notification: NSNotification){
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if notification.userInfo != nil{
             let info : NSDictionary = notification.userInfo!
             if  let category = info["category"] as? String {
@@ -47,28 +48,11 @@ class MainTabBarViewController: UITabBarController {
                 if  let badgeCount = info["badge"] as? Int {
                     badge = badgeCount
                 }
-//                    print("\nFrom APS-dictionary with key \"type\":  \( badge)")
                     if category == NotificationCategoryMessages.NewChatMessage {
-                        //refresh messages
-//                        self.setChatBadgeCount(Int(badge))
-//                        let navController = self.viewControllers![2] as! UINavigationController
-//                        let chatTableViewController = navController.viewControllers[0] as! ChatTableViewController
-////                        chatTableViewController.refresh()
-//                        if chatTableViewController.view.window != nil {
-//                            // viewController is visible
-//                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "yes")
-//                        } else {
-//                            NSUserDefaults.standardUserDefaults().setValue("isChatsCollectionShowing", forKey: "no")
-//                        }
-//                        NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchChatWithRecord(recordID)
                     }
                     else if category == NotificationCategoryMessages.NewOfferMessage {
-//                        if Int(badge) != 0{
-//                            self.setRequestBadgeCount(Int(badge))
-//                        }
-                        //refresh Exchanges
                         let navController = self.viewControllers![3] as! UINavigationController
                         let requestsTableViewController = navController.viewControllers[0] as! RequestsTableViewController
                         if requestsTableViewController.view.window != nil {
@@ -78,7 +62,6 @@ class MainTabBarViewController: UITabBarController {
                             NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "no")
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
-//                        requestsTableViewController.refresh()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage, badgeCount: Int(badge))
                     }
@@ -122,7 +105,6 @@ class MainTabBarViewController: UITabBarController {
                             NSUserDefaults.standardUserDefaults().setValue("isRequestsShowing", forKey: "no")
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
-                        //                        requestsTableViewController.refresh()
                         
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         navController = self.viewControllers![2] as! UINavigationController
@@ -134,13 +116,9 @@ class MainTabBarViewController: UITabBarController {
                             NSUserDefaults.standardUserDefaults().setValue("isChatsShowing", forKey: "no")
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
-                        //                        requestsTableViewController.refresh()
                         Model.sharedInstance().fetchExchangeWithRecord(recordID,message: NotificationCategoryMessages.UpdateOfferMessage)
                     }
                     else if category == NotificationCategoryMessages.AcceptedOfferMessage {
-//                        if Int(badge) != 0 {
-//                            self.setChatBadgeCount(Int(badge))
-//                        }
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category, badgeCount: Int(badge))
                     } else if category == NotificationCategoryMessages.NewReview {
@@ -160,6 +138,7 @@ class MainTabBarViewController: UITabBarController {
     }
     //MARK: - reset cloudkit badge value
     func setBadgeCounter(count: Int) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with count \(count)")
         let badgeOperation = CKModifyBadgeOperation(badgeValue: count)
         badgeOperation.modifyBadgeCompletionBlock = { (error) -> Void in
             if error != nil {
@@ -173,6 +152,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setRequestBadgeCount(notification: NSNotification) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if notification.userInfo == nil {
             return
         }
@@ -207,6 +187,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setChatBadgeCount(notification: NSNotification) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if notification.userInfo == nil {
             return
         }
@@ -241,6 +222,7 @@ class MainTabBarViewController: UITabBarController {
         }
     }
     override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with tag: \(item.tag)")
         if item.tag == 2 {
             dispatch_async(dispatch_get_main_queue()) {
                 let requestTab = self.tabBar.items![2]
@@ -275,6 +257,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setApplicationBadgeCount() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let requestTab = self.tabBar.items![3]
         let currentRequestTabBadgeNumber: Int
         if requestTab.badgeValue == nil {
@@ -297,6 +280,7 @@ class MainTabBarViewController: UITabBarController {
     //MARK: Notification method
     
     func showChatScreen() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.selectedIndex = 2
     }
 }

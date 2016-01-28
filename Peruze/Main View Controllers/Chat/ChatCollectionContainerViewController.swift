@@ -70,18 +70,22 @@ class ChatCollectionContainerViewController: UIViewController {
     }
     
     func backButtonTapped() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func showItemOffered() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemOffered") as! NSManagedObject)
     }
     
     func showItemRequested() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemRequested") as! NSManagedObject)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if (segue.identifier == "jsq") {
             if let chatCollectionVC = segue.destinationViewController as? ChatCollectionViewController {
                 chatCollectionVC.exchange = self.exchange
@@ -93,6 +97,7 @@ class ChatCollectionContainerViewController: UIViewController {
     }
     
     func viewTapped(gesture: UIGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.view.endEditing(true)
     }
 }

@@ -66,7 +66,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   //MARK: - UITableViewDelegate Methods
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     tableView.deselectRowAtIndexPath(indexPath, animated: false)
     let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as? ChatTableViewCell
     if cell!.itemImage.lesserImage!.image == nil || cell!.itemImage.prominentImage!.image == nil {
@@ -82,16 +83,18 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     //MARK: Refresh methods
     
     func refreshWithoutActivityIndicator() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         activityIndicatorView.alpha = 0
         self.noChatsLabel.alpha = 0
         refresh()
     }
     
-  func refresh() {
+    func refresh() {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     logw("ChatTableview getAllChats")
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
-      dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async(dispatch_get_main_queue()) {
         logw("ChatTableview getAllChats completion block")
         self.refreshControl.endRefreshing()
         self.activityIndicatorView.stopAnimating()
@@ -100,11 +103,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.tableView.reloadData()
       }
     }
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) GetChatsOperation added.")
     OperationQueue().addOperation(chatOp)
     activityIndicatorView.startAnimating()
   }
     
     func getLocalAcceptedExchanges() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if self.dataSource.getLocalAcceptedExchanges() == 0 {
             self.noChatsLabel.hidden = false
             self.noChatsLabel.alpha = 1.0
@@ -115,6 +120,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
     
     func getLocalAcceptedExchangesAndSetRead(notification: NSNotification) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if notification.userInfo != nil {
             let userInfo: NSDictionary = notification.userInfo!
             let exchangeRecordIDName = userInfo.valueForKey("exchangeRecordIDName") as! String
@@ -146,7 +152,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     return [cancelEditAction(), completeEditAction()]
   }
   
-  private func cancelEditAction() -> UITableViewRowAction {
+    private func cancelEditAction() -> UITableViewRowAction {
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
       logw("Accepted exchange Cancel tapped.")
       //Swift 2.0
@@ -172,7 +179,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       })
       
       //add completion
-      operation.completionBlock = { () -> Void in
+        operation.completionBlock = { () -> Void in
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) Accepted exchange Cancel completion block")
         dispatch_async(dispatch_get_main_queue()) {
           do{
             try self.dataSource.fetchedResultsController.performFetch()
@@ -193,7 +201,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
   }
   
-  private func completeEditAction() -> UITableViewRowAction {
+    private func completeEditAction() -> UITableViewRowAction {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
       logw("Accepted exchange Complete tapped.")
       //get the recordIDName for the exchange at that index path
@@ -219,7 +228,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       })
       
       //add completion
-      operation.completionBlock = {
+        operation.completionBlock = {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) Accepted exchange Complete completion block.")
         dispatch_async(dispatch_get_main_queue()) {
           do{
             try self.dataSource.fetchedResultsController.performFetch()
@@ -233,7 +243,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         }
       }
       
-      //add operation to the queue
+        //add operation to the queue
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) UpdateExchange with exchange status Completed, added to operation queue.")
         self.activityIndicatorView.startAnimating()
       OperationQueue().addOperation(operation)
     }
@@ -242,7 +253,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
   //MARK: - ChatDeletionDelgate Methods
-  func cancelExchange(exchange: NSManagedObject) {
+    func cancelExchange(exchange: NSManagedObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //get the recordIDName for the exchange at that index path
     //Swift 2.0
     guard let idName = exchange.valueForKey("recordIDName") as? String else {
@@ -273,13 +285,15 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
       }
     }
     
-    //add operation to the queue
+        //add operation to the queue
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) UpdateExchange with exchange status: Cancelled added to Operation queue")
     self.activityIndicatorView.startAnimating()
     OperationQueue().addOperation(operation)
     
   }
   
-  func completeExchange(exchange: NSManagedObject) {
+    func completeExchange(exchange: NSManagedObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //get the recordIDName for the exchange at that index path
     //Swift 2.0
     guard let idName = exchange.valueForKey("recordIDName") as? String else {
@@ -330,6 +344,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     //MARK: - Show item detail
     
     func showItem(item: NSManagedObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) item: \(item)")
       let navigationController = self.storyboard?.instantiateViewControllerWithIdentifier("showItemDetailIdentifier")
         if let chatItemDetailShowDetailVC = navigationController?.childViewControllers[0] as? ChatItemDetailShowDetailViewController {
             chatItemDetailShowDetailVC.manageObjectItems = [item]
@@ -338,7 +353,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
     
   //MARK: - Navigation
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with destVC: \(segue.destinationViewController)")
     guard
       let cell = sender as? ChatTableViewCell,
       let destVC = segue.destinationViewController as? ChatCollectionContainerViewController
@@ -368,6 +384,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
     func showChatScreen(notification: NSNotification) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if notification.userInfo != nil {
             let userDict: NSDictionary = notification.userInfo!
             let exchangeRecordIDName = userDict.valueForKey("exchangeRecordIDName")

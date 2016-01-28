@@ -86,6 +86,7 @@ class ProfileViewController: UIViewController {
     //MARK: - UIViewController Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "friendsCountUpdation:", name: "LNMutualFriendsCountUpdation", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reviewsCountUpdation:", name: "LNReviewsCountUpdation", object: nil)
@@ -206,6 +207,7 @@ class ProfileViewController: UIViewController {
     }
     
     func getMyUploadedItems() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let personRecordID = CKRecordID(recordName: self.personForProfile?.valueForKey("recordIDName") as! String)
         
         let predicate = NSPredicate(format: "creatorUserRecordID == %@", personRecordID)
@@ -302,7 +304,10 @@ class ProfileViewController: UIViewController {
         super.viewDidLayoutSubviews()
         containerSpinner.frame = containerView.frame
     }
-    func profileUpdate(noti:NSNotification){
+    func profileUpdate(noti:NSNotification) {
+        if noti.userInfo != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo: \(noti.userInfo)")
+        }
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         let userInfo:NSDictionary = noti.userInfo!
         let updatedProfileImage = (userInfo.valueForKey("circleImage") as? CircleImage)!
@@ -344,6 +349,7 @@ class ProfileViewController: UIViewController {
     }
     
     func refreshProfileVCData() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         dispatch_async(dispatch_get_main_queue()) {
 //            logw("=============================================\(NSThread.isMainThread())")
             self.ouNumberOfUploadsLabel.text = String(Int(self.personForProfile!.uploads!.count))
@@ -353,6 +359,7 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Handling Tab Segues
     @IBAction func uploadsTapped(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         uploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
         ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.UploadsFilled)
         reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
@@ -368,6 +375,7 @@ class ProfileViewController: UIViewController {
         }
     }
     @IBAction func reviewsTapped(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         uploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         reviewsButton.imageView!.image = UIImage(named: Constants.Images.ReviewsFilled)
@@ -383,6 +391,7 @@ class ProfileViewController: UIViewController {
         }
     }
     @IBAction func favoritesTapped(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         uploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
         favoritesButton.imageView!.image = UIImage(named: Constants.Images.FavoritesFilled)
@@ -395,6 +404,7 @@ class ProfileViewController: UIViewController {
         }
     }
     @IBAction func exchangesTapped(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         uploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         reviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
         favoritesButton.imageView!.image = UIImage(named: Constants.Images.Favorites)
@@ -407,6 +417,7 @@ class ProfileViewController: UIViewController {
         }
     }
     @IBAction func friendsTapped(sender: AnyObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         ouUploadsButton.imageView!.image = UIImage(named: Constants.Images.Uploads)
         ouReviewsButton.imageView!.image = UIImage(named: Constants.Images.Reviews)
         ouFriendsButton.imageView!.image = UIImage(named: Constants.Images.FriendsFilled)
@@ -419,6 +430,7 @@ class ProfileViewController: UIViewController {
     }
     
     func done(sender: UIBarButtonItem) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.dismissViewControllerAnimated(true, completion: nil)
         NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "no")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -443,6 +455,7 @@ class ProfileViewController: UIViewController {
     }
     
     func updateViewAfterGettingResponse() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
         let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
         numberOfExchangesLabel.text = String(ex.count)
@@ -536,6 +549,7 @@ class ProfileViewController: UIViewController {
     }
     
     func checkForUserInfo() -> Bool {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let defaults = NSUserDefaults.standardUserDefaults()
         let shouldFetchAllInfo = defaults.boolForKey("keyFetchedUserProfile")
         if shouldFetchAllInfo == false {
@@ -553,6 +567,7 @@ class ProfileViewController: UIViewController {
     
     
     func getMyFriendsFor() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         self.friendsRecords.removeAllObjects()
         if let myPerson = Person.MR_findFirstByAttribute("me", withValue: true) {
@@ -572,6 +587,7 @@ class ProfileViewController: UIViewController {
     
     
     func loadFriend(predicate : NSPredicate , finishBlock:NSArray -> Void) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         //        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
         let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
@@ -599,6 +615,7 @@ class ProfileViewController: UIViewController {
     
     func friendsCountUpdation(notification: NSNotification) {
         if notification.userInfo != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
             let userInfo: NSDictionary = notification.userInfo!
             let count = userInfo.valueForKey("count") as! Int
             self.ouNumberOfFriendsLabel.text = "\(count)"
@@ -607,6 +624,7 @@ class ProfileViewController: UIViewController {
     
     func reviewsCountUpdation(notification: NSNotification) {
         if notification.userInfo != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
             let userInfo: NSDictionary = notification.userInfo!
             let count = userInfo.valueForKey("count") as! Float
             if self.isShowingMyProfile {
@@ -621,6 +639,7 @@ class ProfileViewController: UIViewController {
     func refreshUser(notification:NSNotification) {
         dispatch_async(dispatch_get_main_queue()){
             if notification.userInfo != nil {
+                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
                 //            ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage]
                 let userInfo : NSDictionary = notification.userInfo!
                 let userDictionary = userInfo.valueForKey("friendData")

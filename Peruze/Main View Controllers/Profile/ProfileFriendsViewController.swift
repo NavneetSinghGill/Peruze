@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     private struct Constants {
@@ -25,6 +26,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
 //        titleLabel.alpha = 0.0
 //        refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
@@ -59,11 +61,13 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let parsedObject = dataSource.sortedFriendsData[indexPath.row]
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with friendData: \(parsedObject.friendData)")
         NSNotificationCenter.defaultCenter().postNotificationName("RefreshUser", object: nil, userInfo: ["friendData":parsedObject.friendData, "imageUrl": parsedObject.profileImageUrl])
     }
 
     
     private func checkForEmptyData(animated: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if dataSource.sortedFriendsData.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.titleLabel.alpha = 1.0
@@ -79,6 +83,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     //MARK: Reloading view on fetch data from server
     func reloadFetchedData () {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         dispatch_async(dispatch_get_main_queue()){
             self.tableView.reloadData()
         }
