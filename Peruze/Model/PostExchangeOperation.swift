@@ -39,6 +39,7 @@ class PostExchangeOperation: GroupOperation {
         status: status,
         itemOfferedRecordIDName: itemOfferedRecordIDName,
         itemRequestedRecordIDName: itemRequestedRecordIDName,
+        errorBlock: self.errorBlockk,
         database: database,
         context: context
       )
@@ -46,6 +47,7 @@ class PostExchangeOperation: GroupOperation {
       //upload exchange to the server
       let uploadOp = UploadExchangeFromLocalStorageToCloudOperation(
         temporaryID: tempId,
+        errorBlock: self.errorBlockk,
         database: database,
         context: context
       )
@@ -76,6 +78,7 @@ class SaveExchangeToLocalStorageOperation: Operation {
   let status: ExchangeStatus
   let itemOfferedRecordIDName: String
   let itemRequestedRecordIDName: String
+    var errorBlockk: (Void -> Void) = { }
   let database: CKDatabase
   let context: NSManagedObjectContext
   
@@ -84,6 +87,7 @@ class SaveExchangeToLocalStorageOperation: Operation {
     status: ExchangeStatus,
     itemOfferedRecordIDName: String,
     itemRequestedRecordIDName: String,
+    errorBlock: (Void -> Void) = { },
     database: CKDatabase,
     context: NSManagedObjectContext) {
       self.temporaryID = temporaryID
@@ -91,6 +95,7 @@ class SaveExchangeToLocalStorageOperation: Operation {
       self.status = status
       self.itemOfferedRecordIDName = itemOfferedRecordIDName
       self.itemRequestedRecordIDName = itemRequestedRecordIDName
+        self.errorBlockk = errorBlock
       self.database = database
       self.context = context
       super.init()
@@ -131,13 +136,16 @@ class SaveExchangeToLocalStorageOperation: Operation {
 class UploadExchangeFromLocalStorageToCloudOperation: Operation {
   
   let temporaryID: String
+    var errorBlockk: (Void -> Void) = { }
   let database: CKDatabase
   let context: NSManagedObjectContext
   
   init(temporaryID: String,
+    errorBlock: (Void -> Void) = { },
     database: CKDatabase,
     context: NSManagedObjectContext) {
       self.temporaryID = temporaryID
+        self.errorBlockk = errorBlock
       self.database = database
       self.context = context
       super.init()
@@ -206,6 +214,14 @@ class UploadExchangeFromLocalStorageToCloudOperation: Operation {
             
             self.context.MR_saveToPersistentStoreAndWait()
             self.finishWithError(error)
+        }
+        if error != nil {
+            let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: self.temporaryID, inContext: self.context)
+            exchange.valueForKey("itemOffered")!.setValue("no", forKey: "hasRequested")
+            exchange.valueForKey("itemRequested")!.setValue("no", forKey: "hasRequested")
+            self.context.deleteObject(exchange)
+            self.context.MR_saveToPersistentStoreAndWait()
+            self.errorBlockk()
         }
     }
     uploadOp.qualityOfService = qualityOfService

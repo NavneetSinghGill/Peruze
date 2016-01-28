@@ -38,7 +38,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         let predicate = NSPredicate(format: "userBeingReviewed.recordIDName == %@", recordIDName)
         fetchedResultsController = Review.MR_fetchAllSortedBy(
             "date",
-            ascending: true,
+            ascending: false,
             withPredicate: predicate,
             groupBy: nil,
             delegate: self,

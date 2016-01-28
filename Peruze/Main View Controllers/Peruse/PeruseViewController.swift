@@ -230,12 +230,17 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
       itemRequestedRecordIDName: itemToForwardToExchange!.valueForKey("recordIDName") as! String,
       database: CKContainer.defaultContainer().publicCloudDatabase,
       context: managedConcurrentObjectContext,
-        errorBlock: {
+        errorBlock: {dispatch_async(dispatch_get_main_queue()){
             let alertController = UIAlertController(title: "Peruze", message: "An error occured while exchanging item.", preferredStyle: .Alert)
             let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
             alertController.addAction(defaultAction)
             
-            self.presentViewController(alertController, animated: true, completion: nil)}) { /* Completion */
+            self.presentViewController(alertController, animated: true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()){
+                self.dataSource.collectionView.reloadData()
+            }
+            }
+        }) { /* Completion */
         dispatch_async(dispatch_get_main_queue()){
             self.dataSource.collectionView.reloadData()
         }

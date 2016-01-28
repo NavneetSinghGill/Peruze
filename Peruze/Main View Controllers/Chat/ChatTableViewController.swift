@@ -67,7 +67,11 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   //MARK: - UITableViewDelegate Methods
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath)
+    tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as? ChatTableViewCell
+    if cell!.itemImage.lesserImage!.image == nil || cell!.itemImage.prominentImage!.image == nil {
+        return
+    }
     performSegueWithIdentifier(Constants.SegueIdentifier, sender: cell)
   }
     

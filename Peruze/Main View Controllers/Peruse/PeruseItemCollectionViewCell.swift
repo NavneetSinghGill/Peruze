@@ -179,12 +179,12 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     if let title = item?.valueForKey("title") as? String {
       itemNameLabel.text = title
     } else {
-      itemNameLabel.text = "Error"
+      itemNameLabel.text = ""
     }
     if let detail = item?.valueForKey("detail") as? String {
       itemDescriptionTextView.text = detail
     } else {
-      itemDescriptionTextView.text = "Error"
+      itemDescriptionTextView.text = ""
     }
     if let owner = item?.valueForKey("owner") as? NSManagedObject {
       if let ownerName = owner.valueForKey("firstName") as? String {
