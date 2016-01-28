@@ -100,7 +100,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeItemFromLocalDB:", name: "removeItemFromLocalDB", object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "justReloadPeruseItemMainScreen", name: "justReloadPeruseItemMainScreen", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "justReloadPeruseItemMainScreen", object: nil)
     let logo = UIImage(named: "Peruse_Typography_Thick.jpeg")
     let imageView = UIImageView(image:logo)
     imageView.frame.size.width = 100;
@@ -130,12 +130,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     
     func reloadPeruseItemMainScreen(){
         self.dataSource.refreshData(self)
-    }
-    
-    func justReloadPeruseItemMainScreen() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.collectionView.reloadData()
-        }
     }
     
     func removeItemFromLocalDB(notification:NSNotification) {
@@ -267,6 +261,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     favoriteOp.completionBlock = {
       logw("favorite completed successfully")
       self.dataSource.getFavorites()
+        NSNotificationCenter.defaultCenter().postNotificationName("justReloadPeruseItemMainScreen", object: nil)
     }
     OperationQueue().addOperation(favoriteOp)
   }

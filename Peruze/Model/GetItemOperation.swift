@@ -290,7 +290,7 @@ class GetAllItemsWithMissingDataOperation: Operation {
   override func execute() {
     if logging { logw("\n\n\(NSDate()) GetAllItemsWithMissingDataOperation " + __FUNCTION__ + " of " + __FILE__ + " called.  ") }
     
-    let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND image == nil")
+    let allItemsPredicate = NSPredicate(format: "recordIDName != nil AND imageUrl == nil")
     
     let allItems = Item.MR_findAllWithPredicate(allItemsPredicate, inContext: context) as! [NSManagedObject]
     

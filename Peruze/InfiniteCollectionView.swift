@@ -108,6 +108,9 @@ extension InfiniteCollectionView: UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         let numberOfItems = infiniteDataSource?.numberOfItems(self) ?? 0
+        if numberOfItems == 1{
+            return 1
+        }
         return  3 * numberOfItems
     }
     

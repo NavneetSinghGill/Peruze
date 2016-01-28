@@ -69,13 +69,18 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
         let uploadView = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
         let cell = dataSource.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ProfileUploadsTableViewCell
 //        uploadView.image = cell.circleImageView.image
-        uploadView.image = cell.circleButton.imageView?.image
-        uploadView.itemTitle = cell.titleTextLabel.text
-        uploadView.itemDescription = cell.descriptionTextLabel.text
-        uploadView.recordIDName = cell.recordIDName
-        presentViewController(uploadView, animated: true) {
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
-            self.tableView.reloadData()
+        if cell.circleButton.imageView?.image != nil {
+            uploadView.image = cell.circleButton.imageView?.image
+            uploadView.itemTitle = cell.titleTextLabel.text
+            uploadView.itemDescription = cell.descriptionTextLabel.text
+            uploadView.recordIDName = cell.recordIDName
+            
+            let item = Item.MR_findFirstByAttribute("recordIDName", withValue: cell.recordIDName)
+            uploadView.imageUrl = item.valueForKey("imageUrl") as! String
+            presentViewController(uploadView, animated: true) {
+                self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                self.tableView.reloadData()
+            }
         }
     } else {
         self.dataSource.currentlyTappedUploadedItem = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject

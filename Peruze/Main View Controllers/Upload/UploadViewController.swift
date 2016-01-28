@@ -36,6 +36,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     var recordIDName: String?
     var parentVC: UIViewController?
     var shouldShowUploadButton = false
+    var wasMainImageChanged: Bool!
+    var imageUrl: String!
+    var timer : NSTimer? = nil
     
     var newUploadedItemTitle = ""
     //MARK: - View Controller Lifecycle Methods
@@ -113,6 +116,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         let tap = UITapGestureRecognizer(target: self, action: "tap:")
         tap.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(tap)
+        wasMainImageChanged = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -193,79 +197,96 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             } else {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
-            
-            let uniqueImageName = createUniqueName()
-            let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
-            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-            transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
-                if task.error != nil {
-                    logw("UploadViewController s3 item image upload failed with error: \(task.error)")
-                    
-                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                    self.uploadingView?.removeFromSuperview()
-                    if self.navigationController == nil {
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    }
-                    
-                    let alert = UIAlertController(title: "Peruze", message: "An error occured while uploading your item.", preferredStyle: .Alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
-                }
-                if task.result != nil {
-//                    let uploadOutput = task.result
-                    
-                    logw("OperationQueue().addOperation(PostItemOperation)")
-                    let successCompletionHandler = {
-                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                            //            let per = self.parentVC as! PeruseExchangeViewController
-                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
-                        }
-                        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
-                            NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
-                                self.postOnFaceBook(uniqueImageName)
-                        }
-                        if self.uploadButton.titleLabel?.text == "Upload" {
-                            self.endUpload()
-                        }
-                    }
-                    let failureCompletionHandler = { 
-                        if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
-                            //            let per = self.parentVC as! PeruseExchangeViewController
-                            NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
-                        }
-                        let alertController = UIAlertController(title: "Peruze", message: "An error occured while Editing item.", preferredStyle: .Alert)
-                
-                        let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-                        alertController.addAction(defaultAction)
-                
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        if self.uploadButton.titleLabel?.text == "Upload" {
-                            self.endUpload()
-                        } else {
+            self.timer?.invalidate()
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(200, target: self, selector: nil, userInfo: nil, repeats: true)
+            if wasMainImageChanged == true {
+                logw("UploadViewController Image Upload to s3 started at time: \(self.timer?.timeInterval)")
+                let uniqueImageName = createUniqueName()
+                let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: mainImageView.image!)
+                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
+                    if task.error != nil {
+                        logw("UploadViewController s3 item image upload failed at time: \(self.timeIntervalSince((self.timer?.fireDate)!)) with error: \(task.error)")
+                        
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        self.uploadingView?.removeFromSuperview()
+                        if self.navigationController == nil {
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }
+                        
+                        let alert = UIAlertController(title: "Peruze", message: "An error occured while uploading your item.", preferredStyle: .Alert)
+                        alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        
                     }
-                    OperationQueue().addOperation(
-                        PostItemOperation(
-                            image: self.mainImageView.image!,
-                            title: self.titleTextField.text!,
-                            detail: self.descriptionTextView.text,
-                            recordIDName: self.recordIDName,
-                            imageUrl: uniqueImageName,
-                            presentationContext: self,
-                            completionHandler: successCompletionHandler,
-                            errorCompletionHandler: failureCompletionHandler
-                        )
-                    )
-                }
-                return nil
-            })
+                    if task.result != nil {
+                        self.uploadToCloud(uniqueImageName)
+                    }
+                    return nil
+                })
+            } else {
+                uploadToCloud(self.imageUrl)
+            }
         } else {
             let alert = UIAlertController(title: Constants.AlertTitle, message: Constants.AlertMessage, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
+    }
+    
+    func uploadToCloud(uniqueImageName: String) {
+        //                    let uploadOutput = task.result
+        logw("UploadViewController upload item to cloud started at time: \(self.timeIntervalSince((self.timer?.fireDate)!))")
+        logw("OperationQueue().addOperation(PostItemOperation)")
+        let successCompletionHandler = {
+            logw("UploadViewController upload item to cloud success at time: \(self.timeIntervalSince((self.timer?.fireDate)!))")
+            self.wasMainImageChanged = false
+            if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                //            let per = self.parentVC as! PeruseExchangeViewController
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+            }
+            if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) == nil ||
+                NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPostingToFacebookOn) as! String == "yes" {
+                    self.postOnFaceBook(uniqueImageName)
+            }
+            if self.uploadButton.titleLabel?.text == "Upload" {
+                self.endUpload()
+            }
+        }
+        let failureCompletionHandler = {
+            logw("UploadViewController upload item to cloud failed at time: \(self.timeIntervalSince((self.timer?.fireDate)!))")
+            if self.parentVC != nil && self.parentVC!.isKindOfClass(PeruseExchangeViewController){
+                //            let per = self.parentVC as! PeruseExchangeViewController
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadPeruzeExchangeScreen", object: nil)
+            }
+            let alertController = UIAlertController(title: "Peruze", message: "An error occured while Editing item.", preferredStyle: .Alert)
+            
+            let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            if self.uploadButton.titleLabel?.text == "Upload" {
+                self.endUpload()
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+        OperationQueue().addOperation(
+            PostItemOperation(
+                image: self.mainImageView.image!,
+                title: self.titleTextField.text!,
+                detail: self.descriptionTextView.text,
+                recordIDName: self.recordIDName,
+                imageUrl: uniqueImageName,
+                presentationContext: self,
+                completionHandler: successCompletionHandler,
+                errorCompletionHandler: failureCompletionHandler
+            )
+        )
+    }
+    
+    func timeIntervalSince(fromDate: NSDate) -> NSTimeInterval{
+        return fromDate.timeIntervalSinceDate(NSDate())
     }
     
     func cancelButtonTapped(sender: UIButton) {
@@ -308,6 +329,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     func cameraDidSelectAlbumPhoto(image: UIImage!) { setImage(image) }
     
     private func setImage(image1: UIImage) {
+        wasMainImageChanged = true
         mainImageView.image = image1
         self.image = image1
         cameraNavController!.dismissViewControllerAnimated(true, completion: nil)

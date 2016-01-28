@@ -33,7 +33,7 @@ extension ProfileUploadsDataSource: InfiniteCollectionViewDataSource {
         let item = fetchedResultsController.objectAtIndexPath(modifiedIndexpath) as! NSManagedObject
         cell.item = item
         cell.delegate = itemDelegate
-        cell.itemFavorited = true
+        cell.itemFavorited = self.uploadsIDs.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
         cell.setNeedsDisplay()
         return cell
     }
@@ -72,6 +72,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         }
     }
   }
+    var uploadsIDs = [String]()
   var tempImageView = UIImageView()
   override init() {
     super.init()
@@ -93,6 +94,16 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             inContext: managedConcurrentObjectContext)
         do {
             try fetchedResultsController.performFetch()
+            self.uploadsIDs = [String]()
+            var trueFavoriteUploadIDs = [String]()
+            self.uploadsIDs = fetchedResultsController.sections![0].objects!.map { $0.valueForKey("recordIDName") as! String }
+            let favorites = getFavorites()
+            for uploadID in self.uploadsIDs {
+                if favorites.contains(uploadID) {
+                    trueFavoriteUploadIDs.append(uploadID)
+                }
+            }
+            self.uploadsIDs = trueFavoriteUploadIDs
             dispatch_async(dispatch_get_main_queue()) {
                 if self.tableView != nil {
                     self.tableView.reloadData()
@@ -103,7 +114,23 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         }
         return fetchedResultsController.sections![0].numberOfObjects
     }
-  
+    
+    func getFavorites() -> [String] {
+        let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+        var trueFavorites = [NSManagedObject]()
+        if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
+            for favoriteObj in favorites {
+                if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1  {
+                    trueFavorites.append(favoriteObj)
+                }
+            }
+            return trueFavorites.map { $0.valueForKey("recordIDName") as! String }
+        } else {
+            logw("me.valueForKey('favorites') was not an NSSet ")
+        }
+        return []
+    }
+    
   var editableCells = true
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let nib = UINib(nibName: Constants.NibName, bundle: NSBundle.mainBundle())
