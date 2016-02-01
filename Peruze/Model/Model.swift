@@ -239,25 +239,51 @@ class Model: NSObject, CLLocationManagerDelegate {
                     mutualFriends.addObject(id)
                 }
             }
-            owner.setValue(mutualFriends.count, forKey: "mutualFriends")
+            if owner.valueForKey("firstName") != nil && owner.valueForKey("recordIDName") as! String == "_6c07a876138c33f50fd5cb5c97bb6064" {
+                
+            }
             var count = 0
-            var mutualFriendsModified: NSMutableSet = []
+            let mutualFriendsModified: NSMutableSet = []
             while count < mutualFriends.count {
                 if Person.MR_findFirstByAttribute("facebookID", withValue: mutualFriends.allObjects[count] as! String, inContext: context) != nil {
                     mutualFriendsModified.addObject(mutualFriends.allObjects[count])
+                } else {
+//                    findPersonByFacebookID(mutualFriends.allObjects[count] as! String)
                 }
                 count++
             }
             context.MR_saveToPersistentStoreAndWait()
+            owner.setValue(mutualFriendsModified.count , forKey: "mutualFriends")
             
             return mutualFriendsModified
         }
         return []
     }
     
+//    func findPersonByFacebookID(fbID: String) {
+//        var getPersonOperation: CKQueryOperation
+//        let getPersonQuery = CKQuery(recordType: RecordTypes.Users, predicate: NSPredicate(value: true))
+//        getPersonOperation = CKQueryOperation(query: getPersonQuery)
+//        let desiredKeys = ["FirstName", "LastName", "FacebookID", "ImageUrl"]
+//        getPersonOperation.desiredKeys = desiredKeys
+//        getPersonOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
+//            if let recordA = record{
+//                
+//            }
+//        }
+//        getPersonOperation.queryCompletionBlock = { (cursor, error) -> Void in
+//            logw("cursor: \(cursor) ....... error:\(error)")
+//            if error != nil {
+//                
+//            }
+//        }
+//        CKContainer.defaultContainer().publicCloudDatabase.addOperation(getPersonOperation)
+//        
+//    }
+    
     //MARK: Fetch record
     
-    func fetchItemWithRecord(recordID: CKRecordID, completionBlock: (Bool -> Void) = {Bool -> Void in return false}) -> Void
+    func fetchItemWithRecord(recordID: CKRecordID, shouldReloadScreen: Bool = true, completionBlock: (Bool -> Void) = {Bool -> Void in return false}) -> Void
     {
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
@@ -297,6 +323,8 @@ class Model: NSObject, CLLocationManagerDelegate {
                                 withValue: ownerRecordIDName,
                                 inContext: context)
                             localUpload.setValue(owner, forKey: "owner")
+                            let getOwnerOperation = GetPersonOperation(recordID: CKRecordID(recordName: ownerRecordIDName), database: CKContainer.defaultContainer().publicCloudDatabase)
+                            OperationQueue().addOperation(getOwnerOperation)
                         }
                         
                         if let title = record!.objectForKey("Title") as? String {
@@ -364,7 +392,12 @@ class Model: NSObject, CLLocationManagerDelegate {
                         
                         //save the context
                         context.MR_saveToPersistentStoreAndWait()
-                        NSNotificationCenter.defaultCenter().postNotificationName("justReloadPeruseItemMainScreen", object: nil)
+                
+                        if shouldReloadScreen == true {
+                            NSNotificationCenter.defaultCenter().postNotificationName("justReloadPeruseItemMainScreen", object: nil,userInfo: ["shouldShuffle":"yes"])
+                        } else {
+                            NSNotificationCenter.defaultCenter().postNotificationName("justReloadPeruseItemMainScreen", object: nil)
+                        }
                         completionBlock(true)
                     }
                     completionBlock(false)

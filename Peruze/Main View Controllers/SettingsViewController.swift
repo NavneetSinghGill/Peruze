@@ -170,7 +170,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if loadingCircle == nil {
       setupLoadingViews()
       

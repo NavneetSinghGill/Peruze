@@ -76,7 +76,7 @@ class MainTabBarViewController: UITabBarController {
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchItemWithRecord(recordID)
+                        Model.sharedInstance().fetchItemWithRecord(recordID, shouldReloadScreen: false)
                     }
                     else if category == NotificationCategoryMessages.ItemDeletion {
                         let navController = self.viewControllers![0] as! UINavigationController

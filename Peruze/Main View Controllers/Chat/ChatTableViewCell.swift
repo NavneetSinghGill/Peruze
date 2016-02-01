@@ -46,8 +46,8 @@ class ChatTableViewCell: UITableViewCell {
             if fetchedResultsController.sections![0].numberOfObjects > 0 {
                 let latestChatArray : NSArray = fetchedResultsController.sections?[0].objects as! [Message]
                 let latestChat = latestChatArray[0]
-                if latestChat.valueForKey("sender") != nil && latestChat.valueForKey("sender")!.valueForKey("firstName") != nil && latestChat.valueForKey("sender")!.valueForKey("lastName") != nil{
-                   self.mostRecentTextString.text = "\(latestChat.valueForKey("sender")!.valueForKey("firstName")!) \(latestChat.valueForKey("sender")!.valueForKey("lastName")!): \(latestChat.valueForKey("text")!)"
+                if latestChat.valueForKey("sender") != nil && latestChat.valueForKey("sender")!.valueForKey("firstName") != nil{
+                   self.mostRecentTextString.text = "\(latestChat.valueForKey("sender")!.valueForKey("firstName")!): \(latestChat.valueForKey("text")!)"
                 }
             } else {
                 self.mostRecentTextString.text = ""

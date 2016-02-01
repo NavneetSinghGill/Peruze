@@ -49,6 +49,8 @@ class InitialViewController: UIViewController {
     //MARK: - Segues
     let opQueue = OperationQueue()
     func segueToCorrectVC() {
+        let bundle = NSBundle.mainBundle().infoDictionary!
+        logw("\n\n\n###############################  APPLICATION BUILD NUMBER: \(bundle["CFBundleShortVersionString"]!).\(bundle["CFBundleVersion"]!)  ###############################\n\n\n")
         if !NetworkConnection.connectedToNetwork() {
             let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock() { [unowned self] Void in
                 self.segueToCorrectVC()

@@ -192,7 +192,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     }
     
     
-    func refreshData(presentationContext: UIViewController) {
+    func refreshData(presentationContext: UIViewController, shouldShuffle: Bool) {
         logw("PeruseViewController refresh by presentation context: \(presentationContext)")
         refreshFetchResultController()
         let opQueue = OperationQueue()
@@ -206,6 +206,13 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
             logw("Filtered items = \(self.items)")
             dispatch_async(dispatch_get_main_queue()) {
                 self.collectionView.reloadData()
+                if shouldShuffle == true {
+                    if self.items.count > 1{
+                        let randomIndex = Int(arc4random_uniform(UInt32(self.items.count)))
+                        let indexPath = NSIndexPath(forItem: randomIndex, inSection: 0)
+                        self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+                    }
+                }
             }
             self.getFavorites()
             

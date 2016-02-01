@@ -44,7 +44,7 @@ class GetPeruzeItemOperation: GroupOperation {
             defaults.setObject("yes", forKey: "shouldCallWithSyncDate")
         }
         logw("\n\n\(NSDate()) GroupOperation Start")
-        getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 100)
+        getItems = GetItemInRangeOperation(range: range, location: location, cursor: cursor, database: database, context: context, resultLimit: 200)
         getItems.completionBlock = {
             logw("\n\n\(NSDate()) GetItemInRangeOperation Completed")
         }

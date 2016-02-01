@@ -306,7 +306,7 @@ class ProfileViewController: UIViewController {
     }
     func profileUpdate(noti:NSNotification) {
         if noti.userInfo != nil {
-            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo: \(noti.userInfo)")
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo: \(noti.userInfo!)")
         }
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         let userInfo:NSDictionary = noti.userInfo!
@@ -615,7 +615,7 @@ class ProfileViewController: UIViewController {
     
     func friendsCountUpdation(notification: NSNotification) {
         if notification.userInfo != nil {
-            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo!)")
             let userInfo: NSDictionary = notification.userInfo!
             let count = userInfo.valueForKey("count") as! Int
             self.ouNumberOfFriendsLabel.text = "\(count)"
@@ -624,7 +624,7 @@ class ProfileViewController: UIViewController {
     
     func reviewsCountUpdation(notification: NSNotification) {
         if notification.userInfo != nil {
-            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo!)")
             let userInfo: NSDictionary = notification.userInfo!
             let count = userInfo.valueForKey("count") as! Float
             if self.isShowingMyProfile {
@@ -639,12 +639,16 @@ class ProfileViewController: UIViewController {
     func refreshUser(notification:NSNotification) {
         dispatch_async(dispatch_get_main_queue()){
             if notification.userInfo != nil {
-                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo)")
+                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with userInfo \(notification.userInfo!)")
                 //            ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage]
                 let userInfo : NSDictionary = notification.userInfo!
                 let userDictionary = userInfo.valueForKey("friendData")
                 let userId = userDictionary!.valueForKey("recordIDName") as? String
-                self.personForProfile = Person.MR_findFirstWithPredicate(NSPredicate(format: "recordIDName = %@",userId!))
+                let person = Person.MR_findFirstWithPredicate(NSPredicate(format: "recordIDName = %@",userId!))
+                if self.personForProfile != nil && self.personForProfile!.valueForKey("me") as! Bool == true {
+                    return
+                }
+                self.personForProfile = person
                 if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
                     self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
                     self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)

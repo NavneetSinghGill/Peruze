@@ -90,6 +90,9 @@ class GetPersonOperation: Operation {
           if (localPerson.valueForKey("firstName") as? String) == nil {
             let firstName = recordsByID[recordID]?.objectForKey("FirstName") as? String
             localPerson.setValue(firstName, forKey: "firstName")
+            if firstName == "Saumya"{
+                
+            }
           }
           if (localPerson.valueForKey("lastName") as? String) == nil {
             let lastName = recordsByID[recordID]?.objectForKey("LastName") as? String
@@ -226,6 +229,9 @@ class GetAllPersonsWithMissingData: Operation {
         //set the returned properties
         if localPerson.valueForKey("firstName") as? String == nil {
           localPerson.setValue(record.objectForKey("FirstName") as? String, forKey: "firstName")
+            if localPerson.valueForKey("firstName") as! String == "Saumya"{
+                
+            }
         }
         
         if localPerson.valueForKey("lastName") as? String == nil {

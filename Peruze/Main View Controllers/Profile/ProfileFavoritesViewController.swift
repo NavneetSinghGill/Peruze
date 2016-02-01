@@ -123,7 +123,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
                 if let mainTabBarVC = profileVC.parentViewController?.parentViewController as? MainTabBarViewController {
                     for child in mainTabBarVC.childViewControllers {
                         if let peruseVC = child.childViewControllers[0] as? PeruseViewController {
-                            peruseVC.reloadPeruseItemMainScreen()
+                            peruseVC.reloadWithShuffle()
                             break
                         }
                     }

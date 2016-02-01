@@ -188,7 +188,7 @@ class GetExchangesOperation: Operation {
           withValue: itemOfferedReference.recordID.recordName,
           inContext: self.context)
         if itemOffered.valueForKey("image") == nil {
-            Model.sharedInstance().fetchItemWithRecord(itemOfferedReference.recordID,completionBlock: {_ in 
+            Model.sharedInstance().fetchItemWithRecord(itemOfferedReference.recordID, shouldReloadScreen: false,completionBlock: {_ in
                 if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName{
                     itemOffered.setValue("yes", forKey: "hasRequested")
                 } else {
@@ -205,7 +205,7 @@ class GetExchangesOperation: Operation {
           withValue: itemRequestedReference.recordID.recordName,
             inContext: self.context)
         if itemRequested.valueForKey("image") == nil {
-            Model.sharedInstance().fetchItemWithRecord(itemRequestedReference.recordID, completionBlock: {_ in 
+            Model.sharedInstance().fetchItemWithRecord(itemRequestedReference.recordID, shouldReloadScreen: false, completionBlock: {_ in
                 if record.valueForKey("RequestedItemOwnerRecordIDName") as? String == requestingPerson.recordIDName {
                     itemRequested.setValue("no", forKey: "hasRequested")
                 } else {

@@ -98,9 +98,9 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange",
         name: NotificationCenterKeys.UpdateItemsOnFilterChange, object: self)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateItemsOnFilterChange", name: "LNUpdateItemsOnFilterChange", object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "reloadPeruseItemMainScreen", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen:", name: "reloadPeruseItemMainScreen", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeItemFromLocalDB:", name: "removeItemFromLocalDB", object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen", name: "justReloadPeruseItemMainScreen", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadPeruseItemMainScreen:", name: "justReloadPeruseItemMainScreen", object: nil)
     let logo = UIImage(named: "Peruse_Typography_Thick.jpeg")
     let imageView = UIImageView(image:logo)
     imageView.frame.size.width = 100;
@@ -128,8 +128,21 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         }
     }
     
-    func reloadPeruseItemMainScreen(){
-        self.dataSource.refreshData(self)
+    func reloadPeruseItemMainScreen(notification: NSNotification){
+        if notification.userInfo != nil {
+            let userInfo : NSDictionary = notification.userInfo!
+            if let _ = userInfo.valueForKey("shouldShuffle") as? String {
+                self.reloadWithShuffle(true)
+            } else {
+                self.reloadWithShuffle(false)
+            }
+        } else {
+            self.reloadWithShuffle(false)
+        }
+    }
+    
+    func reloadWithShuffle(shouldShuffle: Bool = true) {
+        self.dataSource.refreshData(self, shouldShuffle: shouldShuffle)
     }
     
     func removeItemFromLocalDB(notification:NSNotification) {
@@ -163,7 +176,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
                 
                 logw("Deleting Single Item from Persistent Store and Waiting...")
                 managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                reloadPeruseItemMainScreen()
+                reloadWithShuffle()
             }
         }
     }
@@ -371,7 +384,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     // Method calls when filter changed from the setting screen
     func updateItemsOnFilterChange() {
             dispatch_async(dispatch_get_main_queue()) {
-               self.dataSource.refreshData(self)
+               self.dataSource.refreshData(self, shouldShuffle: true)
             }
     }
     
@@ -383,7 +396,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     func refreshItemsIfRetrivedFromCloud() {
         let defaults = NSUserDefaults.standardUserDefaults()
         if (defaults.boolForKey("keyHasDataRetrivedFromCloud")) {
-            self.dataSource.refreshData(self)
+            self.dataSource.refreshData(self, shouldShuffle: true)
         }
     }
     
