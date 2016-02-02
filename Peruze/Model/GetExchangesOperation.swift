@@ -221,7 +221,8 @@ class GetExchangesOperation: Operation {
         
       
       //add this exchange to the requesting user's exchanges
-        if let currentExchanges: NSSet = requestingPerson.valueForKey("exchanges") as? NSSet{
+        if requestingPerson.valueForKey("exchanges") as? NSSet != nil {
+            let currentExchanges: NSSet = requestingPerson.valueForKey("exchanges") as! NSSet
             logw("Saving exchanges \(currentExchanges.count)")
             logw("\n requestingPerson \(requestingPerson)")
             logw("\n localExchange \(localExchange)")

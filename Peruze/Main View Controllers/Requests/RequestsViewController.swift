@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class RequestsViewController: UIViewController, UICollectionViewDelegate, RequestCollectionViewCellDelegate {
   private struct Constants {
@@ -65,6 +66,7 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   }
   
     func requestAccepted(request: Exchange) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) accepted request: \(request)")
         let deletedItemIndexPath = dataSource.acceptRequest(request)
         // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
 //        if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
@@ -86,7 +88,8 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
 //    })
   }
   
-  func requestDenied(request: Exchange) {
+    func requestDenied(request: Exchange) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) denied request: \(request)")
     let deletedItemIndexPath = dataSource.deleteRequest(request)
     // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
 //    if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {

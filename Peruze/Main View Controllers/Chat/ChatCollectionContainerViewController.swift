@@ -29,6 +29,7 @@ class ChatCollectionContainerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.theirItemNameLabel.text = self.theirItemName
         self.yourItemNameLabel.text = self.yourItemName
         self.itemImage.itemImagesTappable = (prominentImage!.image!, lesserImage!.image!, prominentImageTapBlock: {

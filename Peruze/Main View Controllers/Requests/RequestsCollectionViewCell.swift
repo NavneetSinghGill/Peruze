@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   
@@ -143,7 +144,8 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     insertSubview(confirmCircleView!, atIndex: 0)
   }
   
-  func tap(sender: UITapGestureRecognizer) {
+    func tap(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     
     //view in center of screen
     let view = CircleView(frame: CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.width))

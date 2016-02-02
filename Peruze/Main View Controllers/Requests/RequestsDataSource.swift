@@ -23,6 +23,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
   
   override init() {
     super.init()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     //POPUP iCloud
     let myRecordID = myPerson.valueForKey("recordIDName") as! String
@@ -38,7 +39,8 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
       groupBy: nil,
       delegate: self)
     do {
-      try self.fetchedResultsController.performFetch()
+        try self.fetchedResultsController.performFetch()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of requests: \(self.fetchedResultsController.sections?[0].numberOfObjects)")
     } catch {
       logw("RequestsDataSource fetchResult failed with error: \(error)")
     }

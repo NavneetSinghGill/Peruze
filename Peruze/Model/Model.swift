@@ -39,9 +39,9 @@ struct BuckeyKeys {
 }
 
 struct NotificationMessages {
-    static let NewOfferMessage = "A new offer made for you"
+    static let NewOfferMessage = "A new offer made for you."
     static let UpdateOfferMessage = "An offer updated for you"
-    static let NewChatMessage = "A new message for you"
+    static let NewChatMessage = "A new message for you."
     static let ExchangeRecall = "Did you complete your exchange"
     static let ItemAdditionOrUpdation = "A new item has been added"
     static let ItemDeletion = "An item has been deleted"
@@ -238,9 +238,6 @@ class Model: NSObject, CLLocationManagerDelegate {
                 if otherUserFriendsIDs.containsObject(id){
                     mutualFriends.addObject(id)
                 }
-            }
-            if owner.valueForKey("firstName") != nil && owner.valueForKey("recordIDName") as! String == "_6c07a876138c33f50fd5cb5c97bb6064" {
-                
             }
             var count = 0
             let mutualFriendsModified: NSMutableSet = []
@@ -867,6 +864,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForNewOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -907,6 +905,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForUpdatedOffer() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -937,6 +936,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForAcceptedOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -979,6 +979,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForChat() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -989,9 +990,9 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-//        notificationInfo.alertBody = NotificationMessages.NewChatMessage
+        notificationInfo.alertBody = NotificationMessages.NewChatMessage
 //        notificationInfo.shouldBadge = true
-//        notificationInfo.soundName = "default"
+        notificationInfo.soundName = "default"
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
@@ -1010,6 +1011,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForItemAdditionUpdation() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1039,6 +1041,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForItemDeletion() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1068,6 +1071,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForDisablingProfile() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1096,6 +1100,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForReviews() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1166,6 +1171,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func deleteAllSubscription(completionBlock: (Void -> Void) = {}) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
             for subscriptionObject in subscriptions! {
@@ -1180,6 +1186,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func deleteSubscriptionsWithIDs(subscriptionIDs: [String]) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let database = CKContainer.defaultContainer().publicCloudDatabase
             for subscriptionID in subscriptionIDs {
                 
@@ -1192,6 +1199,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     //MARK: - s3 methods
     
     func uploadRequestForImageWithKey(key: String,andImage image: UIImage) -> AWSS3TransferManagerUploadRequest {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) ket: \(key)")
         let uploadRequest = AWSS3TransferManagerUploadRequest()
         uploadRequest.bucket = BuckeyKeys.bucket
         uploadRequest.key = key

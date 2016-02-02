@@ -32,7 +32,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
   //the item the user owns that he/she selected to exchange
   var itemChosenToExchange: NSManagedObject? {
     didSet {
-      if itemChosenToExchange != nil {
+        if itemChosenToExchange != nil {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) itemChosenToExchange: \(itemChosenToExchange)")
         let circle = CircleView(frame: CGRectMake(0, 0, view.frame.width, view.frame.width))
         circle.strokeColor = .greenColor()
         circle.center = CGPointMake(view.frame.width / 2, view.frame.height / 2)
@@ -131,6 +132,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     func reloadPeruseItemMainScreen(notification: NSNotification){
         if notification.userInfo != nil {
             let userInfo : NSDictionary = notification.userInfo!
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) notification.userInfo: \(userInfo)")
             if let _ = userInfo.valueForKey("shouldShuffle") as? String {
                 self.reloadWithShuffle(true)
             } else {
@@ -142,12 +144,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func reloadWithShuffle(shouldShuffle: Bool = true) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) shouldShuffle: \(shouldShuffle)")
         self.dataSource.refreshData(self, shouldShuffle: shouldShuffle)
     }
     
     func removeItemFromLocalDB(notification:NSNotification) {
         if notification.userInfo != nil {
             let userInfo : NSDictionary = notification.userInfo!
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) notification.userinfo: \(userInfo)")
             let recordID = userInfo.valueForKey("recordID")
             if recordID != nil {
                 let itemToDelete = Item.MR_findFirstByAttribute("recordIDName", withValue: recordID, inContext: managedConcurrentObjectContext)
@@ -221,7 +225,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     collectionView.reloadData()
   }
   
-  func segueToExchange(item: NSManagedObject) {
+    func segueToExchange(item: NSManagedObject) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) item: \(item)")
     if item.valueForKey("hasRequested") as! String == "yes" {
         let alert = UIAlertController(title: "Exchange", message: "This item is already requested.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
@@ -235,7 +240,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     }
   
-  private func exchangeInitiated() {
+    private func exchangeInitiated() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //TODO: create an exchange and pass it to the data model
     let postExchange = PostExchangeOperation(date: NSDate(timeIntervalSinceNow: 0),
       status: ExchangeStatus.Pending,
@@ -261,7 +267,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     OperationQueue().addOperation(postExchange)
   }
   
-  func segueToProfile(ownerID: String) {
+    func segueToProfile(ownerID: String) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) ownerID: \(ownerID)")
     let profileNav = storyboard!.instantiateViewControllerWithIdentifier(Constants.ProfileNavigationControllerIdentifier) as? UINavigationController
     if profileNav == nil { assertionFailure("profile navigation view controller from storyboard is nil") }
     let profileVC = profileNav?.viewControllers[0] as? ProfileViewController
@@ -271,7 +278,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     presentViewController(profileNav!, animated: true, completion: nil)
   }
   
-  func itemFavorited(item: NSManagedObject, favorite: Bool) {
+    func itemFavorited(item: NSManagedObject, favorite: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) item: \(item), favorite: \(favorite)")
     //favorite data
     logw("item started favorite! ")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
@@ -305,6 +313,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getMyExchanges() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         
         //Setting more data available controlling functionality
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -345,6 +354,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getAllItems() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         isGetItemsInProgress = true
         logw("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
@@ -358,6 +368,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getAllPersonsMissingData() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
         fillMissingPeopleData.completionBlock = {
             logw("\n\n\(NSDate())===== fillMissingPeopleData Completed======")
@@ -366,6 +377,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getMoreItems() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let defaults = NSUserDefaults.standardUserDefaults()
         let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
          if  self.isGetItemsInProgress == false {
@@ -389,6 +401,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func update() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         logw("\n\n\(NSDate()) ----------------  Timer started ----------------------")
         getMoreItems()
     }
@@ -396,14 +409,18 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     func refreshItemsIfRetrivedFromCloud() {
         let defaults = NSUserDefaults.standardUserDefaults()
         if (defaults.boolForKey("keyHasDataRetrivedFromCloud")) {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) keyHasDataRetrivedFromCloud: \(defaults.boolForKey("keyHasDataRetrivedFromCloud"))")
             self.dataSource.refreshData(self, shouldShuffle: true)
+        } else {
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) keyHasDataRetrivedFromCloud key is nil")
         }
     }
     
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == Constants.ExchangeSegueIdentifier {
-      if let destVC = segue.destinationViewController as? PeruseExchangeViewController{
+        if let destVC = segue.destinationViewController as? PeruseExchangeViewController{
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) itemToForwardToExchange: \(itemToForwardToExchange)")
         destVC.itemSelectedForExchange = itemToForwardToExchange
         destVC.delegate = self
       }

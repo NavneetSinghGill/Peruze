@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
   struct Constants {
@@ -26,7 +27,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     fetchData()
   }
     
-    func fetchData() -> Int{
+    func fetchData() -> Int {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let recordIDName: String
         if profileOwner != nil && profileOwner.valueForKey("recordIDName") != nil{
             recordIDName = profileOwner.valueForKey("recordIDName") as! String
@@ -69,6 +71,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             NSNotificationCenter.defaultCenter().postNotificationName("LNReviewsCountUpdation", object: nil, userInfo: ["count":0])
         }
         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of reviews: \(fetchedResultsController.sections![0].numberOfObjects)")
         return fetchedResultsController.sections![0].numberOfObjects
     }
     

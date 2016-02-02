@@ -37,6 +37,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
         super.viewWillAppear(animated)
         if let profileVC = self.parentViewController?.parentViewController as? ProfileViewController {
             profileVC.numberOfFavoritesLabel.text = "\(dataSource.refresh())"
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of favorites: \(profileVC.numberOfFavoritesLabel.text!)")
         }
         checkForEmptyData(true)
     }
@@ -70,7 +71,8 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   
     
   //MARK: Editing
-  private func checkForEmptyData(animated: Bool) {
+    private func checkForEmptyData(animated: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) favorites.count: \(dataSource.favorites.count)")
     if dataSource.favorites.count == 0 {
       UIView.animateWithDuration(animated ? 0.5 : 0.0) {
         self.titleLabel.alpha = 1.0
@@ -103,6 +105,7 @@ class ProfileFavoritesViewController: UIViewController, UITableViewDelegate {
   }
     
     func itemFavorited(item: NSManagedObject, favorite: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) item: \(item), favorite: \(favorite)")
         //favorite data
         logw("item started favorite! ")
         

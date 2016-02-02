@@ -84,44 +84,20 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
   
   override init() {
     super.init()
-    let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
-    let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    let myID = me.valueForKey("recordIDName") as! String
-    let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
-    let yesString = "yes"
-    let predicate2 =  NSPredicate(format: "hasRequested != %@",yesString)
-    let defaultOwnerString = "__defaultOwner__"
-    let predicate3 = NSPredicate(format: "owner.recordIDName != %@",defaultOwnerString)
-    let predicateForDisabledUser = NSPredicate(format: "owner.isDelete != 1")
-    let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
-    let noImage = NSPredicate(format: "imageUrl != nil")
-    let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1,predicate2,predicate3,predicateForDisabledUser, predicateForDeletedItem, noImage])
-    fetchRequest.predicate = compoundPredicate
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateOfDownload", ascending: true)]
-    fetchRequest.includesSubentities = true
-    fetchRequest.returnsObjectsAsFaults = false
-    fetchRequest.includesPropertyValues = true
-    fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-    fetchedResultsController.delegate = self
-    getFavorites()
-    do {
-      try self.fetchedResultsController.performFetch()
-    } catch {
-      logw("PeruzeViewControllerDataSource fetch result exception: \(error)")
-    }
+    refreshFetchResultController()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCollectionView", name: "reload", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem:", name: "ScrollTOShowSharedItem", object: nil)
   }
     func reloadCollectionView(){
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         dispatch_async(dispatch_get_main_queue()) {
             self.collectionView.reloadData()
         }
     }
     
   ///fetches the results from the fetchedResultsController
-  func performFetchWithPresentationContext(presentationContext: UIViewController) {
-    logw("Perform Fetch")
+    func performFetchWithPresentationContext(presentationContext: UIViewController) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) presentation context: \(presentationContext)")
     dispatch_async(dispatch_get_main_queue()) {
       do {
         try self.fetchedResultsController.performFetch()
@@ -151,6 +127,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
   
     
     func getFriendsPredicate() -> NSPredicate {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         var friendPredicate = NSPredicate!()
         let defaults = NSUserDefaults.standardUserDefaults()
         let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
@@ -172,6 +149,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     }
     
     func getDistancePredicate() -> NSPredicate {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
         
         let maxRadius:CLLocationDistance = Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) //45000// in meters
@@ -193,7 +171,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     
     
     func refreshData(presentationContext: UIViewController, shouldShuffle: Bool) {
-        logw("PeruseViewController refresh by presentation context: \(presentationContext)")
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) presentationContext: \(presentationContext), shouldShuffle: \(shouldShuffle)")
         refreshFetchResultController()
         let opQueue = OperationQueue()
         
@@ -201,6 +179,9 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
+            if self.fetchedResultsController.sections == nil {
+                return
+            }
             let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
             self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
             logw("Filtered items = \(self.items)")
@@ -222,6 +203,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     
     
     func refreshFetchResultController() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let myID = me.valueForKey("recordIDName") as! String
@@ -239,7 +221,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         fetchRequest.includesSubentities = true
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.includesPropertyValues = true
-        fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.image", "owner.firstName", "owner.recordIDName"]
+        fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.imageUrl", "owner.firstName", "owner.recordIDName"]
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         getFavorites()
@@ -271,7 +253,8 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
 //         argumentArray:[minLongitude, maxLongitude, minLatitude, maxLatitude])
 //    }
   
-  func getFavorites() {
+    func getFavorites() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     var trueFavorites = [NSManagedObject]()
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
@@ -422,6 +405,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     //MARK: - Notification observer methods
     
     func reloadPeruseItemMainScreen() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         dispatch_async(dispatch_get_main_queue()){
             self.collectionView.reloadData()
         }
@@ -431,6 +415,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     func scrollTOShowSharedItem(notification:NSNotification) {
         if notification.userInfo != nil {
             let userInfo : NSDictionary = notification.userInfo!
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) notification.userInfo: \(userInfo)")
             let recordIDName = userInfo.valueForKey("recordID") as! String
             var index = 0
             for item in self.items {

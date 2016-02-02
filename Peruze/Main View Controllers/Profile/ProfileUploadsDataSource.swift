@@ -84,6 +84,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
     
     func fetchAndReloadLocalContent() -> Int {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if personRecordID == nil { return 0}
         let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
         let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
@@ -112,10 +113,12 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         } catch {
             logw("ProfileUploads local data fetch failed with error: \(error)")
         }
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of uploads: \(fetchedResultsController.sections![0].numberOfObjects)")
         return fetchedResultsController.sections![0].numberOfObjects
     }
     
     func getFavorites() -> [String] {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         var trueFavorites = [NSManagedObject]()
         if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {

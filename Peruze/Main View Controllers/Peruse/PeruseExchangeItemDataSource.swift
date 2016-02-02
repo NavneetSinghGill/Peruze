@@ -31,7 +31,8 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     getItems()
   }
   
-  func deleteItemsAtIndexPaths(paths: [NSIndexPath]) -> [NSManagedObject] {
+    func deleteItemsAtIndexPaths(paths: [NSIndexPath]) -> [NSManagedObject] {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) paths: \(paths)")
     var returnValue = [NSManagedObject]()
     for singlePath in paths {
       if singlePath.item < exchangeItems.count {
@@ -40,11 +41,13 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
       } else {
         assertionFailure("Trying to delete exchange item that does not exist")
       }
-    }
+        }
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) return: \(returnValue)")
     return returnValue
   }
   
-  func addItemsAtIndexPaths(items: [NSManagedObject], paths: [NSIndexPath]) {
+    func addItemsAtIndexPaths(items: [NSManagedObject], paths: [NSIndexPath]) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) items: \(items), paths: \(paths) ")
     var itemIterator = 0
     for singlePath in paths {
       exchangeItems.insert(items[itemIterator], atIndex: singlePath.item)
@@ -89,11 +92,13 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
     return cell
   }
   
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) exchangeItems.count: \(exchangeItems.count) + 1")
     return exchangeItems.count + 1
   }
     
     func getItems() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         
         guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {

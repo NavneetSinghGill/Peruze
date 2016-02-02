@@ -79,6 +79,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //MARK: - View Controller Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     
     //setup collection view
     collectionView.delegate = self
@@ -155,10 +156,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   }
   
   //MARK: - Handling Segues
-  @IBAction func closeTap(sender: UIButton) {
+    @IBAction func closeTap(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     exchangeCanceled()
   }
-  @IBAction func checkTap(sender: UIButton) {
+    @IBAction func checkTap(sender: UIButton) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     exchangeCompleted()
   }
   
@@ -173,7 +176,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
 //    }
 //  }
   
-  private func exchangeCompleted() {
+    private func exchangeCompleted() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if !NetworkConnection.connectedToNetwork() {
       let alert = ErrorAlertFactory.alertForNetworkWithTryAgainBlock { self.exchangeCompleted() }
       presentViewController(alert, animated: true, completion: nil)
@@ -211,7 +215,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     dismissViewControllerAnimated(true, completion: nil)
   }
   
-  private func segueToUploadNewItem() {
+    private func segueToUploadNewItem() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let UploadVC = storyboard!.instantiateViewControllerWithIdentifier(Constants.UploadViewControllerIdentifier) as! UploadViewController
     UploadVC.parentVC = self
     UploadVC.shouldShowUploadButton = true
@@ -234,6 +239,7 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   //MARK: Variables
   private var pickedUpCell: PickedUpCell? {
     didSet {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
       if let pickedUpCell = pickedUpCell,
         let imageUrl = pickedUpCell.item.valueForKey("imageUrl") as? String {
 //            pickedUpCell.circleImage.image = UIImage(data: imageData)
@@ -259,7 +265,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
   }
   
   //MARK: Long Press Gesture Recognizer Target
-  func handleLongPress(sender: UILongPressGestureRecognizer) {
+    func handleLongPress(sender: UILongPressGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     switch sender.state {
     case .Began:
       if press(sender, isOnView: leftCircleImageView) {
@@ -349,7 +356,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     }
   }
   
-  private func addCurrentCircleImageItemToCollectionView() {
+    private func addCurrentCircleImageItemToCollectionView() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if let currentItem = itemInCircleView {
       //place the cell in the collection view
       let startIndexPath = NSIndexPath(forItem: 0, inSection: 0)
@@ -377,7 +385,8 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
     itemInCircleView = nil
   }
   
-  private func movePickedUpCellToCircleImage() {
+    private func movePickedUpCellToCircleImage() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if itemInCircleView != nil {
       addCurrentCircleImageItemToCollectionView()
     }

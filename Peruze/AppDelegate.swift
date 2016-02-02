@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    logw("\n\n\n##################################  APPLICATION STARTING POINT  ##################################\n\n\n")
     // Override point for customization after application launch.
     // Setup CoreData with MagicalRecord
     let defaults = NSUserDefaults.standardUserDefaults()

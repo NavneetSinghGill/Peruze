@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftLog
 
 class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UIScrollViewDelegate {
   //TODO: There should only be a segue if the user lets go of the scroll view while content offset < 0
@@ -118,7 +119,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   }
   
   //MARK: - Gesture Handling
-  func singleTap(sender: UITapGestureRecognizer) {
+    func singleTap(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) Item: \(item)")
     //favorite buffer is 3x the size of the favorite button
     if canFavorite != nil && canFavorite == shouldEnableFavorite.No {return}
     let bufferX = favoriteImageView.frame.origin.x - favoriteImageView.frame.width
@@ -148,6 +150,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   }
   
     func doubleTap(sender: UITapGestureRecognizer) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) Item: \(item)")
     if canFavorite != nil && canFavorite == shouldEnableFavorite.No {return}
     itemFavorited = true
     delegate?.itemFavorited(item!, favorite: itemFavorited)
@@ -158,7 +161,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   
   //MARK: - Drawing and UI
   
-  private func updateUI() {
+    private func updateUI() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     self.noItemImageLabel.hidden = true
     if let imageData = item?.valueForKey("image") as? NSData {
 //      itemImageView.image = UIImage(data: imageData)
@@ -253,7 +257,8 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
 //        return 0
 //    }
     
-  private func heartFlash() {
+    private func heartFlash() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let heart = UIImageView()
     heart.frame = ownerProfileImage.frame
     heart.frame.origin = CGPointMake(itemImageView.frame.origin.x + (itemImageView.frame.width / 2) - (heart.frame.width / 2), itemImageView.frame.origin.y + (itemImageView.frame.height / 2) - (heart.frame.height / 2))

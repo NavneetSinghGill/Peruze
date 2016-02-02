@@ -74,6 +74,7 @@ class ProfileViewController: UIViewController {
     var friendsRecords : NSMutableArray = []
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) segue: \(segue), sender: \(sender)")
         if segue.identifier == "toUploadDetail" {
             if let profileUploadsDataSource = sender as? ProfileUploadsDataSource,
                 let uploadsDetailScreen = segue.destinationViewController.childViewControllers[0] as? ProfileUploadsCollectionViewController {

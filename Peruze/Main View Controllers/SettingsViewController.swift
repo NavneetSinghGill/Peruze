@@ -539,12 +539,23 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     default:
       break
     }
+    
+    if indexPath.section == 3 {
+        if indexPath.row == 2 {
+            self.termsAndConditionsButtonTapped(UIButton())
+        } else if indexPath.row == 3 {
+            self.safetyButtonTapped(UIButton())
+        } else if indexPath.row == 4 {
+            self.privacyPolicyButtonTapped(UIButton())
+        }
+    }
+    
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
   //MARK: - Alerts
     private func showMustChangeLocationSettingAlert() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        logw("#### \(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let title = "Can't Access Location"
     let message = "We don't know where you are! You can change the location settings in the Settings app or keep your range as Everywhere."
     let cancelTitle = "Dismiss"

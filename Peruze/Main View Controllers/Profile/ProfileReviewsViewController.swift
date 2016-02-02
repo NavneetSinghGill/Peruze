@@ -32,6 +32,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     
   override func viewDidLoad() {
     super.viewDidLoad()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.AllEvents)
     tableView.addSubview(refreshControl)
@@ -72,7 +73,8 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     }
     
   let opQueue = OperationQueue()
-  func refresh() {
+    func refresh() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
 //    let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let recordIDName: String
     if dataSource.profileOwner != nil && dataSource.profileOwner.valueForKey("recordIDName") != nil{
@@ -101,7 +103,8 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return tallRowsIndexPaths.filter{$0 == indexPath}.count == 0 ? Constants.TableViewCellHeight : UITableViewAutomaticDimension
   }
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) indexPath: \(indexPath)")
     if dataSource.writeReviewEnabled && indexPath.section == 0 {
       let reviewVC = storyboard?.instantiateViewControllerWithIdentifier(Constants.WriteReviewIdentifier)
       logw("segue to write review")

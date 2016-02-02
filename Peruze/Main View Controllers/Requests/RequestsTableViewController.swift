@@ -31,6 +31,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
   override func viewDidLoad() {
     super.viewDidLoad()
+    logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     refreshControl = UIRefreshControl()
     refreshControl?.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl!, atIndex: 0)
@@ -62,11 +63,13 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     }
     
     func refreshWithoutActivityIndicator() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.activityIndicatorView.alpha = 0
         self.refresh()
     }
     
-  func refresh() {
+    func refresh() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     //reload the data
     self.noRequetsLabel.alpha = 0
     self.noRequetsLabel.hidden = true
@@ -116,6 +119,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
     
     func localRefresh() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         do {
             logw("RequestsTableViewController fetching local requests.")
             self.activityIndicatorView.stopAnimating()
@@ -163,6 +167,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
             self.noRequetsLabel.hidden = true
             return
         }
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of requests: \(dataSource.fetchedResultsController?.sections?[0].numberOfObjects)")
         if dataSource.fetchedResultsController?.sections?[0].numberOfObjects == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.noRequetsLabel.alpha = 1.0

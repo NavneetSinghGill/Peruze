@@ -67,7 +67,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
 
     
     private func checkForEmptyData(animated: Bool) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) sortedFriendsData.count: \(dataSource.sortedFriendsData.count)")
         if dataSource.sortedFriendsData.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.titleLabel.alpha = 1.0
