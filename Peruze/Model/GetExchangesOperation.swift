@@ -219,9 +219,9 @@ class GetExchangesOperation: Operation {
       }
         
         
-      
+      logw("GetExchangesOperation.. requesting person: \(requestingPerson)")
       //add this exchange to the requesting user's exchanges
-        if requestingPerson.valueForKey("exchanges") as? NSSet != nil {
+        if requestingPerson != nil && requestingPerson.valueForKey("exchanges") as? NSSet != nil {
             let currentExchanges: NSSet = requestingPerson.valueForKey("exchanges") as! NSSet
             logw("Saving exchanges \(currentExchanges.count)")
             logw("\n requestingPerson \(requestingPerson)")

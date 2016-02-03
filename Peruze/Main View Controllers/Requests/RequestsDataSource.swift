@@ -54,6 +54,7 @@ class RequestsDataSource: NSObject, UICollectionViewDataSource, UITableViewDataS
     cell.delegate = requestDelegate
     if let exchange = fetchedResultsController.objectAtIndexPath(indexPath) as? Exchange {
       cell.exchange = exchange
+      logw("\nRequested exchange table cell data at .... IndexPath:\(indexPath) .... with data: \(exchange)")
     }
     return cell
   }

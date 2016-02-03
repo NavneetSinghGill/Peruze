@@ -102,24 +102,26 @@ class GetPersonOperation: Operation {
             let facebookID = recordsByID[recordID]?.objectForKey("FacebookID") as? String
             localPerson.setValue(facebookID, forKey: "facebookID")
             
-            let predicate = NSPredicate(format: "FacebookID == %@", localPerson.valueForKey("facebookID") as! String)
-            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
-            self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
-                (friends, error) -> Void in
-                logw("GetPersonOperation Friends block")
-                for friend in friends! {
-                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
-                    if let facebookID = friend.objectForKey("FacebookID") {
-                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
+            if localPerson.valueForKey("facebookID") != nil {
+                let predicate = NSPredicate(format: "FacebookID == %@", localPerson.valueForKey("facebookID") as! String)
+                let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+                self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
+                    (friends, error) -> Void in
+                    logw("GetPersonOperation Friends block")
+                    for friend in friends! {
+                        let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
+                        if let facebookID = friend.objectForKey("FacebookID") {
+                            localFriendRecord.setValue(facebookID, forKey: "facebookID")
+                        }
+                        if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
+                            localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
+                        }
+                        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
+                        localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
                     }
-                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
-                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
-                    }
-                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
-                    localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
-                }
-                self.context.MR_saveToPersistentStoreAndWait()
-            })
+                    self.context.MR_saveToPersistentStoreAndWait()
+                })
+            }
           }
           //check for image property and set the data
 //          if let imageAsset = recordsByID[recordID]?.objectForKey("Image") as? CKAsset {

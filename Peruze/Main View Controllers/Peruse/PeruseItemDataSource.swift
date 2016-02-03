@@ -179,9 +179,10 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
-            if self.fetchedResultsController.sections == nil {
+            if self.fetchedResultsController.sections == nil || self.fetchedResultsController.sections?[0].objects as? [Item] == nil {
                 return
             }
+            logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] ")
             let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
             self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
             logw("Filtered items = \(self.items)")
@@ -255,7 +256,8 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
   
     func getFavorites() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+        let contextLocal = NSManagedObjectContext.MR_context()
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: contextLocal)
     var trueFavorites = [NSManagedObject]()
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
         for favoriteObj in favorites {

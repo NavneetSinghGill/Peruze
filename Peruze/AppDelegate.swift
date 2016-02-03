@@ -127,6 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MagicalRecord.cleanUp()
     NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isAppActive")
     NSFetchedResultsController.deleteCacheWithName("PeruzeDataModel")
+    logw("\n\n##########################  APPLICATION WILL TERMINATE  ##########################\n\n")
   }
     
   //MARK: - Push Notifications
