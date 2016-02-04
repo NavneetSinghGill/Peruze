@@ -439,10 +439,11 @@ class Model: NSObject, CLLocationManagerDelegate {
                             localExchange.setValue(NSNumber(integer: newExchangeStatus), forKey: "status")
                         }
                         
-                        //set date
+                        //set datedateOfLatestChat
                         if let newDate = record!.objectForKey("DateExchanged") as? NSDate {
                             let date = localExchange.valueForKey("date") as? NSDate
                             localExchange.setValue((date ?? newDate), forKey: "date")
+                            localExchange.setValue((date ?? newDate), forKey: "dateOfLatestChat")
                         }
                         
                         var itemOffered: NSManagedObject!

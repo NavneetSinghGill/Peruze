@@ -410,7 +410,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         let defaults = NSUserDefaults.standardUserDefaults()
         if (defaults.boolForKey("keyHasDataRetrivedFromCloud")) {
             logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) keyHasDataRetrivedFromCloud: \(defaults.boolForKey("keyHasDataRetrivedFromCloud"))")
-            self.dataSource.refreshData(self, shouldShuffle: true)
+            self.dataSource.refreshData(self, shouldShuffle: false)
         } else {
             logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) keyHasDataRetrivedFromCloud key is nil")
         }

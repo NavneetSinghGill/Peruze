@@ -116,7 +116,7 @@ extension InfiniteCollectionView: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        logw("Indexpath.row: \(indexPath.row) ............ indexofset: \(indexOffset)")
+        logw("\n\t\t\tIndexpath.row: \(indexPath.row) ............ number of items: \((infiniteDataSource?.numberOfItems(self))! / 3) ..... indexofset: \(indexOffset)")
         return infiniteDataSource!.cellForItemAtIndexPath(self, dequeueIndexPath: indexPath, usableIndexPath: NSIndexPath(forRow: getCorrectedIndex(indexPath.row - indexOffset), inSection: 0))
     }
     
