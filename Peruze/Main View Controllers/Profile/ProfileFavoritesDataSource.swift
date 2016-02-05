@@ -81,6 +81,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) return: \(self.favorites.count)")
     return self.favorites.count
   }
+    
   //MARK: - UITableViewDataSource methods
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     

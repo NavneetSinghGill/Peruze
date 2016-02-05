@@ -113,7 +113,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0 {
         self.getMyExchanges()
     } else {
-        updateItemsOnFilterChange()
+        self.dataSource.refreshData(self, shouldShuffle: true)
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
@@ -279,7 +279,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
   }
   
     func itemFavorited(item: NSManagedObject, favorite: Bool) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) item: \(item), favorite: \(favorite)")
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) favorite: \(favorite), item: \(item)")
     //favorite data
     logw("item started favorite! ")
     let itemRecordIDName = item.valueForKey("recordIDName") as! String
@@ -396,7 +396,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     // Method calls when filter changed from the setting screen
     func updateItemsOnFilterChange() {
             dispatch_async(dispatch_get_main_queue()) {
-               self.dataSource.refreshData(self, shouldShuffle: true)
+               self.dataSource.refreshData(self, shouldShuffle: false)
             }
     }
     

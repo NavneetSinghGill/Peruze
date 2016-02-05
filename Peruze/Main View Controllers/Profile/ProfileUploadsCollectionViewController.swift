@@ -20,10 +20,7 @@ class ProfileUploadsCollectionViewController: PeruseViewController {
     var segueFrom: String!
     
     override func viewDidLoad() {
-        //    super.viewDidLoad()
-        //TODO: - Pass this variable in instead of setting it
-//        dataSource = ProfileUploadsDataSource()
-//        self.title = "Upload"
+//        super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .redColor()
         tabBarController?.tabBar.hidden = true
         dataSource!.itemDelegate = self
@@ -35,13 +32,13 @@ class ProfileUploadsCollectionViewController: PeruseViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         dispatch_async(dispatch_get_main_queue()){
-//            self.collectionView.reloadData()
-//        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
-//        dispatch_after(delayTime, dispatch_get_main_queue()) {
-            let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("UploadedItemIndex") as! Int, inSection: 0)
-            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) scroll to indexPath: \(indexPath)")
-            self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
-//            }
+            if NSUserDefaults.standardUserDefaults().valueForKey("UploadedItemIndex") != nil {
+                let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("UploadedItemIndex") as! Int, inSection: 0)
+                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) scroll to indexPath: \(indexPath)")
+                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "UploadedItemIndex")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
         }
     }
     
@@ -64,5 +61,5 @@ class ProfileUploadsCollectionViewController: PeruseViewController {
         collectionView.scrollIndicatorInsets = insets
         let cellSize = CGSizeMake(collectionView.frame.width, bottom - top)
         layout.itemSize = cellSize
-        }
+    }
 }

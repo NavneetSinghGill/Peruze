@@ -19,7 +19,9 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
       
     }
   }
-  
+    var tempImageView1: UIImageView!
+    var tempImageView2: UIImageView!
+    var tempImageView3: UIImageView!
   //from Data Source
   //their item
   var exchange: Exchange? {
@@ -40,14 +42,14 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
       let itemDescription = item.valueForKey("detail") as? String
       {
 //        profilePicture.image = UIImage(data: ownerImageData)
-        let tempImageView1 = UIImageView()
+        tempImageView1 = UIImageView()
         tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(ownerImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             self.profilePicture.image = image
             self.contentView.setNeedsDisplay()
         })
         profileName.text = ownerName
 //        theirItemImageView.image = UIImage(data: itemImageData)
-        let tempImageView2 = UIImageView()
+        tempImageView2 = UIImageView()
         tempImageView2.sd_setImageWithURL(NSURL(string: s3Url(itemImageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
             self.theirItemImageView.image = image
             self.theirSquareItemImageView.image = image
@@ -72,8 +74,8 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
       if let item = itemRequestedFromUser {
         if let imageUrl = item.valueForKey("imageUrl") as? String {
 //          yourItemImageView.image = UIImage(data: imageData)
-            let tempImageView1 = UIImageView()
-            tempImageView1.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
+            tempImageView3 = UIImageView()
+            tempImageView3.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), completed: { (image, error, sdImageCacheType, url) -> Void in
                 self.yourItemImageView.image = image
                 self.contentView.setNeedsDisplay()
             })

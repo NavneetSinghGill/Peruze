@@ -81,7 +81,7 @@ class ChatItemDetailShowDetailViewController: UIViewController, UICollectionView
         var trueFavorites = [NSManagedObject]()
         if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
             for favoriteObj in favorites {
-                if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1  {
+                if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
                     trueFavorites.append(favoriteObj)
                 }
             }

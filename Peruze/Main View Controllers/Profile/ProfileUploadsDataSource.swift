@@ -34,6 +34,7 @@ extension ProfileUploadsDataSource: InfiniteCollectionViewDataSource {
         cell.item = item
         cell.delegate = itemDelegate
         cell.itemFavorited = self.uploadsIDs.filter{ $0 == (item.valueForKey("recordIDName") as! String) }.count != 0
+        cell.ownerProfileImage.userInteractionEnabled = false
         cell.setNeedsDisplay()
         return cell
     }
@@ -95,16 +96,18 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             inContext: managedConcurrentObjectContext)
         do {
             try fetchedResultsController.performFetch()
-            self.uploadsIDs = [String]()
-            var trueFavoriteUploadIDs = [String]()
-            self.uploadsIDs = fetchedResultsController.sections![0].objects!.map { $0.valueForKey("recordIDName") as! String }
-            let favorites = getFavorites()
-            for uploadID in self.uploadsIDs {
-                if favorites.contains(uploadID) {
-                    trueFavoriteUploadIDs.append(uploadID)
+            if fetchedResultsController.sections![0].objects != nil {
+                self.uploadsIDs = [String]()
+                var trueFavoriteUploadIDs = [String]()
+                self.uploadsIDs = fetchedResultsController.sections![0].objects!.map { $0.valueForKey("recordIDName") as! String }
+                let favorites = getFavorites()
+                for uploadID in self.uploadsIDs {
+                    if favorites.contains(uploadID) {
+                        trueFavoriteUploadIDs.append(uploadID)
+                    }
                 }
+                self.uploadsIDs = trueFavoriteUploadIDs
             }
-            self.uploadsIDs = trueFavoriteUploadIDs
             dispatch_async(dispatch_get_main_queue()) {
                 if self.tableView != nil {
                     self.tableView.reloadData()
@@ -123,7 +126,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         var trueFavorites = [NSManagedObject]()
         if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
             for favoriteObj in favorites {
-                if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1  {
+                if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
                     trueFavorites.append(favoriteObj)
                 }
             }
@@ -143,7 +146,9 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
       forIndexPath: indexPath) as! ProfileUploadsTableViewCell
     
     let item = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-    
+    if fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject == nil {
+        return cell
+    }
     cell.titleTextLabel.text = (item.valueForKey("title") as! String)
     cell.subtitleTextLabel.text = ""
     cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)

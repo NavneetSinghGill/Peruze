@@ -23,9 +23,6 @@
                             <constraint firstAttribute="height" constant="72" id="cWI-6f-YM3"/>
                             <constraint firstAttribute="width" constant="85" id="i67-82-2LG"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="Emily"/>
-                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="i67-82-2LG"/>
@@ -38,9 +35,6 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="85" id="BMq-1H-6BI"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="Shirt"/>
-                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="BMq-1H-6BI"/>
@@ -53,9 +47,6 @@
                         <constraints>
                             <constraint firstAttribute="width" secondItem="dtd-2Z-lEL" secondAttribute="height" multiplier="1:1" id="gQ9-xg-bZf"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="Cupcakes"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" text="Emily Vo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vC-OI-2mm">
                         <rect key="frame" x="146" y="88" width="62" height="20"/>
@@ -315,12 +306,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Cupcakes" width="720" height="719"/>
         <image name="Down_Arrow_Dark" width="1024" height="768"/>
-        <image name="Emily" width="440" height="440"/>
         <image name="Exchange_Arrows" width="341" height="256"/>
         <image name="Large_Check_Mark" width="170" height="170"/>
         <image name="Large_X" width="170" height="170"/>
-        <image name="Shirt" width="499" height="499"/>
     </resources>
 </document>

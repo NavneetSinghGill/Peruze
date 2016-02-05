@@ -26,8 +26,16 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     navigationController?.navigationBar.tintColor = .redColor()
     tabBarController?.tabBar.hidden = true
     dataSource!.itemDelegate = self
-    collectionView.infiniteDataSource = dataSource
+        collectionView.infiniteDataSource = dataSource
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refresh", name: "justReloadPeruseItemMainScreen", object: nil)
   }
+    
+    func refresh() {
+        self.dataSource?.refresh()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.collectionView.reloadData()
+        }
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,9 +43,13 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
 //            self.collectionView.reloadData()
 //        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
 //        dispatch_after(delayTime, dispatch_get_main_queue()) {
-            let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex") as! Int, inSection: 0)
-            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) scroll to indexPath: \(indexPath)")
-            self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+            if NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex") != nil {
+                let indexPath = NSIndexPath(forItem: NSUserDefaults.standardUserDefaults().valueForKey("FavouriteIndex") as! Int, inSection: 0)
+                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) scroll to indexPath: \(indexPath)")
+                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "FavouriteIndex")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
         }
     }
     

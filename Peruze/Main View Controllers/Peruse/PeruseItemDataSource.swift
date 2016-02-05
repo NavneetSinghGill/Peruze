@@ -181,22 +181,23 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
             self.location = location
             if self.fetchedResultsController.sections == nil || self.fetchedResultsController.sections?[0].objects as? [Item] == nil {
                 return
-            }
-            logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] ")
-            let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
-            self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
-            logw("Filtered items = \(self.items)")
-            dispatch_async(dispatch_get_main_queue()) {
-                self.collectionView.reloadData()
-                if shouldShuffle == true {
-                    if self.items.count > 1{
-                        let randomIndex = Int(arc4random_uniform(UInt32(self.items.count)))
-                        let indexPath = NSIndexPath(forItem: randomIndex, inSection: 0)
-                        self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+            } else {
+                logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] ")
+                let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
+                self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
+                logw("Filtered items = \(self.items)")
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.collectionView.reloadData()
+                    if shouldShuffle == true {
+                        if self.items.count > 1{
+                            let randomIndex = Int(arc4random_uniform(UInt32(self.items.count)))
+                            let indexPath = NSIndexPath(forItem: randomIndex, inSection: 0)
+                            self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+                        }
                     }
                 }
+                self.getFavorites()
             }
-            self.getFavorites()
             
         }
         opQueue.addOperation(getLocationOp)
@@ -256,12 +257,12 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
   
     func getFavorites() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let contextLocal = NSManagedObjectContext.MR_context()
-    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: contextLocal)
+//        let contextLocal = NSManagedObjectContext.MR_context()
+    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     var trueFavorites = [NSManagedObject]()
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
         for favoriteObj in favorites {
-            if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1  {
+            if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
                 trueFavorites.append(favoriteObj)
             }
         }

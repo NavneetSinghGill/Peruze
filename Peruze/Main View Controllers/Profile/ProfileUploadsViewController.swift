@@ -30,6 +30,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     super.viewDidLoad()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData:", name: "FetchedPersonUploads", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadNewLocalData", name: "reloadPeruzeExchangeScreen", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "fetchAndReloadLocalContent", name: "justReloadPeruseItemMainScreen", object: nil)
   }
     
     override func viewWillAppear(animated: Bool) {
