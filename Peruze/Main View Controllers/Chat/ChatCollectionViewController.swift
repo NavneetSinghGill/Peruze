@@ -131,7 +131,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     self.inputToolbar?.contentView?.rightBarButtonItem?.enabled = !self.keyboardController!.textView!.text!.isEmpty
     
     self.dataSource?.scrollToBottom()
-    
+        
     UIView.animateWithDuration(0.5) {
       self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 1.0
       self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 1.0
@@ -157,6 +157,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
         self.automaticallyScrollsToMostRecentMessage = true
     }
   }
+    
   //MARK: - Handling Camera
   var cameraNavController: TGCameraNavigationController?
     func presentImagePicker() {

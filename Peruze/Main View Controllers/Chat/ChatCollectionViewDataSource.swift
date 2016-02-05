@@ -70,14 +70,16 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
             delegate: self,
             inContext: managedConcurrentObjectContext
         )
-        let numberOfMessages = fetchedResultsController.sections?[0].numberOfObjects ?? 0
-        dispatch_async(dispatch_get_main_queue()){
-            self.delegate?.collectionView?.reloadData()
-        }
-        if numberOfMessages >= 1 {
-            let indexPath = NSIndexPath(forItem: numberOfMessages - 1, inSection: 0)
-            let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-            self.latestMessageDate = message.valueForKey("date") as! NSDate
+        if fetchedResultsController.sections != nil {
+            let numberOfMessages = fetchedResultsController.sections?[0].numberOfObjects ?? 0
+            dispatch_async(dispatch_get_main_queue()){
+                self.delegate?.collectionView?.reloadData()
+            }
+            if numberOfMessages >= 1 {
+                let indexPath = NSIndexPath(forItem: numberOfMessages - 1, inSection: 0)
+                let message = JSQMessageFromMessage(fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+                self.latestMessageDate = message.valueForKey("date") as! NSDate
+            }
         }
     }
     

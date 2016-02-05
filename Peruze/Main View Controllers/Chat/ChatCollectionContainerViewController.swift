@@ -99,6 +99,6 @@ class ChatCollectionContainerViewController: UIViewController {
     
     func viewTapped(gesture: UIGestureRecognizer) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.view.endEditing(true)
+//        self.view.endEditing(true)
     }
 }

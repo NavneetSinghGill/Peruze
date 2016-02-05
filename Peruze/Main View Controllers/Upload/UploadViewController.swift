@@ -471,9 +471,9 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {
-                        print("Upload item on FB Post failed: \(error)")
+                        logw("Upload item on FB Post failed at time: \(self.timeIntervalSince((self.timer?.fireDate)!)) with error: \(error)")
                     } else {
-                        print("Upload item on FB Post success")
+                        logw("Upload item on FB Post successat time: \(self.timeIntervalSince((self.timer?.fireDate)!))")
                     }
                 })
             }

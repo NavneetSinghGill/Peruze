@@ -94,6 +94,7 @@ class ChatTableViewCell: UITableViewCell {
       //TODO: Uncomment this eventually
       //let name = data!.messages.last!.senderDisplayName == data!.exchage.itemRequested.owner.firstName ? "you" : "\(data!.messages.last!.senderDisplayName)"
       //mostRecentTextString.text = name + ": \(data!.messages.last!.text)"
+        logw("cell.data set complete.")
     }
   }
     var showChatItemDelegate: showChatItemDetailDelegate!

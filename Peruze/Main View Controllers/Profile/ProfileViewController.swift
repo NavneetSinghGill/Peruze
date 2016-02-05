@@ -601,7 +601,7 @@ class ProfileViewController: UIViewController {
         let friendsRecords: NSMutableArray = []
         
         operation.recordFetchedBlock = { (record) in
-            print(record)
+            logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) recordFetchedBlock : \(record)")
             friendsRecords.addObject(record)
         }
         

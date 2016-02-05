@@ -179,9 +179,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
-            if self.fetchedResultsController.sections == nil || self.fetchedResultsController.sections?[0].objects as? [Item] == nil {
-                return
-            } else {
+            if self.fetchedResultsController.sections != nil && self.fetchedResultsController.sections?[0].numberOfObjects >= 0 && self.fetchedResultsController.sections?[0].objects as? [Item] != nil {
                 logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] ")
                 let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
                 self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]

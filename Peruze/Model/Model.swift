@@ -522,14 +522,14 @@ class Model: NSObject, CLLocationManagerDelegate {
                         }
                         
                         if itemOffered.valueForKey("recordIDName") == nil || itemOffered.valueForKey("title") == nil || itemOffered.valueForKey("image") == nil {
-                            self.fetchItemWithRecord(CKRecordID(recordName: itemOffered.valueForKey("recordIDName") as! String), completionBlock: {
+                            self.fetchItemWithRecord(CKRecordID(recordName: itemOffered.valueForKey("recordIDName") as! String), shouldReloadScreen: false, completionBlock: {
                                 (isOfferedItemFetchedSuccessfully : Bool) in
                                 if isOfferedItemFetchedSuccessfully == true {
                                     
                                     //After first success.... Fetch second item
                                     
                                     if isRequestedItemPresentLocally == false {
-                                        self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), completionBlock: {
+                                        self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), shouldReloadScreen: false, completionBlock: {
                                             (isRequestedItemFetchedSuccessfully : Bool) in
                                             if isRequestedItemFetchedSuccessfully == true {
                                                 
@@ -544,7 +544,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                             })
                         } else {
                             if isRequestedItemPresentLocally == false {
-                                self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), completionBlock: {
+                                self.fetchItemWithRecord(CKRecordID(recordName: itemRequestedRecordID), shouldReloadScreen: false, completionBlock: {
                                     (isRequestedItemFetchedSuccessfully : Bool) in
                                     if isRequestedItemFetchedSuccessfully == true {
                                         
