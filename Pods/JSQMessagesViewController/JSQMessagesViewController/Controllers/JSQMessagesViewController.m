@@ -235,6 +235,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     }
 
     [self jsq_updateKeyboardTriggerPoint];
+    [self.keyboardController beginListeningForKeyboard];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -260,7 +261,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 {
     [super viewDidDisappear:animated];
     [self jsq_removeObservers];
-    [self.keyboardController endListeningForKeyboard];
+//    [self.keyboardController endListeningForKeyboard];
 }
 
 - (void)didReceiveMemoryWarning

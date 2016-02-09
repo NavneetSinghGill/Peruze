@@ -236,6 +236,7 @@ class OnboardViewController: UIViewController, UIPageViewControllerDataSource, U
     }
     
     private func segueToProfileSetup() {
+        FBSDKTestUsersManager.sharedInstanceForAppID(__appID__, appSecret: __appSecret__)
         let initial = presentingViewController as? InitialViewController
         initial?.facebookLoginWasSuccessful = true
         imageView.image = UIImage(named: Constants.PeruseWithoutWordsImageName)

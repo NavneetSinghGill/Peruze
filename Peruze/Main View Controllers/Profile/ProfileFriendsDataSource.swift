@@ -53,7 +53,8 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
             return
         }
         fbId = profileOwner.valueForKey("facebookID") as! String
-        let request = FBSDKGraphRequest(graphPath:fbId, parameters: ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"779996698766247"])
+        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))"]//,"appsecret_proof":__appSecret__]
+        let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Mutual Friends are : \(result)")
@@ -121,13 +122,14 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         cell!.friendDataDict = userDict
         cell!.profileImageView.hidden = false
         cell!.profileImageButton.hidden = true
-//        cell!.profileImageButton.layer.cornerRadius = 10
+     //   cell!.profileImageButton.layer.cornerRadius = cell!.profileImageButton.frame.size.width / 2
+        
         cell!.profileImageButton.layer.masksToBounds = true
         cell!.profileImageButton.userInteractionEnabled = false
         cell!.profileImageView.userInteractionEnabled = false
         
         if parsedObject.profileImageUrl != nil {
-            cell?.profileImageButton.sd_setImageWithURL(NSURL(string: parsedObject.profileImageUrl), forState: UIControlState.Normal)
+          //  cell?.profileImageButton.sd_setImageWithURL(NSURL(string: parsedObject.profileImageUrl), forState: UIControlState.Normal)
             cell?.profileImageView.imageView?.sd_setImageWithURL(NSURL(string: parsedObject.profileImageUrl))
         }
         return cell!

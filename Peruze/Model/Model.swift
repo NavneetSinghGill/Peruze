@@ -259,17 +259,14 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     func getMutualFriendsFromFb(person: NSManagedObject, context_: NSManagedObjectContext, completionBlock: (Void -> Void) = { }) {
         let fbId = person.valueForKey("facebookID") as? String
-        logw("xT9out1")
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
         if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
-            logw("xT9in1")
-            let request = FBSDKGraphRequest(graphPath:fbId, parameters: ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"779996698766247"])
+            
+            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))"]//,"appsecret_proof":__appSecret__]
+            let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
             request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-                if (person.valueForKey("firstName") as! String).hasPrefix("D") {
-                    
-                }
                 if error == nil {
-                    logw("xT9in Mutual Friends with \(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!) are : \(result)")
+                    logw("Mutual Friends with \(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!) are : \(result)")
                     
                     if let mutualFriends = result.valueForKey("context")!.valueForKey("mutual_friends") {
                         let resultsArray = mutualFriends.valueForKey("data") as! NSArray
@@ -1288,6 +1285,8 @@ class Model: NSObject, CLLocationManagerDelegate {
 
 let modelSingletonGlobal = Model()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
+let __appID__ = "779996698766247"
+let __appSecret__ = ""
 
 //s3
 var transferManager1 = AWSS3TransferManager.defaultS3TransferManager()

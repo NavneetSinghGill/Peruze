@@ -232,9 +232,6 @@ class GetAllPersonsWithMissingData: Operation {
         //set the returned properties
         if localPerson.valueForKey("firstName") as? String == nil {
           localPerson.setValue(record.objectForKey("FirstName") as? String, forKey: "firstName")
-            if localPerson.valueForKey("firstName") as! String == "Saumya"{
-                
-            }
         }
         
         if localPerson.valueForKey("lastName") as? String == nil {
