@@ -644,30 +644,64 @@ class ProfileViewController: UIViewController {
                 //            ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage]
                 let userInfo : NSDictionary = notification.userInfo!
                 let userDictionary = userInfo.valueForKey("friendData")
-                let userId = userDictionary!.valueForKey("recordIDName") as? String
-                let person = Person.MR_findFirstWithPredicate(NSPredicate(format: "recordIDName = %@",userId!))
-                if self.personForProfile != nil && self.personForProfile!.valueForKey("me") as! Bool == true {
-                    return
-                }
-                self.personForProfile = person
-                if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
-                    self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
-                    self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
-                }
-                self.updateViewAfterGettingResponse()
-                for viewController in self.childViewControllers {
-                    if let vc = viewController as? ProfileContainerViewController {
-                        for childVC in vc.childViewControllers {
-                            if let reviewVC = childVC as? ProfileReviewsViewController {
-                                reviewVC.dataSource.writeReviewEnabled = true
+                let fbId = userDictionary!.valueForKey("id") as? String
+                let first_name = userDictionary!.valueForKey("first_name") as? String
+                var person = Person.MR_findFirstWithPredicate(NSPredicate(format: "facebookID = %@",fbId!))
+                
+                if person != nil {
+                    if self.personForProfile != nil && self.personForProfile!.valueForKey("me") as! Bool == true {
+                        return
+                    }
+                    self.personForProfile = person
+                    if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
+                        self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
+                        self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
+                    }
+                    self.updateViewAfterGettingResponse()
+                    for viewController in self.childViewControllers {
+                        if let vc = viewController as? ProfileContainerViewController {
+                            for childVC in vc.childViewControllers {
+                                if let reviewVC = childVC as? ProfileReviewsViewController {
+                                    reviewVC.dataSource.writeReviewEnabled = true
+                                }
                             }
+                            vc.profileOwner = self.personForProfile
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
+                            self.uploadsTapped(UIButton())
                         }
-                        vc.profileOwner = self.personForProfile
-                        vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
-                        vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
-                        vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
-                        vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
-                        self.uploadsTapped(UIButton())
+                    }
+                } else {
+                    self.personForProfile = Person.MR_createEntityInContext(managedConcurrentObjectContext)
+                    self.personForProfile?.setValue(fbId, forKey: "facebookID")
+                    self.personForProfile?.setValue("nothing", forKey: "recordIDName")
+                    self.personForProfile?.setValue(first_name, forKey: "firstName")
+                    self.personForProfile?.setValue(userInfo.valueForKey("imageUrl") as! String, forKey: "imageUrl")
+                    self.personForProfile?.favorites = NSSet(array: [])
+                    managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                    
+                    if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
+                        self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: self.personForProfile!.valueForKey("imageUrl") as! String))
+                        self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
+                    }
+                    
+                    self.updateViewAfterGettingResponse()
+                    for viewController in self.childViewControllers {
+                        if let vc = viewController as? ProfileContainerViewController {
+                            for childVC in vc.childViewControllers {
+                                if let reviewVC = childVC as? ProfileReviewsViewController {
+                                    reviewVC.dataSource.writeReviewEnabled = true
+                                }
+                            }
+                            vc.profileOwner = self.personForProfile
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Reviews
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.MutualFriends
+                            vc.viewControllerNumber = Constants.ViewControllerIndexes.Uploads
+                            self.uploadsTapped(UIButton())
+                        }
                     }
                 }
             }

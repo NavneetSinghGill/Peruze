@@ -26,7 +26,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   private var cancelButton: UIButton?
   private var completeButton: UIButton?
   private var attachmentButton: UIButton?
-    
+  var presentationContext: UIViewController!
     
     
   //MARK: - Lifecycle Methods
@@ -34,8 +34,8 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     super.viewDidLoad()
     
     //get notifications from keyboard
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive", name: "applicationDidBecomeActive", object: nil)
     dataSource = ChatCollectionViewDataSource(exchange: exchange)
     
@@ -72,6 +72,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         if self.dataSource?.latestMessageDate != nil {
             self.dataSource?.getChatAfterDate((self.dataSource?.latestMessageDate)!)
         }
@@ -120,8 +121,9 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
   
   //MARK: - Handling the Keyboard
-    func keyboardWillShow() {
+    func keyboardWillShow(notification: NSNotification) {
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        
     automaticallyScrollsToMostRecentMessage = true
     self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 0.0
     self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 0.0
@@ -132,6 +134,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     
     self.dataSource?.scrollToBottom()
         
+        
     UIView.animateWithDuration(0.5) {
       self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 1.0
       self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 1.0
@@ -139,7 +142,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     
   }
   
-    func keyboardWillHide() {
+    func keyboardWillHide(notification: NSNotification) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     
     automaticallyScrollsToMostRecentMessage = false
@@ -149,7 +152,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     inputToolbar?.contentView?.leftBarButtonItem = cancelButton
     inputToolbar?.contentView?.rightBarButtonItem = completeButton
     inputToolbar?.contentView?.rightBarButtonItem?.enabled = true
-    
+        
     UIView.animateWithDuration(0.5, animations: {
       self.inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 1.0
       self.inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 1.0

@@ -27,6 +27,7 @@ class ChatCollectionContainerViewController: UIViewController {
     var delegate: ChatDeletionDelegate?
     var showChatItemDelegate: showChatItemDetailDelegate!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
@@ -93,6 +94,7 @@ class ChatCollectionContainerViewController: UIViewController {
                 chatCollectionVC.senderId = self.senderId
                 chatCollectionVC.senderDisplayName = self.senderDisplayName
                 chatCollectionVC.delegate = self.delegate
+                chatCollectionVC.presentationContext = self
             }
         }
     }

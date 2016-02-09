@@ -183,7 +183,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         operation.resultsLimit = 5000
         let friendsRecords: NSMutableArray = []
         operation.recordFetchedBlock = { (record) in
-            print(record)
+            logw("\(record)")
 //            friendsRecords.addObject(record)
 //            self.saveFriendWith((record.objectForKey("FacebookID") as? String)! , friendsFacebookIDs: (record.objectForKey("FriendsFacebookIDs") as? String)!)
             let localFriend = Friend.MR_findFirstOrCreateByAttribute("recordIDName",  withValue: record.recordID.recordName, inContext: managedConcurrentObjectContext)
@@ -255,6 +255,42 @@ class Model: NSObject, CLLocationManagerDelegate {
             return mutualFriendsModified
         }
         return []
+    }
+    
+    func getMutualFriendsFromFb(person: NSManagedObject, context_: NSManagedObjectContext, completionBlock: (Void -> Void) = { }) {
+        let fbId = person.valueForKey("facebookID") as? String
+        logw("xT9out1")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
+        if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
+            logw("xT9in1")
+            let request = FBSDKGraphRequest(graphPath:fbId, parameters: ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"779996698766247"])
+            request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+                if (person.valueForKey("firstName") as! String).hasPrefix("D") {
+                    
+                }
+                if error == nil {
+                    logw("xT9in Mutual Friends with \(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!) are : \(result)")
+                    
+                    if let mutualFriends = result.valueForKey("context")!.valueForKey("mutual_friends") {
+                        let resultsArray = mutualFriends.valueForKey("data") as! NSArray
+                        person.setValue(resultsArray.count, forKey: "mutualFriends")
+                    }
+                } else {
+                    logw("xT9in Mutual Friends error: \(error)")
+                    person.setValue(0, forKey: "mutualFriends")
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    context_.MR_saveToPersistentStoreAndWait()
+                    completionBlock()
+                }
+            }
+        } else {
+            person.setValue(0, forKey: "mutualFriends")
+            dispatch_async(dispatch_get_main_queue()) {
+                context_.MR_saveToPersistentStoreAndWait()
+                completionBlock()
+            }
+        }
     }
     
 //    func findPersonByFacebookID(fbID: String) {

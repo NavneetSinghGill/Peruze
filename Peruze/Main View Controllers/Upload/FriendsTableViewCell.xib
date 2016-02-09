@@ -16,14 +16,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="403" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pv1-QW-AoJ" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pv1-QW-AoJ" customClass="CircleImage" customModule="Peruze" customModuleProvider="target">
                         <rect key="frame" x="13" y="8" width="33" height="33"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="pv1-QW-AoJ" secondAttribute="height" multiplier="1:1" id="8KK-Sr-DgH"/>
                         </constraints>
                     </view>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2u-3N-8dC">
+                    <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2u-3N-8dC">
                         <rect key="frame" x="13" y="8" width="33" height="33"/>
                         <state key="normal" title="Button"/>
                     </button>

@@ -222,6 +222,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.includesPropertyValues = true
         fetchRequest.relationshipKeyPathsForPrefetching = ["owner", "owner.imageUrl", "owner.firstName", "owner.recordIDName"]
+        fetchedResultsController = nil
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         getFavorites()

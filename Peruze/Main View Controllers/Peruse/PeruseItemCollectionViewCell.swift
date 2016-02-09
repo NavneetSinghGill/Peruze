@@ -207,17 +207,18 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
       } else {
         ownerProfileImage.image = UIImage()
       }
-        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(owner,context: managedConcurrentObjectContext)
+//        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(owner,context: managedConcurrentObjectContext)
+        let mutualFriends = owner.valueForKey("mutualFriends") as! Int
         
-        if mutualFriends.count == 0{
+        if mutualFriends == 0{
             self.mutualFriendsLabel.hidden = true
         } else {
             self.mutualFriendsLabel.hidden = false
         }
-        if mutualFriends.count <= 1{
-            self.mutualFriendsLabel.text = "\(mutualFriends.count) mutual friend"
+        if mutualFriends <= 1{
+            self.mutualFriendsLabel.text = "\(mutualFriends) mutual friend"
         } else {
-            self.mutualFriendsLabel.text = "\(mutualFriends.count) mutual friends"
+            self.mutualFriendsLabel.text = "\(mutualFriends) mutual friends"
         }
         
     }

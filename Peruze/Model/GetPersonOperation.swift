@@ -90,9 +90,6 @@ class GetPersonOperation: Operation {
           if (localPerson.valueForKey("firstName") as? String) == nil {
             let firstName = recordsByID[recordID]?.objectForKey("FirstName") as? String
             localPerson.setValue(firstName, forKey: "firstName")
-            if firstName == "Saumya"{
-                
-            }
           }
           if (localPerson.valueForKey("lastName") as? String) == nil {
             let lastName = recordsByID[recordID]?.objectForKey("LastName") as? String
@@ -103,22 +100,26 @@ class GetPersonOperation: Operation {
             localPerson.setValue(facebookID, forKey: "facebookID")
             
             if localPerson.valueForKey("facebookID") != nil {
-                let predicate = NSPredicate(format: "FacebookID == %@", localPerson.valueForKey("facebookID") as! String)
-                let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
-                self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
-                    (friends, error) -> Void in
-                    logw("GetPersonOperation Friends block")
-                    for friend in friends! {
-                        let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
-                        if let facebookID = friend.objectForKey("FacebookID") {
-                            localFriendRecord.setValue(facebookID, forKey: "facebookID")
-                        }
-                        if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
-                            localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
-                        }
-                        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
-                        localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
-                    }
+//                let predicate = NSPredicate(format: "FacebookID == %@", localPerson.valueForKey("facebookID") as! String)
+//                let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+//                self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
+//                    (friends, error) -> Void in
+//                    logw("GetPersonOperation Friends block")
+//                    for friend in friends! {
+//                        let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
+//                        if let facebookID = friend.objectForKey("FacebookID") {
+//                            localFriendRecord.setValue(facebookID, forKey: "facebookID")
+//                        }
+//                        if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
+//                            localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
+//                        }
+//                        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
+//                        localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
+//                    }
+//                    self.context.MR_saveToPersistentStoreAndWait()
+//                })
+                Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
+//                    self.finish()
                     self.context.MR_saveToPersistentStoreAndWait()
                 })
             }
@@ -243,26 +244,32 @@ class GetAllPersonsWithMissingData: Operation {
         if localPerson.valueForKey("facebookID") as? String == nil {
           localPerson.setValue(record.objectForKey("FacebookID") as? String, forKey: "facebookID")
 
-            let predicate = NSPredicate(format: "FacebookID == %@", record.objectForKey("FacebookID") as! String)
-            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
-            self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
-                (friends: [CKRecord]?, error) -> Void in
-                logw("GetMissingPersonOperation Friends block")
-                for friend in friends! {
-                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
-                    if let facebookID = friend.objectForKey("FacebookID") {
-                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
-                    }
-                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
-                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
-                    }
-                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
-                    localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
-                }
+//            let predicate = NSPredicate(format: "FacebookID == %@", record.objectForKey("FacebookID") as! String)
+//            let query = CKQuery(recordType: RecordTypes.Friends, predicate: predicate)
+//            self.database.performQuery(query, inZoneWithID: nil, completionHandler: {
+//                (friends: [CKRecord]?, error) -> Void in
+//                logw("GetMissingPersonOperation Friends block")
+//                for friend in friends! {
+//                    let localFriendRecord = Friend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friend.recordID.recordName, inContext: self.context)
+//                    if let facebookID = friend.objectForKey("FacebookID") {
+//                        localFriendRecord.setValue(facebookID, forKey: "facebookID")
+//                    }
+//                    if let friendsFacebookID = friend.objectForKey("FriendsFacebookIDs") {
+//                        localFriendRecord.setValue(friendsFacebookID, forKey: "friendsFacebookIDs")
+//                    }
+//                    let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(localPerson, context: self.context)
+//                    localPerson.setValue(mutualFriends.count, forKey: "mutualFriends")
+//                }
+//                self.context.MR_saveToPersistentStoreAndWait()
+//            })
+            
+        }
+        if localPerson.valueForKey("facebookID") as? String != nil{
+            Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
+//                self.finish()
                 self.context.MR_saveToPersistentStoreAndWait()
             })
         }
-        
           //check for image property and set the data
 //        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {
 //          localPerson.setValue( NSData(contentsOfURL: imageAsset.fileURL), forKey: "image")

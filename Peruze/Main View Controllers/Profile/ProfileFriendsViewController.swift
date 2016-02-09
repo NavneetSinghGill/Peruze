@@ -27,26 +27,29 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        self.dataSource.presentationContext = self
 //        titleLabel.alpha = 0.0
 //        refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
 //        tableView.addSubview(refreshControl)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
+        self.dataSource.getMutualFriends()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.dataSource.getMutualFriends()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if self.dataSource.getMutualFriends() == 0 {
-            self.titleLabel.hidden = false
-            self.dataSource.tableView.alpha = 0.0
-        } else {
-            self.titleLabel.hidden = true
-            self.dataSource.tableView.alpha = 1.0
-        }
+//        if self.dataSource.taggableFriendsData.count == 0 {
+//            self.titleLabel.hidden = false
+//            self.dataSource.tableView.alpha = 0.0
+//        } else {
+//            self.titleLabel.hidden = true
+//            self.dataSource.tableView.alpha = 1.0
+//        }
 //        checkForEmptyData(true)
     }
     
@@ -60,15 +63,16 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let parsedObject = dataSource.sortedFriendsData[indexPath.row]
+        let parsedObject = dataSource.taggableFriendsData[indexPath.row]
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) with friendData: \(parsedObject.friendData)")
         NSNotificationCenter.defaultCenter().postNotificationName("RefreshUser", object: nil, userInfo: ["friendData":parsedObject.friendData, "imageUrl": parsedObject.profileImageUrl])
     }
 
     
-    private func checkForEmptyData(animated: Bool) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) sortedFriendsData.count: \(dataSource.sortedFriendsData.count)")
-        if dataSource.sortedFriendsData.count == 0 {
+    func checkForEmptyData(animated: Bool) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) mutualFriendsData.count: \(dataSource.taggableFriendsData.count)")
+        NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":dataSource.taggableFriendsData.count])
+        if dataSource.taggableFriendsData.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
                 self.titleLabel.alpha = 1.0
                 self.tableView.alpha = 0.0
