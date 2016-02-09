@@ -13,7 +13,8 @@
 		3B0EA1971C0C9C7B00A12DFD /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */; };
 		3B7D93AB1C0CA432001142C4 /* FriendsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */; };
 		3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */; };
-		3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BCA63911C18298300CFA976 /* SwiftLog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3BA0B59C1C6A368700DE6FF5 /* SwiftLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA0B5861C6A361000DE6FF5 /* SwiftLog.framework */; };
+		3BA0B59D1C6A368700DE6FF5 /* SwiftLog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA0B5861C6A361000DE6FF5 /* SwiftLog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3BE308041C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */; };
 		3BE308141C4E840800843B3B /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */; };
 		3BE910AF1C253F1B00DAB409 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BE910AE1C253F1B00DAB409 /* Localizable.strings */; };
@@ -192,37 +193,37 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3BCA63901C18298300CFA976 /* PBXContainerItemProxy */ = {
+		3BA0B5851C6A361000DE6FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			containerPortal = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5CA8C9851A5AF63F0089A692;
 			remoteInfo = SwiftLog;
 		};
-		3BCA63921C18298300CFA976 /* PBXContainerItemProxy */ = {
+		3BA0B5871C6A361000DE6FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			containerPortal = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5CA8C9901A5AF63F0089A692;
 			remoteInfo = SwiftLogTests;
 		};
-		3BCA63941C18298300CFA976 /* PBXContainerItemProxy */ = {
+		3BA0B5891C6A361000DE6FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			containerPortal = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5CA8C9DB1A5AFDEF0089A692;
 			remoteInfo = SwiftLogOSX;
 		};
-		3BCA63961C18298300CFA976 /* PBXContainerItemProxy */ = {
+		3BA0B58B1C6A361000DE6FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			containerPortal = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5CA8C9E51A5AFDEF0089A692;
 			remoteInfo = SwiftLogOSXTests;
 		};
-		3BCA63A01C18387600CFA976 /* PBXContainerItemProxy */ = {
+		3BA0B59E1C6A368700DE6FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+			containerPortal = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 5CA8C9841A5AF63F0089A692;
 			remoteInfo = SwiftLog;
@@ -237,13 +238,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3BCA63A21C18387600CFA976 /* Embed Frameworks */ = {
+		3BA0B5A01C6A368700DE6FF5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3BCA639F1C18387600CFA976 /* SwiftLog.framework in Embed Frameworks */,
+				3BA0B59D1C6A368700DE6FF5 /* SwiftLog.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,7 +260,7 @@
 		3B0EA1961C0C9C7B00A12DFD /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		3B7D93AA1C0CA432001142C4 /* FriendsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableViewCell.xib; sourceTree = "<group>"; };
 		3B93E1E11C0F19B300E8C2D1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftLog.xcodeproj; path = "../../../Downloads/SwiftLog-master/SwiftLog.xcodeproj"; sourceTree = "<group>"; };
+		3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SwiftLog.xcodeproj; sourceTree = "<group>"; };
 		3BE0B8CD1C0F00F300E3612B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionContainerViewController.swift; sourceTree = "<group>"; };
 		3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionView.swift; sourceTree = "<group>"; };
@@ -476,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B0290CB1C27EBDB00CDF59F /* CloudKit.framework in Frameworks */,
+				3BA0B59C1C6A368700DE6FF5 /* SwiftLog.framework in Frameworks */,
 				3B93E1E21C0F19B300E8C2D1 /* UIKit.framework in Frameworks */,
 				5DD2365570D303A4E400355A /* libPods-Peruze.a in Frameworks */,
 			);
@@ -523,13 +525,13 @@
 			path = Upload;
 			sourceTree = "<group>";
 		};
-		3BCA638A1C18298300CFA976 /* Products */ = {
+		3BA0B57F1C6A361000DE6FF5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3BCA63911C18298300CFA976 /* SwiftLog.framework */,
-				3BCA63931C18298300CFA976 /* SwiftLogTests.xctest */,
-				3BCA63951C18298300CFA976 /* SwiftLog.framework */,
-				3BCA63971C18298300CFA976 /* SwiftLogOSXTests.xctest */,
+				3BA0B5861C6A361000DE6FF5 /* SwiftLog.framework */,
+				3BA0B5881C6A361000DE6FF5 /* SwiftLogTests.xctest */,
+				3BA0B58A1C6A361000DE6FF5 /* SwiftLog.framework */,
+				3BA0B58C1C6A361000DE6FF5 /* SwiftLogOSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -910,7 +912,7 @@
 		9D449C881B54D9F9005C7CC0 /* Peruze */ = {
 			isa = PBXGroup;
 			children = (
-				3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */,
+				3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */,
 				9D177AE31B54DDC3009CB9FA /* AppDelegate.swift */,
 				3B0093C01C2188D1008D3339 /* Terms.rtf */,
 				3BF67AA11C476B90004DE6CC /* PeruzePrivacyPolicy.rtf */,
@@ -1098,13 +1100,13 @@
 				9D449C831B54D9F9005C7CC0 /* Frameworks */,
 				9D449C841B54D9F9005C7CC0 /* Resources */,
 				A47F96391088B6E97B84CEAB /* Copy Pods Resources */,
-				3BCA63A21C18387600CFA976 /* Embed Frameworks */,
 				D0AA37EEBC35BC646C35BFC7 /* Embed Pods Frameworks */,
+				3BA0B5A01C6A368700DE6FF5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				3BCA63A11C18387600CFA976 /* PBXTargetDependency */,
+				3BA0B59F1C6A368700DE6FF5 /* PBXTargetDependency */,
 			);
 			name = Peruze;
 			productName = Peruze;
@@ -1177,8 +1179,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3BCA638A1C18298300CFA976 /* Products */;
-					ProjectRef = 3BCA63891C18298300CFA976 /* SwiftLog.xcodeproj */;
+					ProductGroup = 3BA0B57F1C6A361000DE6FF5 /* Products */;
+					ProjectRef = 3BA0B57E1C6A361000DE6FF5 /* SwiftLog.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1190,32 +1192,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3BCA63911C18298300CFA976 /* SwiftLog.framework */ = {
+		3BA0B5861C6A361000DE6FF5 /* SwiftLog.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = SwiftLog.framework;
-			remoteRef = 3BCA63901C18298300CFA976 /* PBXContainerItemProxy */;
+			remoteRef = 3BA0B5851C6A361000DE6FF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3BCA63931C18298300CFA976 /* SwiftLogTests.xctest */ = {
+		3BA0B5881C6A361000DE6FF5 /* SwiftLogTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SwiftLogTests.xctest;
-			remoteRef = 3BCA63921C18298300CFA976 /* PBXContainerItemProxy */;
+			remoteRef = 3BA0B5871C6A361000DE6FF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3BCA63951C18298300CFA976 /* SwiftLog.framework */ = {
+		3BA0B58A1C6A361000DE6FF5 /* SwiftLog.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = SwiftLog.framework;
-			remoteRef = 3BCA63941C18298300CFA976 /* PBXContainerItemProxy */;
+			remoteRef = 3BA0B5891C6A361000DE6FF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3BCA63971C18298300CFA976 /* SwiftLogOSXTests.xctest */ = {
+		3BA0B58C1C6A361000DE6FF5 /* SwiftLogOSXTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SwiftLogOSXTests.xctest;
-			remoteRef = 3BCA63961C18298300CFA976 /* PBXContainerItemProxy */;
+			remoteRef = 3BA0B58B1C6A361000DE6FF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1481,10 +1483,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3BCA63A11C18387600CFA976 /* PBXTargetDependency */ = {
+		3BA0B59F1C6A368700DE6FF5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SwiftLog;
-			targetProxy = 3BCA63A01C18387600CFA976 /* PBXContainerItemProxy */;
+			targetProxy = 3BA0B59E1C6A368700DE6FF5 /* PBXContainerItemProxy */;
 		};
 		9D449C9D1B54D9F9005C7CC0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
