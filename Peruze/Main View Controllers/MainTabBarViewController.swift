@@ -50,7 +50,7 @@ class MainTabBarViewController: UITabBarController {
                 }
                     if category == NotificationCategoryMessages.NewChatMessage {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchChatWithRecord(recordID)
+                        Model.sharedInstance().fetchChatWithRecord(recordID, badgeCount: Int(badge))
                     }
                     else if category == NotificationCategoryMessages.NewOfferMessage {
                         let navController = self.viewControllers![3] as! UINavigationController

@@ -9,7 +9,7 @@
 import UIKit
 import SwiftLog
 
-class WriteReviewViewController: UIViewController, UITextViewDelegate {
+class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     private struct Constants {
         struct NoTitle {
             static let Title = "No Title"
@@ -49,6 +49,8 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
         detailTextView.delegate = self
         scrollView.addSubview(detailTextView)
         updateTextViewSize(detailTextView)
+        titleTextField.delegate = self
+        
         //Notification Center setup
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -168,5 +170,10 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate {
             textView.text = "Review (Optional)"
         }
         updateTextViewSize(textView)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.detailTextView.becomeFirstResponder()
+        return true
     }
 }

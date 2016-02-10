@@ -53,7 +53,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
             return
         }
         fbId = profileOwner.valueForKey("facebookID") as! String
-        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))"]//,"appsecret_proof":__appSecret__]
+        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":__appSecret__]
         let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {

@@ -3396,7 +3396,10 @@
                                         <rect key="frame" x="36" y="75" width="528" height="30"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="kU8-Cw-JQa" id="bG3-29-6Ao"/>
+                                        </connections>
                                     </textField>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Empty_Star" translatesAutoresizingMaskIntoConstraints="NO" id="INq-DU-wyz">
                                         <rect key="frame" x="283" y="20" width="34" height="34"/>

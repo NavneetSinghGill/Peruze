@@ -601,6 +601,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             mailComposer.setSubject("Peruze log.")
             mailComposer.setMessageBody("Hello, I am \(me.valueForKey("firstName")!) \(me.valueForKey("lastName")!).", isHTML: false)
             mailComposer.setToRecipients(["vijay@systematixtechnocrates.com"])
+            mailComposer.setCcRecipients(["peruzeteam@systematixtechnocrates.com"])
             
             let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             do {

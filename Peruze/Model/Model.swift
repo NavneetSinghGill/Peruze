@@ -262,7 +262,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
         if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
             
-            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))"]//,"appsecret_proof":__appSecret__]
+            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":__appSecret__]
             let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
             request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error == nil {
@@ -621,7 +621,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func fetchChatWithRecord(recordID: CKRecordID) -> Void
+    func fetchChatWithRecord(recordID: CKRecordID, badgeCount: Int = 0) -> Void
     {   self.publicDB = CKContainer.defaultContainer().publicCloudDatabase
         self.publicDB.fetchRecordWithID(recordID,
             completionHandler: ({record, error in
@@ -672,6 +672,10 @@ class Model: NSObject, CLLocationManagerDelegate {
                         //save the context
                         managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                         NSNotificationCenter.defaultCenter().postNotificationName("NewChat", object: nil, userInfo: ["exchangeRecordIDName": exchangeRecordIDName])
+                    }
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
+                    if badgeCount > 0 {
+                        NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": badgeCount])
                     }
                 }
             }))
@@ -1025,7 +1029,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let notificationInfo = CKNotificationInfo()
         notificationInfo.alertBody = NotificationMessages.NewChatMessage
-//        notificationInfo.shouldBadge = true
+        notificationInfo.shouldBadge = true
         notificationInfo.soundName = "default"
         notificationInfo.shouldSendContentAvailable = true
         
@@ -1286,7 +1290,7 @@ class Model: NSObject, CLLocationManagerDelegate {
 let modelSingletonGlobal = Model()
 let managedConcurrentObjectContext = NSManagedObjectContext.MR_context()
 let __appID__ = "779996698766247"
-let __appSecret__ = ""
+let __appSecret__ = "c119d1732d1997d19ed55e64c30a2da0"
 
 //s3
 var transferManager1 = AWSS3TransferManager.defaultS3TransferManager()
