@@ -61,7 +61,14 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     func getChatData() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         //    let exchangePredicate = NSPredicate(value: true)
+        let objectID = self.exchange.objectID
+        do {
+            try self.exchange = managedConcurrentObjectContext.existingObjectWithID(objectID)
+        } catch {
+            return
+        }
         let exchangePredicate = NSPredicate(format: "exchange.recordIDName == %@", self.exchange.valueForKey("recordIDName") as! String)
+        
         fetchedResultsController = Message.MR_fetchAllSortedBy(
             "date",
             ascending: true,

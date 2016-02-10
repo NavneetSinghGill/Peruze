@@ -146,6 +146,8 @@ class UpdateExchangeWithIncrementalData: Operation {
         logw("\(error)")
         self.finishWithError(error)
       } else {
+        localExchange.setValue(NSDate(), forKey: "dateOfLatestChat")
+        localExchange.setValue(NSDate(), forKey: "date")
         self.context.MR_saveToPersistentStoreAndWait()
         self.finish()
       }

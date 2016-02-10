@@ -66,6 +66,7 @@ struct UniversalConstants {
     static let kIsPostingToFacebookOn = "isPostingToFacebookOn"
     static let kSetSubscriptions = "setSubscriptions"
     static let kCurrentProfilePicUrl = "currentProfilePicUrl"
+    static let kIsScreenRefreshInProgress = "isScreenRefreshInProgress"
 }
 
 struct SubscritionTypes {
@@ -262,7 +263,7 @@ class Model: NSObject, CLLocationManagerDelegate {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
         if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
             
-            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":__appSecret__]
+            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
             let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
             request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error == nil {

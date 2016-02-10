@@ -172,6 +172,11 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     
     func refreshData(presentationContext: UIViewController, shouldShuffle: Bool) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) presentationContext: \(presentationContext), shouldShuffle: \(shouldShuffle)")
+        if NSUserDefaults.standardUserDefaults().boolForKey(UniversalConstants.kIsScreenRefreshInProgress) == true {
+            return
+        }
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: UniversalConstants.kIsScreenRefreshInProgress)
+        NSUserDefaults.standardUserDefaults().synchronize()
         refreshFetchResultController()
         let opQueue = OperationQueue()
         
@@ -194,6 +199,8 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
                         }
                     }
                 }
+                NSUserDefaults.standardUserDefaults().setBool(false, forKey: UniversalConstants.kIsScreenRefreshInProgress)
+                NSUserDefaults.standardUserDefaults().synchronize()
                 self.getFavorites()
             }
             
@@ -227,7 +234,9 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         fetchedResultsController.delegate = self
         getFavorites()
         do {
-            try self.fetchedResultsController.performFetch()
+            if self.fetchedResultsController != nil {
+                try self.fetchedResultsController.performFetch()
+            }
             
         } catch {
             logw("PeruseItemDatasource failed with error: \(error)")

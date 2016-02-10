@@ -24,6 +24,8 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
         }
     }
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
@@ -33,12 +35,22 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
 //        tableView.addSubview(refreshControl)
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
-        self.dataSource.getMutualFriends()
+        self.titleLabel.alpha = 0.0
+        self.activityIndicator.startAnimating()
+        self.dataSource.getMutualFriends({
+            self.activityIndicator.stopAnimating()
+            self.checkForEmptyData(true)
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.dataSource.getMutualFriends()
+        self.titleLabel.alpha = 1.0
+        self.activityIndicator.startAnimating()
+        self.dataSource.getMutualFriends({
+            self.activityIndicator.stopAnimating()
+            self.checkForEmptyData(true)
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -55,7 +67,6 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        checkForEmptyData(true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

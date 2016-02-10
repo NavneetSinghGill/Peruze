@@ -110,6 +110,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     self.navigationItem.titleView = imageView
     self.navigationController!.navigationBar.barTintColor = UIColor.whiteColor()
     
+    NSUserDefaults.standardUserDefaults().setBool(false, forKey: UniversalConstants.kIsScreenRefreshInProgress)
+    NSUserDefaults.standardUserDefaults().synchronize()
     if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0 {
         self.getMyExchanges()
     } else {
@@ -117,7 +119,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
-    Model.sharedInstance().getAllDeleteUsers() 
+    Model.sharedInstance().getAllDeleteUsers()
   }
     
     override func viewWillAppear(animated: Bool) {

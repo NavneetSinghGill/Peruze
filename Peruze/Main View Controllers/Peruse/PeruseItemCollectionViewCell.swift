@@ -177,7 +177,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
             })
         } else {
             self.activityIndicator.stopAnimating()
-            self.noItemImageLabel.hidden = false
+//            self.noItemImageLabel.hidden = false
         }
     }
     if let title = item?.valueForKey("title") as? String {

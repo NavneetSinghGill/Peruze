@@ -40,7 +40,8 @@ class ChatTableViewCell: UITableViewCell {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         fetchRequest.fetchLimit = 1
         var fetchedResultsController: NSFetchedResultsController!
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedConcurrentObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: NSManagedObjectContext.MR_context(), sectionNameKeyPath: nil, cacheName: nil)
         do {
             try fetchedResultsController.performFetch()
             if fetchedResultsController.sections![0].numberOfObjects > 0 {

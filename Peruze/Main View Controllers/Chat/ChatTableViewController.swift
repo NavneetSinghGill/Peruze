@@ -29,6 +29,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   @IBOutlet weak var noChatsLabel: UILabel!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    var timer: NSTimer? = nil
+    
   //MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,7 +41,6 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
     refresh()
-    
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -82,6 +83,10 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     
     //MARK: Refresh methods
     
+    func endRefreshControl() {
+        self.refreshControl.endRefreshing()
+    }
+    
     func refreshWithoutActivityIndicator() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         activityIndicatorView.alpha = 0
@@ -91,7 +96,11 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     
     func refresh() {
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    logw("ChatTableview getAllChats")
+        logw("ChatTableview getAllChats")
+        if self.timer != nil {
+            self.timer!.invalidate()
+        }
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "endRefreshControl", userInfo: nil, repeats: false)
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
         dispatch_async(dispatch_get_main_queue()) {
@@ -101,6 +110,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.activityIndicatorView.alpha = 1
         self.getLocalAcceptedExchanges()
         self.tableView.reloadData()
+        self.timer = nil
       }
     }
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) GetChatsOperation added.")
