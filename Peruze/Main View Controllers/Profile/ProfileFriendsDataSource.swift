@@ -56,8 +56,8 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
         
 //        FBSDKAccessToken.currentAccessToken().
         fbId = profileOwner.valueForKey("facebookID") as! String
-        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
-        let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
+        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","limit":"5000"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
+        let request = FBSDKGraphRequest(graphPath:"\(fbId)?limit=5000", parameters: fieldsDict)
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Mutual Friends are : \(result)")

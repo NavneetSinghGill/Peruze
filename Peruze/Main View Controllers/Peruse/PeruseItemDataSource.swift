@@ -185,7 +185,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         let getLocationOp = LocationOperation(accuracy: 200) { (location) -> Void in
             self.location = location
             if self.fetchedResultsController != nil && self.fetchedResultsController.sections != nil && self.fetchedResultsController.sections?[0].numberOfObjects >= 0 && self.fetchedResultsController.sections?[0].objects?.count >= 0 && self.fetchedResultsController.sections?[0].objects as? [Item] != nil {
-                logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] ")
+                logw("PeruseItemDataSource. self.items = self.fetchedResultsController.sections?[0].objects as! [Item] COUNT: \(self.fetchedResultsController.sections?[0].objects?.count)")
                 let allitems : NSArray = self.fetchedResultsController.sections?[0].objects as! [Item]
                 self.items = allitems.filteredArrayUsingPredicate(self.getDistancePredicate()) as! [Item]
                 logw("Filtered items = \(self.items)")
@@ -236,6 +236,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         do {
             if self.fetchedResultsController != nil {
                 try self.fetchedResultsController.performFetch()
+                logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) ,try self.fetchedResultsController.performFetch(), Count: \(self.fetchedResultsController.sections?[0].objects?.count)")
             }
             
         } catch {

@@ -93,7 +93,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             ascending: true,
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
             groupBy: nil, delegate: self,
-            inContext: managedConcurrentObjectContext)
+            inContext: NSManagedObjectContext.MR_context())
         do {
             try fetchedResultsController.performFetch()
             if fetchedResultsController.sections![0].objects != nil {

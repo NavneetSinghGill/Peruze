@@ -263,8 +263,8 @@ class Model: NSObject, CLLocationManagerDelegate {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
         if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
             
-            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
-            let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
+            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","limit":"5000"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
+            let request = FBSDKGraphRequest(graphPath:"\(fbId)?limit=5000", parameters: fieldsDict)
             request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error == nil {
                     logw("Mutual Friends with \(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!) are : \(result)")
@@ -274,7 +274,7 @@ class Model: NSObject, CLLocationManagerDelegate {
                         person.setValue(resultsArray.count, forKey: "mutualFriends")
                     }
                 } else {
-                    logw("xT9in Mutual Friends error: \(error)")
+                    logw("Mutual Friends error: \(error)")
                     person.setValue(0, forKey: "mutualFriends")
                 }
                 dispatch_async(dispatch_get_main_queue()) {

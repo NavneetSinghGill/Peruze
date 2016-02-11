@@ -106,6 +106,9 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
       
       if let messageText = record.objectForKey("Text") as? String {
         localMessage.setValue(messageText, forKey: "text")
+        if messageText == "xc"{
+            
+        }
       }
       
       if let messageImage = record.objectForKey("Image") as? CKAsset {
@@ -120,6 +123,7 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
           inContext: self.context)
         if messageExchange.valueForKey("dateOfLatestChat") == nil || (record.valueForKey("modificationDate") as! NSDate).timeIntervalSince1970 > (messageExchange.valueForKey("dateOfLatestChat") as! NSDate).timeIntervalSince1970 {
             messageExchange.setValue(record.valueForKey("modificationDate"), forKey: "dateOfLatestChat")
+//            messageExchange.setValue(false, forKey: "isRead")
         }
         localMessage.setValue(messageExchange, forKey: "exchange")
       }

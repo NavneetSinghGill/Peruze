@@ -74,6 +74,16 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
   }
     
+    func performt(notification: NSNotification) {
+        let  userInfo = notification.userInfo
+        let alert = UIAlertController(title: "NOTIFICATION", message: "\(userInfo)", preferredStyle: UIAlertControllerStyle.Alert)
+        let doDelete = UIAlertAction(title: "ok", style: UIAlertActionStyle.Destructive) { (alertAction) -> Void in
+        }
+        alert.addAction(doDelete)
+        self.presentViewController(alert, animated: true, completion: nil)
+    
+    }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -88,6 +98,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     //register data source for updates to model
     NSNotificationCenter.defaultCenter().addObserver(dataSource, selector: "performFetchWithPresentationContext:",
       name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: self)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "performt:",
+        name: NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: self)
     
     //register self for updates notifications
     NSNotificationCenter.defaultCenter().addObserver(self,
@@ -129,6 +141,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
             NSUserDefaults.standardUserDefaults().setValue(false, forKey: UniversalConstants.kSetSubscriptions)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
+
+        self.dataSource.refreshData(self, shouldShuffle: false)
     }
     
     func reloadPeruseItemMainScreen(notification: NSNotification){

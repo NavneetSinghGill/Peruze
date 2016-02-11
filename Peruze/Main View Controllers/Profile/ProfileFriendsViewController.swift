@@ -45,7 +45,6 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.titleLabel.alpha = 1.0
         self.activityIndicator.startAnimating()
         self.dataSource.getMutualFriends({
             self.activityIndicator.stopAnimating()
@@ -85,7 +84,9 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
         NSNotificationCenter.defaultCenter().postNotificationName("LNMutualFriendsCountUpdation", object: nil, userInfo: ["count":dataSource.taggableFriendsData.count])
         if dataSource.taggableFriendsData.count == 0 {
             UIView.animateWithDuration(animated ? 0.5 : 0.0) {
-                self.titleLabel.alpha = 1.0
+                if !self.activityIndicator.isAnimating() {
+                    self.titleLabel.alpha = 1.0
+                }
                 self.tableView.alpha = 0.0
             }
         } else {

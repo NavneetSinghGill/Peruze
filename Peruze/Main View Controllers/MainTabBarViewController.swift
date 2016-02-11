@@ -15,12 +15,34 @@ class MainTabBarViewController: UITabBarController {
     super.viewDidLoad()
     tabBar.tintColor = UIColor.redColor()
     self.registerNotifications()
+    resetBadgeValue()
   }
   //GO HERE
   let manager = CLLocationManager()
   override func viewDidAppear(animated: Bool) {
     manager.requestWhenInUseAuthorization()
+    setInitialBadge()
   }
+    
+    func setInitialBadge() {
+        let requestTab = self.tabBar.items![2]
+        let requestTabBadgeValue:Int
+        if requestTab.badgeValue == nil {
+            requestTabBadgeValue = 0
+        } else {
+            requestTabBadgeValue = Int(requestTab.badgeValue!)!
+        }
+        
+        let chatTab = self.tabBar.items![3]
+        let chatTabBadgeValue:Int
+        if chatTab.badgeValue == nil {
+            chatTabBadgeValue = 0
+        } else {
+            chatTabBadgeValue = Int(chatTab.badgeValue!)!
+        }
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = chatTabBadgeValue + requestTabBadgeValue
+    }
     
     //MARK: - Private methods
 
@@ -43,7 +65,7 @@ class MainTabBarViewController: UITabBarController {
             let info : NSDictionary = notification.userInfo!
             if  let category = info["category"] as? String {
                 // Printout of (userInfo["aps"])["type"]
-                print("\nFrom APS-dictionary with key \"type\":  \( category)")
+                logw("\nMainTabbarVC From APS-dictionary with key \"type\":  \( category)")
                 var badge = 0
                 if  let badgeCount = info["badge"] as? Int {
                     badge = badgeCount

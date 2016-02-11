@@ -150,14 +150,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func postLocalNotifications(userInfo: NSDictionary) {
         let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String: NSObject])
         if let notification = cloudKitNotification as? CKQueryNotification {
-            logw("app did receive remote notification ")
+            logw("app did receive remote notification &&&&&&&&&& \(userInfo)")
+            
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationCenterKeys.PeruzeItemsDidFinishUpdate, object: nil)
             logw("Notification: \(notification) \n UserInfo: \(userInfo)")
             if var info = userInfo["aps"] as? Dictionary<String, AnyObject> {
                 logw("All of info: \n\(info)\n")
                 
-                if let _ = info["category"] as? String {
+                if let category = info["category"] as? String {
                     info["recordID"] = notification.recordID?.recordName
+                    if category == NotificationCategoryMessages.NewChatMessage ||
+                        category == NotificationCategoryMessages.AcceptedOfferMessage {
+                            NSUserDefaults.standardUserDefaults().setValue(category, forKey: "ChatBadge")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                    } else if category == NotificationCategoryMessages.NewOfferMessage {
+                        NSUserDefaults.standardUserDefaults().setValue(category, forKey: "RequestBadge")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
                     NSNotificationCenter.defaultCenter().postNotificationName("ShowBadgeOnRequestTab", object:nil , userInfo: info)
                 }
                 if  let badge = info["badge"] as? Int {
