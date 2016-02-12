@@ -72,7 +72,7 @@ class MainTabBarViewController: UITabBarController {
                 }
                     if category == NotificationCategoryMessages.NewChatMessage {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchChatWithRecord(recordID, badgeCount: Int(badge))
+                        Model.sharedInstance().fetchChatWithRecord(recordID, badgeCount: 1)
                     }
                     else if category == NotificationCategoryMessages.NewOfferMessage {
                         let navController = self.viewControllers![3] as! UINavigationController
@@ -85,7 +85,7 @@ class MainTabBarViewController: UITabBarController {
                         }
                         NSUserDefaults.standardUserDefaults().synchronize()
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage, badgeCount: Int(badge))
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: NotificationCategoryMessages.NewOfferMessage, badgeCount: 1)
                     }
                     else if category == NotificationCategoryMessages.ItemAdditionOrUpdation {
                         let navController = self.viewControllers![0] as! UINavigationController
@@ -142,7 +142,7 @@ class MainTabBarViewController: UITabBarController {
                     }
                     else if category == NotificationCategoryMessages.AcceptedOfferMessage {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
-                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category, badgeCount: Int(badge))
+                        Model.sharedInstance().fetchExchangeWithRecord(recordID, message: category, badgeCount: 1)
                     } else if category == NotificationCategoryMessages.NewReview {
                         let recordID = CKRecordID(recordName: info["recordID"] as! String)
                         Model.sharedInstance().fetchReviewWithRecord(recordID)

@@ -389,12 +389,15 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         
         self.pushNotificationSwitch.userInteractionEnabled = false
         if defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) != nil ||
-            defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) != nil {
-            Model.sharedInstance().deleteSubscriptionsWithIDs([defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) as! String])
+            defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) != nil ||
+            defaults.valueForKey(SubscriptionIDs.ChatSubscriptionID) != nil{
+            Model.sharedInstance().deleteSubscriptionsWithIDs([defaults.valueForKey(SubscriptionIDs.NewOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.AcceptedOfferSubscriptionID) as! String, defaults.valueForKey(SubscriptionIDs.ChatSubscriptionID) as! String])
             
             Model.sharedInstance().subscribeForNewOffer(false, completionHandler: {
                 Model.sharedInstance().subscribeForAcceptedOffer(false,completionHandler: {
-                    self.pushNotificationSwitch.userInteractionEnabled = true
+                    Model.sharedInstance().subscribeForChat(false, completionHandler: {
+                        self.pushNotificationSwitch.userInteractionEnabled = true
+                    })
                 })
             })
         } else {

@@ -85,6 +85,7 @@ struct RecordTypes {
 struct SubscriptionIDs {
     static let NewOfferSubscriptionID = "newOfferSubscriptionID"
     static let AcceptedOfferSubscriptionID = "acceptedOfferSubscriptionID"
+    static let ChatSubscriptionID = "chatSubscriptionID"
 }
 
 class Model: NSObject, CLLocationManagerDelegate {
@@ -263,8 +264,8 @@ class Model: NSObject, CLLocationManagerDelegate {
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context_)
         if fbId != nil || me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
             
-            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","limit":"5000"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
-            let request = FBSDKGraphRequest(graphPath:"\(fbId)?limit=5000", parameters: fieldsDict)
+            let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
+            let request = FBSDKGraphRequest(graphPath:fbId, parameters: fieldsDict)
             request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error == nil {
                     logw("Mutual Friends with \(person.valueForKey("firstName")!) \(person.valueForKey("lastName")!) are : \(result)")
@@ -1017,7 +1018,7 @@ class Model: NSObject, CLLocationManagerDelegate {
             }))
     }
     
-    func subscribeForChat() {
+    func subscribeForChat(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
@@ -1029,9 +1030,12 @@ class Model: NSObject, CLLocationManagerDelegate {
             options: .FiresOnRecordCreation)
         
         let notificationInfo = CKNotificationInfo()
-        notificationInfo.alertBody = NotificationMessages.NewChatMessage
-        notificationInfo.shouldBadge = true
-        notificationInfo.soundName = "default"
+        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) as? String == "yes" ||
+            NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kIsPushNotificationOn) == nil {
+                notificationInfo.alertBody = NotificationMessages.NewChatMessage
+                notificationInfo.shouldBadge = true
+                notificationInfo.soundName = "default"
+        }
         notificationInfo.shouldSendContentAvailable = true
         
         if #available(iOS 9.0, *) {
@@ -1044,8 +1048,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                     logw("Chat subscription failed \(err.localizedDescription)")
                 } else {
                     logw("Chat subscription success")
+                    NSUserDefaults.standardUserDefaults().setValue(returnRecord!.subscriptionID, forKey: SubscriptionIDs.ChatSubscriptionID)
+                    NSUserDefaults.standardUserDefaults().synchronize()
                 }
-                self.subscribeForItemAdditionUpdation()
+                if shouldResumeChainOfSubscriptions == true {
+                    self.subscribeForItemAdditionUpdation()
+                }
+                completionHandler()
             }))
     }
     
