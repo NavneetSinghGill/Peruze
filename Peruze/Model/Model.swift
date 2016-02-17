@@ -432,11 +432,16 @@ class Model: NSObject, CLLocationManagerDelegate {
                     let otherTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", person.valueForKey("facebookID") as! String), inContext: context)
                     
                     let commonFriends: NSMutableArray = []
+                    let nameArray: NSMutableArray = []
                     
                     for myFriend in myTaggableFriends {
+                        let currentName = "\(myFriend.valueForKey("firstName") as! String) \(myFriend.valueForKey("lastName") as! String)"
                         for otherUserfriend in otherTaggableFriends {
-                            if myFriend.valueForKey("firstName") as! String == otherUserfriend.valueForKey("firstName") as! String && myFriend.valueForKey("lastName") as! String == otherUserfriend.valueForKey("lastName") as! String {
-                                commonFriends.addObject(myFriend)
+                            if myFriend.valueForKey("firstName") as! String == otherUserfriend.valueForKey("firstName") as! String &&
+                                myFriend.valueForKey("lastName") as! String == otherUserfriend.valueForKey("lastName") as! String && !nameArray.containsObject(currentName) {
+                                    
+                                    commonFriends.addObject(myFriend)
+                                    nameArray.addObject(currentName)
                             }
                         }
                     }

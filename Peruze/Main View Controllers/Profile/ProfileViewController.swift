@@ -465,15 +465,17 @@ class ProfileViewController: UIViewController {
         
         //Refresh favorites
         var fav = NSSet(array: [])
-        if let favorites = self.personForProfile!.favorites! as? NSSet {
-            if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
-                for favoriteObj in favoriteObjs{
-                    if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1 {
-                        //                                        fav.append(favoriteObj)
-                        if fav.count == 0 {
-                            fav = NSSet(array: [favoriteObj])
-                        } else {
-                            fav = NSSet(array: fav.allObjects + [favoriteObj])
+        if self.personForProfile != nil {
+            if let favorites = self.personForProfile!.favorites! as? NSSet {
+                if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
+                    for favoriteObj in favoriteObjs{
+                        if favoriteObj.valueForKey("hasRequested") != nil && favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("hasRequested") as! String == "no" && favoriteObj.valueForKey("isDelete") as! Int != 1 {
+                            //                                        fav.append(favoriteObj)
+                            if fav.count == 0 {
+                                fav = NSSet(array: [favoriteObj])
+                            } else {
+                                fav = NSSet(array: fav.allObjects + [favoriteObj])
+                            }
                         }
                     }
                 }
@@ -488,14 +490,16 @@ class ProfileViewController: UIViewController {
         
         //refresh uploads
         var newUploads = NSSet(array: [])
-        if let currentUploads = self.personForProfile!.uploads! as? NSSet {
-            if let uploadObjs = currentUploads.allObjects as? [NSManagedObject] {
-                for uploadObj in uploadObjs{
-                    if uploadObj.valueForKey("isDelete") as! Int != 1 {
-                        if newUploads.count == 0 {
-                            newUploads = NSSet(array: [uploadObj])
-                        } else {
-                            newUploads = NSSet(array: newUploads.allObjects + [uploadObj])
+        if self.personForProfile != nil {
+            if let currentUploads = self.personForProfile!.uploads! as? NSSet {
+                if let uploadObjs = currentUploads.allObjects as? [NSManagedObject] {
+                    for uploadObj in uploadObjs{
+                        if uploadObj.valueForKey("isDelete") as! Int != 1 {
+                            if newUploads.count == 0 {
+                                newUploads = NSSet(array: [uploadObj])
+                            } else {
+                                newUploads = NSSet(array: newUploads.allObjects + [uploadObj])
+                            }
                         }
                     }
                 }
@@ -512,7 +516,11 @@ class ProfileViewController: UIViewController {
         numberOfUploadsLabel.text = String(uploadCount)
         
         ouNumberOfUploadsLabel.text = String(uploadCount)
-        ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
+        if self.personForProfile != nil {
+            ouNumberOfFriendsLabel.text = String(self.personForProfile!.mutualFriends!)
+        } else {
+            ouNumberOfFriendsLabel.text = "0"
+        }
     }
     
     func getAllDataOfCurentUser() {
@@ -650,15 +658,21 @@ class ProfileViewController: UIViewController {
                 let imageUrl = userInfo.valueForKey("imageUrl") as? String
                 
                 var fetchedPerson = Person.MR_findFirstWithPredicate(NSPredicate(format: "firstName == %@ AND lastName == %@", first_name!, last_name!))
+                var person: Person?
                 
-                if fetchedPerson == nil || fetchedPerson.valueForKey("recordIDName") == nil {
-                    fetchedPerson = Person.MR_createEntity()
+                if fetchedPerson == nil || fetchedPerson.valueForKey("facebookID") == nil {
+                    fetchedPerson = Person.MR_findFirstOrCreateByAttribute("recordIDName", withValue: "__temp__",inContext: managedConcurrentObjectContext)
+                    fetchedPerson.setValue("__temp__", forKey: "recordIDName")
+                    fetchedPerson.setValue("__temp__", forKey: "facebookID")
+                    fetchedPerson.setValue(NSSet(array: []), forKey: "favorites")
                     fetchedPerson.setValue(first_name, forKey: "firstName")
                     fetchedPerson.setValue(imageUrl, forKey: "imageUrl")
+                    fetchedPerson.setValue(0, forKey: "mutualFriends")
+                    person = fetchedPerson
+                } else {
+                    fbId = fetchedPerson.valueForKey("facebookID") as? String
+                    person = Person.MR_findFirstWithPredicate(NSPredicate(format: "facebookID = %@",fbId!))
                 }
-                fbId = fetchedPerson.valueForKey("facebookID") as! String
-                
-                var person = Person.MR_findFirstWithPredicate(NSPredicate(format: "facebookID = %@",fbId!))
                 
                 if person != nil {
                     if self.personForProfile != nil && self.personForProfile!.valueForKey("me") as! Bool == true {
@@ -666,7 +680,13 @@ class ProfileViewController: UIViewController {
                     }
                     self.personForProfile = person
                     if (self.personForProfile?.valueForKey("imageUrl") as? String != nil) {
-                        self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
+                        let imageUrl = ""
+                        if (self.personForProfile!.valueForKey("imageUrl") as! String).hasPrefix("http") {
+                            self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: self.personForProfile!.valueForKey("imageUrl") as! String))
+                        } else {
+                            self.ouProfileImageView.imageView?.sd_setImageWithURL(NSURL(string: s3Url(self.personForProfile!.valueForKey("imageUrl") as! String)))
+                        }
+                        
                         self.ouProfileNameLabel.text = (self.personForProfile!.valueForKey("firstName") as! String)
                     }
                     self.updateViewAfterGettingResponse()

@@ -162,10 +162,6 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         //        }
     }
     
-    func temp() {
-        Model.sharedInstance().getTaggableFriends()
-    }
-    
     func reloadPeruseItemMainScreen(notification: NSNotification){
         if notification.userInfo != nil {
             let userInfo : NSDictionary = notification.userInfo!
