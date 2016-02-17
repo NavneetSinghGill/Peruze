@@ -131,7 +131,7 @@ class GetPersonOperation: Operation {
 //                })
                 //=======================
                 
-                
+                localPerson.setValue(0, forKey: "mutualFriends")
                 Model.sharedInstance().getTaggbleFriendsFromCloudAndMatch(localPerson, completionBlock: { taggableFriendsCount in
                     localPerson.setValue(taggableFriendsCount, forKey: "mutualFriends")
                     self.context.MR_saveToPersistentStoreAndWait()
@@ -289,7 +289,7 @@ class GetAllPersonsWithMissingData: Operation {
 //            })
             //==================================
             
-            
+            localPerson.setValue(0, forKey: "mutualFriends")
             Model.sharedInstance().getTaggbleFriendsFromCloudAndMatch(localPerson, completionBlock: { taggableFriendsCount in
                 localPerson.setValue(taggableFriendsCount, forKey: "mutualFriends")
                 self.context.MR_saveToPersistentStoreAndWait()

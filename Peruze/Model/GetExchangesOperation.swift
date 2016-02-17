@@ -183,7 +183,9 @@ class GetExchangesOperation: Operation {
       }
         
         let modificationDate = record.modificationDate
-        localExchange.setValue(modificationDate, forKey: "dateOfLatestChat")
+        if localExchange.valueForKey("dateOfLatestChat") == nil || (record.valueForKey("modificationDate") as! NSDate).timeIntervalSince1970 > (localExchange.valueForKey("dateOfLatestChat") as! NSDate).timeIntervalSince1970 {
+            localExchange.setValue(modificationDate, forKey: "dateOfLatestChat")
+        }
       
       //set item offered
       if let itemOfferedReference = record.objectForKey("OfferedItem") as? CKReference {

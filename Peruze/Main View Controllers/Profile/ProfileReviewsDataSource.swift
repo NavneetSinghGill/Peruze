@@ -111,7 +111,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
-        if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String {
+        if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String ||
+            self.profileOwner.valueForKey("recordIDName") as! String == "__temp__" {
             writeReviewEnabled = false
         } else {
             writeReviewEnabled = true
@@ -120,7 +121,8 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
   func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String {
+    if self.profileOwner.valueForKey("recordIDName") as! String == me.valueForKey("recordIDName") as! String ||
+        self.profileOwner.valueForKey("recordIDName") as! String == "__temp__" {
         writeReviewEnabled = false
     } else {
         writeReviewEnabled = true

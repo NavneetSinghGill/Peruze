@@ -317,6 +317,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   //MARK: - Handling Buttons
     @IBAction func logOutOfFacebook(sender: UIButton) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "LastFetchTaggagleFriendsDate")
+    NSUserDefaults.standardUserDefaults().synchronize()
     FBSDKAccessToken.setCurrentAccessToken(nil)
     FBSDKLoginManager().logOut()
     Model.sharedInstance().deleteAllSubscription()
@@ -340,6 +342,15 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
       OperationQueue().addOperation(modifyUserOperation)
   }
   
+    func resetMutualFriendsCountForAll() {
+        let context = NSManagedObjectContext.MR_context()
+        let allPersons = Person.MR_findAllInContext(context)
+        for person in allPersons {
+            person.setValue(0, forKey: "mutualFriends")
+        }
+        context.MR_saveToPersistentStoreAndWait()
+    }
+    
     @IBAction func done(sender: UIBarButtonItem) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && distanceSlider.value != distanceSlider.maximumValue {

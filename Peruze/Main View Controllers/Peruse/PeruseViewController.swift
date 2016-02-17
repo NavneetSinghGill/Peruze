@@ -144,13 +144,14 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         }
         
         let weekTimeInSeconds = 7 * 24 * 60 * 60.0
-                if defaults.valueForKey("LastFetchTaggagleFriendsDate") == nil || NSDate().timeIntervalSince1970 - (defaults.valueForKey("LastFetchTaggagleFriendsDate") as! NSDate).timeIntervalSince1970 > weekTimeInSeconds {
-        defaults.setValue(NSDate(), forKey: "LastFetchTaggagleFriendsDate")
-        Model.sharedInstance().fetchTaggleFriendsRecordFromCloud() {
-            dispatch_async(dispatch_get_main_queue()){
-                Model.sharedInstance().getTaggableFriends()
+        if defaults.valueForKey("LastFetchTaggagleFriendsDate") == nil || NSDate().timeIntervalSince1970 - (defaults.valueForKey("LastFetchTaggagleFriendsDate") as! NSDate).timeIntervalSince1970 > weekTimeInSeconds {
+            defaults.setValue(NSDate(), forKey: "LastFetchTaggagleFriendsDate")
+            defaults.synchronize()
+            Model.sharedInstance().fetchTaggleFriendsRecordFromCloud() {
+                dispatch_async(dispatch_get_main_queue()){
+                    Model.sharedInstance().getTaggableFriends()
+                }
             }
-        }
         }
         self.dataSource.refreshData(self, shouldShuffle: false)
     }

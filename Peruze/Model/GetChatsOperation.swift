@@ -120,7 +120,11 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
           inContext: self.context)
         if messageExchange.valueForKey("dateOfLatestChat") == nil || (record.valueForKey("modificationDate") as! NSDate).timeIntervalSince1970 > (messageExchange.valueForKey("dateOfLatestChat") as! NSDate).timeIntervalSince1970 {
             messageExchange.setValue(record.valueForKey("modificationDate"), forKey: "dateOfLatestChat")
-//            messageExchange.setValue(false, forKey: "isRead")
+            if NSUserDefaults.standardUserDefaults().valueForKey("firstTimeChatRefresh") == nil {
+                messageExchange.setValue(true, forKey: "isRead")
+            } else {
+                messageExchange.setValue(false, forKey: "isRead")
+            }
         }
         localMessage.setValue(messageExchange, forKey: "exchange")
       }
@@ -153,7 +157,9 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
       if let error = error {
         logw("Get Chats For Accepted Exchanges Operation Finished with error: ")
         logw("\(error)")
-      }
+        }
+        NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "firstTimeChatRefresh")
+        NSUserDefaults.standardUserDefaults().synchronize()
       self.finishWithError(error)
     }
     

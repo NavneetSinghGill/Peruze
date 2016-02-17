@@ -208,8 +208,9 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
         ownerProfileImage.image = UIImage()
       }
 //        let mutualFriends = Model.sharedInstance().getMutualFriendsFromLocal(owner,context: managedConcurrentObjectContext)
+        Model.sharedInstance().refreshTaggableFriendsFromLocal(owner)
         let mutualFriends = owner.valueForKey("mutualFriends") as! Int
-        
+
         if mutualFriends == 0{
             self.mutualFriendsLabel.hidden = true
         } else {
