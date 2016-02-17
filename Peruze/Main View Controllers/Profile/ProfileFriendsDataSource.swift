@@ -43,69 +43,125 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
     
     override init() {
         super.init()
-        getMutualFriends()
+//        getMutualFriends()
+        getTaggbleFriendsFromCloudAndMatch()
     }
     
-    func getMutualFriends(completionBlock: (Void -> Void) = {}) {
-        //        self.activityIndicatorView.startAnimating()
-        let fbId: String
-        if profileOwner == nil || profileOwner.valueForKey("facebookID") as? String == nil {
-            self.taggableFriendsData = []
+    func getTaggbleFriendsFromCloudAndMatch() {
+        if let parentVC = self.presentationContext as? ProfileFriendsViewController {
+            parentVC.activityIndicator.startAnimating()
+        }
+        self.fetchLocalTaggableFriendsAndMatch()
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        if profileOwner != nil && me.valueForKey("recordIDName") as! String != profileOwner.valueForKey("recordIDName") as! String {
+            dispatch_async(dispatch_get_main_queue()) {
+                Model.sharedInstance().fetchTaggleFriendsRecordFromCloud(self.profileOwner, isMe: false, completionBlock: {
+                    self.fetchLocalTaggableFriendsAndMatch()
+                })
+            }
+        }
+    }
+    
+    func fetchLocalTaggableFriendsAndMatch() {
+        if self.profileOwner == nil || self.profileOwner.valueForKey("facebookID") == nil {
             return
         }
+        let context = NSManagedObjectContext.MR_context()
+        let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: context)
+        let myTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String), inContext: context)
+        let otherTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", self.profileOwner.valueForKey("facebookID") as! String), inContext: context)
         
-//        FBSDKAccessToken.currentAccessToken().
-        fbId = profileOwner.valueForKey("facebookID") as! String
-        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","limit":"5000"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
-        let request = FBSDKGraphRequest(graphPath:"\(fbId)?limit=5000", parameters: fieldsDict)
-        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            if error == nil {
-                logw("Mutual Friends are : \(result)")
-                
-                if let mutualFriends = result.valueForKey("context")!.valueForKey("mutual_friends") {
-                    var resultsArray = mutualFriends.valueForKey("data") as! NSArray
-                    resultsArray = resultsArray.sort { (element1, element2) -> Bool in
-                        return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
-                    }
-                    
-                    self.taggableFriendsData = []
-                    //                let newSortedFriendsData = [FriendsDataAndProfilePic]()
-                    for var friendData in resultsArray {
-                        friendData = friendData as! NSDictionary
-                        let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImageUrl: ((friendData.valueForKey("picture") as! NSDictionary).valueForKey("data") as! NSDictionary).valueForKey("url") as! String)
-                        
-                        self.taggableFriendsData.append(newFriendData)
-                        
-                        dispatch_async(dispatch_get_main_queue()){
-                            //                        self.activityIndicatorView.stopAnimating()
-                            if self.tableView != nil {
-                                if let parentVC = self.presentationContext as? ProfileFriendsViewController {
-                                    parentVC.checkForEmptyData(true)
-                                }
-                                self.tableView.reloadData()
-                            }
-                        }
-                    }
-                } else {
-                    self.taggableFriendsData = []
+        let commonFriends: NSMutableArray = []
+        
+        for myFriend in myTaggableFriends {
+            for otherUserfriend in otherTaggableFriends {
+                if myFriend.valueForKey("firstName") as! String == otherUserfriend.valueForKey("firstName") as! String && myFriend.valueForKey("lastName") as! String == otherUserfriend.valueForKey("lastName") as! String {
+                    commonFriends.addObject(myFriend)
                 }
-                if self.profileOwner.valueForKey("recordIDName") as? String != nil {
-                    let contxt = NSManagedObjectContext.MR_context()
-                    self.profileOwner.setValue(self.taggableFriendsData.count, forKey: "mutualFriends")
-                    contxt.MR_saveToPersistentStoreAndWait()
-                }
-            } else {
-                logw("Error Getting Friends \(error)")
-                self.taggableFriendsData = []
             }
-            completionBlock()
+        }
+        self.taggableFriendsData = []
+        for friend in commonFriends {
+            let friendDict = [
+                "name":"\(friend.valueForKey("firstName")!) \(friend.valueForKey("lastName")!)",
+                "first_name":"\(friend.valueForKey("firstName")!)",
+                "last_name":"\(friend.valueForKey("lastName")!)"]
+            
+            let newFriendData = FriendsDataAndProfilePic(friendData: friendDict, profileImageUrl: friend.valueForKey("imageUrl") as! String)
+            self.taggableFriendsData.append(newFriendData)
         }
         dispatch_async(dispatch_get_main_queue()){
+            //                        self.activityIndicatorView.stopAnimating()
             if self.tableView != nil {
+                if let parentVC = self.presentationContext as? ProfileFriendsViewController {
+                    parentVC.activityIndicator.stopAnimating()
+                    parentVC.checkForEmptyData(true)
+                }
                 self.tableView.reloadData()
             }
         }
     }
+    
+//    func getMutualFriends(completionBlock: (Void -> Void) = {}) {
+//        //        self.activityIndicatorView.startAnimating()
+//        let fbId: String
+//        if profileOwner == nil || profileOwner.valueForKey("facebookID") as? String == nil {
+//            self.taggableFriendsData = []
+//            return
+//        }
+//
+////        FBSDKAccessToken.currentAccessToken().
+//        fbId = profileOwner.valueForKey("facebookID") as! String
+//        let fieldsDict = ["fields":"context.fields(mutual_friends.fields(name,id,picture,first_name))","limit":"5000"]//,"appsecret_proof":"0d9888220cc9669ee500c1361e41be0e"]
+//        let request = FBSDKGraphRequest(graphPath:"\(fbId)?limit=5000", parameters: fieldsDict)
+//        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+//            if error == nil {
+//                logw("Mutual Friends are : \(result)")
+//                
+//                if let mutualFriends = result.valueForKey("context")!.valueForKey("mutual_friends") {
+//                    var resultsArray = mutualFriends.valueForKey("data") as! NSArray
+//                    resultsArray = resultsArray.sort { (element1, element2) -> Bool in
+//                        return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
+//                    }
+//                    
+//                    self.taggableFriendsData = []
+//                    //                let newSortedFriendsData = [FriendsDataAndProfilePic]()
+//                    for var friendData in resultsArray {
+//                        friendData = friendData as! NSDictionary
+//                        let newFriendData = FriendsDataAndProfilePic(friendData: friendData as! NSDictionary, profileImageUrl: ((friendData.valueForKey("picture") as! NSDictionary).valueForKey("data") as! NSDictionary).valueForKey("url") as! String)
+//                        
+//                        self.taggableFriendsData.append(newFriendData)
+//                        
+//                        dispatch_async(dispatch_get_main_queue()){
+//                            //                        self.activityIndicatorView.stopAnimating()
+//                            if self.tableView != nil {
+//                                if let parentVC = self.presentationContext as? ProfileFriendsViewController {
+//                                    parentVC.checkForEmptyData(true)
+//                                }
+//                                self.tableView.reloadData()
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    self.taggableFriendsData = []
+//                }
+//                if self.profileOwner.valueForKey("recordIDName") as? String != nil {
+//                    let contxt = NSManagedObjectContext.MR_context()
+//                    self.profileOwner.setValue(self.taggableFriendsData.count, forKey: "mutualFriends")
+//                    contxt.MR_saveToPersistentStoreAndWait()
+//                }
+//            } else {
+//                logw("Error Getting Friends \(error)")
+//                self.taggableFriendsData = []
+//            }
+//            completionBlock()
+//        }
+//        dispatch_async(dispatch_get_main_queue()){
+//            if self.tableView != nil {
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
     
     
     

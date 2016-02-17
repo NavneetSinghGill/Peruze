@@ -59,7 +59,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func getTaggableFriends() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.activityIndicatorView.startAnimating()
-        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: nil);
+        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Taggable Friends are : \(result)")

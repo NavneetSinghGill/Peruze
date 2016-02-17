@@ -68,6 +68,13 @@
         <relationship name="reviewer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" syncable="YES"/>
         <relationship name="userBeingReviewed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="reviews" inverseEntity="Person" syncable="YES"/>
     </entity>
+    <entity name="TaggableFriend" syncable="YES">
+        <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordIDName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Exchange" positionX="97" positionY="-804" width="128" height="178"/>
         <element name="Friend" positionX="-234" positionY="-540" width="128" height="88"/>
@@ -75,5 +82,6 @@
         <element name="Message" positionX="-164" positionY="-762" width="128" height="180"/>
         <element name="Person" positionX="252" positionY="-594" width="128" height="285"/>
         <element name="Review" positionX="459" positionY="-606" width="128" height="150"/>
+        <element name="TaggableFriend" positionX="-36" positionY="-657" width="128" height="120"/>
     </elements>
 </model>

@@ -18,6 +18,8 @@
 		3BE308041C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */; };
 		3BE308141C4E840800843B3B /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */; };
 		3BE910AF1C253F1B00DAB409 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BE910AE1C253F1B00DAB409 /* Localizable.strings */; };
+		3BECC0241C72FEA7005A7AA6 /* TaggableFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECC0231C72FEA7005A7AA6 /* TaggableFriend.swift */; };
+		3BECC0291C72FEC6005A7AA6 /* TaggableFriend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECC0281C72FEC6005A7AA6 /* TaggableFriend+CoreDataProperties.swift */; };
 		3BECCF411BFB274900DA2B9C /* DeleteItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */; };
 		3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */; };
 		3BEFDFD31C1E914E0001C964 /* ProfileFriendsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */; };
@@ -265,6 +267,8 @@
 		3BE308031C4E2A3C00843B3B /* ChatCollectionContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionContainerViewController.swift; sourceTree = "<group>"; };
 		3BE308131C4E840800843B3B /* InfiniteCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionView.swift; sourceTree = "<group>"; };
 		3BE910AE1C253F1B00DAB409 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		3BECC0231C72FEA7005A7AA6 /* TaggableFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggableFriend.swift; sourceTree = "<group>"; };
+		3BECC0281C72FEC6005A7AA6 /* TaggableFriend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TaggableFriend+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3BECCF401BFB274900DA2B9C /* DeleteItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemOperation.swift; sourceTree = "<group>"; };
 		3BEFDFD01C1E90D80001C964 /* ProfileFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsViewController.swift; sourceTree = "<group>"; };
 		3BEFDFD21C1E914E0001C964 /* ProfileFriendsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFriendsDataSource.swift; sourceTree = "<group>"; };
@@ -982,6 +986,8 @@
 				9D45D2251B5B5D8A00D555F3 /* Review.swift */,
 				9A1E2E4A1C118A490043CD29 /* Friend.swift */,
 				9A1E2E4B1C118A490043CD29 /* Friend+CoreDataProperties.swift */,
+				3BECC0231C72FEA7005A7AA6 /* TaggableFriend.swift */,
+				3BECC0281C72FEC6005A7AA6 /* TaggableFriend+CoreDataProperties.swift */,
 			);
 			name = NSManagedObjects;
 			sourceTree = "<group>";
@@ -1346,11 +1352,13 @@
 				9D177B7C1B54DDC3009CB9FA /* CircleView.swift in Sources */,
 				3BE308141C4E840800843B3B /* InfiniteCollectionView.swift in Sources */,
 				9D45D2341B5B6BB900D555F3 /* GetUploadsOperation.swift in Sources */,
+				3BECC0291C72FEC6005A7AA6 /* TaggableFriend+CoreDataProperties.swift in Sources */,
 				9D177BCD1B54DDC3009CB9FA /* TGCameraToggle.m in Sources */,
 				3BEFDFD11C1E90D80001C964 /* ProfileFriendsViewController.swift in Sources */,
 				9D45D2301B5B6B9100D555F3 /* GetFullProfileOperation.swift in Sources */,
 				9D3EA1F71B5DFAC1005D63AC /* Item+CoreDataProperties.swift in Sources */,
 				9D3B34B21B60195200EBFB87 /* UpdateItemOperation.swift in Sources */,
+				3BECC0241C72FEA7005A7AA6 /* TaggableFriend.swift in Sources */,
 				9DC345831BA9F22B00B1CA2C /* OperationCondition.swift in Sources */,
 				9D45D2261B5B5D8A00D555F3 /* Person.swift in Sources */,
 				9D177B781B54DDC3009CB9FA /* AppDelegate.swift in Sources */,

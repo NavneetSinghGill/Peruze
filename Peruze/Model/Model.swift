@@ -80,12 +80,17 @@ struct RecordTypes {
   static let Message = "Chat"
   static let Friends = "Friends"
   static let UsersStatus = "UsersStatus"
+  static let TaggableFriends = "TaggableFriends"
 }
 
 struct SubscriptionIDs {
     static let NewOfferSubscriptionID = "newOfferSubscriptionID"
     static let AcceptedOfferSubscriptionID = "acceptedOfferSubscriptionID"
     static let ChatSubscriptionID = "chatSubscriptionID"
+}
+struct FriendsDataAndProfilePic {
+    var friendData: NSDictionary!
+    var profileImageUrl: String!
 }
 
 class Model: NSObject, CLLocationManagerDelegate {
@@ -292,26 +297,166 @@ class Model: NSObject, CLLocationManagerDelegate {
         }
     }
     
-//    func findPersonByFacebookID(fbID: String) {
-//        var getPersonOperation: CKQueryOperation
-//        let getPersonQuery = CKQuery(recordType: RecordTypes.Users, predicate: NSPredicate(value: true))
-//        getPersonOperation = CKQueryOperation(query: getPersonQuery)
-//        let desiredKeys = ["FirstName", "LastName", "FacebookID", "ImageUrl"]
-//        getPersonOperation.desiredKeys = desiredKeys
-//        getPersonOperation.recordFetchedBlock = { (record: CKRecord!) -> Void in
-//            if let recordA = record{
-//                
-//            }
-//        }
-//        getPersonOperation.queryCompletionBlock = { (cursor, error) -> Void in
-//            logw("cursor: \(cursor) ....... error:\(error)")
-//            if error != nil {
-//                
-//            }
-//        }
-//        CKContainer.defaultContainer().publicCloudDatabase.addOperation(getPersonOperation)
-//        
-//    }
+    func getTaggableFriends() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
+        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+            if error == nil {
+                logw("Taggable Friends are : \(result)")
+                
+                var resultsArray = result.valueForKey("data") as! NSArray
+                resultsArray = resultsArray.sort { (element1, element2) -> Bool in
+                    return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
+                }
+                
+                let me = Person.MR_findFirstByAttribute("me", withValue: true)
+                
+                for friendData in resultsArray {
+                    let context = NSManagedObjectContext.MR_context()
+                    let taggableFriendLocal = TaggableFriend.MR_findFirstOrCreateByAttribute("recordIDName", withValue: friendData.valueForKey("id"), inContext: context)
+                    taggableFriendLocal.setValue(friendData.valueForKey("first_name"), forKey: "firstName")
+                    taggableFriendLocal.setValue(friendData.valueForKey("last_name"), forKey: "lastName")
+                    taggableFriendLocal.setValue(friendData.valueForKey("picture")!.valueForKey("data")!.valueForKey("url"), forKey: "imageUrl")
+                    taggableFriendLocal.setValue(me.valueForKey("facebookID"), forKey: "facebookID")
+                    context.MR_saveToPersistentStoreAndWait()
+                }
+                self.postTaggableFriendToCloud()
+            } else {
+                logw("Error Getting Friends \(error)");
+            }
+        }
+    }
+    
+    func postTaggableFriendToCloud() {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        let predicate = NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String)
+        let context = NSManagedObjectContext.MR_context()
+        let allTaggableFriends = TaggableFriend.MR_findAllWithPredicate(predicate, inContext: context)
+        
+        var allTaggableFriendsRecord = [CKRecord]()
+        for friend in allTaggableFriends {
+            let taggableFriend = CKRecord(recordType: RecordTypes.TaggableFriends)
+            taggableFriend.setObject(friend.valueForKey("facebookID") as? String, forKey: "FacebookID")
+            taggableFriend.setObject(friend.valueForKey("firstName") as? String, forKey: "FirstName")
+            taggableFriend.setObject(friend.valueForKey("lastName") as? String, forKey: "LastName")
+            taggableFriend.setObject(friend.valueForKey("imageUrl") as? String, forKey: "ImageUrl")
+            allTaggableFriendsRecord.append(taggableFriend)
+            
+            let postTaggableOperation = CKModifyRecordsOperation(recordsToSave: [taggableFriend], recordIDsToDelete: nil)
+            postTaggableOperation.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
+                if operationError != nil {
+                    return
+                }
+                friend.setValue(savedRecords?.first?.recordID.recordName, forKey: "recordIDName")
+                context.MR_saveToPersistentStoreAndWait()
+            }
+            CKContainer.defaultContainer().publicCloudDatabase.addOperation(postTaggableOperation)
+        }
+    }
+    
+    func deleteTaggablefriendsForPerson(person: NSManagedObject = Person.MR_findFirstByAttribute("me", withValue: true), completionBlock: (Void -> Void) = {}) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        let facebookID = person.valueForKey("facebookID")
+        let predicate = NSPredicate(format: "facebookID == %@", facebookID as! String)
+        let context = NSManagedObjectContext.MR_context()
+        let allTaggableFriends = TaggableFriend.MR_findAllWithPredicate(predicate, inContext: context)
+        for friend in allTaggableFriends {
+            let taggableFriend = CKRecordID(recordName: friend.valueForKey("recordIDName") as! String)
+            
+            let postTaggableOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [taggableFriend])
+            postTaggableOperation.modifyRecordsCompletionBlock = { (savedRecords, _, operationError) -> Void in
+                context.deleteObject(friend as! NSManagedObject)
+                context.MR_saveToPersistentStoreAndWait()
+                if allTaggableFriends[allTaggableFriends.count - 1] as! NSManagedObject == friend as! NSManagedObject {
+                    completionBlock()
+                }
+            }
+            CKContainer.defaultContainer().publicCloudDatabase.addOperation(postTaggableOperation)
+        }
+        if allTaggableFriends.count == 0 {
+            completionBlock()
+        }
+        context.MR_saveToPersistentStoreAndWait()
+    }
+    
+    func fetchTaggleFriendsRecordFromCloud(person: NSManagedObject = Person.MR_findFirstByAttribute("me", withValue: true), isMe: Bool = true, completionBlock: (Void -> Void) = {}) {
+        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        
+        let predicate = NSPredicate(format: "FacebookID == %@", person.valueForKey("facebookID") as! String)
+        let taggableFriendsQuery = CKQuery(recordType: RecordTypes.TaggableFriends, predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate]))
+        let taggableFriendsQueryOp = CKQueryOperation(query: taggableFriendsQuery)
+        
+        
+        //Add the messages to the database and save the context
+        taggableFriendsQueryOp.recordFetchedBlock = { (record: CKRecord!) -> Void in
+            let context = NSManagedObjectContext.MR_context()
+            let friend = TaggableFriend.MR_findFirstOrCreateByAttribute("recordIDName",
+                withValue: record.recordID.recordName, inContext: context)
+            
+            if let facebookID = record.objectForKey("FacebookID") as? String {
+                friend.setValue(facebookID, forKey: "facebookID")
+            }
+            if let firstName = record.objectForKey("FirstName") as? String {
+                friend.setValue(firstName, forKey: "firstName")
+            }
+            if let lastName = record.objectForKey("LastName") as? String {
+                friend.setValue(lastName, forKey: "lastName")
+            }
+            if let imageUrl = record.objectForKey("ImageUrl") as? String {
+                friend.setValue(imageUrl, forKey: "imageUrl")
+            }
+            context.MR_saveToPersistentStoreAndWait()
+        }
+        
+        taggableFriendsQueryOp.completionBlock = {
+            if isMe == true {
+                self.deleteTaggablefriendsForPerson(person, completionBlock: {
+                    completionBlock()
+                })
+            } else {
+                completionBlock()
+            }
+        }
+        CKContainer.defaultContainer().publicCloudDatabase.addOperation(taggableFriendsQueryOp)
+    }
+    
+    func getTaggbleFriendsFromCloudAndMatch(person: NSManagedObject, context: NSManagedObjectContext = managedConcurrentObjectContext, completionBlock: (Int -> Void) = {_ in }) {
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        if me.valueForKey("recordIDName") as! String != person.valueForKey("recordIDName") as! String {
+            dispatch_async(dispatch_get_main_queue()) {
+                Model.sharedInstance().fetchTaggleFriendsRecordFromCloud(person, isMe: false, completionBlock: {
+                    let context = NSManagedObjectContext.MR_context()
+                    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+                    let myTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String), inContext: context)
+                    let otherTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", person.valueForKey("facebookID") as! String), inContext: context)
+                    
+                    let commonFriends: NSMutableArray = []
+                    
+                    for myFriend in myTaggableFriends {
+                        for otherUserfriend in otherTaggableFriends {
+                            if myFriend.valueForKey("firstName") as! String == otherUserfriend.valueForKey("firstName") as! String && myFriend.valueForKey("lastName") as! String == otherUserfriend.valueForKey("lastName") as! String {
+                                commonFriends.addObject(myFriend)
+                            }
+                        }
+                    }
+                    var taggableFriendsData = [FriendsDataAndProfilePic]()
+                    for friend in commonFriends {
+                        let friendDict = [
+                            "name":"\(friend.valueForKey("firstName")!) \(friend.valueForKey("lastName")!)",
+                            "first_name":"\(friend.valueForKey("firstName")!)",
+                            "last_name":"\(friend.valueForKey("lastName")!)"]
+                        
+                        let newFriendData = FriendsDataAndProfilePic(friendData: friendDict, profileImageUrl: friend.valueForKey("imageUrl") as! String)
+                        taggableFriendsData.append(newFriendData)
+                    }
+                    person.setValue(taggableFriendsData.count, forKey: "mutualFriends")
+                    context.MR_saveToPersistentStoreAndWait()
+                    completionBlock(taggableFriendsData.count)
+                })
+            }
+        }
+    }
     
     //MARK: Fetch record
     

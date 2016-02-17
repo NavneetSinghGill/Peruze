@@ -119,7 +119,7 @@ class ProfileViewController: UIViewController {
         }
         //TODO: set #ofStars
         
-        
+        Person.MR_findFirstByAttribute("recordIDName", withValue: personForProfile?.valueForKey("recordIDName"))
         //hide the container view and start loading data
         containerView.alpha = 0.0
         containerSpinner.startAnimating()
@@ -644,8 +644,20 @@ class ProfileViewController: UIViewController {
                 //            ["friendData":parsedObject.friendData, "circleImage": parsedObject.profileImage]
                 let userInfo : NSDictionary = notification.userInfo!
                 let userDictionary = userInfo.valueForKey("friendData")
-                let fbId = userDictionary!.valueForKey("id") as? String
+                var fbId = userDictionary!.valueForKey("id") as? String
                 let first_name = userDictionary!.valueForKey("first_name") as? String
+                let last_name = userDictionary!.valueForKey("last_name") as? String
+                let imageUrl = userInfo.valueForKey("imageUrl") as? String
+                
+                var fetchedPerson = Person.MR_findFirstWithPredicate(NSPredicate(format: "firstName == %@ AND lastName == %@", first_name!, last_name!))
+                
+                if fetchedPerson == nil || fetchedPerson.valueForKey("recordIDName") == nil {
+                    fetchedPerson = Person.MR_createEntity()
+                    fetchedPerson.setValue(first_name, forKey: "firstName")
+                    fetchedPerson.setValue(imageUrl, forKey: "imageUrl")
+                }
+                fbId = fetchedPerson.valueForKey("facebookID") as! String
+                
                 var person = Person.MR_findFirstWithPredicate(NSPredicate(format: "facebookID = %@",fbId!))
                 
                 if person != nil {

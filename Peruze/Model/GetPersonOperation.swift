@@ -118,10 +118,27 @@ class GetPersonOperation: Operation {
 //                    }
 //                    self.context.MR_saveToPersistentStoreAndWait()
 //                })
-                Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
-//                    self.finish()
+                
+                
+                
+                
+                
+                //old implementation=====
+                
+//                Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
+//                    self.context.MR_saveToPersistentStoreAndWait()
+//                    //self.finish()
+//                })
+                //=======================
+                
+                
+                Model.sharedInstance().getTaggbleFriendsFromCloudAndMatch(localPerson, completionBlock: { taggableFriendsCount in
+                    localPerson.setValue(taggableFriendsCount, forKey: "mutualFriends")
                     self.context.MR_saveToPersistentStoreAndWait()
+                    self.finish()
                 })
+                
+                
             }
           }
           //check for image property and set the data
@@ -262,10 +279,24 @@ class GetAllPersonsWithMissingData: Operation {
             
         }
         if localPerson.valueForKey("facebookID") as? String != nil{
-            Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
-//                self.finish()
+            
+            
+            
+            //old implementation ===============
+//            Model.sharedInstance().getMutualFriendsFromFb(localPerson, context_: self.context, completionBlock: {
+////                self.finish()
+//                self.context.MR_saveToPersistentStoreAndWait()
+//            })
+            //==================================
+            
+            
+            Model.sharedInstance().getTaggbleFriendsFromCloudAndMatch(localPerson, completionBlock: { taggableFriendsCount in
+                localPerson.setValue(taggableFriendsCount, forKey: "mutualFriends")
                 self.context.MR_saveToPersistentStoreAndWait()
+                self.finish()
             })
+            
+            
         }
           //check for image property and set the data
 //        if let imageAsset = recordsByID?[recordID]?.objectForKey("Image") as? CKAsset {

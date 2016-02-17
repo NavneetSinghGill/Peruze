@@ -136,13 +136,34 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) == nil || NSUserDefaults.standardUserDefaults().valueForKey(UniversalConstants.kSetSubscriptions) as! Bool == true {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.valueForKey(UniversalConstants.kSetSubscriptions) == nil || defaults.valueForKey(UniversalConstants.kSetSubscriptions) as! Bool == true {
             Model.sharedInstance().subscribeForNewOffer()
-            NSUserDefaults.standardUserDefaults().setValue(false, forKey: UniversalConstants.kSetSubscriptions)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            defaults.setValue(false, forKey: UniversalConstants.kSetSubscriptions)
+            defaults.synchronize()
         }
-
+        
+        let weekTimeInSeconds = 7 * 24 * 60 * 60.0
+                if defaults.valueForKey("LastFetchTaggagleFriendsDate") == nil || NSDate().timeIntervalSince1970 - (defaults.valueForKey("LastFetchTaggagleFriendsDate") as! NSDate).timeIntervalSince1970 > weekTimeInSeconds {
+        defaults.setValue(NSDate(), forKey: "LastFetchTaggagleFriendsDate")
+        Model.sharedInstance().fetchTaggleFriendsRecordFromCloud() {
+            dispatch_async(dispatch_get_main_queue()){
+                Model.sharedInstance().getTaggableFriends()
+            }
+        }
+        }
         self.dataSource.refreshData(self, shouldShuffle: false)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        //        }
+    }
+    
+    func temp() {
+        Model.sharedInstance().getTaggableFriends()
     }
     
     func reloadPeruseItemMainScreen(notification: NSNotification){

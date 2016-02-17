@@ -37,19 +37,20 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadFetchedData", name: "FetchedPersonExchanges", object: nil)
         self.titleLabel.alpha = 0.0
         self.activityIndicator.startAnimating()
-        self.dataSource.getMutualFriends({
-            self.activityIndicator.stopAnimating()
-            self.checkForEmptyData(true)
-        })
+//        self.dataSource.getMutualFriends({
+//            self.activityIndicator.stopAnimating()
+//            self.checkForEmptyData(true)
+//        })
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.activityIndicator.startAnimating()
-        self.dataSource.getMutualFriends({
-            self.activityIndicator.stopAnimating()
-            self.checkForEmptyData(true)
-        })
+//        self.dataSource.getMutualFriends({
+//            self.activityIndicator.stopAnimating()
+//            self.checkForEmptyData(true)
+//        })
+        self.dataSource.getTaggbleFriendsFromCloudAndMatch()
     }
     
     override func viewDidAppear(animated: Bool) {

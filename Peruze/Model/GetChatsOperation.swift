@@ -106,9 +106,6 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
       
       if let messageText = record.objectForKey("Text") as? String {
         localMessage.setValue(messageText, forKey: "text")
-        if messageText == "xc"{
-            
-        }
       }
       
       if let messageImage = record.objectForKey("Image") as? CKAsset {
