@@ -101,6 +101,10 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
             self.timer!.invalidate()
         }
         self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "endRefreshControl", userInfo: nil, repeats: false)
+        
+        NSUserDefaults.standardUserDefaults().setValue(0, forKey: "newChatCount")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
     let publicDB = CKContainer.defaultContainer().publicCloudDatabase
     let chatOp = GetChatsOperation(database: publicDB, context: managedConcurrentObjectContext) {
         dispatch_async(dispatch_get_main_queue()) {
@@ -111,6 +115,9 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.getLocalAcceptedExchanges()
         self.tableView.reloadData()
         self.timer = nil
+            if NSUserDefaults.standardUserDefaults().valueForKey("newChatCount") != nil && NSUserDefaults.standardUserDefaults().valueForKey("newChatCount") as! Int != 0{
+                NSNotificationCenter.defaultCenter().postNotificationName("setAcceptedExchangesBadge", object: nil, userInfo: ["badgeCount": NSUserDefaults.standardUserDefaults().valueForKey("newChatCount") as! Int])
+            }
       }
     }
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) GetChatsOperation added.")

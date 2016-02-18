@@ -52,7 +52,7 @@ class GetCurrentUserOperation: Operation {
       }
       
       //save the records to the local DB
-      let person = Person.MR_findFirstOrCreateByAttribute("me",
+      var person = Person.MR_findFirstOrCreateByAttribute("me",
         withValue: true,
         inContext: self.context)
       
@@ -76,12 +76,14 @@ class GetCurrentUserOperation: Operation {
             self.cancel()
         }
         
-        
-
+//        person.setValue(false, forKey: "me")
+//        
+//      person = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: record.objectForKey("FacebookID"), inContext: self.context)
       person.setValue(recordID!.recordName, forKey: "recordIDName")
       person.setValue(firstName, forKey: "firstName")
       person.setValue(lastName, forKey: "lastName")
       person.setValue(facebookID, forKey: "facebookID")
+//        person.setValue(true, forKey: "me")
         if isDelete == nil {
            person.setValue(0, forKey: "isDelete")
         }

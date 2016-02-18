@@ -173,6 +173,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.view.setNeedsDisplay()
+        Person.MR_findAllWithPredicate(NSPredicate(format: "me == true"))
         if self.tabBarController != nil {
             if !newProfilePic {
                 if uploadImageInProgress == false {

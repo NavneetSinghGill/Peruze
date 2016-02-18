@@ -319,6 +319,7 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "LastFetchTaggagleFriendsDate")
     NSUserDefaults.standardUserDefaults().synchronize()
+    self.deleteAllLocalData()
     FBSDKAccessToken.setCurrentAccessToken(nil)
     FBSDKLoginManager().logOut()
     Model.sharedInstance().deleteAllSubscription()
@@ -349,6 +350,31 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             person.setValue(0, forKey: "mutualFriends")
         }
         context.MR_saveToPersistentStoreAndWait()
+    }
+    
+    func deleteAllLocalData() {
+//        let context = NSManagedObjectContext.MR_context()
+        var allData = Item.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Exchange.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Review.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = TaggableFriend.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Message.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
     
     @IBAction func done(sender: UIBarButtonItem) {

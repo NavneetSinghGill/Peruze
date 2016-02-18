@@ -124,6 +124,8 @@ class GetMessagesForAcceptedExchangesOperation: Operation {
                 messageExchange.setValue(true, forKey: "isRead")
             } else {
                 messageExchange.setValue(false, forKey: "isRead")
+                NSUserDefaults.standardUserDefaults().setValue(NSUserDefaults.standardUserDefaults().valueForKey("newChatCount") as! Int + 1, forKey: "newChatCount")
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
         localMessage.setValue(messageExchange, forKey: "exchange")

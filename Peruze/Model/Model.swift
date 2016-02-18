@@ -441,6 +441,9 @@ class Model: NSObject, CLLocationManagerDelegate {
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let myTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String), inContext: context)
+        if person.valueForKey("facebookID") == nil {
+            return
+        }
         let otherTaggableFriends = TaggableFriend.MR_findAllWithPredicate(NSPredicate(format: "facebookID == %@", person.valueForKey("facebookID") as! String), inContext: context)
         
         let commonFriends: NSMutableArray = []
@@ -1475,6 +1478,11 @@ func createUniqueName() -> String {
     let formattedDate = dateFormatter.stringFromDate(date)
 
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-    return "\(me.valueForKey("recordIDName")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
+//    if me.valueForKey("recordIDName") != nil {
+        return "\(me.valueForKey("recordIDName")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
+//    } else {
+//        return "\(me.valueForKey("facebookID")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
+//    }
+    
 }
 

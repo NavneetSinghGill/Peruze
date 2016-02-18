@@ -187,10 +187,16 @@ class FetchFacebookUserProfile: Operation {
           return
         }
         if let result = result as? [String: AnyObject] {
-          let localMe = Person.MR_findFirstOrCreateByAttribute("me", withValue: true, inContext: self.context)
+           let anyMe = Person.MR_findFirstByAttribute("me", withValue: true, inContext: self.context)
+            if anyMe != nil {
+                anyMe.setValue(false, forKey: "me")
+            }
+            
+          let localMe = Person.MR_findFirstOrCreateByAttribute("facebookID", withValue: result["id"] as? String, inContext: self.context)
           localMe.setValue(result["first_name"] as? String, forKey: "firstName")
           localMe.setValue(result["last_name"] as? String, forKey: "lastName")
           localMe.setValue(result["id"] as? String, forKey: "facebookID")
+            localMe.setValue(true, forKey: "me")
           self.context.MR_saveToPersistentStoreAndWait()
         } else {
           logw("FacebookOperations Finished with Error")

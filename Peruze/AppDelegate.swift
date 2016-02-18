@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
             if error != nil {
                 logw("Error resetting badge: \(error)")
-                self.resetBadgeCounter()
+//                self.resetBadgeCounter()
             }
             else {
                 //                self.setRequestBadgeCount(0)

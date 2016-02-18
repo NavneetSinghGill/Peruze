@@ -270,13 +270,15 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     var trueFavorites = [NSManagedObject]()
     if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
-        for favoriteObj in favorites {
-            if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
-                trueFavorites.append(favoriteObj)
+        if favorites.count > 0{
+            for favoriteObj in favorites {
+                if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
+                    trueFavorites.append(favoriteObj)
+                }
             }
+            self.favorites = trueFavorites.map { $0.valueForKey("recordIDName") as! String }
         }
-      self.favorites = trueFavorites.map { $0.valueForKey("recordIDName") as! String }
-    } else {
+          } else {
       logw("me.valueForKey('favorites') was not an NSSet ")
     }
   }
