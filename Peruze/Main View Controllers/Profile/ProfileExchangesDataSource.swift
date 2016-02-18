@@ -216,7 +216,13 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   //  }
   
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    if NSThread.isMainThread(){
         self.tableView.endUpdates()
+    } else {
+        dispatch_async(dispatch_get_main_queue()){
+            self.tableView.endUpdates()
+        }
+    }
   }
   
   
