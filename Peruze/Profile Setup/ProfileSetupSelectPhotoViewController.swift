@@ -192,6 +192,8 @@ class ProfileSetupSelectPhotoViewController: UIViewController, FacebookProfilePi
         if let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext) {
             let imageData = UIImagePNGRepresentation(self.center.image!)
             me.setValue(imageData, forKey: "image")
+            NSUserDefaults.standardUserDefaults().setValue(imageData, forKey: "tempImage")
+            NSUserDefaults.standardUserDefaults().synchronize()
             managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
         }
     }

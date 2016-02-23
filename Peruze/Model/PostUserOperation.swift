@@ -62,7 +62,16 @@ class PostUserOperation: Operation {
 //    let imageAsset = CKAsset(fileURL: imageURL)
     
     let uniqueImageName = createUniqueName()
-    let uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: UIImage(data:(myPerson.valueForKey("image") as? NSData)!,scale:1.0)!)
+    var uploadRequest : AWSS3TransferManagerUploadRequest
+    
+    if NSUserDefaults.standardUserDefaults().valueForKey("tempImage") == nil {
+        uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: UIImage(data:(myPerson.valueForKey("image") as? NSData)!,scale:1.0)!)
+    } else {
+        uploadRequest = Model.sharedInstance().uploadRequestForImageWithKey(uniqueImageName, andImage: UIImage(data:NSUserDefaults.standardUserDefaults().valueForKey("tempImage") as! NSData,scale:1.0)!)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "tempImage")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
     let transferManager = AWSS3TransferManager.defaultS3TransferManager()
     transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {task in
         if task.error != nil {

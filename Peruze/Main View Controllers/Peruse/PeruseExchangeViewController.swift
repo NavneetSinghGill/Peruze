@@ -121,9 +121,12 @@ class PeruseExchangeViewController: UIViewController, UICollectionViewDelegate, 
             self.otherPersonsProfileImageView.image = image
             self.view.setNeedsDisplay()
         })
-        if mutualFriendsCount <= 1{
+        if mutualFriendsCount == 0 {
+            mutualFriendsLabel.text = ""
+        }
+        else if mutualFriendsCount <= 1{
             mutualFriendsLabel.text = "\(mutualFriendsCount) mutual friend"
-        } else{
+        } else {
             mutualFriendsLabel.text = "\(mutualFriendsCount) mutual friends"
         }
     }

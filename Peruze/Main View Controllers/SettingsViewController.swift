@@ -318,6 +318,8 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
     @IBAction func logOutOfFacebook(sender: UIButton) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "LastFetchTaggagleFriendsDate")
+    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "keyFetchedUserProfile")
+    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "firstTimeChatRefresh")
     NSUserDefaults.standardUserDefaults().synchronize()
     self.deleteAllLocalData()
     FBSDKAccessToken.setCurrentAccessToken(nil)

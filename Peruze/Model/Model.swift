@@ -39,14 +39,14 @@ struct BuckeyKeys {
 }
 
 struct NotificationMessages {
-    static let NewOfferMessage = "A new offer made for you."
+    static let NewOfferMessage = "You have received a new offer."
     static let UpdateOfferMessage = "An offer updated for you"
-    static let NewChatMessage = "A new message for you."
+    static let NewChatMessage = "You have received a new  message."
     static let ExchangeRecall = "Did you complete your exchange"
     static let ItemAdditionOrUpdation = "A new item has been added"
     static let ItemDeletion = "An item has been deleted"
     static let UserUpdate = "An User updated"
-    static let AcceptedOfferMessage = "An offer has been accepted."
+    static let AcceptedOfferMessage = "Your recent offer has been accepted."
 }
 
 struct NotificationCategoryMessages {
@@ -1478,11 +1478,11 @@ func createUniqueName() -> String {
     let formattedDate = dateFormatter.stringFromDate(date)
 
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
-//    if me.valueForKey("recordIDName") != nil {
+    if me.valueForKey("recordIDName") != nil {
         return "\(me.valueForKey("recordIDName")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
-//    } else {
-//        return "\(me.valueForKey("facebookID")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
-//    }
+    } else {
+        return "\(me.valueForKey("facebookID")!)\(formattedDate)".stringByReplacingOccurrencesOfString(" ", withString: "")
+    }
     
 }
 
