@@ -467,7 +467,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 // Now we can do something with the URL...
                 logw("url: \(url)")
                 let urlString = "\(url)"
-                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "New Peruze item \'\(title)\'", "link" :urlString,"picture": s3Url(uniqueImageName),"caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "Find things like '\(title)' and more on Peruze!", "link" :urlString,"picture": s3Url(uniqueImageName),"caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {
