@@ -44,6 +44,7 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
     
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+    self.dataSource.fetchAndReloadLocalContent()
     tableView.reloadData()
   }
     
@@ -109,68 +110,74 @@ class ProfileUploadsViewController: UIViewController, UITableViewDelegate {
   func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     let defaultAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { (rowAction, indexPath) -> Void in
       
-      //self.dataSource.items.removeAtIndex(indexPath.row)
-//      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-        let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-        let saveOwner = item.valueForKey("owner")
-        item.setValue(nil, forKey: "owner")
-        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-        if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController {
-            parentVC.updateViewAfterGettingResponse()
-        }
-        self.dataSource.fetchAndReloadLocalContent()
-        self.tableView.reloadData()
-        logw("OperationQueue().addOperation(DeleteItemOperation)")
-        let completionHandler = { dispatch_async(dispatch_get_main_queue()) {
-            if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
-                do {
-                    logw("Manual deletion of item after item updation success")
-                    let localItem = try managedConcurrentObjectContext.existingObjectWithID(item.objectID)
-                    managedConcurrentObjectContext.deleteObject(localItem)
+        if NetworkConnection.connectedToNetwork() {
+            //self.dataSource.items.removeAtIndex(indexPath.row)
+            //      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            let item = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+            let saveOwner = item.valueForKey("owner")
+            item.setValue(nil, forKey: "owner")
+            managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+            if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController {
+                parentVC.updateViewAfterGettingResponse()
+            }
+            self.dataSource.fetchAndReloadLocalContent()
+            self.tableView.reloadData()
+            logw("OperationQueue().addOperation(DeleteItemOperation)")
+            let completionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
+                    do {
+                        logw("Manual deletion of item after item updation success")
+                        let localItem = try managedConcurrentObjectContext.existingObjectWithID(item.objectID)
+                        managedConcurrentObjectContext.deleteObject(localItem)
+                        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+                        parentVC.updateViewAfterGettingResponse()
+                        try self.dataSource.fetchedResultsController.performFetch()
+                        dispatch_async(dispatch_get_main_queue()){
+                            if self.tableView != nil {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    } catch {
+                        logw("Error while deleting local item in item updation completion block: \(error)")
+                    }
+                }} }
+            let errorCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
+                if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
+                    item.setValue(saveOwner, forKey: "owner")
                     managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
                     parentVC.updateViewAfterGettingResponse()
-                    try self.dataSource.fetchedResultsController.performFetch()
-                    dispatch_async(dispatch_get_main_queue()){
-                        if self.tableView != nil {
-                            self.tableView.reloadData()
-                        }
-                    }
-                } catch {
-                    logw("Error while deleting local item in item updation completion block: \(error)")
-                }
-            }} }
-        let errorCompletionHandler = { dispatch_async(dispatch_get_main_queue()) {
-            if let parentVC = self.parentViewController?.parentViewController as? ProfileViewController{
-                item.setValue(saveOwner, forKey: "owner")
-                managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
-                parentVC.updateViewAfterGettingResponse()
-                
-                let alertController = UIAlertController(title: "Peruze", message: "An error occured while Deleting item.", preferredStyle: .Alert)
-                
-                let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
-                alertController.addAction(defaultAction)
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
-            }} }
-//        OperationQueue().addOperation(
-//            DeleteItemOperation(
-//                recordIDName: item.valueForKey("recordIDName") as? String,
-//                presentationContext: self,
-//                completionHandler: completionHandler,
-//                errorCompletionHandler: errorCompletionHandler))
-        OperationQueue().addOperation(
-            PostItemOperation(
-                image: UIImage(),
-                title: (item.valueForKey("title") as? String)!,
-                detail: (item.valueForKey("detail") as? String)!,
-                recordIDName: item.valueForKey("recordIDName") as? String,
-                imageUrl: (item.valueForKey("imageUrl") as? String)!,
-                isDelete: 1,
-                presentationContext: self,
-                completionHandler: completionHandler,
-                errorCompletionHandler: errorCompletionHandler
+                    
+                    let alertController = UIAlertController(title: "Peruze", message: "An error occured while Deleting item.", preferredStyle: .Alert)
+                    
+                    let defaultAction = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }} }
+            //        OperationQueue().addOperation(
+            //            DeleteItemOperation(
+            //                recordIDName: item.valueForKey("recordIDName") as? String,
+            //                presentationContext: self,
+            //                completionHandler: completionHandler,
+            //                errorCompletionHandler: errorCompletionHandler))
+            OperationQueue().addOperation(
+                PostItemOperation(
+                    image: UIImage(),
+                    title: (item.valueForKey("title") as? String)!,
+                    detail: (item.valueForKey("detail") as? String)!,
+                    recordIDName: item.valueForKey("recordIDName") as? String,
+                    imageUrl: (item.valueForKey("imageUrl") as? String)!,
+                    isDelete: 1,
+                    presentationContext: self,
+                    completionHandler: completionHandler,
+                    errorCompletionHandler: errorCompletionHandler
+                )
             )
-        )
+        } else {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     return [defaultAction]
   }

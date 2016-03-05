@@ -59,7 +59,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func getTaggableFriends() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.activityIndicatorView.startAnimating()
-        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
+        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends?limit=5000", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Taggable Friends are : \(result)")
@@ -116,6 +116,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: Constants.kFriendsTableViewCellIdentifier) as? FriendsTableViewCell
         }
+        cell?.selectionStyle = UITableViewCellSelectionStyle.None
         var parsedObject = self.searchedFriendsData[indexPath.row]
         let userDict =  parsedObject.friendData
         cell!.nameLabel.text = userDict?.valueForKey("name") as? String
@@ -223,7 +224,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             if (error == nil) {
                 logw("url: \(url)")
                 let urlString = "\(url)"
-                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "Trade your old valuables & services with friends in your social network \n- try Peruze today!", "link" : urlString,"picture": "http://www.peruzenow.com/images/logo.png","caption":"Change how you exchange","description":"Peruze is an exciting new mobile marketplace where you can find things you want in exchange for stuff you no longer need.", "tags":idsString],  HTTPMethod:"POST")
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:[ "message" : "Trade your old valuables & services with friends in your social network \n- try Peruze today!", "link" : urlString,"picture": "https://www.peruzenow.com/images/devices.png","caption":"Change how you exchange","title":true,"description":"Peruze is an exciting new mobile marketplace where you can find things you want in exchange for stuff you no longer need.", "tags":idsString],  HTTPMethod:"POST")
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {

@@ -460,6 +460,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         params.setValue((me.valueForKey("firstName") as! String) + " " + (me.valueForKey("lastName") as! String) , forKey: "senderId")
         params.setValue("facebook", forKey: "shareType")
         params.setValue(self.titleTextField.text!, forKey: "recordID")
+        params.setValue("Try Peruze Now", forKey: "title")
         //        params[@"shareIds"] = self.eventsIdsString;
         let title = self.titleTextField.text!
         Branch.getInstance().getShortURLWithParams(params as [NSObject : AnyObject], andCallback: { (url: String!, error: NSError!) -> Void in
@@ -467,7 +468,7 @@ class UploadViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 // Now we can do something with the URL...
                 logw("url: \(url)")
                 let urlString = "\(url)"
-                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "Find things like '\(title)' and more on Peruze!", "link" :urlString,"picture": s3Url(uniqueImageName),"caption":"Change how you exchange","description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
+                let request = FBSDKGraphRequest(graphPath: "me/feed", parameters:["message" : "Find things like '\(title)' and more on Peruze!", "link" :urlString,"picture": s3Url(uniqueImageName),"caption":"Change how you exchange","title":true,"description":self.descriptionTextView.text!, "tags":""],  HTTPMethod:"POST")
                 request.startWithCompletionHandler({ (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
                     //set error and return
                     if error != nil {

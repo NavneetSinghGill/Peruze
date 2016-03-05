@@ -79,7 +79,8 @@ class ChatItemDetailShowDetailViewController: UIViewController, UICollectionView
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         var trueFavorites = [NSManagedObject]()
-        if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
+        let newFavorites = (me.valueForKey("favorites") as? NSSet)?.copy()
+        if let favorites = newFavorites!.allObjects as? [NSManagedObject] {
             for favoriteObj in favorites {
                 if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {
                     trueFavorites.append(favoriteObj)

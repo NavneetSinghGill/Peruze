@@ -41,6 +41,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     refresh()
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "localRefresh", name: "getRequestedExchange", object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "localRefresh", name: NotificationCenterKeys.LNRefreshRequestScreenWithLocalData, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "refresh", name: "oneTimeFetch", object: nil)
   }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,6 +66,13 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     func refreshWithoutActivityIndicator() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         self.activityIndicatorView.alpha = 0
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            self.refreshControl!.endRefreshing()
+            return
+        }
         self.refresh()
     }
     
@@ -197,12 +205,24 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   private func denyEditAction() -> UITableViewRowAction {
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Deny") { (rowAction, indexPath) -> Void in
       logw("Requests Table cell Deny tapped.")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
       self.denyExchangeAtIndexPath(indexPath)
     }
   }
   
     func denyExchangeAtIndexPath(indexPath: NSIndexPath,completionBlock: (Void -> Void) = {}) {
         //get the recordIDName for the exchange at that index path
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
         let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
         
         //create the operation
@@ -258,6 +278,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   private func acceptEditAction() -> UITableViewRowAction {
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Accept") { (rowAction, indexPath) -> Void in
       logw("Requests Table cell Accept tapped.")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
       self.acceptExchangeAtIndexPath(indexPath)
     }
     accept.backgroundColor = .greenColor()
@@ -266,6 +292,12 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   
     func acceptExchangeAtIndexPath(indexPath: NSIndexPath,completionBlock: (Void -> Void) = {}) {
         //get the recordIDName for the exchange at that index path
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
         let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as! String
         
         //create the operation

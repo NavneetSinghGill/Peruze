@@ -231,6 +231,12 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
       break
     case sendButton!:
         logw("SendButton")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            break
+        }
       JSQSystemSoundPlayer.jsq_playMessageSentSound()
       dataSource?.didPressSendButton(button, withMessageText: text, senderId: senderId, senderDisplayName: senderDisplayName, date: date)
       finishSendingMessageAnimated(true)

@@ -458,7 +458,7 @@ class ProfileViewController: UIViewController {
     
     func updateViewAfterGettingResponse() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let predicate = NSPredicate(format: "status == %@", NSNumber(integer: ExchangeStatus.Completed.rawValue))
+        let predicate = NSPredicate(format: "status == %@ AND itemOffered.title != nil AND itemRequested.title != nil AND itemOffered.imageUrl != nil AND itemRequested.imageUrl != nil", NSNumber(integer: ExchangeStatus.Completed.rawValue))
         let ex = Exchange.MR_findAllWithPredicate(predicate, inContext: managedConcurrentObjectContext)
         numberOfExchangesLabel.text = String(ex.count)
         //        numberOfExchangesLabel.text = String(self.personForProfile!.exchanges!.count)

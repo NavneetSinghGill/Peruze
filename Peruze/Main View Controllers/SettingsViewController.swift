@@ -317,19 +317,16 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
   //MARK: - Handling Buttons
     @IBAction func logOutOfFacebook(sender: UIButton) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "LastFetchTaggagleFriendsDate")
-    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "keyFetchedUserProfile")
-    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "firstTimeChatRefresh")
-    NSUserDefaults.standardUserDefaults().synchronize()
-    self.deleteAllLocalData()
-    FBSDKAccessToken.setCurrentAccessToken(nil)
-    FBSDKLoginManager().logOut()
-    Model.sharedInstance().deleteAllSubscription()
-    NSUserDefaults.standardUserDefaults().setValue(true, forKey: UniversalConstants.kSetSubscriptions)
-    NSUserDefaults.standardUserDefaults().synchronize()
-    logw("Logged out of account.")
-    dismissViewControllerAnimated(false, completion: nil)
-    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
+        Model.sharedInstance().performLogout()
+        logw("Logged out of account.")
+        dismissViewControllerAnimated(false, completion: nil)
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "showIniticiaViewController", object: nil, userInfo: nil))
   }
   
     @IBAction func deleteProfile(sender: UIButton) {
@@ -352,31 +349,6 @@ class SettingsViewController: UITableViewController, FacebookProfilePictureRetri
             person.setValue(0, forKey: "mutualFriends")
         }
         context.MR_saveToPersistentStoreAndWait()
-    }
-    
-    func deleteAllLocalData() {
-//        let context = NSManagedObjectContext.MR_context()
-        var allData = Item.MR_findAllInContext(managedConcurrentObjectContext)
-        for data in allData {
-            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
-        }
-        allData = Exchange.MR_findAllInContext(managedConcurrentObjectContext)
-        for data in allData {
-            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
-        }
-        allData = Review.MR_findAllInContext(managedConcurrentObjectContext)
-        for data in allData {
-            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
-        }
-        allData = TaggableFriend.MR_findAllInContext(managedConcurrentObjectContext)
-        for data in allData {
-            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
-        }
-        allData = Message.MR_findAllInContext(managedConcurrentObjectContext)
-        for data in allData {
-            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
-        }
-        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
     }
     
     @IBAction func done(sender: UIBarButtonItem) {

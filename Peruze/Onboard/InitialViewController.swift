@@ -112,7 +112,7 @@ class InitialViewController: UIViewController {
                 
                 //if there isn't anything wrong with my profile, segue to tab bar
                 self.setupAndSegueToTabBarVC()
-                self.getMyFriends()
+//                self.getMyFriends()
             }
         }
         getMyProfileOp.finishedBlock = { error in
@@ -129,6 +129,7 @@ class InitialViewController: UIViewController {
                 let alert = UIAlertController(title: "Peruze", message: "This iCloud account is attached to \"\(oldUserFirstName!)\". Please login to another iCloud account.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
                     FBSDKAccessToken.setCurrentAccessToken(nil)
+                    Model.sharedInstance().performLogout()
                     self.setupAndSegueToOnboardVC()
                 }))
                 dispatch_async(dispatch_get_main_queue()) {

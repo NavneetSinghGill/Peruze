@@ -88,7 +88,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         if personRecordID == nil { return 0}
         let predicate = NSPredicate(format: "owner.recordIDName = %@", personRecordID)
-        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1")
+        let predicateForDeletedItem = NSPredicate(format: "isDelete != 1 AND title != nil AND imageUrl != nil")
         fetchedResultsController = Item.MR_fetchAllSortedBy("title",
             ascending: true,
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateForDeletedItem]),
@@ -117,6 +117,7 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             logw("ProfileUploads local data fetch failed with error: \(error)")
         }
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of uploads: \(fetchedResultsController.sections![0].numberOfObjects)")
+        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
         return fetchedResultsController.sections![0].numberOfObjects
     }
     
@@ -149,19 +150,19 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
     if fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject == nil {
         return cell
     }
-    cell.titleTextLabel.text = (item.valueForKey("title") as! String)
+    if let title = item.valueForKey("title") as? String {
+        cell.titleTextLabel.text = title
+    } else {
+        cell.titleTextLabel.text = ""
+    }
+//    cell.titleTextLabel.text = (item.valueForKey("title") as! String)
     cell.subtitleTextLabel.text = ""
-    cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
-    
-//    if item.valueForKey("imageUrl") != nil {
-//        tempImageView = UIImageView()
-//        tempImageView.sd_setImageWithURL(NSURL(string: s3Url(item.valueForKey("imageUrl") as! String)), completed: { (image, error, sdImageCacheType, url) -> Void in
-//            cell.circleImageView.image = image
-//            cell.contentView.setNeedsDisplay()
-//        })
-//    } else {
-//        cell.circleImageView.image = nil
-//    }
+    if let detail = item.valueForKey("detail") as? String {
+        cell.descriptionTextLabel.text = detail
+    } else {
+        cell.descriptionTextLabel.text = ""
+    }
+//    cell.descriptionTextLabel.text = (item.valueForKey("detail") as! String)
     
     if let imageUrl = item.valueForKey("imageUrl") as? String {
         cell.circleButton.sd_setImageWithURL(NSURL(string: s3Url(imageUrl)), forState: UIControlState.Normal)
@@ -194,82 +195,82 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   
   //MARK: - NSFetchedResultsControllerDelegate
   
-  func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    if tableView != nil {
-        tableView.beginUpdates()
-    }
-  }
-  
-  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-    switch type {
-    case .Insert:
-      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
-      break
-    case .Delete:
-      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
-      break
-    default:
-      break
-    }
-  }
-  
-  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-    if self.tableView == nil {
-        return
-    }
-    if NSThread.isMainThread(){
-        switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            break
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            break
-        case .Update:
-            tableView.reloadRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            break
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            break
-        }
-    } else {
-        dispatch_async(dispatch_get_main_queue()) {
-            switch type {
-            case .Insert:
-                self.tableView.insertRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            case .Delete:
-                self.tableView.deleteRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            case .Update:
-                self.tableView.reloadRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            case .Move:
-                self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-                self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-                break
-            }
-        }
-    }
-    
-  }
-  
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    
-    if NSThread.isMainThread() {
-        if self.tableView != nil {
-            self.tableView.endUpdates()
-        }
-    } else {
-        dispatch_async(dispatch_get_main_queue()) {
-            if self.tableView != nil {
-                self.tableView.endUpdates()
-            }
-        }
-    }
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
-  }
+//  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+//    if tableView != nil {
+//        tableView.beginUpdates()
+//    }
+//  }
+//  
+//  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+//    switch type {
+//    case .Insert:
+//      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+//      break
+//    case .Delete:
+//      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+//      break
+//    default:
+//      break
+//    }
+//  }
+//  
+//  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+//    if self.tableView == nil {
+//        return
+//    }
+//    if NSThread.isMainThread(){
+//        switch type {
+//        case .Insert:
+//            tableView.insertRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            break
+//        case .Delete:
+//            tableView.deleteRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            break
+//        case .Update:
+//            tableView.reloadRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            break
+//        case .Move:
+//            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            break
+//        }
+//    } else {
+//        dispatch_async(dispatch_get_main_queue()) {
+//            switch type {
+//            case .Insert:
+//                self.tableView.insertRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            case .Delete:
+//                self.tableView.deleteRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            case .Update:
+//                self.tableView.reloadRowsAtIndexPaths([indexPath ?? newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            case .Move:
+//                self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                break
+//            }
+//        }
+//    }
+//    
+//  }
+//  
+//  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+//    
+//    if NSThread.isMainThread() {
+//        if self.tableView != nil {
+//            self.tableView.endUpdates()
+//        }
+//    } else {
+//        dispatch_async(dispatch_get_main_queue()) {
+//            if self.tableView != nil {
+//                self.tableView.endUpdates()
+//            }
+//        }
+//    }
+//        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
+//  }
     //MARK: - UICollectionViewDataSource methods
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let nib = UINib(nibName: "PeruseItemCollectionViewCell", bundle: nil)

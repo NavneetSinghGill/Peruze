@@ -67,6 +67,12 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   
     func requestAccepted(request: Exchange) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) accepted request: \(request)")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
         let deletedItemIndexPath = dataSource.acceptRequest(request)
         // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
 //        if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {
@@ -90,6 +96,12 @@ class RequestsViewController: UIViewController, UICollectionViewDelegate, Reques
   
     func requestDenied(request: Exchange) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) denied request: \(request)")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
     let deletedItemIndexPath = dataSource.deleteRequest(request)
     // number of objects = 1 will be 0 since deny request will be send in follwoing lines.
 //    if self.dataSource.fetchedResultsController.sections![0].numberOfObjects == 1 {

@@ -27,6 +27,13 @@ class ProfileContainerViewController: UITabBarController {
     tabBar.hidden = true
     self.setChildViewControllerData()
   }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.setChildViewControllerData()
+        if let parentVC = self.parentViewController as? ProfileViewController {
+            parentVC.updateViewAfterGettingResponse()
+        }
+    }
   private func setChildViewControllerData() {
     logw("Container VC With Person:")
     logw("\(profileOwner)")

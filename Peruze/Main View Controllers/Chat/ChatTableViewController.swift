@@ -37,6 +37,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchanges", name: NotificationCenterKeys.LNRefreshChatScreenForUpdatedExchanges, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "showChatScreen:", name: NotificationCenterKeys.LNAcceptedRequest, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "getLocalAcceptedExchangesAndSetRead:", name: "NewChat", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "refresh", name: "oneTimeFetch", object: nil)
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshWithoutActivityIndicator", forControlEvents: UIControlEvents.ValueChanged)
     tableView.insertSubview(refreshControl, atIndex: 0)
@@ -62,6 +63,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         self.noChatsLabel.alpha = 0.0
         dispatch_async(dispatch_get_main_queue()){
             self.tableView.reloadData()
+        }
+    }
+    
+    if self.tableView.subviews.count > 0{
+        if self.tableView.subviews[0] == refreshControl {
+            
         }
     }
   }
@@ -91,6 +98,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
         activityIndicatorView.alpha = 0
         self.noChatsLabel.alpha = 0
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            self.refreshControl.endRefreshing()
+            return
+        }
         refresh()
     }
     
@@ -173,6 +187,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     return UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Cancel") { (rowAction, indexPath) -> Void in
       logw("Accepted exchange Cancel tapped.")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
       //Swift 2.0
       //get the recordIDName for the exchange at that index path
       guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {
@@ -222,6 +242,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
       logw("Accepted exchange Complete tapped.")
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
       //get the recordIDName for the exchange at that index path
       //Swift 2.0
       guard let idName = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath).valueForKey("recordIDName") as? String else {

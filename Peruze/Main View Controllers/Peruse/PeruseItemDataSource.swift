@@ -269,7 +269,8 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
 //        let contextLocal = NSManagedObjectContext.MR_context()
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     var trueFavorites = [NSManagedObject]()
-    if let favorites = (me.valueForKey("favorites") as? NSSet)?.allObjects as? [NSManagedObject] {
+        let newFavorites = (me.valueForKey("favorites") as? NSSet)?.copy()
+    if let favorites = newFavorites!.allObjects as? [NSManagedObject] {
         if favorites.count > 0{
             for favoriteObj in favorites {
                 if favoriteObj.valueForKey("title") != nil && favoriteObj.valueForKey("isDelete") as! Int != 1  {

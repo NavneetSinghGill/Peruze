@@ -22,16 +22,18 @@ class ErrorAlertFactory: NSObject {
     return alert
   }
   
-  class func alertForNetworkWithTryAgainBlock(tryAgain:(Void -> Void)? = nil) -> UIAlertController {
+    class func alertForNetworkWithTryAgainBlock(tryAgain:(Void -> Void) = {}) -> UIAlertController {
     let alert = UIAlertController(title: "No Network Connection",
       message: "It looks like you aren't connected to the internet! Check your network settings and try again",
       preferredStyle: UIAlertControllerStyle.Alert)
     let dismiss = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil)
     let tryAgainAction = UIAlertAction(title: "Try Again", style: .Default) {(_) -> Void in
-      tryAgain
+      tryAgain()
     }
     alert.addAction(dismiss)
-    if tryAgain != nil { alert.addAction(tryAgainAction) }
+//    if tryAgain != nil {
+        alert.addAction(tryAgainAction)
+//        }
     return alert
   }
   

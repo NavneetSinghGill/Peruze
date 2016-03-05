@@ -131,6 +131,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
         self.getAllItems()
     }
+    NSUserDefaults.standardUserDefaults().setValue("yes", forKey: "oneTimeCallForItems")
     Model.sharedInstance().getAllDeleteUsers()
   }
     
@@ -152,6 +153,17 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
                     Model.sharedInstance().getTaggableFriends()
                 }
             }
+        }
+        if defaults.valueForKey("oneTimeCallForItems") == nil {
+            if dataSource.fetchedResultsController.sections?[0].numberOfObjects == 0 {
+                self.getMyExchanges()
+            } else {
+                self.dataSource.refreshData(self, shouldShuffle: true)
+                NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "shouldCallWithSyncDate")
+                self.getAllItems()
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName("oneTimeFetch", object: nil)
+            defaults.setValue("yes", forKey: "oneTimeCallForItems")
         }
         self.dataSource.refreshData(self, shouldShuffle: false)
     }
@@ -266,6 +278,12 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
         alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     } else {
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
         itemToForwardToExchange = item
         if let _ = itemToForwardToExchange?.valueForKey("imageUrl") as? String,
             let _ = itemToForwardToExchange?.valueForKey("owner")!.valueForKey("imageUrl") as? String{
@@ -455,8 +473,8 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     if segue.identifier == Constants.ExchangeSegueIdentifier {
         if let destVC = segue.destinationViewController as? PeruseExchangeViewController{
             logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) itemToForwardToExchange: \(itemToForwardToExchange)")
-        destVC.itemSelectedForExchange = itemToForwardToExchange
-        destVC.delegate = self
+            destVC.itemSelectedForExchange = itemToForwardToExchange
+            destVC.delegate = self
       }
     }
   }

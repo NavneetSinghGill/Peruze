@@ -142,6 +142,45 @@ class Model: NSObject, CLLocationManagerDelegate {
         opQueue.addOperation(getItems)
     }
     
+    func performLogout() {
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "LastFetchTaggagleFriendsDate")
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "keyFetchedUserProfile")
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "firstTimeChatRefresh")
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "oneTimeCallForItems")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        self.deleteAllLocalData()
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKLoginManager().logOut()
+        Model.sharedInstance().deleteAllSubscription()
+        NSUserDefaults.standardUserDefaults().setValue(true, forKey: UniversalConstants.kSetSubscriptions)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func deleteAllLocalData() {
+        //        let context = NSManagedObjectContext.MR_context()
+        var allData = Item.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Exchange.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Review.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = TaggableFriend.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        allData = Message.MR_findAllInContext(managedConcurrentObjectContext)
+        for data in allData {
+            managedConcurrentObjectContext.deleteObject(data as! NSManagedObject)
+        }
+        managedConcurrentObjectContext.MR_saveToPersistentStoreAndWait()
+    }
+    
     //MARK: - Profile Setup
     
     func fetchMyMinimumProfileWithCompletion(presentationContext: UIViewController, completion: ((Person?, NSError?) -> Void)) {
@@ -299,7 +338,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     func getTaggableFriends() {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
+        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends?limit=5000", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Taggable Friends are : \(result)")
