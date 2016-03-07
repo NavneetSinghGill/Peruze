@@ -42,6 +42,26 @@ class MainTabBarViewController: UITabBarController {
         }
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = chatTabBadgeValue + requestTabBadgeValue
+        
+        if self.selectedIndex == 2 {
+            let requestTab = self.tabBar.items![3]
+            let requestTabBadgeValue:Int
+            if requestTab.badgeValue == nil {
+                requestTabBadgeValue = 0
+            } else {
+                requestTabBadgeValue = Int(requestTab.badgeValue!)!
+            }
+            self.setBadgeCounter(requestTabBadgeValue)
+        } else if self.selectedIndex == 3 {
+            let chatTab = self.tabBar.items![2]
+            let chatTabBadgeValue:Int
+            if chatTab.badgeValue == nil {
+                chatTabBadgeValue = 0
+            } else {
+                chatTabBadgeValue = Int(chatTab.badgeValue!)!
+            }
+            self.setBadgeCounter(chatTabBadgeValue)
+        }
     }
     
     //MARK: - Private methods
@@ -148,7 +168,7 @@ class MainTabBarViewController: UITabBarController {
                         Model.sharedInstance().fetchReviewWithRecord(recordID)
                     }
 //                }
-                resetBadgeValue()
+//                resetBadgeValue()
             }
         }
     }
@@ -200,7 +220,7 @@ class MainTabBarViewController: UITabBarController {
                         currentChatTabBadgeNumber = Int(chatTab.badgeValue!)!
                     }
                     //                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+//                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
                     UIApplication.sharedApplication().applicationIconBadgeNumber = currentChatTabBadgeNumber + count + currentRequestTabBadgeNumber
                     //                }
                 }
@@ -236,7 +256,7 @@ class MainTabBarViewController: UITabBarController {
                     }
                     
                     //                if NSUserDefaults.standardUserDefaults().boolForKey("isAppActive") == true {
-                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
+//                    UIApplication.sharedApplication().applicationIconBadgeNumber = -1
                     UIApplication.sharedApplication().applicationIconBadgeNumber = currentRequestTabBadgeNumber + count + currentChatTabBadgeNumber
                     //                }
                 }
@@ -257,6 +277,7 @@ class MainTabBarViewController: UITabBarController {
                 let number = UIApplication.sharedApplication().applicationIconBadgeNumber - requestTabBadgeValue
                 requestTab.badgeValue = nil
                 UIApplication.sharedApplication().applicationIconBadgeNumber = number
+                self.setBadgeCounter(requestTabBadgeValue)
             }
         } else if item.tag == 3 {
             dispatch_async(dispatch_get_main_queue()) {
@@ -270,6 +291,7 @@ class MainTabBarViewController: UITabBarController {
                 let number = UIApplication.sharedApplication().applicationIconBadgeNumber - requestTabBadgeValue
                 requestTab.badgeValue = nil
                 UIApplication.sharedApplication().applicationIconBadgeNumber = number
+                self.setBadgeCounter(requestTabBadgeValue)
             }
         } else if item.tag == 4 {
             if let profileViewController = (self.viewControllers![4] as? UINavigationController)?.viewControllers[0] as? ProfileViewController {

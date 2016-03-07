@@ -134,15 +134,20 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         
         if userPrivacySetting == FriendsPrivacy.Friends {
             if let friendsIds : NSArray = defaults.objectForKey("kFriends") as? NSArray {
-                friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
+//                friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", friendsIds)
+                friendPredicate = NSPredicate(format: "owner.firstName IN %@", friendsIds)
                 return friendPredicate
             }
         } else if userPrivacySetting == FriendsPrivacy.FriendsOfFriends{
-            let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
-            let friendsOfFriendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as! NSArray
-            let allFriends = friendsIds.arrayByAddingObjectsFromArray(friendsOfFriendsIds as! [String])
-            let set = Set(allFriends as! [String])
-            friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", set)
+//            let friendsIds : NSArray = defaults.objectForKey("kFriends") as! NSArray
+//            let friendsOfFriendsIds : NSArray = defaults.objectForKey("kFriendsOfFriend") as! NSArray
+//            let allFriends = friendsIds.arrayByAddingObjectsFromArray(friendsOfFriendsIds as! [String])
+//            let set = Set(allFriends as! [String])
+//            friendPredicate = NSPredicate(format: "ownerFacebookID IN %@", set)
+            if let friendsIds : NSArray = defaults.objectForKey("friendsOfFriendsIds") as? NSArray {
+                friendPredicate = NSPredicate(format: "owner.firstName IN %@", friendsIds)
+                return friendPredicate
+            }
             return friendPredicate
         }
         return NSPredicate(value: true)

@@ -348,6 +348,13 @@ class Model: NSObject, CLLocationManagerDelegate {
                     return (element1.valueForKey("name") as! String) < (element2.valueForKey("name") as! String)
                 }
                 
+                var nameArray = [String]()
+                for var result in resultsArray {
+                    nameArray.append(result.valueForKey("first_name") as! String)
+                }
+                NSUserDefaults.standardUserDefaults().setValue(nameArray, forKey: "kFriends")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                
                 let me = Person.MR_findFirstByAttribute("me", withValue: true)
                 
                 for friendData in resultsArray {
@@ -440,6 +447,16 @@ class Model: NSObject, CLLocationManagerDelegate {
             }
             if let firstName = record.objectForKey("FirstName") as? String {
                 friend.setValue(firstName, forKey: "firstName")
+                if NSUserDefaults.standardUserDefaults().valueForKey("friendsOfFriendsIds") == nil {
+                   NSUserDefaults.standardUserDefaults().setValue([firstName], forKey: "friendsOfFriendsIds")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                } else {
+                    if var storedNames = NSUserDefaults.standardUserDefaults().valueForKey("friendsOfFriendsIds") as? [String] {
+                        storedNames.append(firstName)
+                        NSUserDefaults.standardUserDefaults().setValue(storedNames, forKey: "friendsOfFriendsIds")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                }
             }
             if let lastName = record.objectForKey("LastName") as? String {
                 friend.setValue(lastName, forKey: "lastName")
@@ -1421,6 +1438,9 @@ class Model: NSObject, CLLocationManagerDelegate {
     
     func deleteAllSubscription(completionBlock: (Void -> Void) = {}) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
+        if !NetworkConnection.connectedToNetwork() {
+            return
+        }
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.fetchAllSubscriptionsWithCompletionHandler({subscriptions, error in
             for subscriptionObject in subscriptions! {

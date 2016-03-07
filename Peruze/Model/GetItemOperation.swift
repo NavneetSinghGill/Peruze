@@ -172,12 +172,12 @@ class GetItemOperation: Operation {
       if ownerRecordIDName == "__defaultOwner__" {
         let owner = Person.MR_findFirstByAttribute("me",
           withValue: true,
-          inContext: self.context)
+          inContext: localUpload.managedObjectContext)
         localUpload.setValue(owner, forKey: "owner")
       } else {
         if let owner = Person.MR_findFirstOrCreateByAttribute("recordIDName",
           withValue: ownerRecordIDName,
-            inContext: self.context){
+            inContext: localUpload.managedObjectContext){
         localUpload.setValue(owner, forKey: "owner")
         }
       }

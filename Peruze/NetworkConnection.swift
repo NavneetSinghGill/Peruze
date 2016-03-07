@@ -36,14 +36,14 @@ class NetworkConnection: NSObject {
     do {
     let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) as? NSData
     } catch {
-      logw("\(error)")
+      logw("ConnectedToNetwork: \(error)")
     }
     if let httpResponse = response as? NSHTTPURLResponse {
       if httpResponse.statusCode == 200 {
         status = true
       }
     }
-    logw("\(status)")
+    logw("ConnectedToNetwork: \(status)")
     return status
   }
   

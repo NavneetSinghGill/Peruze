@@ -17,6 +17,7 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   }
   var tableView: UITableView!
   var fetchedResultsController: NSFetchedResultsController!
+    var presentationContext: UIViewController!
   
   override init() {
     super.init()
@@ -218,9 +219,19 @@ class ProfileExchangesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
     if NSThread.isMainThread(){
         self.tableView.endUpdates()
+        if let profileContainer = presentationContext.parentViewController as? ProfileContainerViewController{
+            if let parentVC = profileContainer.parentViewController as? ProfileViewController {
+                parentVC.updateViewAfterGettingResponse()
+            }
+        }
     } else {
         dispatch_async(dispatch_get_main_queue()){
             self.tableView.endUpdates()
+            if let profileContainer = self.presentationContext.parentViewController as? ProfileContainerViewController{
+                if let parentVC = profileContainer.parentViewController as? ProfileViewController {
+                    parentVC.updateViewAfterGettingResponse()
+                }
+            }
         }
     }
   }

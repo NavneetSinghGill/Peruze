@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   
     func resetBadgeCounter() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+//        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         
         let badgeResetOperation = CKModifyBadgeOperation(badgeValue: 0)
         badgeResetOperation.modifyBadgeCompletionBlock = { (error) -> Void in
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     if defaults.valueForKey("appLaunchedOnce") == nil{
        defaults.setValue("yes", forKey: "appLaunchedOnce")
         defaults.synchronize()
-       UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+//       UIApplication.sharedApplication().applicationIconBadgeNumber = 0
        resetBadgeCounter()
         Model.sharedInstance().deleteAllSubscription()
     }
@@ -52,7 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.setValue("yes", forKey: UniversalConstants.kIsPostingToFacebookOn)
         defaults.synchronize()
     }
+    defaults.setValue(nil, forKey: "oneTimeCallForItems")
     defaults.setBool(true, forKey: "isAppActive")
+    defaults.synchronize()
     MagicalRecord.setupCoreDataStackWithStoreNamed("PeruzeDataModel")
     //MagicalRecord.setLoggingLevel(MagicalRecordLoggingLevel.Verbose)
     

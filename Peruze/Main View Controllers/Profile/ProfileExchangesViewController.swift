@@ -20,6 +20,7 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
       dataSource.tableView = tableView
       tableView.dataSource = dataSource
       tableView.delegate = self
+        dataSource.presentationContext = self;
     }
   }
   override func viewDidLoad() {
@@ -67,6 +68,9 @@ class ProfileExchangesViewController: UIViewController, UITableViewDelegate {
                 self.titleLabel.alpha = 0.0
                 self.tableView.alpha = 1.0
             }
+        }
+        dispatch_async(dispatch_get_main_queue()){
+            self.tableView.reloadData()
         }
     }
     

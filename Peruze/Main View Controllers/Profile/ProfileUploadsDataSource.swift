@@ -117,7 +117,10 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
             logw("ProfileUploads local data fetch failed with error: \(error)")
         }
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) number of uploads: \(fetchedResultsController.sections![0].numberOfObjects)")
-        NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
+        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+        if me.valueForKey("recordIDName") as! String == personRecordID {
+            NSNotificationCenter.defaultCenter().postNotificationName("refreshProfileVCData", object: nil)
+        }
         return fetchedResultsController.sections![0].numberOfObjects
     }
     
@@ -195,12 +198,14 @@ class ProfileUploadsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   
   //MARK: - NSFetchedResultsControllerDelegate
   
-//  func controllerWillChangeContent(controller: NSFetchedResultsController) {
-//    if tableView != nil {
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    
+    if tableView != nil {
+//        self.tableView.reloadData()
 //        tableView.beginUpdates()
-//    }
-//  }
-//  
+    }
+  }
+//
 //  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
 //    switch type {
 //    case .Insert:

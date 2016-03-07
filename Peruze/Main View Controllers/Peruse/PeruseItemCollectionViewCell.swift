@@ -129,6 +129,12 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
     let bufferHeight = favoriteImageView.frame.height * 3
     let favoriteBuffer = CGRectMake(bufferX, bufferY, bufferWidth, bufferHeight)
     if CGRectContainsPoint(favoriteBuffer, sender.locationInView(scrollView)) {
+        if !NetworkConnection.connectedToNetwork() {
+            let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+//            self.presentViewController(alert, animated: true, completion: nil)
+            return
+        }
       itemFavorited = !itemFavorited
       delegate?.itemFavorited(item!, favorite: itemFavorited)
         if itemFavorited == true {
@@ -142,6 +148,12 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
         let recordID = owner.valueForKey("recordIDName") as? String,
         let _ = owner.valueForKey("imageUrl") as? String
       {
+        if !NetworkConnection.connectedToNetwork() {
+        let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+//        self.presentViewController(alert, animated: true, completion: nil)
+        return
+        }
         delegate?.segueToProfile(recordID)
         NSUserDefaults.standardUserDefaults().setValue("isOtherUser", forKey: "yes")
         NSUserDefaults.standardUserDefaults().synchronize()

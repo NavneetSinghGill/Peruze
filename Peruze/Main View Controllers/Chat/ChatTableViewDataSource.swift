@@ -39,7 +39,6 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
             withPredicate: NSCompoundPredicate(andPredicateWithSubpredicates: [chatPredicate, itemOfferedNotNil, itemRequestedNotNil, itemOfferedImageUrlNotNil, itemRequestedImageUrlNotNil, itemOfferedTitleNotNil, itemRequestedTitleNotNil]),
             groupBy: nil,
             delegate: self)
-        
         do {
             logw("ChatTableViewController Fetching local Chat.")
             try self.fetchedResultsController.performFetch()

@@ -132,7 +132,7 @@ class ProfileViewController: UIViewController {
             self.containerSpinner.stopAnimating()
             UIView.animateWithDuration(0.5, animations: { self.containerView.alpha = 1.0 }, completion: { (success) -> Void in
                 self.updateChildViewControllers()
-                self.getMyFriendsFor()
+//                self.getMyFriendsFor()
             })
             
             self.updateViewAfterGettingResponse()
