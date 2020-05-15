@@ -84,8 +84,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
     }
     
     func appDidBecomeActive() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if self.isViewLoaded() && self.view.window != nil {
+         if self.isViewLoaded() && self.view.window != nil {
             self.dataSource?.getChatAfterDate(NSDate(timeIntervalSince1970: 0 ))
         }
     }
@@ -143,8 +142,7 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   }
   
     func keyboardWillHide(notification: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    
+     
     automaticallyScrollsToMostRecentMessage = false
     inputToolbar?.contentView?.leftBarButtonContainerView?.alpha = 0.0
     inputToolbar?.contentView?.rightBarButtonContainerView?.alpha = 0.0
@@ -164,34 +162,29 @@ class ChatCollectionViewController: JSQMessagesViewController, UIAlertViewDelega
   //MARK: - Handling Camera
   var cameraNavController: TGCameraNavigationController?
     func presentImagePicker() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    TGCamera.setOption(kTGCameraOptionHiddenFilterButton, value: NSNumber(bool: true))
+     TGCamera.setOption(kTGCameraOptionHiddenFilterButton, value: NSNumber(bool: true))
     
     cameraNavController = TGCameraNavigationController.newWithCameraDelegate(self)
     presentViewController(cameraNavController!, animated: true) { }
   }
   
     func cameraDidCancel() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
+     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
     func cameraDidTakePhoto(image: UIImage!) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    sendImage(image)
+     sendImage(image)
     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
     func cameraDidSelectAlbumPhoto(image: UIImage!) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    sendImage(image)
+     sendImage(image)
     cameraNavController!.dismissViewControllerAnimated(true, completion: nil)
   }
   
   //MARK: - Handling Buttons
     override func didPressAccessoryButton(sender: UIButton!) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    switch sender {
+     switch sender {
     case cancelButton!:
       let alert = UIAlertController(title: "Cancel Exchange", message: "Are you sure that you want to cancel this exchange? This can not be undone!", preferredStyle: UIAlertControllerStyle.Alert)
       let doNotDelete = UIAlertAction(title: "Do Not Cancel", style: UIAlertActionStyle.Cancel, handler: nil)

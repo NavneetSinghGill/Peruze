@@ -43,8 +43,7 @@ class ProfileUploadsCollectionViewController: PeruseViewController {
     }
     
     func backButtonTapped() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     var storedTop: CGFloat = 0

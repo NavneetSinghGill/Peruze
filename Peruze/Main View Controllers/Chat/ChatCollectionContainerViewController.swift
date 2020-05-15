@@ -30,8 +30,7 @@ class ChatCollectionContainerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.theirItemNameLabel.text = self.theirItemName
+         self.theirItemNameLabel.text = self.theirItemName
         self.yourItemNameLabel.text = self.yourItemName
         self.itemImage.itemImagesTappable = (prominentImage!.image!, lesserImage!.image!, prominentImageTapBlock: {
             self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemOffered") as! NSManagedObject)
@@ -72,23 +71,19 @@ class ChatCollectionContainerViewController: UIViewController {
     }
     
     func backButtonTapped() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.navigationController?.popToRootViewControllerAnimated(true)
+         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func showItemOffered() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemOffered") as! NSManagedObject)
+         self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemOffered") as! NSManagedObject)
     }
     
     func showItemRequested() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemRequested") as! NSManagedObject)
+         self.showChatItemDelegate.showItem(self.exchange.valueForKey("itemRequested") as! NSManagedObject)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if (segue.identifier == "jsq") {
+         if (segue.identifier == "jsq") {
             if let chatCollectionVC = segue.destinationViewController as? ChatCollectionViewController {
                 chatCollectionVC.exchange = self.exchange
                 chatCollectionVC.senderId = self.senderId
@@ -100,7 +95,6 @@ class ChatCollectionContainerViewController: UIViewController {
     }
     
     func viewTapped(gesture: UIGestureRecognizer) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-//        self.view.endEditing(true)
+ //        self.view.endEditing(true)
     }
 }

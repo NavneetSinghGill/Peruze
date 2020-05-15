@@ -64,8 +64,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     }
     
     func refreshWithoutActivityIndicator() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.activityIndicatorView.alpha = 0
+         self.activityIndicatorView.alpha = 0
         if !NetworkConnection.connectedToNetwork() {
             let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
@@ -77,8 +76,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
     }
     
     func refresh() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    //reload the data
+     //reload the data
     self.noRequetsLabel.alpha = 0
     self.noRequetsLabel.hidden = true
     let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -127,8 +125,7 @@ class RequestsTableViewController: UIViewController, UITableViewDelegate, Reques
   }
     
     func localRefresh() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        do {
+         do {
             logw("RequestsTableViewController fetching local requests.")
             self.activityIndicatorView.stopAnimating()
             self.activityIndicatorView.alpha = 1

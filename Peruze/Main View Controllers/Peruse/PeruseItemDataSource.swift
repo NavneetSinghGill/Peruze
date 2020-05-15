@@ -89,8 +89,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "scrollTOShowSharedItem:", name: "ScrollTOShowSharedItem", object: nil)
   }
     func reloadCollectionView(){
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        dispatch_async(dispatch_get_main_queue()) {
+         dispatch_async(dispatch_get_main_queue()) {
             self.collectionView.reloadData()
         }
     }
@@ -127,8 +126,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
   
     
     func getFriendsPredicate() -> NSPredicate {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        var friendPredicate = NSPredicate!()
+         var friendPredicate = NSPredicate!()
         let defaults = NSUserDefaults.standardUserDefaults()
         let userPrivacySetting = Model.sharedInstance().userPrivacySetting()
         
@@ -154,8 +152,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     }
     
     func getDistancePredicate() -> NSPredicate {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
+         //        NSArray *testLocations = @[ [[CLLocation alloc] initWithLatitude:11.2233 longitude:13.2244], ... ];
         
         let maxRadius:CLLocationDistance = Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) //45000// in meters
         if Double(GetPeruzeItemOperation.userDistanceSettingInMeters()) >= 40233{ //25miles in meters
@@ -164,7 +161,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
         let targetLocation: CLLocation = self.location //CLLocation(latitude: 51.5028,longitude: 0.0031)
         //        CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:51.5028 longitude:0.0031];
         
-        let predicate: NSPredicate = NSPredicate { (Item item, NSDictionary bindings) -> Bool in
+        let predicate: NSPredicate = NSPredicate { (item, bindings) -> Bool in
             
             let itemLocation: CLLocation = CLLocation(latitude: Double( (item as! Item).latitude!),longitude: Double( (item as! Item).longitude!))
             logw("\( (itemLocation.distanceFromLocation(targetLocation)))")
@@ -215,8 +212,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     
     
     func refreshFetchResultController() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
+         let fetchRequest = NSFetchRequest(entityName: RecordTypes.Item)
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let myID = me.valueForKey("recordIDName") as! String
         let predicate1 = NSPredicate(format: "owner.recordIDName != %@", myID)
@@ -270,8 +266,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
 //    }
   
     func getFavorites() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-//        let contextLocal = NSManagedObjectContext.MR_context()
+ //        let contextLocal = NSManagedObjectContext.MR_context()
     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     var trueFavorites = [NSManagedObject]()
         let newFavorites = (me.valueForKey("favorites") as? NSSet)?.copy()
@@ -425,8 +420,7 @@ class PeruseItemDataSource: NSObject, NSFetchedResultsControllerDelegate, UIScro
     //MARK: - Notification observer methods
     
     func reloadPeruseItemMainScreen() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        dispatch_async(dispatch_get_main_queue()){
+         dispatch_async(dispatch_get_main_queue()){
             self.collectionView.reloadData()
         }
     }

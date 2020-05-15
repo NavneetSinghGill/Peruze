@@ -293,8 +293,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
   
     private func exchangeInitiated() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    //TODO: create an exchange and pass it to the data model
+     //TODO: create an exchange and pass it to the data model
     let postExchange = PostExchangeOperation(date: NSDate(timeIntervalSinceNow: 0),
       status: ExchangeStatus.Pending,
       itemOfferedRecordIDName: itemChosenToExchange!.valueForKey("recordIDName") as! String,
@@ -365,8 +364,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getMyExchanges() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        
+         
         //Setting more data available controlling functionality
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setBool(true, forKey: "keyIsMoreItemsAvalable")
@@ -406,8 +404,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getAllItems() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        isGetItemsInProgress = true
+         isGetItemsInProgress = true
         logw("\(NSDate())>>>>> Peruze view - GetPeruzeItems called")
         Model.sharedInstance().getPeruzeItems(self, completion: {
             self.isGetItemsInProgress = false
@@ -420,8 +417,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getAllPersonsMissingData() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
+         let fillMissingPeopleData = GetAllPersonsWithMissingData(database: CKContainer.defaultContainer().publicCloudDatabase, context: managedConcurrentObjectContext)
         fillMissingPeopleData.completionBlock = {
             logw("\n\n\(NSDate())===== fillMissingPeopleData Completed======")
         }
@@ -429,8 +425,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func getMoreItems() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let defaults = NSUserDefaults.standardUserDefaults()
+         let defaults = NSUserDefaults.standardUserDefaults()
         let isMoreItemsAvailable = defaults.boolForKey("keyIsMoreItemsAvalable")
          if  self.isGetItemsInProgress == false {
             if isMoreItemsAvailable == true {
@@ -453,8 +448,7 @@ class PeruseViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func update() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        logw("\n\n\(NSDate()) ----------------  Timer started ----------------------")
+         logw("\n\n\(NSDate()) ----------------  Timer started ----------------------")
         getMoreItems()
     }
     

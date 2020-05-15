@@ -95,8 +95,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
     
     func refreshWithoutActivityIndicator() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        activityIndicatorView.alpha = 0
+         activityIndicatorView.alpha = 0
         self.noChatsLabel.alpha = 0
         if !NetworkConnection.connectedToNetwork() {
             let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
@@ -140,8 +139,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
     
     func getLocalAcceptedExchanges() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if self.dataSource.getLocalAcceptedExchanges() == 0 {
+         if self.dataSource.getLocalAcceptedExchanges() == 0 {
             self.noChatsLabel.hidden = false
             self.noChatsLabel.alpha = 1.0
         } else {
@@ -151,8 +149,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
     }
     
     func getLocalAcceptedExchangesAndSetRead(notification: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if notification.userInfo != nil {
+         if notification.userInfo != nil {
             let userInfo: NSDictionary = notification.userInfo!
             let exchangeRecordIDName = userInfo.valueForKey("exchangeRecordIDName") as! String
             let context = NSManagedObjectContext.MR_context()
@@ -239,8 +236,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
     private func completeEditAction() -> UITableViewRowAction {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
+     let accept = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Complete") { (rowAction, indexPath) -> Void in
       logw("Accepted exchange Complete tapped.")
         if !NetworkConnection.connectedToNetwork() {
             let alert = UIAlertController(title: "No Network Connection", message: "It looks like you aren't connected to the internet! Check your network settings and try again", preferredStyle: UIAlertControllerStyle.Alert)
@@ -297,8 +293,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   
   //MARK: - ChatDeletionDelgate Methods
     func cancelExchange(exchange: NSManagedObject) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    //get the recordIDName for the exchange at that index path
+     //get the recordIDName for the exchange at that index path
     //Swift 2.0
     guard let idName = exchange.valueForKey("recordIDName") as? String else {
       assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
@@ -336,8 +331,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
     func completeExchange(exchange: NSManagedObject) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    //get the recordIDName for the exchange at that index path
+     //get the recordIDName for the exchange at that index path
     //Swift 2.0
     guard let idName = exchange.valueForKey("recordIDName") as? String else {
       assertionFailure("fethed results controller did not return an object with a 'recordIDName'")
@@ -427,8 +421,7 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, ChatDeleti
   }
   
     func showChatScreen(notification: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if notification.userInfo != nil {
+         if notification.userInfo != nil {
             let userDict: NSDictionary = notification.userInfo!
             let exchangeRecordIDName = userDict.valueForKey("exchangeRecordIDName")
             let exchange = Exchange.MR_findFirstByAttribute("recordIDName", withValue: exchangeRecordIDName)

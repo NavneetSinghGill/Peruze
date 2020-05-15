@@ -28,8 +28,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.dataSource.presentationContext = self
+         self.dataSource.presentationContext = self
 //        titleLabel.alpha = 0.0
 //        refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.AllEvents)
@@ -100,8 +99,7 @@ class ProfileFriendsViewController: UIViewController, UITableViewDelegate {
     
     //MARK: Reloading view on fetch data from server
     func reloadFetchedData () {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        dispatch_async(dispatch_get_main_queue()){
+         dispatch_async(dispatch_get_main_queue()){
             self.tableView.reloadData()
         }
     }

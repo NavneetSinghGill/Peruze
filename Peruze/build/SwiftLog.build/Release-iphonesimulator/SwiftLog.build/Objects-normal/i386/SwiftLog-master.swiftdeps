@@ -1,0 +1,5 @@
+version: "Apple Swift version 2.1 (swiftlang-700.1.101.3 clang-700.1.75)"
+options: "014ff051540de9b16f21087edd9b3136"
+build_time: [508574584, 683212000]
+inputs:
+  "/Users/systango/Projects/Peruze/Peruze/Log.swift": [508574550, 0]

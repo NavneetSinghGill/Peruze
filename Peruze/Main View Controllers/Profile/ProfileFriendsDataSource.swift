@@ -255,8 +255,7 @@ class ProfileFriendsDataSource: NSObject, UITableViewDataSource {
 //    }
 //
 //    func getMutualFriends() -> Int {
-//        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-//        mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
+// //        mutualFriendIds = Model.sharedInstance().getMutualFriendsFromLocal(profileOwner, context: managedConcurrentObjectContext)
 //        var newSortedFriendsData = [FriendsDataAndProfilePic]()
 //        var person: NSManagedObject!
 //        var profileImageUrl = ""

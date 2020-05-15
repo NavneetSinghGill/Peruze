@@ -28,8 +28,7 @@ class ProfileReviewsDataSource: NSObject, UITableViewDataSource, NSFetchedResult
   }
     
     func fetchData() -> Int {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let recordIDName: String
+         let recordIDName: String
         if profileOwner != nil && profileOwner.valueForKey("recordIDName") != nil{
             recordIDName = profileOwner.valueForKey("recordIDName") as! String
         } else {

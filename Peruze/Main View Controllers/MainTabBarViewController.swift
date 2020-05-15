@@ -80,8 +80,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func showBadgeOnRequestTab(notification: NSNotification){
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if notification.userInfo != nil{
+         if notification.userInfo != nil{
             let info : NSDictionary = notification.userInfo!
             if  let category = info["category"] as? String {
                 // Printout of (userInfo["aps"])["type"]
@@ -194,8 +193,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setRequestBadgeCount(notification: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if notification.userInfo == nil {
+         if notification.userInfo == nil {
             return
         }
         if notification.userInfo != nil {
@@ -229,8 +227,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setChatBadgeCount(notification: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if notification.userInfo == nil {
+         if notification.userInfo == nil {
             return
         }
         if notification.userInfo != nil {
@@ -301,8 +298,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func setApplicationBadgeCount() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let requestTab = self.tabBar.items![3]
+         let requestTab = self.tabBar.items![3]
         let currentRequestTabBadgeNumber: Int
         if requestTab.badgeValue == nil {
             currentRequestTabBadgeNumber = 0
@@ -324,7 +320,6 @@ class MainTabBarViewController: UITabBarController {
     //MARK: Notification method
     
     func showChatScreen() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.selectedIndex = 2
+         self.selectedIndex = 2
     }
 }

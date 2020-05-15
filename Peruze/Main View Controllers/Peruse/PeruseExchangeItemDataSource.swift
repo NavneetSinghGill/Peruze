@@ -98,8 +98,7 @@ class PeruseExchangeItemDataSource: NSObject, UICollectionViewDataSource, NSFetc
   }
     
     func getItems() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+         let myPerson = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
         
         guard let personRecordID = myPerson.valueForKey("recordIDName") as? String else {
             return

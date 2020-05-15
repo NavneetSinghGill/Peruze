@@ -1,0 +1,13 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': '/Users/systango/Projects/Peruze/Peruze/build/Release-iphonesimulator/SwiftLog.framework/Modules'
+    'contents': [{
+      'type': 'file',
+      'name': 'module.modulemap',
+      'external-contents': '/Users/systango/Projects/Peruze/Peruze/build/SwiftLog.build/Release-iphonesimulator/SwiftLog.build/unextended-module.modulemap',
+    }]
+  }]
+}

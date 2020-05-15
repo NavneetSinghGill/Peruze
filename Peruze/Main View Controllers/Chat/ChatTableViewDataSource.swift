@@ -26,8 +26,7 @@ class ChatTableViewDataSource: NSObject, UITableViewDataSource, NSFetchedResults
   }
     
     func getLocalAcceptedExchanges() -> Int {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
+         let chatPredicate = NSPredicate(format: "status = %@", NSNumber(integer: ExchangeStatus.Accepted.rawValue))
         let itemOfferedNotNil = NSPredicate(format: "itemOffered.recordIDName != nil")
         let itemRequestedNotNil = NSPredicate(format: "itemRequested.recordIDName != nil")
         let itemOfferedImageUrlNotNil = NSPredicate(format: "itemOffered.imageUrl != nil")

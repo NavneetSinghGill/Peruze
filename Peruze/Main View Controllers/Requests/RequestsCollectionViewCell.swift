@@ -147,8 +147,7 @@ class RequestsCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
   }
   
     func tap(sender: UITapGestureRecognizer) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    
+     
     //view in center of screen
     let view = CircleView(frame: CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.width))
     view.center = exchangeArrowImageView.center

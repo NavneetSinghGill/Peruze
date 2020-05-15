@@ -337,8 +337,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func getTaggableFriends() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends?limit=5000", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
+         let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends?limit=5000", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {
                 logw("Taggable Friends are : \(result)")
@@ -374,8 +373,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func postTaggableFriendToCloud() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let me = Person.MR_findFirstByAttribute("me", withValue: true)
+         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "facebookID == %@", me.valueForKey("facebookID") as! String)
         let context = NSManagedObjectContext.MR_context()
         let allTaggableFriends = TaggableFriend.MR_findAllWithPredicate(predicate, inContext: context)
@@ -1122,8 +1120,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForNewOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        
+         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1163,8 +1160,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForUpdatedOffer() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        
+         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1194,8 +1190,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForAcceptedOffer(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        
+         
         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
@@ -1237,8 +1232,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForChat(shouldResumeChainOfSubscriptions: Bool = true, completionHandler: (Void -> Void) = {}) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "ReceiverRecordIDName == %@", me.recordIDName!)
@@ -1277,8 +1271,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForItemAdditionUpdation() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
@@ -1307,8 +1300,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForItemDeletion() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "OwnerFacebookID != %@", me.facebookID!)
@@ -1337,8 +1329,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForDisablingProfile() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let predicate = NSPredicate(format: "creatorUserRecordID != %@", CKRecordID(recordName: me.recordIDName!))
@@ -1366,8 +1357,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func subscribeForReviews() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+         let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
         
         let me = Person.MR_findFirstByAttribute("me", withValue: true)
         let recordID = CKRecordID(recordName: me.recordIDName!)
@@ -1437,8 +1427,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func deleteAllSubscription(completionBlock: (Void -> Void) = {}) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        if !NetworkConnection.connectedToNetwork() {
+         if !NetworkConnection.connectedToNetwork() {
             return
         }
         let database = CKContainer.defaultContainer().publicCloudDatabase
@@ -1455,8 +1444,7 @@ class Model: NSObject, CLLocationManagerDelegate {
     }
     
     func deleteSubscriptionsWithIDs(subscriptionIDs: [String]) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let database = CKContainer.defaultContainer().publicCloudDatabase
+         let database = CKContainer.defaultContainer().publicCloudDatabase
             for subscriptionID in subscriptionIDs {
                 
                 database.deleteSubscriptionWithID(subscriptionID, completionHandler: {subscriptionId, error in

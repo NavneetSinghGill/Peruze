@@ -74,8 +74,7 @@ class ProfileReviewsViewController: UIViewController, UITableViewDelegate {
     
   let opQueue = OperationQueue()
     func refresh() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-//    let me = Person.MR_findFirstByAttribute("me", withValue: true)
+ //    let me = Person.MR_findFirstByAttribute("me", withValue: true)
     let recordIDName: String
     if dataSource.profileOwner != nil && dataSource.profileOwner.valueForKey("recordIDName") != nil{
         recordIDName = dataSource.profileOwner.valueForKey("recordIDName") as! String

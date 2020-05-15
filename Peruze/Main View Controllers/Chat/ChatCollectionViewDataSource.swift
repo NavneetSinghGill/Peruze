@@ -51,16 +51,14 @@ class ChatCollectionViewDataSource: NSObject,  JSQMessagesCollectionViewDataSour
     }
     
     func getChat() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.getChatData()
+         self.getChatData()
         dispatch_async(dispatch_get_main_queue()){
             self.delegate?.collectionView?.reloadData()
             self.scrollToBottom()
         }
     }
     func getChatData() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        //    let exchangePredicate = NSPredicate(value: true)
+         //    let exchangePredicate = NSPredicate(value: true)
         let objectID = self.exchange.objectID
         do {
             try self.exchange = managedConcurrentObjectContext.existingObjectWithID(objectID)

@@ -56,8 +56,7 @@ class ProfileFavoritesDataSource: NSObject, UITableViewDataSource, NSFetchedResu
     
   ///fetch current user profile and set `favorites` to the favorites of my profile
     func refresh() -> Int {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
+     let me = Person.MR_findFirstByAttribute("me", withValue: true, inContext: managedConcurrentObjectContext)
     if let favorites = me.valueForKey("favorites") as? NSSet {
       if let favoriteObjs = favorites.allObjects as? [NSManagedObject] {
         self.favorites = []

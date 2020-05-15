@@ -38,8 +38,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        title = "Invite Friends"
+         title = "Invite Friends"
         navigationController?.navigationBar.tintColor = .redColor()
         view.backgroundColor = .whiteColor()
         getTaggableFriends()
@@ -57,8 +56,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func getTaggableFriends() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        self.activityIndicatorView.startAnimating()
+         self.activityIndicatorView.startAnimating()
         let request = FBSDKGraphRequest(graphPath:"/me/taggable_friends?limit=5000", parameters: ["fields":"name,id,picture.fields(url),first_name,last_name,context"]);
         request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             if error == nil {

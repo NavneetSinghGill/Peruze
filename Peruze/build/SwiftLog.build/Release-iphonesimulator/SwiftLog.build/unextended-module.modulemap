@@ -1,0 +1,10 @@
+framework module SwiftLog {
+  umbrella header "SwiftLog.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftLog.__Swift {
+    exclude header "SwiftLog-Swift.h"
+}

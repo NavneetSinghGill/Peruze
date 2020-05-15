@@ -174,8 +174,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
   //MARK: - Drawing and UI
   
     private func updateUI() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    self.noItemImageLabel.hidden = true
+     self.noItemImageLabel.hidden = true
     if let imageData = item?.valueForKey("image") as? NSData {
 //      itemImageView.image = UIImage(data: imageData)
         self.activityIndicator.stopAnimating()
@@ -272,8 +271,7 @@ class PeruseItemCollectionViewCell: UICollectionViewCell, UITextViewDelegate, UI
 //    }
     
     private func heartFlash() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-    let heart = UIImageView()
+     let heart = UIImageView()
     heart.frame = ownerProfileImage.frame
     heart.frame.origin = CGPointMake(itemImageView.frame.origin.x + (itemImageView.frame.width / 2) - (heart.frame.width / 2), itemImageView.frame.origin.y + (itemImageView.frame.height / 2) - (heart.frame.height / 2))
     heart.contentMode = .ScaleAspectFit

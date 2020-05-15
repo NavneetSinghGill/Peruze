@@ -40,8 +40,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        detailTextView = UITextView()
+         detailTextView = UITextView()
         detailTextView.text = Constants.ReviewPlaceholder
         detailTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
         detailTextView.textColor = .lightGrayColor()
@@ -61,8 +60,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
         updateTextViewSize(detailTextView)
     }
     @IBAction func starTap(sender: UITapGestureRecognizer) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        var hitTap = false
+         var hitTap = false
         let starArray = [farLeftStar, middleLeftStar, middleStar, middleRightStar, farRightStar]
         starRatingCount = 0
         for i in 0..<starArray.count {
@@ -76,8 +74,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
     }
     
     @IBAction func cancel(sender: UIBarButtonItem) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        dismissViewControllerAnimated(true, completion: nil)
+         dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func send(sender: UIBarButtonItem) {
         logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__) tapped with title: \(titleTextField.text), stars: \(self.starRatingCount), detail: \(detailTextView.text)")
@@ -109,8 +106,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
         }
     }
     private func updateTextViewSize(textView: UITextView) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        let fixedWidth = titleTextField.frame.size.width
+         let fixedWidth = titleTextField.frame.size.width
         textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
         var newFrame = textView.frame
@@ -121,8 +117,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
     
     //MARK: - Handling Keyboard Display
     func keyboardWillShow(sender: NSNotification) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        keyboardOnScreen = true
+         keyboardOnScreen = true
         if let userInfo = sender.userInfo {
             if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
                 let top = navigationController?.navigationBar.frame.maxY ?? 0
@@ -136,8 +131,7 @@ class WriteReviewViewController: UIViewController, UITextViewDelegate, UITextFie
     }
     
     func keyboardWillHide(sender: AnyObject) {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-        keyboardOnScreen = false
+         keyboardOnScreen = false
         UIView.animateWithDuration(0.5) {
             let top = self.navigationController?.navigationBar.frame.maxY ?? 0
             let bottom = self.tabBarController?.tabBar.frame.height ?? 0

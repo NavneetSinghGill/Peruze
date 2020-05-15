@@ -18,8 +18,7 @@ class ProfileFavoritesCollectionViewController: PeruseViewController {
     var indexOfItemToShow: Int!
   
     override func viewDidLoad() {
-        logw("\(_stdlib_getDemangledTypeName(self))) \(__FUNCTION__)")
-//    super.viewDidLoad()
+ //    super.viewDidLoad()
     //TODO: - Pass this variable in instead of setting it
     dataSource = ProfileFavoritesDataSource()
     self.title = "Favorites"
